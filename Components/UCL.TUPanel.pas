@@ -4,6 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.Utils, UCL.SystemSettings, UCL.TUThemeManager,
+  Winapi.Windows,
   System.Classes, System.SysUtils,
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
@@ -16,6 +17,8 @@ type
       FCustomBackColor: TColor;
 
       procedure SetThemeManager(const Value: TUThemeManager);
+      procedure SetCustomBackColor(const Value: TColor);
+      procedure SetCustomTextColor(const Value: TColor);
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -25,8 +28,8 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property CustomTextColor: TColor read FCustomTextColor write FCustomTextColor;
-      property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor;
+      property CustomTextColor: TColor read FCustomTextColor write SetCustomTextColor;
+      property CustomBackColor: TColor read FCustomBackColor write SetCustomBackColor;
 
       {$REGION 'Common properties'}
       property Align;
@@ -139,6 +142,26 @@ begin
     begin
       Color := $001F1F1F;
       Font.Color := GetTextColorFromBackground(Color);
+    end;
+end;
+
+{ SETTERS }
+
+procedure TUPanel.SetCustomBackColor(const Value: TColor);
+begin
+  if FCustomBackColor <> Value then
+    begin
+      FCustomBackColor := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUPanel.SetCustomTextColor(const Value: TColor);
+begin
+  if FCustomTextColor <> Value then
+    begin
+      FCustomTextColor := Value;
+      UpdateTheme;
     end;
 end;
 

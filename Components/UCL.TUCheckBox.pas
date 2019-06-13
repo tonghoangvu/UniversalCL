@@ -27,6 +27,9 @@ type
       procedure SetAllowGrayed(const Value: Boolean);
       procedure SetState(const Value: TUCheckBoxState);
 
+      //  Messages
+      procedure WMLButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+
     protected
       procedure Paint; override;
 
@@ -39,7 +42,7 @@ type
 
       property Text: string read FText write SetText;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
-      property State: TUCheckBoxState read FState write SetState default cbsChecked;
+      property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
 
       {$REGION 'Common properties'}
       property Align;
@@ -152,7 +155,7 @@ begin
 
   FText := 'UCheckBox';
   FAllowGrayed := false;
-  FState := cbsChecked;
+  FState := cbsUnchecked;
 end;
 
 { CUSTOM METHODS }
@@ -222,6 +225,26 @@ begin
         Canvas.TextOut(0, (Height - IconH) div 2, '');
       end;
   end;
+end;
+
+{ MESSAGES }
+
+procedure TUCheckBox.WMLButtonUp(var Msg: TMessage);
+begin
+  if Enabled = true then
+    case State of
+      cbsChecked:
+        if AllowGrayed = true then
+          State := cbsGrayed
+        else
+          State := cbsUnchecked;
+      cbsUnchecked:
+        State := cbsChecked;
+      cbsGrayed:
+        State := cbsUnchecked;
+    end;
+
+  inherited;
 end;
 
 end.
