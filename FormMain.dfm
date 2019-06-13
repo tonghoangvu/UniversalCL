@@ -15,7 +15,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
-  object USymbolButton1: TUSymbolButton
+  object symbolbuttonSaveVert: TUSymbolButton
     Left = 50
     Top = 440
     Width = 61
@@ -41,7 +41,7 @@ object MainForm: TMainForm
     Text = 'Save'
     Detail = 'Ctrl+S'
   end
-  object USymbolButton2: TUSymbolButton
+  object symbolbuttonSaveHorz: TUSymbolButton
     Left = 120
     Top = 490
     Width = 291
@@ -69,7 +69,7 @@ object MainForm: TMainForm
     ParentShowHint = False
     ShowHint = True
   end
-  object USymbolButton3: TUSymbolButton
+  object symbolButtonOpenDisabled: TUSymbolButton
     Left = 120
     Top = 440
     Width = 291
@@ -96,7 +96,7 @@ object MainForm: TMainForm
     Text = 'Open document (disabled)'
     Detail = 'Ctrl+O'
   end
-  object UText1: TUText
+  object textTitle: TUText
     Left = 50
     Top = 40
     Width = 186
@@ -114,7 +114,7 @@ object MainForm: TMainForm
     ThemeManager = UThemeManager1
     TextKind = tkTitle
   end
-  object UText2: TUText
+  object textHeading: TUText
     Left = 50
     Top = 80
     Width = 166
@@ -129,7 +129,7 @@ object MainForm: TMainForm
     ThemeManager = UThemeManager1
     TextKind = tkHeading
   end
-  object UText3: TUText
+  object textEntry: TUText
     Left = 50
     Top = 120
     Width = 74
@@ -144,7 +144,7 @@ object MainForm: TMainForm
     ThemeManager = UThemeManager1
     TextKind = tkEntry
   end
-  object UText4: TUText
+  object textNormal: TUText
     Left = 50
     Top = 150
     Width = 106
@@ -158,7 +158,7 @@ object MainForm: TMainForm
     ParentFont = False
     ThemeManager = UThemeManager1
   end
-  object UText5: TUText
+  object textDescription: TUText
     Left = 50
     Top = 180
     Width = 105
@@ -173,7 +173,7 @@ object MainForm: TMainForm
     ThemeManager = UThemeManager1
     TextKind = tkDescription
   end
-  object UHyperLink1: TUHyperLink
+  object linkConnected: TUHyperLink
     Left = 50
     Top = 350
     Width = 154
@@ -192,7 +192,7 @@ object MainForm: TMainForm
     CustomPressTextColor = 3355443
     CustomDisabledTextColor = 3355443
   end
-  object UHyperLink2: TUHyperLink
+  object linkCustomColor: TUHyperLink
     Left = 50
     Top = 380
     Width = 154
@@ -200,17 +200,17 @@ object MainForm: TMainForm
     Cursor = crHandPoint
     Caption = 'https://embarcadero.com/'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = 14120960
+    Font.Color = clPurple
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = [fsUnderline]
     ParentFont = False
-    CustomNoneTextColor = 14120960
+    CustomNoneTextColor = clPurple
     CustomHoverTextColor = 6710886
     CustomPressTextColor = 3355443
     CustomDisabledTextColor = 3355443
   end
-  object UHyperLink3: TUHyperLink
+  object linkDisabled: TUHyperLink
     Left = 50
     Top = 410
     Width = 154
@@ -229,7 +229,7 @@ object MainForm: TMainForm
     CustomPressTextColor = 3355443
     CustomDisabledTextColor = clMedGray
   end
-  object USymbolButton4: TUSymbolButton
+  object buttonReloadSettings: TUSymbolButton
     Left = 250
     Top = 580
     Width = 191
@@ -254,41 +254,9 @@ object MainForm: TMainForm
     Text = 'Reload theme settings'
     Detail = 'Detail'
     ShowDetail = False
-    OnClick = USymbolButton4Click
+    OnClick = buttonReloadSettingsClick
   end
-  object UCheckBox1: TUCheckBox
-    Left = 261
-    Top = 641
-    Width = 200
-    Height = 24
-    ThemeManager = UThemeManager1
-    Text = '3-state checkbox'
-    AllowGrayed = True
-    State = cbsGrayed
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    OnClick = UCheckBox1Click
-  end
-  object UCheckBox2: TUCheckBox
-    Left = 51
-    Top = 641
-    Width = 200
-    Height = 24
-    ThemeManager = UThemeManager1
-    Text = '2-state checkbox'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-    OnClick = UCheckBox2Click
-  end
-  object UProgressBar1: TUProgressBar
+  object progressCustomColor: TUProgressBar
     Left = 250
     Top = 90
     Width = 225
@@ -299,7 +267,7 @@ object MainForm: TMainForm
     CustomBackColor = clRed
     Color = clBlue
   end
-  object UProgressBar2: TUProgressBar
+  object progressConnected: TUProgressBar
     Left = 250
     Top = 110
     Width = 225
@@ -310,9 +278,9 @@ object MainForm: TMainForm
     CustomForeColor = 2469894
     CustomBackColor = 15132390
   end
-  object UProgressBar3: TUProgressBar
+  object progressVert: TUProgressBar
     Left = 490
-    Top = 80
+    Top = 90
     Width = 5
     Height = 100
     ThemeManager = UThemeManager1
@@ -321,16 +289,45 @@ object MainForm: TMainForm
     CustomForeColor = 2469894
     CustomBackColor = 15132390
   end
-  object Button1: TButton
+  object check3State: TUCheckBox
+    Left = 250
+    Top = 640
+    Width = 200
+    Height = 24
+    ThemeManager = UThemeManager1
+    Text = '3-state checkbox'
+    AllowGrayed = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object check2State: TUCheckBox
+    Left = 50
+    Top = 640
+    Width = 200
+    Height = 24
+    ThemeManager = UThemeManager1
+    Text = '2-state checkbox'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object buttonFormBorderColor: TButton
     Left = 250
     Top = 50
     Width = 245
     Height = 25
     Caption = 'Enable / disable form border color'
     TabOrder = 0
-    OnClick = Button1Click
+    OnClick = buttonFormBorderColorClick
   end
-  object UCaptionBar1: TUCaptionBar
+  object captionbarNewStyle: TUCaptionBar
     Left = 0
     Top = 0
     Width = 1074
@@ -346,13 +343,13 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
   end
-  object Button3: TButton
+  object buttonRunning: TButton
     Left = 50
     Top = 540
-    Width = 75
+    Width = 101
     Height = 25
     Hint = 'ABC'
-    Caption = 'Button3'
+    Caption = 'Here we go'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -363,7 +360,7 @@ object MainForm: TMainForm
     ShowHint = True
     TabOrder = 1
   end
-  object UCaptionBar2: TUCaptionBar
+  object captionbarOldStyle: TUCaptionBar
     Left = 0
     Top = 674
     Width = 1074
@@ -380,7 +377,7 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
   end
-  object UButton1: TUButton
+  object buttonNoFocus: TUButton
     Left = 250
     Top = 230
     Width = 150
@@ -394,7 +391,7 @@ object MainForm: TMainForm
     Font.Style = []
     TabOrder = 4
   end
-  object UButton2: TUButton
+  object buttonDisabled: TUButton
     Left = 250
     Top = 350
     Width = 150
@@ -410,13 +407,13 @@ object MainForm: TMainForm
     Font.Style = []
     TabOrder = 5
   end
-  object UPanel2: TUPanel
+  object panelDisconnected: TUPanel
     Left = 50
     Top = 280
     Width = 185
     Height = 61
     CustomTextColor = clBlack
-    CustomBackColor = clRed
+    CustomBackColor = 14145495
     BevelOuter = bvNone
     Caption = 'UPanel2 (disconnected)'
     Font.Charset = DEFAULT_CHARSET
@@ -428,7 +425,7 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 2
   end
-  object UPanel3: TUPanel
+  object panelConnected: TUPanel
     Left = 50
     Top = 210
     Width = 185
@@ -447,16 +444,16 @@ object MainForm: TMainForm
     ParentFont = False
     TabOrder = 3
   end
-  object Button2: TButton
+  object buttonAniStart: TButton
     Left = 50
     Top = 580
     Width = 191
     Height = 25
     Caption = 'Start Button3.Left animation'
     TabOrder = 8
-    OnClick = Button2Click
+    OnClick = buttonAniStartClick
   end
-  object UButton3: TUButton
+  object buttonRandomProgress: TUButton
     Left = 250
     Top = 130
     Width = 221
@@ -469,18 +466,18 @@ object MainForm: TMainForm
     Font.Name = 'Segoe UI'
     Font.Style = []
     TabOrder = 9
-    OnClick = UButton3Click
+    OnClick = buttonRandomProgressClick
   end
-  object Button4: TButton
+  object buttonAniInverse: TButton
     Left = 50
     Top = 610
     Width = 191
     Height = 25
     Caption = 'Inverse Button3.Left animation'
     TabOrder = 10
-    OnClick = Button4Click
+    OnClick = buttonAniInverseClick
   end
-  object UButton4: TUButton
+  object buttonCanFocus1: TUButton
     Left = 250
     Top = 270
     Width = 150
@@ -496,7 +493,7 @@ object MainForm: TMainForm
     TabOrder = 11
     TabStop = True
   end
-  object UButton5: TUButton
+  object buttonCanFocus2: TUButton
     Left = 250
     Top = 310
     Width = 150
@@ -512,7 +509,7 @@ object MainForm: TMainForm
     TabOrder = 12
     TabStop = True
   end
-  object Panel2: TUPanel
+  object drawerNavigation: TUPanel
     Left = 0
     Top = 32
     Width = 40
@@ -533,7 +530,7 @@ object MainForm: TMainForm
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 13
-    object USymbolButton10: TUSymbolButton
+    object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
       Width = 40
@@ -560,10 +557,10 @@ object MainForm: TMainForm
       ShowDetail = False
       Align = alTop
       Constraints.MaxWidth = 40
-      OnClick = USymbolButton10Click
+      OnClick = buttonOpenMenuClick
       ExplicitTop = 10
     end
-    object USymbolButton5: TUSymbolButton
+    object buttonMenuSettings: TUSymbolButton
       Left = 0
       Top = 82
       Width = 40
@@ -592,7 +589,7 @@ object MainForm: TMainForm
       ExplicitTop = 10
       ExplicitWidth = 250
     end
-    object USymbolButton6: TUSymbolButton
+    object buttonMenuProfile: TUSymbolButton
       Left = 0
       Top = 164
       Width = 40
@@ -621,7 +618,7 @@ object MainForm: TMainForm
       ExplicitTop = 10
       ExplicitWidth = 250
     end
-    object USymbolButton7: TUSymbolButton
+    object buttonMenuSave: TUSymbolButton
       Left = 0
       Top = 123
       Width = 40
@@ -650,7 +647,7 @@ object MainForm: TMainForm
       ExplicitTop = 10
       ExplicitWidth = 250
     end
-    object USymbolButton8: TUSymbolButton
+    object buttonMenuOpen: TUSymbolButton
       Left = 0
       Top = 41
       Width = 40
@@ -679,7 +676,7 @@ object MainForm: TMainForm
       ExplicitTop = 10
       ExplicitWidth = 250
     end
-    object USymbolButton9: TUSymbolButton
+    object buttonMenuRate: TUSymbolButton
       Left = 0
       Top = 205
       Width = 40
@@ -709,7 +706,7 @@ object MainForm: TMainForm
       ExplicitWidth = 250
     end
   end
-  object ToggleSwitch1: TUSwitch
+  object switchChangeTheme: TUSwitch
     Left = 250
     Top = 170
     Width = 172
@@ -726,9 +723,9 @@ object MainForm: TMainForm
     StateCaptions.CaptionOff = 'TUSwitch system theme'
     SwitchWidth = 40
     TabOrder = 14
-    OnClick = ToggleSwitch1Click
+    OnClick = switchChangeThemeClick
   end
-  object USwitch3: TUSwitch
+  object switchCustomColor: TUSwitch
     Left = 250
     Top = 200
     Width = 259
@@ -745,7 +742,7 @@ object MainForm: TMainForm
     SwitchWidth = 40
     TabOrder = 15
   end
-  object UScrollBox1: TUScrollBox
+  object boxSmoothScrolling: TUScrollBox
     Left = 824
     Top = 32
     Width = 250
@@ -1656,7 +1653,7 @@ object MainForm: TMainForm
       ExplicitWidth = 166
     end
   end
-  object UButton6: TUButton
+  object buttonCustomColor: TUButton
     Left = 250
     Top = 390
     Width = 151

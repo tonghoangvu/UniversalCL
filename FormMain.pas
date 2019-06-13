@@ -14,46 +14,44 @@ uses
 type
   TMainForm = class(TUForm)
     UThemeManager1: TUThemeManager;
-    Button1: TButton;
-    UCaptionBar1: TUCaptionBar;
-    USymbolButton1: TUSymbolButton;
-    USymbolButton2: TUSymbolButton;
-    Button3: TButton;
-    USymbolButton3: TUSymbolButton;
-    UCaptionBar2: TUCaptionBar;
-    UButton1: TUButton;
-    UButton2: TUButton;
-    UText1: TUText;
-    UText2: TUText;
-    UText3: TUText;
-    UText4: TUText;
-    UText5: TUText;
-    UHyperLink1: TUHyperLink;
-    UHyperLink2: TUHyperLink;
-    UHyperLink3: TUHyperLink;
-    UPanel2: TUPanel;
-    UPanel3: TUPanel;
-    USymbolButton4: TUSymbolButton;
-    Button2: TButton;
-    UCheckBox1: TUCheckBox;
-    UCheckBox2: TUCheckBox;
-    UProgressBar1: TUProgressBar;
-    UProgressBar2: TUProgressBar;
-    UButton3: TUButton;
-    Button4: TButton;
-    UProgressBar3: TUProgressBar;
-    UButton4: TUButton;
-    UButton5: TUButton;
-    Panel2: TUPanel;
-    USymbolButton10: TUSymbolButton;
-    USymbolButton5: TUSymbolButton;
-    USymbolButton6: TUSymbolButton;
-    USymbolButton7: TUSymbolButton;
-    USymbolButton8: TUSymbolButton;
-    USymbolButton9: TUSymbolButton;
-    ToggleSwitch1: TUSwitch;
-    USwitch3: TUSwitch;
-    UScrollBox1: TUScrollBox;
+    buttonFormBorderColor: TButton;
+    captionbarNewStyle: TUCaptionBar;
+    symbolbuttonSaveVert: TUSymbolButton;
+    symbolbuttonSaveHorz: TUSymbolButton;
+    buttonRunning: TButton;
+    symbolButtonOpenDisabled: TUSymbolButton;
+    captionbarOldStyle: TUCaptionBar;
+    buttonNoFocus: TUButton;
+    buttonDisabled: TUButton;
+    textTitle: TUText;
+    textHeading: TUText;
+    textEntry: TUText;
+    textNormal: TUText;
+    textDescription: TUText;
+    linkConnected: TUHyperLink;
+    linkCustomColor: TUHyperLink;
+    linkDisabled: TUHyperLink;
+    panelDisconnected: TUPanel;
+    panelConnected: TUPanel;
+    buttonReloadSettings: TUSymbolButton;
+    buttonAniStart: TButton;
+    progressCustomColor: TUProgressBar;
+    progressConnected: TUProgressBar;
+    buttonRandomProgress: TUButton;
+    buttonAniInverse: TButton;
+    progressVert: TUProgressBar;
+    buttonCanFocus1: TUButton;
+    buttonCanFocus2: TUButton;
+    drawerNavigation: TUPanel;
+    buttonOpenMenu: TUSymbolButton;
+    buttonMenuSettings: TUSymbolButton;
+    buttonMenuProfile: TUSymbolButton;
+    buttonMenuSave: TUSymbolButton;
+    buttonMenuOpen: TUSymbolButton;
+    buttonMenuRate: TUSymbolButton;
+    switchChangeTheme: TUSwitch;
+    switchCustomColor: TUSwitch;
+    boxSmoothScrolling: TUScrollBox;
     USymbolButton11: TUSymbolButton;
     USymbolButton12: TUSymbolButton;
     USymbolButton13: TUSymbolButton;
@@ -86,17 +84,17 @@ type
     USymbolButton44: TUSymbolButton;
     USymbolButton45: TUSymbolButton;
     USymbolButton46: TUSymbolButton;
-    UButton6: TUButton;
+    buttonCustomColor: TUButton;
+    check2State: TUCheckBox;
+    check3State: TUCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
-    procedure USymbolButton4Click(Sender: TObject);
-    procedure UCheckBox1Click(Sender: TObject);
-    procedure UCheckBox2Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure UButton3Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
-    procedure USymbolButton10Click(Sender: TObject);
-    procedure ToggleSwitch1Click(Sender: TObject);
+    procedure buttonFormBorderColorClick(Sender: TObject);
+    procedure buttonReloadSettingsClick(Sender: TObject);
+    procedure buttonAniStartClick(Sender: TObject);
+    procedure buttonRandomProgressClick(Sender: TObject);
+    procedure buttonAniInverseClick(Sender: TObject);
+    procedure buttonOpenMenuClick(Sender: TObject);
+    procedure switchChangeThemeClick(Sender: TObject);
   private
 
   public
@@ -110,7 +108,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TMainForm.Button1Click(Sender: TObject);
+procedure TMainForm.buttonFormBorderColorClick(Sender: TObject);
 begin
   if UThemeManager1.ColorOnBorderKind <> cobkTrue then
     UThemeManager1.ColorOnBorderKind := cobkTrue
@@ -118,24 +116,24 @@ begin
     UThemeManager1.ColorOnBorderKind := cobkFalse;
 end;
 
-procedure TMainForm.Button2Click(Sender: TObject);
+procedure TMainForm.buttonAniStartClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, button3.Left, button3.Left + 300, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 300, procedure (Value: Integer)
     begin
-      Button3.Left := Value;
+      buttonRunning.Left := Value;
     end, true);
   Ani.Start;
 end;
 
-procedure TMainForm.Button4Click(Sender: TObject);
+procedure TMainForm.buttonAniInverseClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, button3.Left, button3.Left - 300, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 300, procedure (Value: Integer)
     begin
-      Button3.Left := Value;
+      buttonRunning.Left := Value;
     end, true);
   Ani.Start;
 end;
@@ -143,14 +141,9 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := UThemeManager1;
-
-
-  Application.ShowHint := false;
-//  HintWindowClass := TUTooltip;
-  Application.ShowHint := true;
 end;
 
-procedure TMainForm.ToggleSwitch1Click(Sender: TObject);
+procedure TMainForm.switchChangeThemeClick(Sender: TObject);
 begin
   if ThemeManager.Theme <> utLight then
     ThemeManager.ThemeKind := tkLight
@@ -158,40 +151,18 @@ begin
     ThemeManager.ThemeKind := tkDark;
 end;
 
-procedure TMainForm.UButton3Click(Sender: TObject);
+procedure TMainForm.buttonRandomProgressClick(Sender: TObject);
 begin
   Randomize;
-  UProgressBar1.GoToValue(Random(101));
-  UProgressBar2.GoToValue(Random(101));
-  UProgressBar3.GoToValue(Random(101));
+  progressCustomColor.GoToValue(Random(101));
+  progressConnected.GoToValue(Random(101));
+  progressVert.GoToValue(Random(101));
 end;
 
-procedure TMainForm.UCheckBox1Click(Sender: TObject);
-begin
-  case UCheckBox1.State of
-    cbsChecked:
-      UCheckBox1.State := cbsUnchecked;
-    cbsUnchecked:
-      UCheckBox1.State := cbsGrayed;
-    cbsGrayed:
-      UCheckBox1.State := cbsChecked;
-  end;
-end;
-
-procedure TMainForm.UCheckBox2Click(Sender: TObject);
-begin
-  case UCheckBox2.State of
-    cbsChecked:
-      UCheckBox2.State := cbsUnchecked;
-    cbsUnchecked:
-      UCheckBox2.State := cbsChecked;
-  end;
-end;
-
-procedure TMainForm.USymbolButton10Click(Sender: TObject);
+procedure TMainForm.buttonOpenMenuClick(Sender: TObject);
 begin
   var a, b: Integer;
-  if Panel2.Width <> 40 then
+  if drawerNavigation.Width <> 40 then
     begin
       a := 250;
       b := 40;
@@ -205,14 +176,14 @@ begin
   var Ani := TIntAni.Create(akOut, afkQuartic, a, b,
     procedure (Value: Integer)
     begin
-      Panel2.Width := Value;
+      drawerNavigation.Width := Value;
     end, true);
   Ani.Step := 22;
   Ani.Duration := 220;
   Ani.Start;
 end;
 
-procedure TMainForm.USymbolButton4Click(Sender: TObject);
+procedure TMainForm.buttonReloadSettingsClick(Sender: TObject);
 begin
   UThemeManager1.ReloadAutoSettings;
 end;
