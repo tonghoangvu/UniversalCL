@@ -131,8 +131,8 @@ begin
   inherited Create(aOnwer);
 
   //  Default properties value
-  FCustomForeColor := $0025B006;
-  FCustomBackColor := $00E6E6E6;
+  FCustomForeColor := $25B006;
+  FCustomBackColor := $E6E6E6;
   FValue := 0;
 end;
 
@@ -169,12 +169,12 @@ begin
     end
   else if ThemeManager.Theme = utLight then
     begin
-      BackColor := $00CCCCCC;
+      BackColor := $CCCCCC;
       ForeColor := ThemeManager.ActiveColor;
     end
   else
     begin
-      BackColor := $00333333;
+      BackColor := $333333;
       ForeColor := ThemeManager.ActiveColor;
     end;
 

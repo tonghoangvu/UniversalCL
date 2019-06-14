@@ -27,7 +27,7 @@ var
   Reg: TRegistry;
   aColor: Cardinal;
 begin
-  Result := 0;
+  aColor := $FFD77800;  //  Default blue
 
   Reg := TRegistry.Create;
   try
@@ -62,18 +62,14 @@ end;
 function GetAppTheme: TUTheme;
 var
   Reg: TRegistry;
-  Value: Byte;
-begin
-  Result := utLight;
-
+begin  
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
     Reg.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize');
-    Value := Reg.ReadInteger('AppsUseLightTheme');
-    if Value = 1 then
+    if Reg.ReadInteger('AppsUseLightTheme') = 1 then
       Result := utLight
-    else
+    else 
       Result := utDark;
     Reg.CloseKey;
   finally
@@ -91,7 +87,7 @@ begin
   try
     Reg.RootKey := HKEY_CURRENT_USER;
     Reg.OpenKey('Software\Microsoft\Windows\DWM', false);
-    Reg.WriteInteger('AccentColor', aColor + $FF000000);
+    Reg.WriteInteger('AccentColor', aColor + $FF000000);  //  RGB to ARGB (alpha = 255)
     Reg.CloseKey;
   finally
     Reg.Free;

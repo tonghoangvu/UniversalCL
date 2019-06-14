@@ -51,7 +51,8 @@ contains
   UCL.SystemSettings in 'UCL.SystemSettings.pas',
   UCL.IntAnimation in 'UCL.IntAnimation.pas',
   UCL.TUSwitch in 'Components\UCL.TUSwitch.pas',
-  UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas';
+  UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
+  UCL.TURadioButton in 'Components\UCL.TURadioButton.pas';
 
 end.
 

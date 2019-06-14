@@ -1,34 +1,28 @@
-﻿unit UCL.TUCheckBox;
+﻿unit UCL.TURadioButton;
 
 interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes, System.Types,
+  System.Classes, System.SysUtils, System.Types,
   Winapi.Messages,
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
-
-  TUCheckBox = class(TGraphicCOntrol, IUThemeControl)
+  TURadioButton = class(TGraphicControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
-      FText: string;
-      FAllowGrayed: Boolean;
-      FState: TUCheckBoxState;
+      FIsChecked: Boolean;
+      FGroup: string;
       FCustomActiveColor: TColor;
+      
+      FText: string;
 
-      //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
-
-      //  Value setters
       procedure SetText(const Value: string);
-      procedure SetAllowGrayed(const Value: Boolean);
-      procedure SetState(const Value: TUCheckBoxState);
+      procedure SetIsChecked(const Value: Boolean);
 
-      //  Messages
       procedure WMLButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
 
     protected
@@ -41,10 +35,11 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
-      property Text: string read FText write SetText;
-      property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
-      property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
+      property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
+      property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
+
+      property Text: string read FText write SetText;
 
       {$REGION 'Common properties'}
       property Align;
@@ -86,7 +81,7 @@ implementation
 
 { THEME }
 
-procedure TUCheckBox.SetThemeManager(const Value: TUThemeManager);
+procedure TURadioButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -103,36 +98,23 @@ begin
     end;
 end;
 
-procedure TUCheckBox.UpdateTheme;
+procedure TURadioButton.UpdateTheme;
 begin
   Paint;
 end;
 
-{ VALUE SETTERS }
+{ SETTERS }
 
-procedure TUCheckBox.SetState(const Value: TUCheckBoxState);
+procedure TURadioButton.SetIsChecked(const Value: Boolean);
 begin
-  if Value <> FState then
-    if (AllowGrayed = false) and (Value = cbsGrayed) then
-    else
-      begin
-        FState := Value;
-        UpdateTheme;
-      end;
-end;
-
-procedure TUCheckBox.SetAllowGrayed(const Value: Boolean);
-begin
-  if Value <> FAllowGrayed then
+  if Value <> FIsChecked then
     begin
-      FAllowGrayed := Value;
-      if (FAllowGrayed = false) and (FState = cbsGrayed) then
-        FState := cbsUnchecked;
+      FIsChecked := Value;
       UpdateTheme;
     end;
 end;
 
-procedure TUCheckBox.SetText(const Value: string);
+procedure TURadioButton.SetText(const Value: string);
 begin
   if Value <> FText then
     begin
@@ -143,9 +125,13 @@ end;
 
 { MAIN CLASS }
 
-constructor TUCheckBox.Create(aOwner: TComponent);
+constructor TURadioButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
+
+  FIsChecked := false;
+  FCustomActiveColor := $D77800;
+  FText := 'URadioButton';
 
   Height := 24;
   Width := 200;
@@ -154,18 +140,13 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
-  FText := 'UCheckBox';
-  FAllowGrayed := false;
-  FState := cbsUnchecked;
-  FCustomActiveColor := $D77800;  //  Default blue
-
   //UpdateTheme;
   //  Dont UpdateTheme if it call Paint method
 end;
 
 { CUSTOM METHODS }
 
-procedure TUCheckBox.Paint;
+procedure TURadioButton.Paint;
 var
   TextH: Integer;
   IconH: Integer;
@@ -188,73 +169,62 @@ begin
   TextH := Canvas.TextHeight(Text);
   Canvas.TextOut(30, (Height - TextH) div 2, Text);
 
-  //  Paint check
+  //  Paint radio
   Canvas.Font.Name := 'Segoe MDL2 Assets';
   Canvas.Font.Size := 15;
-  case State of
-    cbsChecked:
-      begin
-        //  Paint only check icon
-        if ThemeManager = nil then
-          Canvas.Font.Color := CustomActiveColor
-        else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
-        IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
-      end;
-
-    cbsUnchecked:
-      begin
-        //  Paint a empty box
+  if IsChecked = false then
+    begin
+      //  Paint circle border (black in light, white in dark)
         if ThemeManager = nil then
           Canvas.Font.Color := $000000
         else if ThemeManager.Theme = utLight then
           Canvas.Font.Color := $000000
         else
           Canvas.Font.Color := $FFFFFF;
-        IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
-      end;
+        IconH := Canvas.TextHeight('');
+        Canvas.TextOut(0, (Height - IconH) div 2, '');
+    end
+  else
+    begin
+      //  Paint circle border (active color)
+      if ThemeManager = nil then
+        Canvas.Font.Color := CustomActiveColor
+      else
+        Canvas.Font.Color := ThemeManager.ActiveColor;
+      IconH := Canvas.TextHeight('');
+      Canvas.TextOut(0, (Height - IconH) div 2, '');
 
-    cbsGrayed:
-      begin
-        //  Paint border
-        if ThemeManager = nil then
-          Canvas.Font.Color := CustomActiveColor
-        else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
-        IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
-
-        //  Paint small box
-        IconH := Canvas.TextHeight('');
-        if ThemeManager = nil then
-          Canvas.Font.Color := $000000
-        else if ThemeManager.Theme = utLight then
-          Canvas.Font.Color := $000000
-        else
-          Canvas.Font.Color := $FFFFFF;
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
-      end;
-  end;
+      //  Paint small circle inside (black in light, white in dark)
+      if ThemeManager = nil then
+        Canvas.Font.Color := $000000
+      else if ThemeManager.Theme = utLight then
+        Canvas.Font.Color := $000000
+      else 
+        Canvas.Font.Color := $FFFFFF;
+      IconH := Canvas.TextHeight('');
+      Canvas.TextOut(0, (Height - IconH) div 2, '');
+    end;
 end;
 
 { MESSAGES }
 
-procedure TUCheckBox.WMLButtonUp(var Msg: TMessage);
+procedure TURadioButton.WMLButtonUp(var Msg: TMessage);
+var 
+  i: Integer;
 begin
-  //  Unchecked > Checked > Grayed > ...
-  if Enabled = true then
-    case State of
-      cbsChecked:
-        if AllowGrayed = true then
-          State := cbsGrayed
-        else
-          State := cbsUnchecked;
-      cbsUnchecked:
-        State := cbsChecked;
-      cbsGrayed:
-        State := cbsUnchecked;
+  //  Only unchecked can change
+  if IsChecked = false then
+    begin
+      IsChecked := true;  //  Check it
+
+      //  Uncheck other TURadioButton with the same parent and group name
+      for i := 0 to Parent.ControlCount - 1 do
+        if Parent.Controls[i] is TURadioButton then
+          if 
+            ((Parent.Controls[i] as TURadioButton).Group = Group)
+            and (Parent.Controls[i] <> Self)
+          then
+            (Parent.Controls[i] as TURadioButton).IsChecked := false;  
     end;
 
   inherited;

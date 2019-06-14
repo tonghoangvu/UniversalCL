@@ -49,21 +49,16 @@ begin
 end;
 
 procedure TUText.UpdateTheme;
-var
-  aTheme: TUTheme;
 begin
-  if (ThemeManager = nil) or (csDesigning in ComponentState) then
-    aTheme := utLight
-  else
-    aTheme := ThemeManager.Theme;
-
   //  Font color
   if TextKind = tkDescription then
-    Font.Color := $00666666
-  else if aTheme = utLight then
-    Font.Color := $00000000
+    Font.Color := $666666
+  else if ThemeManager = nil then
+    Font.Color := $000000
+  else if ThemeManager.Theme = utLight then
+    Font.Color := $000000
   else
-    Font.Color := $00FFFFFF;
+    Font.Color := $FFFFFF;
 
   //  Font name
   if TextKind = tkEntry then
@@ -107,6 +102,7 @@ begin
   FTextKind := tkNormal;
 
   //  Common properties
+  //  Nothing
 
   UpdateTheme;
 end;

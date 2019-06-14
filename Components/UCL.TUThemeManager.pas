@@ -14,6 +14,7 @@ type
 
   TUColorOnBorderKind = (cobkAuto, cobkTrue, cobkFalse);
 
+  //  UControl interface
   IUThemeControl = interface
     ['{2E7F3252-8372-4F68-9962-B17330678214}']
     procedure UpdateTheme;
@@ -22,9 +23,10 @@ type
   TUThemeManager = class(TComponent)
     private
       FTheme: TUTheme;
+      FActiveColor: TColor;
+
       FThemeKind: TUThemeKind;
 
-      FActiveColor: TColor;
       FUseAccentColor: Boolean;
       FCustomColor: TColor;
 
@@ -41,9 +43,10 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
-      procedure UpdateThemeForComponents;
+      procedure UpdateThemeForControls;
       procedure ReloadAutoSettings;
 
+      //  Connect controls
       class function CheckControlThemeAvailable(const aControl: TControl): Boolean;
       function ConnectedControlCount: Integer;
       procedure ConnectControl(const aControl: TControl);
@@ -94,7 +97,7 @@ begin
       end;
 
       if AutoUpdateTheme = true then
-        UpdateThemeForComponents;
+        UpdateThemeForControls;
     end;
 end;
 
@@ -109,7 +112,7 @@ begin
         FActiveColor := CustomColor;
 
       if AutoUpdateTheme = true then
-        UpdateThemeForComponents;
+        UpdateThemeForControls;
     end;
 end;
 
@@ -128,7 +131,7 @@ begin
       end;
 
       if AutoUpdateTheme = true then
-        UpdateThemeForComponents;
+        UpdateThemeForControls;
     end;
 end;
 
@@ -147,23 +150,25 @@ begin
   ColorOnBorderKind := cobkAuto;
 end;
 
-procedure TUThemeManager.UpdateThemeForComponents;
+procedure TUThemeManager.UpdateThemeForControls;
 var
   aControl: TControl;
 begin
+  //  Call UpdateTheme for all controls in list
   for aControl in FControlList do
     (aControl as IUThemeControl).UpdateTheme;
 end;
 
 procedure TUThemeManager.ReloadAutoSettings;
 begin
+  //  Reload system settings, which property is set to Auto
   if ThemeKind = tkAuto then
     FTheme := GetAppTheme;
   if UseAccentColor = true then
     FActiveColor := GetAccentColor;
 
   if AutoUpdateTheme = true then
-    UpdateThemeForComponents;
+    UpdateThemeForControls;
 end;
 
 { UTILS }
@@ -177,11 +182,12 @@ procedure TUThemeManager.ConnectControl(const aControl: TControl);
 var
   HasBefore: Boolean;
 begin
+  //  Check control is valid
   if CheckControlThemeAvailable(aControl) = true then
     begin
       HasBefore := FControlList.IndexOf(aControl) <> -1;
       if HasBefore = false then
-        FControlList.Add(aControl);
+        FControlList.Add(aControl);   //  Add control from list
     end;
 end;
 
@@ -189,6 +195,7 @@ procedure TUThemeManager.DisconnectControl(const aControl: TControl);
 var
   ItemID: Integer;
 begin
+  //  Remove control from list
   ItemID := FControlList.IndexOf(aControl);
   if (ItemID <> -1) and (ItemID <= FControlList.Count - 1) then
     FControlList.Delete(ItemID);

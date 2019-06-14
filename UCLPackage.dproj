@@ -134,9 +134,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MinorVer>1</VerInfo_MinorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Vuio Technologies, Inc.;FileDescription=Delphi UniversalCL;FileVersion=1.1.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Delphi UniversalCL;ProductVersion=1.1.0.0;Comments=https://github.com/VuioVuio/UniversalCL/</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Vuio Technologies, Inc.;FileDescription=Delphi UniversalCL;FileVersion=1.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Delphi UniversalCL;ProductVersion=1.2.0.0;Comments=https://github.com/VuioVuio/UniversalCL/</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -164,6 +164,7 @@
         <DCCReference Include="UCL.IntAnimation.pas"/>
         <DCCReference Include="Components\UCL.TUSwitch.pas"/>
         <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
+        <DCCReference Include="Components\UCL.TURadioButton.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

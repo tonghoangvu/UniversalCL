@@ -1,3 +1,5 @@
+{$M+}
+
 unit UCL.Classes;
 
 interface
@@ -62,6 +64,8 @@ begin
       Result := Disabled;
     bsFocused:
       Result := Focused;
+    else
+      Result := None;
   end;
 end;
 

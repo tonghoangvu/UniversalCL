@@ -12,14 +12,14 @@ type
   TUButton = class(TCustomPanel, IUThemeControl)
     const
       DefBackColor: TDefColor = (
-        ($00CCCCCC, $00CCCCCC, $00999999, $00CCCCCC, $00CCCCCC),
-        ($00333333, $00333333, $00666666, $00333333, $00333333));
+        ($CCCCCC, $CCCCCC, $999999, $CCCCCC, $CCCCCC),
+        ($333333, $333333, $666666, $333333, $333333));
       DefBorderColor: TDefColor = (
-        ($00CCCCCC, $007A7A7A, $00999999, $00CCCCCC, $007A7A7A),
-        ($00333333, $00858585, $00666666, $00333333, $00858585));
+        ($CCCCCC, $7A7A7A, $999999, $CCCCCC, $7A7A7A),
+        ($333333, $858585, $666666, $333333, $858585));
       DefTextColor: TDefColor = (
-        ($00000000, $00000000, $00000000, $00666666, $00000000),
-        ($00FFFFFF, $00FFFFFF, $00FFFFFF, $00666666, $00FFFFFF));
+        ($000000, $000000, $000000, $666666, $000000),
+        ($FFFFFF, $FFFFFF, $FFFFFF, $666666, $FFFFFF));
 
     private
       //  Theme
@@ -170,6 +170,7 @@ constructor TUButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  //  New properties
   FCustomBorderColors := TControlStateColors.Create($F2F2F2, $E6E6E6, $CCCCCC, $F2F2F2, $F2F2F2);
   FCustomBackColors := TControlStateColors.Create($F2F2F2, $E6E6E6, $CCCCCC, $F2F2F2, $F2F2F2);
   FCustomTextColors := TControlStateColors.Create(clBlack, clBlack, clBlack, clGray, clBlack);
@@ -179,13 +180,15 @@ begin
   FText := 'Button';
   FAllowFocus := false;
 
+  //  Property
   Height := 30;
   Width := 135;
-
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+  StyleElements := [];
 
   //UpdateTheme;
+  //  Dont update theme in constructor when UpdateTheme call Paint method
 end;
 
 destructor TUButton.Destroy;

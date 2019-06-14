@@ -20,6 +20,9 @@ type
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      //  Setters
+      procedure SetUseNormalStyle(const Value: Boolean);
+
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_RButtonUp(var Msg: TMessage); message WM_RBUTTONUP;
@@ -31,10 +34,13 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      //  Field property
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
       property DoubleClickMaximize: Boolean read FDoubleClickMaximize write FDoubleClickMaximize default true;
-      property UseNormalStyle: Boolean read FUseNormalStyle write FUseNormalStyle default false;
+
+      //  Setter property
+      property UseNormalStyle: Boolean read FUseNormalStyle write SetUseNormalStyle default false;
 
       {$REGION 'Common properties'}
       property Align;
@@ -96,7 +102,7 @@ procedure TUCaptionBar.UpdateTheme;
 begin
   //  Not set ThemeManager
   if ThemeManager = nil then
-    Color := $00FFFFFF
+    Color := $FFFFFF
 
   //  Normal style (like VCL)
   else if UseNormalStyle = true then
@@ -104,19 +110,30 @@ begin
       if ThemeManager.ColorOnBorder = true then
         Color := ThemeManager.ActiveColor //  Active color
       else
-        Color := $00FFFFFF; //  White
+        Color := $FFFFFF; //  White
     end
 
   //  New style (like UWP), depend AppTheme light or dark
   else
     begin
       if ThemeManager.Theme = utLight then
-        Color := $00F2F2F2  //  Light color
+        Color := $F2F2F2  //  Light color
       else
-        Color := $002B2B2B; //  Dark color
+        Color := $2B2B2B; //  Dark color
     end;
 
   Font.Color := GetTextColorFromBackground(Color);
+end;
+
+{ SETTERS }
+
+procedure TUCaptionBar.SetUseNormalStyle(const Value: Boolean);
+begin
+  if Value <> FUseNormalStyle then
+    begin
+      FUseNormalStyle := Value;
+      UpdateTheme;
+    end;
 end;
 
 { MAIN CLASS }
@@ -133,18 +150,15 @@ begin
 
   //  Common properties
   Align := alTop;
-  AutoSize := false;
   BevelOuter := bvNone;
-  BorderWidth := 0;
   BorderStyle := bsNone;
   Height := 32;
   Ctl3D := false;
-  DoubleBuffered := false;
   Enabled := true;
   FullRepaint := false;
-  StyleElements := [];
+  StyleElements := [];  //  Neccesary
   TabStop := false;
-  ParentFont := false;
+
   Font.Name := 'Segoe UI';
   Font.Size := 9;
 
@@ -183,7 +197,7 @@ var
   P: TPoint;
 begin
   inherited;
-  if SystemMenuEnabled then
+  if SystemMenuEnabled = true then
     begin
       P.X := Msg.LParamLo;
       P.Y := Msg.LParamHi;
