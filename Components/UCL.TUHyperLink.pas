@@ -12,19 +12,16 @@ type
   TUHyperLink = class(TLabel, IUThemeControl)
     const
       DefTextColor: TDefColor = (
-      ($00D77800, clGray, clMedGray, clMedGray, clGray),
-      ($00D77800, clMedGray, clGray, clGray, clMedGray));
+      ($D77800, clGray, clMedGray, clMedGray, clGray),
+      ($D77800, clMedGray, clGray, clGray, clMedGray));
 
     private
       FThemeManager: TUThemeManager;
       FButtonState: TUButtonState;
+      FCustomTextColors: TControlStateColors;
+
       FEnabled: Boolean;
       FOpenLink: Boolean;
-
-      FCustomNoneTextColor: TColor;
-      FCustomHoverTextColor: TColor;
-      FCustomPressTextColor: TColor;
-      FCustomDisabledTextColor: TColor;
 
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUButtonState);
@@ -43,13 +40,10 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUButtonState read FButtonState write SetButtonState default bsNone;
+      property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
+
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
-
-      property CustomNoneTextColor: TColor read FCustomNoneTextColor write FCustomNoneTextColor;
-      property CustomHoverTextColor: TColor read FCustomHoverTextColor write FCustomHoverTextColor;
-      property CustomPressTextColor: TColor read FCustomPressTextColor write FCustomPressTextColor;
-      property CustomDisabledTextColor: TColor read FCustomDisabledTextColor write FCustomDisabledTextColor;
   end;
 
 implementation
@@ -74,29 +68,15 @@ begin
 end;
 
 procedure TUHyperLink.UpdateTheme;
-var
-  aTheme: TUTheme;
 begin
   if ThemeManager = nil then
-    begin
-      case ButtonState of
-        bsNone:
-          Font.Color := CustomNoneTextColor;
-        bsHover:
-          Font.Color := CustomHoverTextColor;
-        bsPress:
-          Font.Color := CustomPressTextColor;
-        bsDisabled:
-          Font.Color := CustomDisabledTextColor;
-      end;
-    end
+    Font.Color := CustomTextColors.GetStateColor(ButtonState)
   else
     begin
-      aTheme := ThemeManager.Theme;
       if ButtonState = bsNone then
         Font.Color := ThemeManager.ActiveColor
       else
-        Font.Color := DefTextColor[aTheme, ButtonState];
+        Font.Color := DefTextColor[ThemeManager.Theme, ButtonState];
     end;
 end;
 
@@ -141,13 +121,10 @@ begin
   inherited Create(aOwner);
 
   FButtonState := bsNone;
+  FCustomTextColors := TControlStateColors.Create($D77800, clGray, clMedGray, clMedGray, $D77800);
+
   FEnabled := true;
   FOpenLink := true;
-
-  FCustomNoneTextColor := $00D77800;
-  FCustomHoverTextColor := clGray;
-  FCustomPressTextColor := clMedGray;
-  FCustomDisabledTextColor := clGray;
 
   Cursor := crHandPoint;
 

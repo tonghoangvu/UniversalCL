@@ -11,7 +11,7 @@ uses
 type
   TUForm = class(TForm, IUThemeControl)
     const
-      BorderColorDefault = $00707070;
+      BorderColorDefault = $707070;
 
     private
       FThemeManager: TUThemeManager;
@@ -33,6 +33,8 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
+
+      property Color stored false;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -65,11 +67,11 @@ procedure TUForm.UpdateTheme;
 begin
   //  Change background color
   if ThemeManager = nil then
-    Color := $00FFFFFF
+    Self.Color := $FFFFFF
   else if ThemeManager.Theme = utLight then
-    Color := $00FFFFFF
+    Self.Color := $FFFFFF
   else
-    Color := $00000000;
+    Self.Color := $000000;
 
   //  Change border color
   if ThemeManager = nil then
@@ -79,7 +81,7 @@ begin
   else
     FBorderColor := BorderColorDefault;
 
-  Invalidate;
+  Invalidate; //  To repaint form border
 end;
 
 { MAIN CLASS }
@@ -91,6 +93,8 @@ begin
   FResizeable := true;
 
   Padding.SetBounds(1, 1, 1, 1);
+
+  StyleElements := [];
 
   UpdateTheme;
 end;
@@ -113,12 +117,17 @@ begin
   inherited;
   if WindowState = wsMaximized then
     begin
-      with Screen.WorkAreaRect do
-        Self.SetBounds(Left, Top, Right - Left, Bottom - Top - 1);  //  Without -1, form will over screen size
+      Self.Left := Screen.WorkAreaRect.Left;
+      Self.Top := Screen.WorkAreaRect.Top;
+      Self.Width := Screen.WorkAreaRect.Right - Screen.WorkAreaRect.Left;
+      Self.Height := Screen.WorkAreaRect.Bottom - Screen.WorkAreaRect.Top - 1;
+        //  Without -1, form will over screen size
+
       Self.Padding.SetBounds(0, 0, 0, 0);
     end
   else
     Self.Padding.SetBounds(1, 1, 1, 1);
+
   Invalidate; //  Neccesary
 end;
 
@@ -127,17 +136,14 @@ end;
 procedure TUForm.WndProc(var Msg: TMessage);
 begin
   if Msg.Msg = WM_NCCALCSIZE then
-    begin
-      Msg.Msg:= WM_NULL;
-    end;
+    Msg.Msg := WM_NULL;
   inherited WndProc(Msg);
 end;
 
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
-  Params.WindowClass.Style := Params.WindowClass.Style or CS_DROPSHADOW;
-  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;
+  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;  //  Enabled aerosnap
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);

@@ -3,19 +3,17 @@
 interface
 
 uses
-
   UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
-  UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
+  UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls;
 
 type
   TMainForm = class(TUForm)
     UThemeManager1: TUThemeManager;
     buttonFormBorderColor: TButton;
-    captionbarNewStyle: TUCaptionBar;
     symbolbuttonSaveVert: TUSymbolButton;
     symbolbuttonSaveHorz: TUSymbolButton;
     buttonRunning: TButton;
@@ -52,41 +50,33 @@ type
     switchChangeTheme: TUSwitch;
     switchCustomColor: TUSwitch;
     boxSmoothScrolling: TUScrollBox;
-    USymbolButton11: TUSymbolButton;
-    USymbolButton12: TUSymbolButton;
-    USymbolButton13: TUSymbolButton;
-    USymbolButton14: TUSymbolButton;
-    USymbolButton15: TUSymbolButton;
-    USymbolButton29: TUSymbolButton;
-    USymbolButton20: TUSymbolButton;
-    USymbolButton30: TUSymbolButton;
-    USymbolButton16: TUSymbolButton;
-    USymbolButton17: TUSymbolButton;
-    USymbolButton18: TUSymbolButton;
-    USymbolButton19: TUSymbolButton;
-    USymbolButton25: TUSymbolButton;
-    USymbolButton26: TUSymbolButton;
-    USymbolButton27: TUSymbolButton;
-    USymbolButton28: TUSymbolButton;
-    USymbolButton31: TUSymbolButton;
-    USymbolButton32: TUSymbolButton;
-    USymbolButton33: TUSymbolButton;
-    USymbolButton34: TUSymbolButton;
-    USymbolButton35: TUSymbolButton;
-    USymbolButton36: TUSymbolButton;
-    USymbolButton37: TUSymbolButton;
-    USymbolButton38: TUSymbolButton;
-    USymbolButton39: TUSymbolButton;
-    USymbolButton40: TUSymbolButton;
-    USymbolButton41: TUSymbolButton;
-    USymbolButton42: TUSymbolButton;
-    USymbolButton43: TUSymbolButton;
-    USymbolButton44: TUSymbolButton;
-    USymbolButton45: TUSymbolButton;
-    USymbolButton46: TUSymbolButton;
     buttonCustomColor: TUButton;
     check2State: TUCheckBox;
     check3State: TUCheckBox;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    Button12: TButton;
+    Button13: TButton;
+    Button14: TButton;
+    Button15: TButton;
+    captionbarNewStyle: TUCaptionBar;
+    radioA1: TURadioButton;
+    radioA2: TURadioButton;
+    radioB1: TURadioButton;
+    radioA3: TURadioButton;
+    radioB2: TURadioButton;
+    Edit1: TEdit;
+    Memo1: TMemo;
+    Panel1: TPanel;
+    RadioButton1: TRadioButton;
     procedure FormCreate(Sender: TObject);
     procedure buttonFormBorderColorClick(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
@@ -145,10 +135,10 @@ end;
 
 procedure TMainForm.switchChangeThemeClick(Sender: TObject);
 begin
-  if ThemeManager.Theme <> utLight then
-    ThemeManager.ThemeKind := tkLight
+  if UThemeManager1.Theme <> utLight then
+    UThemeManager1.ThemeKind := tkLight
   else
-    ThemeManager.ThemeKind := tkDark;
+    UThemeManager1.ThemeKind := tkDark;
 end;
 
 procedure TMainForm.buttonRandomProgressClick(Sender: TObject);

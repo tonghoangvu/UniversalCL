@@ -12,6 +12,8 @@ object MainForm: TMainForm
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
+  Visible = True
+  StyleElements = []
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
@@ -187,10 +189,6 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     ThemeManager = UThemeManager1
-    CustomNoneTextColor = 14120960
-    CustomHoverTextColor = 6710886
-    CustomPressTextColor = 3355443
-    CustomDisabledTextColor = 3355443
   end
   object linkCustomColor: TUHyperLink
     Left = 50
@@ -200,15 +198,11 @@ object MainForm: TMainForm
     Cursor = crHandPoint
     Caption = 'https://embarcadero.com/'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clPurple
+    Font.Color = 14120960
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = [fsUnderline]
     ParentFont = False
-    CustomNoneTextColor = clPurple
-    CustomHoverTextColor = 6710886
-    CustomPressTextColor = 3355443
-    CustomDisabledTextColor = 3355443
   end
   object linkDisabled: TUHyperLink
     Left = 50
@@ -224,15 +218,11 @@ object MainForm: TMainForm
     Font.Style = [fsUnderline]
     ParentFont = False
     ButtonState = bsDisabled
-    CustomNoneTextColor = 14120960
-    CustomHoverTextColor = clGray
-    CustomPressTextColor = 3355443
-    CustomDisabledTextColor = clMedGray
   end
   object buttonReloadSettings: TUSymbolButton
     Left = 250
     Top = 580
-    Width = 191
+    Width = 161
     Height = 55
     ThemeManager = UThemeManager1
     SymbolFont.Charset = DEFAULT_CHARSET
@@ -290,13 +280,14 @@ object MainForm: TMainForm
     CustomBackColor = 15132390
   end
   object check3State: TUCheckBox
-    Left = 250
-    Top = 640
+    Left = 430
+    Top = 360
     Width = 200
     Height = 24
     ThemeManager = UThemeManager1
     Text = '3-state checkbox'
     AllowGrayed = True
+    CustomActiveColor = 14120960
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -305,12 +296,94 @@ object MainForm: TMainForm
     ParentFont = False
   end
   object check2State: TUCheckBox
-    Left = 50
-    Top = 640
+    Left = 430
+    Top = 330
     Width = 200
     Height = 24
     ThemeManager = UThemeManager1
     Text = '2-state checkbox'
+    CustomActiveColor = 14120960
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioA1: TURadioButton
+    Left = 430
+    Top = 230
+    Width = 150
+    Height = 24
+    ThemeManager = UThemeManager1
+    Group = 'GroupA'
+    CustomActiveColor = 14120960
+    Text = 'Radio 1 in group A'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioA2: TURadioButton
+    Left = 430
+    Top = 260
+    Width = 150
+    Height = 24
+    ThemeManager = UThemeManager1
+    IsChecked = True
+    Group = 'GroupA'
+    CustomActiveColor = 14120960
+    Text = 'Radio 2 in group A'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioB1: TURadioButton
+    Left = 620
+    Top = 230
+    Width = 200
+    Height = 24
+    ThemeManager = UThemeManager1
+    Group = 'GroupB'
+    CustomActiveColor = 14120960
+    Text = 'Radio 1 in group B'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioA3: TURadioButton
+    Left = 430
+    Top = 290
+    Width = 150
+    Height = 24
+    ThemeManager = UThemeManager1
+    Group = 'GroupA'
+    CustomActiveColor = 14120960
+    Text = 'Radio 3 in group A'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioB2: TURadioButton
+    Left = 620
+    Top = 260
+    Width = 200
+    Height = 24
+    ThemeManager = UThemeManager1
+    Group = 'GroupB'
+    CustomActiveColor = 14120960
+    Text = 'Radio 2 in group B'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -326,22 +399,6 @@ object MainForm: TMainForm
     Caption = 'Enable / disable form border color'
     TabOrder = 0
     OnClick = buttonFormBorderColorClick
-  end
-  object captionbarNewStyle: TUCaptionBar
-    Left = 0
-    Top = 0
-    Width = 1074
-    Height = 32
-    ThemeManager = UThemeManager1
-    Align = alTop
-    Alignment = taLeftJustify
-    Caption = '   This is new style TUCaptionBar (use 3 spaces for left align)'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
   end
   object buttonRunning: TButton
     Left = 50
@@ -369,7 +426,9 @@ object MainForm: TMainForm
     UseNormalStyle = True
     Align = alBottom
     Alignment = taLeftJustify
-    Caption = '   This is old style TUCaptionBar (use 3 spaces for left align)'
+    Caption = 
+      '   This is NORMAL style TUCaptionBar (use 3 spaces for left alig' +
+      'n)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
@@ -450,7 +509,7 @@ object MainForm: TMainForm
     Width = 191
     Height = 25
     Caption = 'Start Button3.Left animation'
-    TabOrder = 8
+    TabOrder = 7
     OnClick = buttonAniStartClick
   end
   object buttonRandomProgress: TUButton
@@ -465,7 +524,7 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 9
+    TabOrder = 8
     OnClick = buttonRandomProgressClick
   end
   object buttonAniInverse: TButton
@@ -474,7 +533,7 @@ object MainForm: TMainForm
     Width = 191
     Height = 25
     Caption = 'Inverse Button3.Left animation'
-    TabOrder = 10
+    TabOrder = 9
     OnClick = buttonAniInverseClick
   end
   object buttonCanFocus1: TUButton
@@ -490,7 +549,7 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 11
+    TabOrder = 10
     TabStop = True
   end
   object buttonCanFocus2: TUButton
@@ -506,7 +565,7 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 12
+    TabOrder = 11
     TabStop = True
   end
   object drawerNavigation: TUPanel
@@ -529,7 +588,7 @@ object MainForm: TMainForm
     ParentBackground = False
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 13
+    TabOrder = 12
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -709,7 +768,7 @@ object MainForm: TMainForm
   object switchChangeTheme: TUSwitch
     Left = 250
     Top = 170
-    Width = 172
+    Width = 110
     Height = 20
     ThemeManager = UThemeManager1
     CustomColor = 8951296
@@ -719,10 +778,10 @@ object MainForm: TMainForm
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    StateCaptions.CaptionOn = 'TUSwitch system theme'
-    StateCaptions.CaptionOff = 'TUSwitch system theme'
+    StateCaptions.CaptionOn = 'Dark theme'
+    StateCaptions.CaptionOff = 'Light theme'
     SwitchWidth = 40
-    TabOrder = 14
+    TabOrder = 13
     OnClick = switchChangeThemeClick
   end
   object switchCustomColor: TUSwitch
@@ -740,7 +799,7 @@ object MainForm: TMainForm
     StateCaptions.CaptionOn = 'TUSwitch custom color (unmanaged)'
     StateCaptions.CaptionOff = 'TUSwitch custom color (unmanaged)'
     SwitchWidth = 40
-    TabOrder = 15
+    TabOrder = 14
   end
   object boxSmoothScrolling: TUScrollBox
     Left = 824
@@ -749,908 +808,157 @@ object MainForm: TMainForm
     Height = 642
     Align = alRight
     BorderStyle = bsNone
+    DoubleBuffered = True
     Color = 15132390
     ParentColor = False
-    TabOrder = 16
+    ParentDoubleBuffered = False
+    TabOrder = 15
     ThemeManager = UThemeManager1
-    object USymbolButton11: TUSymbolButton
+    object Button1: TButton
       Left = 0
       Top = 0
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
+      Width = 250
+      Height = 25
       Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 183
+      Caption = 'Button1'
+      TabOrder = 0
     end
-    object USymbolButton12: TUSymbolButton
-      Left = 0
-      Top = 41
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'ABC'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 51
-      ExplicitWidth = 183
+    object Button2: TButton
+      Left = 20
+      Top = 140
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 1
     end
-    object USymbolButton13: TUSymbolButton
-      Left = 0
-      Top = 82
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 92
-      ExplicitWidth = 183
+    object Button3: TButton
+      Left = 30
+      Top = 240
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 2
     end
-    object USymbolButton14: TUSymbolButton
-      Left = 0
-      Top = 123
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 133
-      ExplicitWidth = 183
+    object Button4: TButton
+      Left = 30
+      Top = 340
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 3
     end
-    object USymbolButton15: TUSymbolButton
-      Left = 0
-      Top = 779
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 174
-      ExplicitWidth = 183
+    object Button6: TButton
+      Left = 30
+      Top = 950
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 4
     end
-    object USymbolButton29: TUSymbolButton
-      Left = 0
-      Top = 1107
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 183
+    object Button7: TButton
+      Left = 30
+      Top = 840
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 5
     end
-    object USymbolButton20: TUSymbolButton
-      Left = 0
-      Top = 943
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 183
+    object Button8: TButton
+      Left = 30
+      Top = 740
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 6
     end
-    object USymbolButton30: TUSymbolButton
-      Left = 0
-      Top = 451
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 174
-      ExplicitWidth = 183
+    object Button9: TButton
+      Left = 20
+      Top = 640
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 7
     end
-    object USymbolButton16: TUSymbolButton
-      Left = 0
-      Top = 1189
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitLeft = -49
-      ExplicitTop = 341
-      ExplicitWidth = 291
+    object Button10: TButton
+      Left = 20
+      Top = 540
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 8
     end
-    object USymbolButton17: TUSymbolButton
-      Left = 0
-      Top = 1271
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'ABC'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
+    object Button11: TButton
+      Left = 50
+      Top = 1210
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 9
     end
-    object USymbolButton18: TUSymbolButton
-      Left = 0
-      Top = 1230
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
+    object Button12: TButton
+      Left = 50
+      Top = 1100
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 10
     end
-    object USymbolButton19: TUSymbolButton
-      Left = 0
-      Top = 1148
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
+    object Button13: TButton
+      Left = 50
+      Top = 1000
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 11
     end
-    object USymbolButton25: TUSymbolButton
-      Left = 0
-      Top = 1025
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
+    object Button14: TButton
+      Left = 40
+      Top = 900
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 12
     end
-    object USymbolButton26: TUSymbolButton
-      Left = 0
-      Top = 861
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 242
+    object Button15: TButton
+      Left = 40
+      Top = 800
+      Width = 151
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 13
     end
-    object USymbolButton27: TUSymbolButton
-      Left = 0
-      Top = 615
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 183
+    object Edit1: TEdit
+      Left = 60
+      Top = 70
+      Width = 121
+      Height = 21
+      TabOrder = 14
+      Text = 'Edit1'
     end
-    object USymbolButton28: TUSymbolButton
-      Left = 0
-      Top = 287
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 174
-      ExplicitWidth = 183
-    end
-    object USymbolButton31: TUSymbolButton
-      Left = 0
-      Top = 1066
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitLeft = -49
-      ExplicitTop = 341
-      ExplicitWidth = 291
-    end
-    object USymbolButton32: TUSymbolButton
-      Left = 0
-      Top = 984
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'ABC'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton33: TUSymbolButton
-      Left = 0
-      Top = 902
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton34: TUSymbolButton
-      Left = 0
-      Top = 820
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton35: TUSymbolButton
-      Left = 0
-      Top = 697
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton36: TUSymbolButton
-      Left = 0
-      Top = 533
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 242
-    end
-    object USymbolButton37: TUSymbolButton
-      Left = 0
-      Top = 369
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 166
-    end
-    object USymbolButton38: TUSymbolButton
-      Left = 0
-      Top = 205
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 174
-      ExplicitWidth = 166
-    end
-    object USymbolButton39: TUSymbolButton
-      Left = 0
-      Top = 738
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitLeft = -49
-      ExplicitTop = 341
-      ExplicitWidth = 291
-    end
-    object USymbolButton40: TUSymbolButton
-      Left = 0
-      Top = 656
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'ABC'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton41: TUSymbolButton
-      Left = 0
-      Top = 574
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton42: TUSymbolButton
-      Left = 0
-      Top = 492
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
-    end
-    object USymbolButton43: TUSymbolButton
-      Left = 0
+    object Memo1: TMemo
+      Left = 30
       Top = 410
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 10
-      ExplicitWidth = 259
+      Width = 185
+      Height = 89
+      Lines.Strings = (
+        'Memo1')
+      TabOrder = 15
     end
-    object USymbolButton44: TUSymbolButton
-      Left = 0
-      Top = 328
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 242
+    object Panel1: TPanel
+      Left = 30
+      Top = 1239
+      Width = 185
+      Height = 402
+      Caption = 'Panel1'
+      TabOrder = 16
     end
-    object USymbolButton45: TUSymbolButton
-      Left = 0
-      Top = 246
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 215
-      ExplicitWidth = 166
-    end
-    object USymbolButton46: TUSymbolButton
-      Left = 0
-      Top = 164
-      Width = 233
-      Height = 41
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save this document'
-      Detail = 'Ctrl+S'
-      Align = alTop
-      ExplicitTop = 174
-      ExplicitWidth = 166
+    object RadioButton1: TRadioButton
+      Left = 70
+      Top = 1669
+      Width = 113
+      Height = 17
+      Caption = 'RadioButton1'
+      TabOrder = 17
     end
   end
   object buttonCustomColor: TUButton
@@ -1664,9 +972,26 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 17
+    TabOrder = 16
+  end
+  object captionbarNewStyle: TUCaptionBar
+    Left = 0
+    Top = 0
+    Width = 1074
+    Height = 32
+    ThemeManager = UThemeManager1
+    Align = alTop
+    Alignment = taLeftJustify
+    Caption = '   This is NEW style TUCaptionBar (use 3 spaces for left align)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object UThemeManager1: TUThemeManager
+    ThemeKind = tkLight
     CustomColor = clRed
     Left = 720
     Top = 40

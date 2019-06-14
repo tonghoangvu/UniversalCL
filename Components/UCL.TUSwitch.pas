@@ -123,17 +123,17 @@ begin
     begin
       if IsOn = true then
         begin
-          ThumbColor := $00FFFFFF;
+          ThumbColor := $FFFFFF;
           Color := CustomColor;
           FrameColor := CustomColor;
         end
       else
         begin
-          ThumbColor := $00000000;
-          Color := $00FFFFFF;
-          FrameColor := $00000000;
+          ThumbColor := $000000;
+          Color := $FFFFFF;
+          FrameColor := $000000;
         end;
-      Font.Color := $00000000;
+      Font.Color := $000000;
     end
 
   //  Light theme
@@ -141,17 +141,17 @@ begin
     begin
       if IsOn = true then
         begin
-          ThumbColor := $00FFFFFF;
+          ThumbColor := $FFFFFF;
           Color := ThemeManager.ActiveColor;
           FrameColor := ThemeManager.ActiveColor;
         end
       else
         begin
-          ThumbColor := $00000000;
-          Color := $00FFFFFF;
-          FrameColor := $00000000;
+          ThumbColor := $000000;
+          Color := $FFFFFF;
+          FrameColor := $000000;
         end;
-      Font.Color := $00000000;
+      Font.Color := $000000;
     end
 
   //  Dark theme
@@ -159,17 +159,17 @@ begin
     begin
       if IsOn = true then
         begin
-          ThumbColor := $00FFFFFF;
+          ThumbColor := $FFFFFF;
           Color := ThemeManager.ActiveColor;
           FrameColor := ThemeManager.ActiveColor;
         end
       else
         begin
-          ThumbColor := $00FFFFFF;
-          Color := $00000000;
-          FrameColor := $00FFFFFF;
+          ThumbColor := $FFFFFF;
+          Color := $000000;
+          FrameColor := $FFFFFF;
         end;
-      Font.Color := $00FFFFFF;
+      Font.Color := $FFFFFF;
     end;
 end;
 
@@ -190,7 +190,7 @@ constructor TUSwitch.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  CustomColor := $00D77800;
+  CustomColor := $D77800;
   SwitchWidth := 40;
 
   Font.Name := 'Segoe UI';
