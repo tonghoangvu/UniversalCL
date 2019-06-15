@@ -25,7 +25,7 @@ type
       FFocused: TColor;
 
     public
-      constructor Create(aNone, aHover, aPress, aDisabled, aFocused: TColor);
+      constructor Create(aNone, aHover, aPress, aDisabled, aFocused: TColor); //override;
       function GetStateColor(const State: TUButtonState): TColor;
 
     published

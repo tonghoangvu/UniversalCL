@@ -40,6 +40,7 @@ type
       procedure SetThemeKind(const Value: TUThemeKind);
       procedure SetUseAccentColor(const Value: Boolean);
       procedure SetColorOnBorderKind(const Value: TUColorOnBorderKind);
+      procedure SetCustomColor(const Value: TColor);
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -58,7 +59,7 @@ type
 
       property ActiveColor: TColor read FActiveColor;
       property UseAccentColor: Boolean read FUseAccentColor write SetUseAccentColor default true;
-      property CustomColor: TColor read FCustomColor write FCustomColor default $00D77800;
+      property CustomColor: TColor read FCustomColor write SetCustomColor default $00D77800;
 
       property ColorOnBorder: Boolean read FColorOnBorder;
       property ColorOnBorderKind: TUColorOnBorderKind read FColorOnBorderKind write SetColorOnBorderKind default cobkAuto;
@@ -130,6 +131,18 @@ begin
           FColorOnBorder := false;
       end;
 
+      if AutoUpdateTheme = true then
+        UpdateThemeForControls;
+    end;
+end;
+
+procedure TUThemeManager.SetCustomColor(const Value: TColor);
+begin
+  if Value <> FCustomColor then
+    begin
+      FCustomColor := Value;
+      if FUseAccentColor = false then
+        FActiveColor := FCustomColor;
       if AutoUpdateTheme = true then
         UpdateThemeForControls;
     end;
