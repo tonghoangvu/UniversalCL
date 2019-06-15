@@ -28,6 +28,7 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; reintroduce;
+      procedure AfterContrusction;
       procedure UpdateTheme;
 
     published
@@ -61,7 +62,6 @@ end;
 
 procedure TUScrollBox.UpdateTheme;
 begin
-  FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
   if ThemeManager = nil then
     Color := $00E6E6E6
   else if ThemeManager.Theme = utLight then
@@ -71,6 +71,11 @@ begin
 end;
 
 { MAIN CLASS }
+
+procedure TUScrollBox.AfterContrusction;
+begin
+  InitializeFlatSB(Handle);
+end;
 
 constructor TUScrollBox.Create(aOwner: TComponent);
 begin
@@ -84,7 +89,6 @@ begin
   FScrollLength := 320;
   FScrollTime := 300;
 
-  InitializeFlatSB(Handle);
   UpdateTheme;
 end;
 
@@ -100,6 +104,7 @@ end;
 procedure TUScrollBox.WM_MouseWheel(var Msg: TWMMouseWheel);
 var
   Ani: TIntAni;
+  Start, Stop: Integer;
 begin
   inherited;
 
@@ -108,24 +113,31 @@ begin
   else
     FIsScrolling := true;
 
-  DisableAlign;
+  Start := VertScrollBar.Position;
+  Stop := VertScrollBar.Position - ScrollLength * Msg.WheelDelta div Abs(Msg.WheelDelta);
+  //  If ScrollLength > Out of range, reduce it to fit
+  if Stop < 0 then
+    Stop := 0
+  else if Stop > VertScrollBar.Range then
+    Stop := VertScrollBar.Range;
 
-  Ani := TIntAni.Create(akOut, afkQuartic,
-    VertScrollBar.Position, VertScrollBar.Position - ScrollLength * Msg.WheelDelta div Abs(Msg.WheelDelta),
+  Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop,
     procedure (Value: Integer)
     begin
       VertScrollBar.Position := Value;
     end, true);
 
+  //  On scroll done
   Ani.AniDoneProc :=
     procedure
     begin
       FIsScrolling := false;
       FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
-      EnableAlign;
     end;
 
   Ani.Duration := ScrollTime;
+
+  EnableAlign;  //  Neccesary
   Ani.Start;
 end;
 

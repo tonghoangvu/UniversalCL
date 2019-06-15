@@ -22,6 +22,7 @@ type
 
       FEnabled: Boolean;
       FOpenLink: Boolean;
+      FURL: string;
 
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUButtonState);
@@ -44,6 +45,7 @@ type
 
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
+      property URL: string read FURL write FURL;
   end;
 
 implementation
@@ -125,14 +127,15 @@ begin
 
   FEnabled := true;
   FOpenLink := true;
+  FURL := 'https://embarcadero.com/';
+
+  Caption := 'Embarcadero website';
 
   Cursor := crHandPoint;
 
   Font.Name := 'Segoe UI';
   Font.Size := 10;
   Font.Style := Font.Style + [fsUnderline];
-
-  Caption := 'https://embarcadero.com/';
 
   UpdateTheme;
 end;
@@ -162,7 +165,7 @@ begin
   if Enabled = true then
     begin
       if OpenLink = true then
-        ShellExecute(0, '', PWideChar(Caption), '', '', SW_SHOWNORMAL);
+        ShellExecute(0, '', PWideChar(URL), '', '', SW_SHOWNORMAL);
       ButtonState := bsHover;
       inherited;
     end;

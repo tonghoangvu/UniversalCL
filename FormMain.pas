@@ -3,17 +3,18 @@
 interface
 
 uses
+  flatsb,
   UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls,
+  Vcl.Imaging.pngimage, Vcl.WinXPanels;
 
 type
   TMainForm = class(TUForm)
     UThemeManager1: TUThemeManager;
-    buttonFormBorderColor: TButton;
     symbolbuttonSaveVert: TUSymbolButton;
     symbolbuttonSaveHorz: TUSymbolButton;
     buttonRunning: TButton;
@@ -47,44 +48,57 @@ type
     buttonMenuSave: TUSymbolButton;
     buttonMenuOpen: TUSymbolButton;
     buttonMenuRate: TUSymbolButton;
-    switchChangeTheme: TUSwitch;
-    switchCustomColor: TUSwitch;
     boxSmoothScrolling: TUScrollBox;
     buttonCustomColor: TUButton;
     check2State: TUCheckBox;
     check3State: TUCheckBox;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
-    Button6: TButton;
-    Button7: TButton;
-    Button8: TButton;
-    Button9: TButton;
-    Button10: TButton;
-    Button11: TButton;
-    Button12: TButton;
-    Button13: TButton;
-    Button14: TButton;
-    Button15: TButton;
     captionbarNewStyle: TUCaptionBar;
     radioA1: TURadioButton;
     radioA2: TURadioButton;
     radioB1: TURadioButton;
     radioA3: TURadioButton;
     radioB2: TURadioButton;
-    Edit1: TEdit;
-    Memo1: TMemo;
-    Panel1: TPanel;
-    RadioButton1: TRadioButton;
+    UText1: TUText;
+    UText2: TUText;
+    UCheckBox1: TUCheckBox;
+    UCheckBox2: TUCheckBox;
+    UButton1: TUButton;
+    UText3: TUText;
+    URadioButton1: TURadioButton;
+    URadioButton2: TURadioButton;
+    URadioButton3: TURadioButton;
+    UText4: TUText;
+    UText5: TUText;
+    UText6: TUText;
+    UProgressBar1: TUProgressBar;
+    Image1: TImage;
+    UText7: TUText;
+    UText8: TUText;
+    UText9: TUText;
+    UText10: TUText;
+    UButton2: TUButton;
+    UHyperLink1: TUHyperLink;
+    UButton3: TUButton;
+    UCheckBox3: TUCheckBox;
+    UText11: TUText;
+    URadioButton4: TURadioButton;
+    URadioButton5: TURadioButton;
+    URadioButton6: TURadioButton;
+    ColorDialog1: TColorDialog;
+    UPanel1: TUPanel;
+    UText12: TUText;
+    UCheckBox4: TUCheckBox;
     procedure FormCreate(Sender: TObject);
-    procedure buttonFormBorderColorClick(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
     procedure buttonAniInverseClick(Sender: TObject);
     procedure buttonOpenMenuClick(Sender: TObject);
-    procedure switchChangeThemeClick(Sender: TObject);
+    procedure URadioButton4Click(Sender: TObject);
+    procedure URadioButton5Click(Sender: TObject);
+    procedure URadioButton6Click(Sender: TObject);
+    procedure UPanel1Click(Sender: TObject);
+    procedure UCheckBox4Click(Sender: TObject);
   private
 
   public
@@ -97,14 +111,6 @@ var
 implementation
 
 {$R *.dfm}
-
-procedure TMainForm.buttonFormBorderColorClick(Sender: TObject);
-begin
-  if UThemeManager1.ColorOnBorderKind <> cobkTrue then
-    UThemeManager1.ColorOnBorderKind := cobkTrue
-  else
-    UThemeManager1.ColorOnBorderKind := cobkFalse;
-end;
 
 procedure TMainForm.buttonAniStartClick(Sender: TObject);
 var
@@ -131,14 +137,44 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := UThemeManager1;
+
+//  InitializeFlatSB(Handle);
 end;
 
-procedure TMainForm.switchChangeThemeClick(Sender: TObject);
+procedure TMainForm.UCheckBox4Click(Sender: TObject);
 begin
-  if UThemeManager1.Theme <> utLight then
-    UThemeManager1.ThemeKind := tkLight
+  if UCheckBox4.State = cbsChecked then
+    UThemeManager1.ColorOnBorderKind := cobkTrue
   else
-    UThemeManager1.ThemeKind := tkDark;
+    UThemeManager1.ColorOnBorderKind := cobkFalse;
+end;
+
+procedure TMainForm.UPanel1Click(Sender: TObject);
+var
+  NewColor: TColor;
+begin
+  if ColorDialog1.Execute = true then
+    NewColor := ColorDialog1.Color;
+
+  UThemeManager1.CustomColor := NewColor;
+  UThemeManager1.UseAccentColor := false;
+
+  UPanel1.CustomBackColor := NewColor;
+end;
+
+procedure TMainForm.URadioButton4Click(Sender: TObject);
+begin
+  UThemeManager1.ThemeKind := tkAuto;
+end;
+
+procedure TMainForm.URadioButton5Click(Sender: TObject);
+begin
+  UThemeManager1.ThemeKind := tkLight;
+end;
+
+procedure TMainForm.URadioButton6Click(Sender: TObject);
+begin
+  UThemeManager1.ThemeKind := tkDark;
 end;
 
 procedure TMainForm.buttonRandomProgressClick(Sender: TObject);
