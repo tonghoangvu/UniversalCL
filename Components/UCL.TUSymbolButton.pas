@@ -30,6 +30,7 @@ type
 
       FButtonState: TUButtonState;
       FEnabled: Boolean;
+      FHitTest: Boolean;
       FOrientation: TUOrientation;
       FSymbolChar: string;
       FText: string;
@@ -79,6 +80,7 @@ type
 
       property ButtonState: TUButtonState read FButtonState write SetButtonState default bsNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property SymbolChar: string read FSymbolChar write SetSymbolChar;
       property Text: string read FText write SetText;
@@ -284,6 +286,7 @@ begin
 
   FButtonState := bsNone;
   FEnabled := true;
+  FHitTest := true;
   FOrientation := oHorizontal;
   FSymbolChar := '';
   FText := 'Some text';
@@ -385,7 +388,7 @@ end;
 
 procedure TUSymbolButton.WM_LButtonDblClk(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsPress;
       inherited;
@@ -394,7 +397,7 @@ end;
 
 procedure TUSymbolButton.WM_LButtonDown(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsPress;
       inherited;
@@ -403,7 +406,7 @@ end;
 
 procedure TUSymbolButton.WM_LButtonUp(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsHover;
       inherited;
@@ -412,7 +415,7 @@ end;
 
 procedure TUSymbolButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsHover;
       inherited;
@@ -421,7 +424,7 @@ end;
 
 procedure TUSymbolButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsNone;
       inherited;

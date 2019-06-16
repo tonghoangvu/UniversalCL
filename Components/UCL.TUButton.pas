@@ -31,11 +31,14 @@ type
       //  Fields
       FButtonState: TUButtonState;
       FEnabled: Boolean;
+      FHitTest: Boolean;
       FText: string;
       FAllowFocus: Boolean;
 
-      //  Setters
+      //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
+
+      //  Value setters
       procedure SetButtonState(const Value: TUButtonState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
@@ -48,6 +51,11 @@ type
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure WM_SetFocus(var Msg: TMessage); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TMessage); message WM_KILLFOCUS;
+
+      //  Group property change
+      procedure DoCustomBorderColorsChange(Sender: TObject);
+      procedure DoCustomBackColorsChange(Sender: TObject);
+      procedure DoCustomTextColorsChange(Sender: TObject);
 
     protected
       procedure Paint; override;
@@ -65,6 +73,7 @@ type
 
       property ButtonState: TUButtonState read FButtonState write SetButtonState default bsNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
       property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
 
@@ -131,7 +140,7 @@ begin
   Paint;
 end;
 
-{ GETTERS & SETTER }
+{ VALUE SETTER }
 
 procedure TUButton.SetButtonState(const Value: TUButtonState);
 begin
@@ -175,8 +184,13 @@ begin
   FCustomBackColors := TControlStateColors.Create($F2F2F2, $E6E6E6, $CCCCCC, $F2F2F2, $F2F2F2);
   FCustomTextColors := TControlStateColors.Create(clBlack, clBlack, clBlack, clGray, clBlack);
 
+  FCustomBorderColors.OnChange := DoCustomBorderColorsChange;
+  FCustomBackColors.OnChange := DoCustomBackColorsChange;
+  FCustomTextColors.OnChange := DoCustomTextColorsChange;
+
   FButtonState := bsNone;
   FEnabled := true;
+  FHitTest := true;
   FText := 'Button';
   FAllowFocus := false;
 
@@ -245,7 +259,7 @@ end;
 
 procedure TUButton.WM_LButtonDblClk(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsPress;
       inherited;
@@ -254,7 +268,7 @@ end;
 
 procedure TUButton.WM_LButtonDown(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       if AllowFocus = true then
         SetFocus;
@@ -265,7 +279,7 @@ end;
 
 procedure TUButton.WM_LButtonUp(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsHover;
       inherited;
@@ -274,7 +288,7 @@ end;
 
 procedure TUButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsHover;
       inherited;
@@ -283,7 +297,7 @@ end;
 
 procedure TUButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       if AllowFocus = false then
         ButtonState := bsNone
@@ -298,7 +312,7 @@ end;
 
 procedure TUButton.WM_SetFocus(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsFocused;
       inherited;
@@ -307,11 +321,28 @@ end;
 
 procedure TUButton.WM_KillFocus(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsNone;
       inherited;
     end;
+end;
+
+{ GROUP PROPERTY CHANGE }
+
+procedure TUButton.DoCustomBorderColorsChange(Sender: TObject);
+begin
+  UpdateTheme;
+end;
+
+procedure TUButton.DoCustomBackColorsChange(Sender: TObject);
+begin
+  UpdateTheme;
+end;
+
+procedure TUButton.DoCustomTextColorsChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 end.

@@ -13,10 +13,10 @@ type
     private
       FThemeManager: TUThemeManager;
 
+      FHitTest: Boolean;
       FIsChecked: Boolean;
       FGroup: string;
       FCustomActiveColor: TColor;
-      
       FText: string;
 
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -35,10 +35,10 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
-
       property Text: string read FText write SetText;
 
       {$REGION 'Common properties'}
@@ -129,6 +129,7 @@ constructor TURadioButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
   FText := 'URadioButton';
@@ -213,21 +214,24 @@ var
   i: Integer;
 begin
   //  Only unchecked can change
-  if IsChecked = false then
+  if (Enabled = true) and (HitTest = true) then
     begin
-      IsChecked := true;  //  Check it
+      if IsChecked = false then
+        begin
+          IsChecked := true;  //  Check it
 
-      //  Uncheck other TURadioButton with the same parent and group name
-      for i := 0 to Parent.ControlCount - 1 do
-        if Parent.Controls[i] is TURadioButton then
-          if 
-            ((Parent.Controls[i] as TURadioButton).Group = Group)
-            and (Parent.Controls[i] <> Self)
-          then
-            (Parent.Controls[i] as TURadioButton).IsChecked := false;  
+          //  Uncheck other TURadioButton with the same parent and group name
+          for i := 0 to Parent.ControlCount - 1 do
+            if Parent.Controls[i] is TURadioButton then
+              if
+                ((Parent.Controls[i] as TURadioButton).Group = Group)
+                and (Parent.Controls[i] <> Self)
+              then
+                (Parent.Controls[i] as TURadioButton).IsChecked := false;
+        end;
+
+      inherited;
     end;
-
-  inherited;
 end;
 
 end.

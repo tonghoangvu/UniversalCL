@@ -13,6 +13,7 @@ type
     private
       FThemeManager: TUThemeManager;
 
+      FHitTest: Boolean;
       FCustomColor: TColor;
 
       //  Setters
@@ -29,6 +30,7 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property CustomColor: TColor read FCustomColor write SetCustomColor;
 
       {$REGION 'Common properties'}
@@ -190,19 +192,25 @@ constructor TUSwitch.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  CustomColor := $D77800;
+  FHitTest := true;
+  FCustomColor := $D77800;
   SwitchWidth := 40;
 
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+
+  UpdateTheme;
 end;
 
 { MESSAGES }
 
 procedure TUSwitch.WM_LButtonUp(var Msg: TMessage);
 begin
-  inherited;
-  UpdateTheme;
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      inherited;
+      UpdateTheme;
+    end;
 end;
 
 end.

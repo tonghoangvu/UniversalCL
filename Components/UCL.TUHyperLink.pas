@@ -21,21 +21,30 @@ type
       FCustomTextColors: TControlStateColors;
 
       FEnabled: Boolean;
+      FHitTest: Boolean;
       FOpenLink: Boolean;
       FURL: string;
 
+      //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
+
+      //  Value setters
       procedure SetButtonState(const Value: TUButtonState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
 
+      //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
+      //  Group property change
+      procedure DoCustomTextColorsChange(Sender: TObject);
+
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; reintroduce;
       procedure UpdateTheme;
 
     published
@@ -44,6 +53,7 @@ type
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property Enabled: Boolean read FEnabled write SetEnabled default true;
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
   end;
@@ -82,7 +92,7 @@ begin
     end;
 end;
 
-{ GETTERS & SETTERS }
+{ VALUE SETTERS }
 
 procedure TUHyperLink.SetButtonState(const Value: TUButtonState);
 begin
@@ -124,8 +134,10 @@ begin
 
   FButtonState := bsNone;
   FCustomTextColors := TControlStateColors.Create($D77800, clGray, clMedGray, clMedGray, $D77800);
+  FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
   FEnabled := true;
+  FHitTest := true;
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
 
@@ -135,16 +147,22 @@ begin
 
   Font.Name := 'Segoe UI';
   Font.Size := 10;
-  Font.Style := Font.Style + [fsUnderline];
 
   UpdateTheme;
+end;
+
+destructor TUHyperLink.Destroy;
+begin
+  FCustomTextColors.Free;
+
+  inherited Destroy;
 end;
 
 { MESSAGES }
 
 procedure TUHyperLink.WM_LButtonDblClk(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsPress;
       inherited;
@@ -153,7 +171,7 @@ end;
 
 procedure TUHyperLink.WM_LButtonDown(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsPress;
       inherited;
@@ -162,7 +180,7 @@ end;
 
 procedure TUHyperLink.WM_LButtonUp(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       if OpenLink = true then
         ShellExecute(0, '', PWideChar(URL), '', '', SW_SHOWNORMAL);
@@ -173,7 +191,7 @@ end;
 
 procedure TUHyperLink.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsHover;
       inherited;
@@ -182,11 +200,18 @@ end;
 
 procedure TUHyperLink.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if (Enabled = true) and (HitTest = true) then
     begin
       ButtonState := bsNone;
       inherited;
     end;
+end;
+
+{ GROUP PROPERTY CHANGE }
+
+procedure TUHyperLink.DoCustomTextColorsChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 end.

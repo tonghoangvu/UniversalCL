@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = 'Test UCL controls'
-  ClientHeight = 681
-  ClientWidth = 1074
+  ClientHeight = 574
+  ClientWidth = 1041
   Color = clWhite
   Ctl3D = False
   Font.Charset = DEFAULT_CHARSET
@@ -48,7 +48,6 @@ object MainForm: TMainForm
     Top = 480
     Width = 241
     Height = 41
-    Hint = 'This is mini hint'
     ThemeManager = UThemeManager1
     SymbolFont.Charset = DEFAULT_CHARSET
     SymbolFont.Color = clWindowText
@@ -69,7 +68,7 @@ object MainForm: TMainForm
     Text = 'Save file'
     Detail = 'Ctrl+S'
     ParentShowHint = False
-    ShowHint = True
+    ShowHint = False
   end
   object symbolButtonOpenDisabled: TUSymbolButton
     Left = 130
@@ -188,6 +187,11 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     ThemeManager = UThemeManager1
+    CustomTextColors.None = 14120960
+    CustomTextColors.Hover = clGray
+    CustomTextColors.Press = clMedGray
+    CustomTextColors.Disabled = clMedGray
+    CustomTextColors.Focused = 14120960
     URL = 'https://embarcadero.com/'
   end
   object linkCustomColor: TUHyperLink
@@ -203,6 +207,11 @@ object MainForm: TMainForm
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    CustomTextColors.None = 8951296
+    CustomTextColors.Hover = clGray
+    CustomTextColors.Press = clGreen
+    CustomTextColors.Disabled = clMedGray
+    CustomTextColors.Focused = 8951296
     URL = 'https://embarcadero.com/'
   end
   object linkDisabled: TUHyperLink
@@ -219,6 +228,11 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
     ButtonState = bsDisabled
+    CustomTextColors.None = 14120960
+    CustomTextColors.Hover = clGray
+    CustomTextColors.Press = clMedGray
+    CustomTextColors.Disabled = clMedGray
+    CustomTextColors.Focused = 14120960
     URL = 'https://embarcadero.com/'
   end
   object buttonReloadSettings: TUSymbolButton
@@ -282,8 +296,8 @@ object MainForm: TMainForm
     CustomBackColor = 15132390
   end
   object check3State: TUCheckBox
-    Left = 530
-    Top = 170
+    Left = 390
+    Top = 430
     Width = 200
     Height = 24
     ThemeManager = UThemeManager1
@@ -298,8 +312,8 @@ object MainForm: TMainForm
     ParentFont = False
   end
   object check2State: TUCheckBox
-    Left = 530
-    Top = 140
+    Left = 390
+    Top = 400
     Width = 200
     Height = 24
     ThemeManager = UThemeManager1
@@ -346,8 +360,8 @@ object MainForm: TMainForm
     ParentFont = False
   end
   object radioB1: TURadioButton
-    Left = 580
-    Top = 230
+    Left = 390
+    Top = 360
     Width = 181
     Height = 24
     ThemeManager = UThemeManager1
@@ -378,8 +392,8 @@ object MainForm: TMainForm
     ParentFont = False
   end
   object radioB2: TURadioButton
-    Left = 580
-    Top = 260
+    Left = 390
+    Top = 330
     Width = 181
     Height = 24
     ThemeManager = UThemeManager1
@@ -392,6 +406,32 @@ object MainForm: TMainForm
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+  end
+  object buttonCustomColor: TUButton
+    Left = 60
+    Top = 380
+    Width = 151
+    Height = 30
+    CustomBorderColors.None = 15132390
+    CustomBorderColors.Hover = 14120960
+    CustomBorderColors.Press = clBlue
+    CustomBorderColors.Disabled = clGray
+    CustomBorderColors.Focused = 14120960
+    CustomBackColors.None = 15132390
+    CustomBackColors.Hover = 14120960
+    CustomBackColors.Press = clBlue
+    CustomBackColors.Disabled = clGray
+    CustomBackColors.Focused = 14120960
+    CustomTextColors.Hover = clWhite
+    CustomTextColors.Press = clWhite
+    CustomTextColors.Disabled = clGray
+    Text = 'Custom button'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    TabOrder = 12
   end
   object buttonRunning: TButton
     Left = 280
@@ -412,8 +452,8 @@ object MainForm: TMainForm
   end
   object captionbarOldStyle: TUCaptionBar
     Left = 0
-    Top = 649
-    Width = 1074
+    Top = 542
+    Width = 1041
     Height = 32
     ThemeManager = UThemeManager1
     UseNormalStyle = True
@@ -435,13 +475,24 @@ object MainForm: TMainForm
     Width = 150
     Height = 30
     ThemeManager = UThemeManager1
+    CustomBorderColors.None = 15921906
+    CustomBorderColors.Hover = 15132390
+    CustomBorderColors.Press = 13421772
+    CustomBorderColors.Disabled = 15921906
+    CustomBorderColors.Focused = 15921906
+    CustomBackColors.None = 15921906
+    CustomBackColors.Hover = 15132390
+    CustomBackColors.Press = 13421772
+    CustomBackColors.Disabled = 15921906
+    CustomBackColors.Focused = 15921906
+    CustomTextColors.Disabled = clGray
     Text = 'TUButton no focus'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 3
+    TabOrder = 2
   end
   object buttonDisabled: TUButton
     Left = 220
@@ -449,6 +500,17 @@ object MainForm: TMainForm
     Width = 150
     Height = 30
     ThemeManager = UThemeManager1
+    CustomBorderColors.None = 15921906
+    CustomBorderColors.Hover = 15132390
+    CustomBorderColors.Press = 13421772
+    CustomBorderColors.Disabled = 15921906
+    CustomBorderColors.Focused = 15921906
+    CustomBackColors.None = 15921906
+    CustomBackColors.Hover = 15132390
+    CustomBackColors.Press = 13421772
+    CustomBackColors.Disabled = 15921906
+    CustomBackColors.Focused = 15921906
+    CustomTextColors.Disabled = clGray
     ButtonState = bsDisabled
     Enabled = False
     Text = 'TUButton (disabled)'
@@ -457,30 +519,12 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 4
-  end
-  object panelDisconnected: TUPanel
-    Left = 580
-    Top = 330
-    Width = 185
-    Height = 61
-    CustomTextColor = clBlack
-    CustomBackColor = 14145495
-    BevelOuter = bvNone
-    Caption = 'UPanel2 (disconnected)'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentBackground = False
-    ParentFont = False
-    TabOrder = 1
+    TabOrder = 3
   end
   object panelConnected: TUPanel
-    Left = 390
-    Top = 330
-    Width = 185
+    Left = 380
+    Top = 460
+    Width = 201
     Height = 61
     ThemeManager = UThemeManager1
     CustomTextColor = clBlack
@@ -494,15 +538,16 @@ object MainForm: TMainForm
     Font.Style = []
     ParentBackground = False
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
+    OnMouseUp = panelConnectedMouseUp
   end
   object buttonAniStart: TButton
     Left = 280
     Top = 90
-    Width = 191
+    Width = 151
     Height = 25
-    Caption = 'Start Button3.Left animation'
-    TabOrder = 6
+    Caption = 'Start animation'
+    TabOrder = 4
     OnClick = buttonAniStartClick
   end
   object buttonRandomProgress: TUButton
@@ -511,22 +556,33 @@ object MainForm: TMainForm
     Width = 221
     Height = 30
     ThemeManager = UThemeManager1
+    CustomBorderColors.None = 15921906
+    CustomBorderColors.Hover = 15132390
+    CustomBorderColors.Press = 13421772
+    CustomBorderColors.Disabled = 15921906
+    CustomBorderColors.Focused = 15921906
+    CustomBackColors.None = 15921906
+    CustomBackColors.Hover = 15132390
+    CustomBackColors.Press = 13421772
+    CustomBackColors.Disabled = 15921906
+    CustomBackColors.Focused = 15921906
+    CustomTextColors.Disabled = clGray
     Text = 'Random TUProgressBar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 7
+    TabOrder = 5
     OnClick = buttonRandomProgressClick
   end
   object buttonAniInverse: TButton
-    Left = 480
+    Left = 440
     Top = 90
-    Width = 201
+    Width = 141
     Height = 25
-    Caption = 'Inverse Button3.Left animation'
-    TabOrder = 8
+    Caption = 'Reserve animation'
+    TabOrder = 6
     OnClick = buttonAniInverseClick
   end
   object buttonCanFocus1: TUButton
@@ -535,6 +591,17 @@ object MainForm: TMainForm
     Width = 150
     Height = 30
     ThemeManager = UThemeManager1
+    CustomBorderColors.None = 15921906
+    CustomBorderColors.Hover = 15132390
+    CustomBorderColors.Press = 13421772
+    CustomBorderColors.Disabled = 15921906
+    CustomBorderColors.Focused = 15921906
+    CustomBackColors.None = 15921906
+    CustomBackColors.Hover = 15132390
+    CustomBackColors.Press = 13421772
+    CustomBackColors.Disabled = 15921906
+    CustomBackColors.Focused = 15921906
+    CustomTextColors.Disabled = clGray
     Text = 'TUButton can focus 1'
     AllowFocus = True
     Font.Charset = DEFAULT_CHARSET
@@ -542,7 +609,7 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 9
+    TabOrder = 7
     TabStop = True
   end
   object buttonCanFocus2: TUButton
@@ -551,6 +618,17 @@ object MainForm: TMainForm
     Width = 150
     Height = 30
     ThemeManager = UThemeManager1
+    CustomBorderColors.None = 15921906
+    CustomBorderColors.Hover = 15132390
+    CustomBorderColors.Press = 13421772
+    CustomBorderColors.Disabled = 15921906
+    CustomBorderColors.Focused = 15921906
+    CustomBackColors.None = 15921906
+    CustomBackColors.Hover = 15132390
+    CustomBackColors.Press = 13421772
+    CustomBackColors.Disabled = 15921906
+    CustomBackColors.Focused = 15921906
+    CustomTextColors.Disabled = clGray
     Text = 'TUButton can focus 2'
     AllowFocus = True
     Font.Charset = DEFAULT_CHARSET
@@ -558,14 +636,14 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
-    TabOrder = 10
+    TabOrder = 8
     TabStop = True
   end
   object drawerNavigation: TUPanel
     Left = 0
     Top = 32
     Width = 40
-    Height = 617
+    Height = 510
     ThemeManager = UThemeManager1
     CustomTextColor = clBlack
     CustomBackColor = 15132390
@@ -581,7 +659,7 @@ object MainForm: TMainForm
     ParentBackground = False
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 11
+    TabOrder = 9
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -759,10 +837,10 @@ object MainForm: TMainForm
     end
   end
   object boxSmoothScrolling: TUScrollBox
-    Left = 824
+    Left = 791
     Top = 32
     Width = 250
-    Height = 617
+    Height = 510
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -773,13 +851,14 @@ object MainForm: TMainForm
     Padding.Bottom = 15
     ParentColor = False
     ParentDoubleBuffered = False
-    TabOrder = 12
+    TabOrder = 10
     ThemeManager = UThemeManager1
+    ScrollLength = 350
     object UText1: TUText
       AlignWithMargins = True
       Left = 15
       Top = 5
-      Width = 220
+      Width = 203
       Height = 28
       Margins.Left = 0
       Margins.Top = 0
@@ -801,7 +880,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 278
-      Width = 220
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 10
@@ -823,7 +902,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 443
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -847,7 +926,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 501
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -855,7 +934,6 @@ object MainForm: TMainForm
       Margins.Bottom = 5
       ThemeManager = UThemeManager1
       Text = 'Send me email'
-      AllowGrayed = True
       CustomActiveColor = 14120960
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -872,7 +950,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 585
-      Width = 220
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 10
@@ -894,7 +972,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 612
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -920,7 +998,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 641
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -945,7 +1023,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 670
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -970,7 +1048,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 699
-      Width = 220
+      Width = 203
       Height = 34
       Margins.Left = 0
       Margins.Top = 0
@@ -993,7 +1071,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 793
-      Width = 220
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 10
@@ -1015,30 +1093,29 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 815
-      Width = 220
-      Height = 34
+      Width = 203
+      Height = 17
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
       Margins.Bottom = 10
       Align = alTop
-      Caption = 'You are using 3.2 / 5 GB free storage'
+      Caption = 'You are using 3.2/5 GB free storage'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
-      ExplicitWidth = 171
+      ExplicitWidth = 208
     end
     object UProgressBar1: TUProgressBar
       AlignWithMargins = True
       Left = 15
-      Top = 859
-      Width = 220
+      Top = 842
+      Width = 203
       Height = 5
       Margins.Left = 0
       Margins.Top = 0
@@ -1050,15 +1127,14 @@ object MainForm: TMainForm
       CustomForeColor = 2469894
       CustomBackColor = 15132390
       Align = alTop
-      ExplicitLeft = 20
-      ExplicitTop = 410
-      ExplicitWidth = 100
+      ExplicitTop = 294
+      ExplicitWidth = 220
     end
     object Image1: TImage
       AlignWithMargins = True
       Left = 15
       Top = 305
-      Width = 220
+      Width = 203
       Height = 128
       Cursor = crHandPoint
       Hint = 'Click to change avatar'
@@ -1833,12 +1909,13 @@ object MainForm: TMainForm
       ShowHint = True
       Transparent = True
       ExplicitTop = 75
+      ExplicitWidth = 220
     end
     object UText7: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 894
-      Width = 220
+      Top = 877
+      Width = 203
       Height = 28
       Margins.Left = 0
       Margins.Top = 20
@@ -1859,8 +1936,8 @@ object MainForm: TMainForm
     object UText8: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 927
-      Width = 220
+      Top = 910
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 0
@@ -1882,8 +1959,8 @@ object MainForm: TMainForm
     object UText9: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 949
-      Width = 220
+      Top = 932
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 0
@@ -1905,8 +1982,8 @@ object MainForm: TMainForm
     object UText10: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 971
-      Width = 220
+      Top = 954
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 0
@@ -1928,8 +2005,8 @@ object MainForm: TMainForm
     object UHyperLink1: TUHyperLink
       AlignWithMargins = True
       Left = 15
-      Top = 1038
-      Width = 220
+      Top = 1021
+      Width = 203
       Height = 17
       Cursor = crHandPoint
       Margins.Left = 0
@@ -1945,6 +2022,11 @@ object MainForm: TMainForm
       Font.Style = []
       ParentFont = False
       ThemeManager = UThemeManager1
+      CustomTextColors.None = 14120960
+      CustomTextColors.Hover = clGray
+      CustomTextColors.Press = clMedGray
+      CustomTextColors.Disabled = clMedGray
+      CustomTextColors.Focused = 14120960
       URL = 'https://embarcadero.com/'
       ExplicitWidth = 154
     end
@@ -1952,7 +2034,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 472
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -1960,7 +2042,6 @@ object MainForm: TMainForm
       Margins.Bottom = 5
       ThemeManager = UThemeManager1
       Text = 'Keep my email in private'
-      AllowGrayed = True
       CustomActiveColor = 14120960
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -1977,7 +2058,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 48
-      Width = 220
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 10
@@ -1999,7 +2080,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 75
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -2019,12 +2100,13 @@ object MainForm: TMainForm
       ParentFont = False
       OnClick = URadioButton4Click
       ExplicitTop = 59
+      ExplicitWidth = 220
     end
     object URadioButton5: TURadioButton
       AlignWithMargins = True
       Left = 15
       Top = 104
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -2043,12 +2125,13 @@ object MainForm: TMainForm
       ParentFont = False
       OnClick = URadioButton5Click
       ExplicitTop = 88
+      ExplicitWidth = 220
     end
     object URadioButton6: TURadioButton
       AlignWithMargins = True
       Left = 15
       Top = 133
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -2067,12 +2150,13 @@ object MainForm: TMainForm
       ParentFont = False
       OnClick = URadioButton6Click
       ExplicitTop = 117
+      ExplicitWidth = 220
     end
     object UText12: TUText
       AlignWithMargins = True
       Left = 15
       Top = 207
-      Width = 220
+      Width = 203
       Height = 17
       Margins.Left = 0
       Margins.Top = 0
@@ -2094,7 +2178,7 @@ object MainForm: TMainForm
       AlignWithMargins = True
       Left = 15
       Top = 234
-      Width = 220
+      Width = 203
       Height = 24
       Margins.Left = 0
       Margins.Top = 0
@@ -2112,18 +2196,30 @@ object MainForm: TMainForm
       ParentFont = False
       OnClick = UCheckBox4Click
       ExplicitTop = 229
+      ExplicitWidth = 220
     end
     object UButton1: TUButton
       AlignWithMargins = True
       Left = 15
       Top = 535
-      Width = 220
+      Width = 203
       Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
       Margins.Bottom = 10
       ThemeManager = UThemeManager1
+      CustomBorderColors.None = 15921906
+      CustomBorderColors.Hover = 15132390
+      CustomBorderColors.Press = 13421772
+      CustomBorderColors.Disabled = 15921906
+      CustomBorderColors.Focused = 15921906
+      CustomBackColors.None = 15921906
+      CustomBackColors.Hover = 15132390
+      CustomBackColors.Press = 13421772
+      CustomBackColors.Disabled = 15921906
+      CustomBackColors.Focused = 15921906
+      CustomTextColors.Disabled = clGray
       Text = 'Delete my account'
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -2132,19 +2228,29 @@ object MainForm: TMainForm
       Font.Name = 'Segoe UI'
       Font.Style = []
       TabOrder = 0
-      ExplicitWidth = 203
     end
     object UButton2: TUButton
       AlignWithMargins = True
       Left = 15
-      Top = 998
-      Width = 220
+      Top = 981
+      Width = 203
       Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
       Margins.Bottom = 10
       ThemeManager = UThemeManager1
+      CustomBorderColors.None = 15921906
+      CustomBorderColors.Hover = 15132390
+      CustomBorderColors.Press = 13421772
+      CustomBorderColors.Disabled = 15921906
+      CustomBorderColors.Focused = 15921906
+      CustomBackColors.None = 15921906
+      CustomBackColors.Hover = 15132390
+      CustomBackColors.Press = 13421772
+      CustomBackColors.Disabled = 15921906
+      CustomBackColors.Focused = 15921906
+      CustomTextColors.Disabled = clGray
       Text = 'Check for update'
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -2153,19 +2259,29 @@ object MainForm: TMainForm
       Font.Name = 'Segoe UI'
       Font.Style = []
       TabOrder = 1
-      ExplicitWidth = 203
     end
     object UButton3: TUButton
       AlignWithMargins = True
       Left = 15
       Top = 743
-      Width = 220
+      Width = 203
       Height = 30
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
       Margins.Bottom = 10
       ThemeManager = UThemeManager1
+      CustomBorderColors.None = 15921906
+      CustomBorderColors.Hover = 15132390
+      CustomBorderColors.Press = 13421772
+      CustomBorderColors.Disabled = 15921906
+      CustomBorderColors.Focused = 15921906
+      CustomBackColors.None = 15921906
+      CustomBackColors.Hover = 15132390
+      CustomBackColors.Press = 13421772
+      CustomBackColors.Disabled = 15921906
+      CustomBackColors.Focused = 15921906
+      CustomTextColors.Disabled = clGray
       Text = 'Upgrade now'
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -2174,13 +2290,12 @@ object MainForm: TMainForm
       Font.Name = 'Segoe UI'
       Font.Style = []
       TabOrder = 2
-      ExplicitWidth = 203
     end
     object UPanel1: TUPanel
       AlignWithMargins = True
       Left = 15
       Top = 167
-      Width = 220
+      Width = 203
       Height = 35
       Cursor = crHandPoint
       Margins.Left = 0
@@ -2201,26 +2316,12 @@ object MainForm: TMainForm
       ParentFont = False
       TabOrder = 3
       OnClick = UPanel1Click
-      ExplicitWidth = 203
     end
-  end
-  object buttonCustomColor: TUButton
-    Left = 60
-    Top = 380
-    Width = 151
-    Height = 30
-    Text = 'Custom button'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    TabOrder = 13
   end
   object captionbarNewStyle: TUCaptionBar
     Left = 0
     Top = 0
-    Width = 1074
+    Width = 1041
     Height = 32
     ThemeManager = UThemeManager1
     Align = alTop
@@ -2233,15 +2334,211 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
   end
+  object Panel1: TPanel
+    Left = 440
+    Top = 460
+    Width = 154
+    Height = 0
+    BevelOuter = bvNone
+    Color = 15132390
+    Padding.Top = 5
+    Padding.Bottom = 5
+    ParentBackground = False
+    TabOrder = 14
+    object USymbolButton1: TUSymbolButton
+      Left = 0
+      Top = -40
+      Width = 154
+      Height = 35
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57615
+      Text = 'Paste'
+      Detail = 'Ctrl+V'
+      Align = alBottom
+      ExplicitLeft = 2
+      ExplicitTop = 70
+      ExplicitWidth = 150
+    end
+    object USymbolButton2: TUSymbolButton
+      Left = 0
+      Top = -75
+      Width = 154
+      Height = 35
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57615
+      Text = 'Copy'
+      Detail = 'Ctrl+C'
+      Align = alBottom
+      ExplicitLeft = 2
+      ExplicitTop = 35
+      ExplicitWidth = 150
+    end
+    object USymbolButton3: TUSymbolButton
+      Left = 0
+      Top = -110
+      Width = 154
+      Height = 35
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57615
+      Text = 'Cut'
+      Detail = 'Ctrl+X'
+      Align = alBottom
+      ExplicitLeft = 2
+      ExplicitTop = 0
+      ExplicitWidth = 150
+    end
+  end
+  object UPopupMenu1: TUPopupMenu
+    Left = 600
+    Top = 180
+    Width = 170
+    Height = 115
+    ThemeManager = UThemeManager1
+    object USymbolButton5: TUSymbolButton
+      Left = 1
+      Top = 75
+      Width = 168
+      Height = 35
+      ThemeManager = UThemeManager1
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57709
+      Text = 'Paste'
+      Detail = 'Ctrl+V'
+      Align = alTop
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = USymbolButton5Click
+      ExplicitLeft = 0
+      ExplicitTop = 46
+      ExplicitWidth = 240
+    end
+    object USymbolButton6: TUSymbolButton
+      Left = 1
+      Top = 5
+      Width = 168
+      Height = 35
+      ThemeManager = UThemeManager1
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57707
+      Text = 'Cut'
+      Detail = 'Ctrl+X'
+      Align = alTop
+      ParentShowHint = False
+      ShowHint = False
+      ExplicitLeft = 0
+      ExplicitWidth = 240
+    end
+    object USymbolButton4: TUSymbolButton
+      Left = 1
+      Top = 40
+      Width = 168
+      Height = 35
+      ThemeManager = UThemeManager1
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57711
+      Text = 'Copy'
+      Detail = 'Ctrl+C'
+      Align = alTop
+      ParentShowHint = False
+      ShowHint = False
+      ExplicitLeft = 0
+      ExplicitTop = 46
+      ExplicitWidth = 240
+    end
+  end
   object UThemeManager1: TUThemeManager
     CustomColor = clGreen
-    Left = 720
-    Top = 40
+    Left = 660
+    Top = 60
   end
   object ColorDialog1: TColorDialog
     Ctl3D = False
     Color = 14120960
-    Left = 720
-    Top = 100
+    Left = 660
+    Top = 110
   end
 end

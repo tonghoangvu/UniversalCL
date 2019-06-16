@@ -5,7 +5,7 @@ interface
 uses
   FlatSB,
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
-  System.Classes, System.SysUtils,
+  System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Forms, VCL.Dialogs;
 
@@ -29,7 +29,11 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; reintroduce;
       procedure AfterContrusction;
+
       procedure UpdateTheme;
+      procedure BeginUpdate;
+      procedure EndUpdate;
+      procedure HideScrollBar;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -108,6 +112,8 @@ var
 begin
   inherited;
 
+  BeginUpdate;
+
   if FIsScrolling = true then
     exit
   else
@@ -132,20 +138,38 @@ begin
     procedure
     begin
       FIsScrolling := false;
-      FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
+      HideScrollBar;
+      EndUpdate;
     end;
 
   Ani.Duration := ScrollTime;
 
-  EnableAlign;  //  Neccesary
+  if csDesigning in ComponentState = false then
+    EnableAlign;  //  Neccesary
   Ani.Start;
 end;
 
 procedure TUScrollBox.WM_Paint(var Msg: TWMPaint);
 begin
   //  Hide scrollbar after construction
-  FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
+  HideScrollBar;
   inherited;
+end;
+
+procedure TUScrollBox.BeginUpdate;
+begin
+
+end;
+
+procedure TUScrollBox.EndUpdate;
+begin
+
+end;
+
+procedure TUScrollBox.HideScrollBar;
+begin
+  if csDesigning in ComponentState = false then
+    FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
 end;
 
 end.
