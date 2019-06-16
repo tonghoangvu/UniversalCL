@@ -15,6 +15,7 @@ type
     private
       FThemeManager: TUThemeManager;
 
+      FHitTest: Boolean;
       FText: string;
       FAllowGrayed: Boolean;
       FState: TUCheckBoxState;
@@ -41,6 +42,7 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
@@ -154,6 +156,7 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
+  FHitTest := true;
   FText := 'UCheckBox';
   FAllowGrayed := false;
   FState := cbsUnchecked;
@@ -244,20 +247,22 @@ end;
 procedure TUCheckBox.WMLButtonUp(var Msg: TMessage);
 begin
   //  Unchecked > Checked > Grayed > ...
-  if Enabled = true then
-    case State of
-      cbsChecked:
-        if AllowGrayed = true then
-          State := cbsGrayed
-        else
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      case State of
+        cbsChecked:
+          if AllowGrayed = true then
+            State := cbsGrayed
+          else
+            State := cbsUnchecked;
+        cbsUnchecked:
+          State := cbsChecked;
+        cbsGrayed:
           State := cbsUnchecked;
-      cbsUnchecked:
-        State := cbsChecked;
-      cbsGrayed:
-        State := cbsUnchecked;
-    end;
+      end;
 
-  inherited;
+      inherited;
+    end;
 end;
 
 end.

@@ -186,8 +186,8 @@ begin
     end
   else
     begin
-      FillRect := TRect.Create(0, 0, Width, Round(Value / 100 * Height));
-      BackRect := TRect.Create(0, FillRect.Bottom, Width, Height);
+      BackRect := TRect.Create(0, 0, Width, Round(Value / 100 * Height));
+      FillRect := TRect.Create(0, BackRect.Bottom, Width, Height);
     end;
 
   //  Paint background (not full, only unfilled area)

@@ -6,7 +6,7 @@
         <Projects Include="UCLPackage.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="TestControls.dproj">
+        <Projects Include="Demo.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +26,23 @@
     <Target Name="UCLPackage:Make">
         <MSBuild Projects="UCLPackage.dproj" Targets="Make"/>
     </Target>
-    <Target Name="TestControls">
-        <MSBuild Projects="TestControls.dproj"/>
+    <Target Name="Demo">
+        <MSBuild Projects="Demo.dproj"/>
     </Target>
-    <Target Name="TestControls:Clean">
-        <MSBuild Projects="TestControls.dproj" Targets="Clean"/>
+    <Target Name="Demo:Clean">
+        <MSBuild Projects="Demo.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="TestControls:Make">
-        <MSBuild Projects="TestControls.dproj" Targets="Make"/>
+    <Target Name="Demo:Make">
+        <MSBuild Projects="Demo.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="UCLPackage;TestControls"/>
+        <CallTarget Targets="UCLPackage;Demo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="UCLPackage:Clean;TestControls:Clean"/>
+        <CallTarget Targets="UCLPackage:Clean;Demo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="UCLPackage:Make;TestControls:Make"/>
+        <CallTarget Targets="UCLPackage:Make;Demo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

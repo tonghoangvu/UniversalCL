@@ -4,13 +4,15 @@ interface
 
 uses
   flatsb,
+  UCL.Utils,
   UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
+  UCL.TUPopupMenu,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls,
-  Vcl.Imaging.pngimage, Vcl.WinXPanels;
+  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus;
 
 type
   TMainForm = class(TUForm)
@@ -30,7 +32,6 @@ type
     linkConnected: TUHyperLink;
     linkCustomColor: TUHyperLink;
     linkDisabled: TUHyperLink;
-    panelDisconnected: TUPanel;
     panelConnected: TUPanel;
     buttonReloadSettings: TUSymbolButton;
     buttonAniStart: TButton;
@@ -88,6 +89,14 @@ type
     UPanel1: TUPanel;
     UText12: TUText;
     UCheckBox4: TUCheckBox;
+    Panel1: TPanel;
+    USymbolButton1: TUSymbolButton;
+    USymbolButton2: TUSymbolButton;
+    USymbolButton3: TUSymbolButton;
+    UPopupMenu1: TUPopupMenu;
+    USymbolButton5: TUSymbolButton;
+    USymbolButton6: TUSymbolButton;
+    USymbolButton4: TUSymbolButton;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -99,6 +108,9 @@ type
     procedure URadioButton6Click(Sender: TObject);
     procedure UPanel1Click(Sender: TObject);
     procedure UCheckBox4Click(Sender: TObject);
+    procedure panelConnectedMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure USymbolButton5Click(Sender: TObject);
+
   private
 
   public
@@ -116,7 +128,7 @@ procedure TMainForm.buttonAniStartClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 300, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 200, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
     end, true);
@@ -127,7 +139,7 @@ procedure TMainForm.buttonAniInverseClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 300, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 200, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
     end, true);
@@ -137,8 +149,12 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := UThemeManager1;
+end;
 
-//  InitializeFlatSB(Handle);
+procedure TMainForm.panelConnectedMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
+    UPopupMenu1.Popup;
 end;
 
 procedure TMainForm.UCheckBox4Click(Sender: TObject);
@@ -154,12 +170,14 @@ var
   NewColor: TColor;
 begin
   if ColorDialog1.Execute = true then
-    NewColor := ColorDialog1.Color;
+    begin
+      NewColor := ColorDialog1.Color;
 
-  UThemeManager1.CustomColor := NewColor;
-  UThemeManager1.UseAccentColor := false;
+      UThemeManager1.CustomColor := NewColor;
+      UThemeManager1.UseAccentColor := false;
 
-  UPanel1.CustomBackColor := NewColor;
+      UPanel1.CustomBackColor := NewColor;
+    end;
 end;
 
 procedure TMainForm.URadioButton4Click(Sender: TObject);
@@ -175,6 +193,11 @@ end;
 procedure TMainForm.URadioButton6Click(Sender: TObject);
 begin
   UThemeManager1.ThemeKind := tkDark;
+end;
+
+procedure TMainForm.USymbolButton5Click(Sender: TObject);
+begin
+  self.SetFocus;
 end;
 
 procedure TMainForm.buttonRandomProgressClick(Sender: TObject);
