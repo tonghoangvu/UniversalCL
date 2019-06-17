@@ -165,6 +165,7 @@
         <DCCReference Include="Components\UCL.TUSwitch.pas"/>
         <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
         <DCCReference Include="Components\UCL.TURadioButton.pas"/>
+        <DCCReference Include="Components\UCL.TUPopupBox.pas"/>
         <DCCReference Include="Components\UCL.TUPopupMenu.pas"/>
         <None Include="UCLPackage.todo"/>
         <BuildConfiguration Include="Release">

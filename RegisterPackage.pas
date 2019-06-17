@@ -15,7 +15,7 @@ uses
   UCL.TUForm, UCL.TUCaptionBar,
   UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUHyperLink, UCL.TUPanel,
   UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUSwitch, UCL.TUScrollBox, UCL.TURadioButton,
-  UCL.TUPopupMenu
+  UCL.TUPopupBox, UCL.TUPopupMenu
   ;
 
 procedure Register;
@@ -24,7 +24,7 @@ begin
     TUThemeManager,
     //TUForm,
     TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel, TUCheckBox, TUProgressBar,
-    TUSwitch, TUScrollBox, TURadioButton, TUPopupMenu
+    TUSwitch, TUScrollBox, TURadioButton, TUPopupBox, TUPopupMenu
     ]);
 end;
 

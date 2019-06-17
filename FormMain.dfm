@@ -521,7 +521,7 @@ object MainForm: TMainForm
     Font.Style = []
     TabOrder = 3
   end
-  object panelConnected: TUPanel
+  object panelPopup: TUPanel
     Left = 380
     Top = 460
     Width = 201
@@ -530,7 +530,7 @@ object MainForm: TMainForm
     CustomTextColor = clBlack
     CustomBackColor = 15132390
     BevelOuter = bvNone
-    Caption = 'UPanel3 (connected)'
+    Caption = 'Right click to open menu'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
@@ -538,8 +538,8 @@ object MainForm: TMainForm
     Font.Style = []
     ParentBackground = False
     ParentFont = False
+    PopupMenu = popupDemo
     TabOrder = 1
-    OnMouseUp = panelConnectedMouseUp
   end
   object buttonAniStart: TButton
     Left = 280
@@ -585,7 +585,7 @@ object MainForm: TMainForm
     TabOrder = 6
     OnClick = buttonAniInverseClick
   end
-  object buttonCanFocus1: TUButton
+  object buttonCanFocus: TUButton
     Left = 60
     Top = 340
     Width = 150
@@ -602,7 +602,7 @@ object MainForm: TMainForm
     CustomBackColors.Disabled = 15921906
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
-    Text = 'TUButton can focus 1'
+    Text = 'TUButton can focus'
     AllowFocus = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -612,7 +612,7 @@ object MainForm: TMainForm
     TabOrder = 7
     TabStop = True
   end
-  object buttonCanFocus2: TUButton
+  object buttonHighlight: TUButton
     Left = 220
     Top = 340
     Width = 150
@@ -629,10 +629,11 @@ object MainForm: TMainForm
     CustomBackColors.Disabled = 15921906
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
-    Text = 'TUButton can focus 2'
+    Text = 'TUButton highlight'
     AllowFocus = True
+    Highlight = True
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWhite
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
@@ -2334,144 +2335,16 @@ object MainForm: TMainForm
     Font.Style = []
     ParentFont = False
   end
-  object Panel1: TPanel
-    Left = 440
-    Top = 460
-    Width = 154
-    Height = 0
-    BevelOuter = bvNone
-    Color = 15132390
-    Padding.Top = 5
-    Padding.Bottom = 5
-    ParentBackground = False
-    TabOrder = 14
-    object USymbolButton1: TUSymbolButton
-      Left = 0
-      Top = -40
-      Width = 154
-      Height = 35
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57615
-      Text = 'Paste'
-      Detail = 'Ctrl+V'
-      Align = alBottom
-      ExplicitLeft = 2
-      ExplicitTop = 70
-      ExplicitWidth = 150
-    end
-    object USymbolButton2: TUSymbolButton
-      Left = 0
-      Top = -75
-      Width = 154
-      Height = 35
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57615
-      Text = 'Copy'
-      Detail = 'Ctrl+C'
-      Align = alBottom
-      ExplicitLeft = 2
-      ExplicitTop = 35
-      ExplicitWidth = 150
-    end
-    object USymbolButton3: TUSymbolButton
-      Left = 0
-      Top = -110
-      Width = 154
-      Height = 35
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57615
-      Text = 'Cut'
-      Detail = 'Ctrl+X'
-      Align = alBottom
-      ExplicitLeft = 2
-      ExplicitTop = 0
-      ExplicitWidth = 150
-    end
-  end
-  object UPopupMenu1: TUPopupMenu
-    Left = 600
-    Top = 180
-    Width = 170
-    Height = 115
+  object popupboxDemo: TUPopupBox
+    Left = 590
+    Top = 230
+    Width = 180
+    Height = 150
     ThemeManager = UThemeManager1
-    object USymbolButton5: TUSymbolButton
-      Left = 1
-      Top = 75
-      Width = 168
-      Height = 35
-      ThemeManager = UThemeManager1
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57709
-      Text = 'Paste'
-      Detail = 'Ctrl+V'
-      Align = alTop
-      ParentShowHint = False
-      ShowHint = True
-      OnClick = USymbolButton5Click
-      ExplicitLeft = 0
-      ExplicitTop = 46
-      ExplicitWidth = 240
-    end
-    object USymbolButton6: TUSymbolButton
+    object USymbolButton4: TUSymbolButton
       Left = 1
       Top = 5
-      Width = 168
+      Width = 178
       Height = 35
       ThemeManager = UThemeManager1
       SymbolFont.Charset = DEFAULT_CHARSET
@@ -2493,15 +2366,12 @@ object MainForm: TMainForm
       Text = 'Cut'
       Detail = 'Ctrl+X'
       Align = alTop
-      ParentShowHint = False
-      ShowHint = False
-      ExplicitLeft = 0
-      ExplicitWidth = 240
+      ExplicitTop = -5
     end
-    object USymbolButton4: TUSymbolButton
+    object USymbolButton5: TUSymbolButton
       Left = 1
       Top = 40
-      Width = 168
+      Width = 178
       Height = 35
       ThemeManager = UThemeManager1
       SymbolFont.Charset = DEFAULT_CHARSET
@@ -2523,11 +2393,64 @@ object MainForm: TMainForm
       Text = 'Copy'
       Detail = 'Ctrl+C'
       Align = alTop
-      ParentShowHint = False
-      ShowHint = False
-      ExplicitLeft = 0
-      ExplicitTop = 46
-      ExplicitWidth = 240
+      ExplicitTop = 35
+    end
+    object USymbolButton6: TUSymbolButton
+      Left = 1
+      Top = 75
+      Width = 178
+      Height = 35
+      ThemeManager = UThemeManager1
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57709
+      Text = 'Paste'
+      Detail = 'Ctrl+V'
+      Align = alTop
+      ExplicitTop = 5
+    end
+    object buttonClosePopup: TUSymbolButton
+      Left = 1
+      Top = 110
+      Width = 178
+      Height = 35
+      ThemeManager = UThemeManager1
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57610
+      Text = 'Close'
+      Detail = 'Ctrl+V'
+      ShowDetail = False
+      Align = alTop
+      OnClick = buttonClosePopupClick
+      ExplicitLeft = 11
+      ExplicitTop = 125
     end
   end
   object UThemeManager1: TUThemeManager
@@ -2535,10 +2458,15 @@ object MainForm: TMainForm
     Left = 660
     Top = 60
   end
-  object ColorDialog1: TColorDialog
+  object dialogSelectColor: TColorDialog
     Ctl3D = False
     Color = 14120960
     Left = 660
     Top = 110
+  end
+  object popupDemo: TUPopupMenu
+    PopupBox = popupboxDemo
+    Left = 680
+    Top = 410
   end
 end

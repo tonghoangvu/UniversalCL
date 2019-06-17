@@ -53,6 +53,7 @@ contains
   UCL.TUSwitch in 'Components\UCL.TUSwitch.pas',
   UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
   UCL.TURadioButton in 'Components\UCL.TURadioButton.pas',
+  UCL.TUPopupBox in 'Components\UCL.TUPopupBox.pas',
   UCL.TUPopupMenu in 'Components\UCL.TUPopupMenu.pas';
 
 end.
