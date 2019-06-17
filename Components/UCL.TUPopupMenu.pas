@@ -3,194 +3,46 @@ unit UCL.TUPopupMenu;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.IntAnimation,
-  System.Classes, System.SysUtils, System.Types,
-  Winapi.Messages,
-  VCL.Controls, VCL.ExtCtrls, VCL.Forms, VCL.Graphics;
+  UCL.Classes, UCL.TUThemeManager, UCL.TUPopupBox,
+  System.Classes, System.SysUtils,
+  VCL.Controls, VCL.Menus;
 
 type
-  TUPopupKind = (pkDown, pkUp);
-
-  TUOpenButton = (obRight, obLeft);
-
-  TUPopupMenu = class(TCustomPanel, IUThemeControl)
+  TUPopupMenu = class(TPopupMenu{, IUThemeControl})
     private
-      FThemeManager: TUThemeManager;
-
-      FPopupKind: TUPopupKind;
-      FCustomBackColor: TColor;
-      FCustomBorderColor: TColor;
-      FIsShowing: Boolean;
-
-      procedure SetThemeManager(const Value: TUThemeManager);
-
-      procedure PopupDeactive(Sender: TObject);
-
-    protected
-      procedure Paint; override;
+      FPopupBox: TUPopupBox;
+      FUseNewPopup: Boolean;
 
     public
       constructor Create(aOwner: TComponent); override;
-      procedure UpdateTheme;
-      procedure Popup;
+      procedure Popup(X, Y: Integer); override;
 
     published
-      property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-
-      property PopupKind: TUPopupKind read FPopupKind write FPopupKind default pkDown;
-      property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor default $E6E6E6;
-      property CustomBorderColor: TColor read FCustomBorderColor write FCustomBorderColor default $C6C6C6;
-      property IsShowing: Boolean read FIsShowing;
+      property PopupBox: TUPopupBox read FPopupBox write FPopupBox;
+      property UseNewPopup: Boolean read FUseNewPopup write FUseNewPopup default true;
   end;
 
 implementation
 
-{ THEME }
-
-procedure TUPopupMenu.SetThemeManager(const Value: TUThemeManager);
-begin
-  if Value <> FThemeManager then
-    begin
-      //  Disconnect current ThemeManager
-      if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
-
-      //  Connect to new ThemeManager
-      if Value <> nil then
-        Value.ConnectControl(Self);
-
-      FThemeManager := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUPopupMenu.UpdateTheme;
-begin
-  if ThemeManager = nil then
-    begin
-      Color := CustomBackColor;
-      Canvas.Pen.Color := CustomBorderColor;
-    end
-  else if ThemeManager.Theme = utLight then
-    begin
-      Color := $E6E6E6;
-      Canvas.Pen.Color := $C6C6C6;
-    end
-  else
-    begin
-      Color := $1F1F1F;
-      Canvas.Pen.Color := $141414;
-    end;
-
-  Canvas.Brush.Color := Self.Color;
-  Font.Color := GetTextColorFromBackground(Color);
-end;
-
-{ MAIN CLASS }
+{ TUPopupMenu }
 
 constructor TUPopupMenu.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  FPopupKind := pkDown;
-  FCustomBackColor := $E6E6E6;
-  FCustomBorderColor := $C6C6C6;
-  FIsShowing := false;
-
-  if csDesigning in ComponentState then
-    Visible := true
-  else
-    Visible := false;
-  BevelOuter := bvNone;
-  FullRepaint := false;
-  ShowCaption := false;
-  Width := 240;
-  Height := 115;
-  Padding.SetBounds(1, 5, 1, 5);
-
-  Canvas.Pen.Width := 1;
-
-  UpdateTheme;
+  FUseNewPopup := true;
 end;
 
-procedure TUPopupMenu.Popup;
-var
-  ClickPoint: TPoint;
-  PopupForm: TForm;
-  Ani: TIntAni;
+procedure TUPopupMenu.Popup(X, Y: Integer);
 begin
-  if FIsShowing = true then
-    exit
+  if UseNewPopup = false then
+    inherited
   else
-    FIsShowing := true;
-
-  ClickPoint := Mouse.CursorPos;
-
-  Application.CreateForm(TForm, PopupForm);
-  PopupForm.FormStyle := fsStayOnTop;
-  PopupForm.BorderStyle := bsNone;
-  PopupForm.Width := Self.Width;
-  PopupForm.Color := Self.Color;
-
-  PopupForm.OnDeactivate := PopupDeactive;
-
-  Self.Top := 0;
-  Self.Left := 0;
-  Self.Align := alTop;
-
-  Self.Parent := PopupForm;
-  Self.Visible := true;
-
-  PopupForm.Show;
-  PopupForm.Color := $E6E6E6;
-  PopupForm.Left := ClickPoint.X;
-  PopupForm.Top := ClickPoint.Y;
-
-  Ani := TIntAni.Create(akOut, afkQuartic, 0, Self.Height,
-    procedure (Value: Integer)
     begin
-      PopupForm.Height := Value;
-    end, true);
-  Ani.Step := 20;
-  Ani.Duration := 200;
-
-  Ani.Start;
-end;
-
-procedure TUPopupMenu.PopupDeactive(Sender: TObject);
-var
-  Ani: TIntAni;
-begin
-  if Sender is TForm = false then
-    exit;
-
-  Ani := TIntAni.Create(akOut, afkQuartic, (Sender as TForm).Height, 0,
-    procedure (Value: Integer)
-    begin
-      (Sender as TForm).Height := Value;
-    end, true);
-
-  Ani.AniDoneProc := procedure
-    begin
-      (Sender as TForm).Close;
-      FIsShowing := false;
+      DoPopup(Self);
+      if PopupBox <> nil then
+        PopupBox.Popup(X, Y);
     end;
-
-  Ani.Step := 20;
-  Ani.Duration := 200;
-
-  Ani.Start;
-end;
-
-{ CUSTOM METHODS }
-
-procedure TUPopupMenu.Paint;
-begin
-  inherited;
-
-  Canvas.Rectangle(0, 0, Width, Height);
-  Canvas.FillRect(TRect.Create(1, 1, Width - 2, 5));
-  Canvas.FillRect(TRect.Create(1, Height - 5, Width - 2, Height - 1));
 end;
 
 end.

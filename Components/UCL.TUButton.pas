@@ -3,7 +3,7 @@ unit UCL.TUButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   Winapi.Messages,
   System.Classes, System.Types,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
@@ -34,6 +34,7 @@ type
       FHitTest: Boolean;
       FText: string;
       FAllowFocus: Boolean;
+      FHighlight: Boolean;
 
       //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -42,6 +43,7 @@ type
       procedure SetButtonState(const Value: TUButtonState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
+      procedure SetHighlight(const Value: Boolean);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
@@ -76,6 +78,7 @@ type
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
       property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
+      property Highlight: Boolean read FHighlight write SetHighlight default false;
 
       {$REGION 'Common properties'}
       property Align;
@@ -173,6 +176,15 @@ begin
     end;
 end;
 
+procedure TUButton.SetHighlight(const Value: Boolean);
+begin
+  if Value <> FHighlight then
+    begin
+      FHighlight := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUButton.Create(aOwner: TComponent);
@@ -193,6 +205,7 @@ begin
   FHitTest := true;
   FText := 'Button';
   FAllowFocus := false;
+  FHighlight := false;
 
   //  Property
   Height := 30;
@@ -223,12 +236,35 @@ var
 begin
   inherited;
 
+  //  Custom colors
   if ThemeManager = nil then
     begin
       BorderColor := CustomBorderColors.GetStateColor(ButtonState);
       BackColor := CustomBackColors.GetStateColor(ButtonState);
       TextColor := CustomTextColors.GetStateColor(ButtonState);
     end
+
+  //  Highlight button
+  else if Highlight = true then
+    case ButtonState of
+      bsNone, bsHover, bsFocused:
+        begin
+          BackColor := ThemeManager.ActiveColor;
+          if ButtonState = bsNone then
+            BorderColor := BackColor
+          else
+            BorderColor := ChangeColor(BackColor, 0.6);
+          TextColor := GetTextColorFromBackground(BackColor);
+        end
+      else
+        begin
+          BackColor := DefBackColor[ThemeManager.Theme, ButtonState];
+          BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
+          TextColor := DefTextColor[ThemeManager.Theme, ButtonState];
+        end;
+    end
+
+  //  Define colors
   else
     begin
       BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
