@@ -11,8 +11,6 @@ uses
 type
   TUPopupKind = (pkDown, pkUp);
 
-  TUOpenButton = (obRight, obLeft);
-
   TUPopupBox = class(TCustomPanel, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
@@ -148,11 +146,21 @@ begin
   PopupForm.Left := ClickPoint.X;
   PopupForm.Top := ClickPoint.Y;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, 0, Self.Height,
-    procedure (Value: Integer)
-    begin
-      PopupForm.Height := Value;
-    end, true);
+  if PopupKind = pkDown then
+    Ani := TIntAni.Create(akOut, afkQuartic, 0, Self.Height,
+      procedure (Value: Integer)
+      begin
+        PopupForm.Height := Value;
+      end, true)
+  else
+    Ani := TIntAni.Create(akOut, afkQuartic, 0, Self.Height,
+      procedure (Value: Integer)
+      begin
+        PopupForm.Top := Y - Value;
+        PopupForm.Height := Value;
+      end, true);
+
+
   Ani.Step := 20;
   Ani.Duration := 200;
 
@@ -167,17 +175,29 @@ end;
 procedure TUPopupBox.PopupDeactive(Sender: TObject);
 var
   Ani: TIntAni;
+  FirstTop: Integer;
 begin
   if Sender is TForm = false then
     exit;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, (Sender as TForm).Height, 0,
-    procedure (Value: Integer)
+  if PopupKind = pkDown then
+    Ani := TIntAni.Create(akOut, afkQuartic, (Sender as TForm).Height, 0,
+      procedure (Value: Integer)
+      begin
+        (Sender as TForm).Height := Value;
+      end, true)
+  else
     begin
-      (Sender as TForm).Height := Value;
-    end, true);
+      FirstTop := (Sender as TForm).Top + (Sender as TForm).Height;
+      Ani := TIntAni.Create(akOut, afkQuartic, (Sender as TForm).Height, 0,
+        procedure (Value: Integer)
+        begin
+          (Sender as TForm).Top := FirstTop - Value;
+          (Sender as TForm).Height := Value;
+        end, true);
+    end;
 
-  Ani.AniDoneProc := procedure
+  Ani.OnDone := procedure
     begin
       (Sender as TForm).Close;
       FIsShowing := false;
@@ -195,9 +215,9 @@ procedure TUPopupBox.Paint;
 begin
   inherited;
 
-  Canvas.Rectangle(0, 0, Width, Height);
-  Canvas.FillRect(TRect.Create(1, 1, Width - 2, 5));
-  Canvas.FillRect(TRect.Create(1, Height - 5, Width - 2, Height - 1));
+  Canvas.Rectangle(0, 0, Width, Height);  //  Paint border
+  Canvas.FillRect(TRect.Create(1, 1, Width - 2, 5));  //  Paint top rect
+  Canvas.FillRect(TRect.Create(1, Height - 5, Width - 2, Height - 1));  //  Paint bottom rect
 end;
 
 end.

@@ -16,8 +16,8 @@ type
   TIntAni = class(TThread)
     private
       FAniFunction: TAniFunction;
-      FAniSyncProc: TAniSyncProc;
-      FAniDoneProc: TProc;
+      FOnSync: TAniSyncProc;
+      FOnDone: TProc;
 
       FAniKind: TAniKind;
       FAniFunctionKind: TAniFunctionKind;
@@ -48,8 +48,8 @@ type
         FreeOnFinish: Boolean = false);
 
       property AniFunction: TAniFunction read FAniFunction write FAniFunction;
-      property AniSyncProc: TAniSyncProc read FAniSyncProc write FAniSyncProc;
-      property AniDoneProc: TProc read FAniDoneProc write FAniDoneProc;
+      property OnSync: TAniSyncProc read FOnSync write FOnSync;
+      property OnDone: TProc read FOnDone write FOnDone;
 
       class function afLinear(Value: Integer): Int64;
       class function afQuadratic(Value: Integer): Int64;
@@ -115,7 +115,7 @@ begin
   //  Params properties
   AniKind := aAniKind;
   AniFunctionKind := aAniFunctionKind;
-  AniSyncProc := aAniSyncProc;
+  OnSync := aAniSyncProc;
 end;
 
 procedure TIntAni.Execute;
@@ -164,12 +164,12 @@ end;
 
 procedure TIntAni.UpdateControl;
 begin
-  AniSyncProc(FCurrent);
+  OnSync(FCurrent);
 end;
 
 procedure TIntAni.DoneControl;
 begin
-  AniDoneProc;
+  OnDone;
 end;
 
 { SOME EASING FUNCTION }

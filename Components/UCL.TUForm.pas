@@ -15,16 +15,16 @@ type
 
     private
       FThemeManager: TUThemeManager;
-      FBorderColor: TColor;
 
+      FBorderColor: TColor;
       FResizeable: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
+      procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
 
     protected
-      procedure WndProc(var Msg: TMessage); override;
       procedure CreateParams(var Params: TCreateParams); override;
 
       procedure Paint; override;
@@ -33,8 +33,6 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-
-      property Color stored false;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -92,10 +90,6 @@ begin
 
   FResizeable := true;
 
-  Padding.SetBounds(1, 1, 1, 1);
-
-  StyleElements := [];
-
   UpdateTheme;
 end;
 
@@ -133,17 +127,15 @@ end;
 
 { MESSAGES }
 
-procedure TUForm.WndProc(var Msg: TMessage);
-begin
-  if Msg.Msg = WM_NCCALCSIZE then
-    Msg.Msg := WM_NULL;
-  inherited WndProc(Msg);
-end;
-
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
   Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;  //  Enabled aerosnap
+end;
+
+procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
+begin
+  //  Do nothing
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);
@@ -153,31 +145,32 @@ var
   deltaRect: TRect;
 begin
   inherited;
-  if Resizeable = true then
-    if WindowState <> wsMaximized then
-      with Msg, deltaRect do
-        begin
-          Left := XPos - BoundsRect.Left;
-          Right := BoundsRect.Right - XPos;
-          Top := YPos - BoundsRect.Top;
-          Bottom := BoundsRect.Bottom - YPos;
-          if (Top < EDGEDETECT) and (Left < EDGEDETECT) then
-            Result := HTTOPLEFT
-          else if (Top < EDGEDETECT) and (Right < EDGEDETECT) then
-            Result := HTTOPRIGHT
-          else if (Bottom < EDGEDETECT) and (Left < EDGEDETECT) then
-            Result := HTBOTTOMLEFT
-          else if (Bottom < EDGEDETECT) and (Right < EDGEDETECT) then
-            Result := HTBOTTOMRIGHT
-          else if (Top < EDGEDETECT) then
-            Result := HTTOP
-          else if (Left < EDGEDETECT) then
-            Result := HTLEFT
-          else if (Bottom < EDGEDETECT) then
-            Result := HTBOTTOM
-          else if (Right < EDGEDETECT) then
-            Result := HTRIGHT
-        end;
+
+  if (Resizeable = true) and (WindowState <> wsMaximized) then
+    with Msg, deltaRect do
+      begin
+        Left := XPos - BoundsRect.Left;
+        Right := BoundsRect.Right - XPos;
+        Top := YPos - BoundsRect.Top;
+        Bottom := BoundsRect.Bottom - YPos;
+
+        if (Top < EDGEDETECT) and (Left < EDGEDETECT) then
+          Result := HTTOPLEFT
+        else if (Top < EDGEDETECT) and (Right < EDGEDETECT) then
+          Result := HTTOPRIGHT
+        else if (Bottom < EDGEDETECT) and (Left < EDGEDETECT) then
+          Result := HTBOTTOMLEFT
+        else if (Bottom < EDGEDETECT) and (Right < EDGEDETECT) then
+          Result := HTBOTTOMRIGHT
+        else if (Top < EDGEDETECT) then
+          Result := HTTOP
+        else if (Left < EDGEDETECT) then
+          Result := HTLEFT
+        else if (Bottom < EDGEDETECT) then
+          Result := HTBOTTOM
+        else if (Right < EDGEDETECT) then
+          Result := HTRIGHT
+      end;
 end;
 
 end.

@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TURadioButton = class(TGraphicControl, IUThemeControl)
+  TUCustomRadioButton = class(TGraphicControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
@@ -40,8 +40,11 @@ type
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
       property Text: string read FText write SetText;
+  end;
 
-      {$REGION 'Common properties'}
+  TURadioButton = class(TUCustomRadioButton)
+    published
+      //  Common properties
       property Align;
       property Anchors;
       property Color;
@@ -50,14 +53,14 @@ type
       property DragKind;
       property DragMode;
       property Enabled;
-      property Font;
       property ParentColor;
-      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
       property Touch;
       property Visible;
+
+      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -74,14 +77,13 @@ type
       property OnMouseUp;
       property OnStartDock;
       property OnStartDrag;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TURadioButton.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomRadioButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -98,14 +100,14 @@ begin
     end;
 end;
 
-procedure TURadioButton.UpdateTheme;
+procedure TUCustomRadioButton.UpdateTheme;
 begin
   Paint;
 end;
 
 { SETTERS }
 
-procedure TURadioButton.SetIsChecked(const Value: Boolean);
+procedure TUCustomRadioButton.SetIsChecked(const Value: Boolean);
 begin
   if Value <> FIsChecked then
     begin
@@ -114,7 +116,7 @@ begin
     end;
 end;
 
-procedure TURadioButton.SetText(const Value: string);
+procedure TUCustomRadioButton.SetText(const Value: string);
 begin
   if Value <> FText then
     begin
@@ -125,7 +127,7 @@ end;
 
 { MAIN CLASS }
 
-constructor TURadioButton.Create(aOwner: TComponent);
+constructor TUCustomRadioButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -134,7 +136,7 @@ begin
   FCustomActiveColor := $D77800;
   FText := 'URadioButton';
 
-  Height := 24;
+  Height := 30;
   Width := 200;
   ParentColor := true;
 
@@ -147,7 +149,10 @@ end;
 
 { CUSTOM METHODS }
 
-procedure TURadioButton.Paint;
+procedure TUCustomRadioButton.Paint;
+const
+  ICON_LEFT = 5;
+  TEXT_LEFT = 35;
 var
   TextH: Integer;
   IconH: Integer;
@@ -160,15 +165,17 @@ begin
   Canvas.Brush.Style := bsClear;
 
   //  Paint text
-  Canvas.Font := Font;
+  Canvas.Font.Name := 'Segoe UI';
+  Canvas.Font.Size := 10;
   if ThemeManager = nil then
     Canvas.Font.Color := $000000
   else if ThemeManager.Theme = utLight then
     Canvas.Font.Color := $000000
   else
     Canvas.Font.Color := $FFFFFF;
+
   TextH := Canvas.TextHeight(Text);
-  Canvas.TextOut(30, (Height - TextH) div 2, Text);
+  Canvas.TextOut(TEXT_LEFT, (Height - TextH) div 2, Text);
 
   //  Paint radio
   Canvas.Font.Name := 'Segoe MDL2 Assets';
@@ -176,14 +183,15 @@ begin
   if IsChecked = false then
     begin
       //  Paint circle border (black in light, white in dark)
-        if ThemeManager = nil then
-          Canvas.Font.Color := $000000
-        else if ThemeManager.Theme = utLight then
-          Canvas.Font.Color := $000000
-        else
-          Canvas.Font.Color := $FFFFFF;
-        IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
+      if ThemeManager = nil then
+        Canvas.Font.Color := $000000
+      else if ThemeManager.Theme = utLight then
+        Canvas.Font.Color := $000000
+      else
+        Canvas.Font.Color := $FFFFFF;
+
+      IconH := Canvas.TextHeight('');
+      Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
     end
   else
     begin
@@ -192,8 +200,9 @@ begin
         Canvas.Font.Color := CustomActiveColor
       else
         Canvas.Font.Color := ThemeManager.ActiveColor;
+
       IconH := Canvas.TextHeight('');
-      Canvas.TextOut(0, (Height - IconH) div 2, '');
+      Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
 
       //  Paint small circle inside (black in light, white in dark)
       if ThemeManager = nil then
@@ -202,14 +211,15 @@ begin
         Canvas.Font.Color := $000000
       else 
         Canvas.Font.Color := $FFFFFF;
+
       IconH := Canvas.TextHeight('');
-      Canvas.TextOut(0, (Height - IconH) div 2, '');
+      Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
     end;
 end;
 
 { MESSAGES }
 
-procedure TURadioButton.WMLButtonUp(var Msg: TMessage);
+procedure TUCustomRadioButton.WMLButtonUp(var Msg: TMessage);
 var 
   i: Integer;
 begin
@@ -220,14 +230,14 @@ begin
         begin
           IsChecked := true;  //  Check it
 
-          //  Uncheck other TURadioButton with the same parent and group name
+          //  Uncheck other TUCustomRadioButton with the same parent and group name
           for i := 0 to Parent.ControlCount - 1 do
-            if Parent.Controls[i] is TURadioButton then
+            if Parent.Controls[i] is TUCustomRadioButton then
               if
-                ((Parent.Controls[i] as TURadioButton).Group = Group)
+                ((Parent.Controls[i] as TUCustomRadioButton).Group = Group)
                 and (Parent.Controls[i] <> Self)
               then
-                (Parent.Controls[i] as TURadioButton).IsChecked := false;
+                (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
         end;
 
       inherited;

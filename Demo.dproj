@@ -100,8 +100,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="FormMain.pas">
-            <Form>MainForm</Form>
+        <DCCReference Include="DemoForms\Form.Demo.pas">
+            <Form>FormDemo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

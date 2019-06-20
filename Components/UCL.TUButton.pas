@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
 type
-  TUButton = class(TCustomPanel, IUThemeControl)
+  TUCustomButton = class(TCustomPanel, IUThemeControl)
     const
       DefBackColor: TDefColor = (
         ($CCCCCC, $CCCCCC, $999999, $CCCCCC, $CCCCCC),
@@ -29,21 +29,25 @@ type
       FCustomTextColors: TControlStateColors;
 
       //  Fields
-      FButtonState: TUButtonState;
+      FButtonState: TUControlState;
       FEnabled: Boolean;
       FHitTest: Boolean;
       FText: string;
       FAllowFocus: Boolean;
       FHighlight: Boolean;
+      FIsToggleButton: Boolean;
+      FIsToggled: Boolean;
+      FTransparent: Boolean;
 
       //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Value setters
-      procedure SetButtonState(const Value: TUButtonState);
+      procedure SetButtonState(const Value: TUControlState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
       procedure SetHighlight(const Value: Boolean);
+      procedure SetTransparent(const Value: Boolean);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
@@ -73,24 +77,28 @@ type
       property CustomBackColors: TControlStateColors read FCustomBackColors write FCustomBackColors;
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
-      property ButtonState: TUButtonState read FButtonState write SetButtonState default bsNone;
+      property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
-      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
+      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
+      property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
+      property IsToggled: Boolean read FIsToggled write FIsToggled default false;
+      property Transparent: Boolean read FTransparent write SetTransparent default false;
+  end;
 
-      {$REGION 'Common properties'}
+  TUButton = class(TUCustomButton)
+    published
+      //  Common properties
       property Align;
       property Anchors;
-      //property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Font;
-      property ParentColor;
-      //property ParentFont;
+      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
@@ -98,6 +106,8 @@ type
       property TabOrder;
       property TabStop;
       property Visible;
+
+      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -114,14 +124,13 @@ type
       property OnMouseUp;
       property OnStartDock;
       property OnStartDrag;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TUButton.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -138,14 +147,14 @@ begin
     end;
 end;
 
-procedure TUButton.UpdateTheme;
+procedure TUCustomButton.UpdateTheme;
 begin
   Paint;
 end;
 
 { VALUE SETTER }
 
-procedure TUButton.SetButtonState(const Value: TUButtonState);
+procedure TUCustomButton.SetButtonState(const Value: TUControlState);
 begin
   if Value <> FButtonState then
     begin
@@ -154,20 +163,20 @@ begin
     end;
 end;
 
-procedure TUButton.SetEnabled(const Value: Boolean);
+procedure TUCustomButton.SetEnabled(const Value: Boolean);
 begin
   if Value <> FEnabled then
     begin
       FEnabled := Value;
       if Value = false then
-        FButtonState := bsDisabled
+        FButtonState := csDisabled
       else
-        FButtonState := bsNone;
+        FButtonState := csNone;
       UpdateTheme;
     end;
 end;
 
-procedure TUButton.SetText(const Value: string);
+procedure TUCustomButton.SetText(const Value: string);
 begin
   if Value <> FText then
     begin
@@ -176,7 +185,7 @@ begin
     end;
 end;
 
-procedure TUButton.SetHighlight(const Value: Boolean);
+procedure TUCustomButton.SetHighlight(const Value: Boolean);
 begin
   if Value <> FHighlight then
     begin
@@ -185,9 +194,18 @@ begin
     end;
 end;
 
+procedure TUCustomButton.SetTransparent(const Value: Boolean);
+begin
+  if Value <> FTransparent then
+    begin
+      FTransparent := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
-constructor TUButton.Create(aOwner: TComponent);
+constructor TUCustomButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -200,25 +218,29 @@ begin
   FCustomBackColors.OnChange := DoCustomBackColorsChange;
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
-  FButtonState := bsNone;
+  FButtonState := csNone;
   FEnabled := true;
   FHitTest := true;
   FText := 'Button';
-  FAllowFocus := false;
+  FAllowFocus := true;
   FHighlight := false;
+  FIsToggleButton := false;
+  FIsToggled := false;
+  FTransparent := false;
 
   //  Property
   Height := 30;
   Width := 135;
   Font.Name := 'Segoe UI';
   Font.Size := 10;
-  StyleElements := [];
+  TabStop := true;
+  FullRepaint := false;
 
   //UpdateTheme;
   //  Dont update theme in constructor when UpdateTheme call Paint method
 end;
 
-destructor TUButton.Destroy;
+destructor TUCustomButton.Destroy;
 begin
   FCustomBorderColors.Free;
   FCustomBackColors.Free;
@@ -229,14 +251,14 @@ end;
 
 { CUSTOM METHODS }
 
-procedure TUButton.Paint;
+procedure TUCustomButton.Paint;
 var
   TextX, TextY, TextW, TextH: Integer;
   BorderColor, BackColor, TextColor: TColor;
 begin
   inherited;
 
-  //  Custom colors
+  //  Not connect ThemeManager, use custom colors
   if ThemeManager = nil then
     begin
       BorderColor := CustomBorderColors.GetStateColor(ButtonState);
@@ -245,31 +267,34 @@ begin
     end
 
   //  Highlight button
-  else if Highlight = true then
-    case ButtonState of
-      bsNone, bsHover, bsFocused:
-        begin
-          BackColor := ThemeManager.ActiveColor;
-          if ButtonState = bsNone then
-            BorderColor := BackColor
-          else
-            BorderColor := ChangeColor(BackColor, 0.6);
-          TextColor := GetTextColorFromBackground(BackColor);
-        end
+  else if
+    ((Highlight = true) or ((IsToggleButton = true) and (IsToggled = true)))  //  Is highlight button, or toggle on
+    and (ButtonState in [csNone, csHover, csFocused]) //  Highlight only when mouse normal, hover and focused
+  then
+    begin
+      BackColor := ThemeManager.ActiveColor;
+      if ButtonState = csNone then
+        BorderColor := BackColor
       else
-        begin
-          BackColor := DefBackColor[ThemeManager.Theme, ButtonState];
-          BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
-          TextColor := DefTextColor[ThemeManager.Theme, ButtonState];
-        end;
+        BorderColor := ChangeColor(BackColor, 0.6);
+      TextColor := GetTextColorFromBackground(BackColor);
     end
 
-  //  Define colors
+  //  Default colors
   else
     begin
       BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
       BackColor := DefBackColor[ThemeManager.Theme, ButtonState];
       TextColor := DefTextColor[ThemeManager.Theme, ButtonState];
+    end;
+
+  //  Transparent
+  if (ButtonState = csNone) and (Transparent = true) then
+    begin
+      ParentColor := true;
+      BackColor := Color;
+      BorderColor := Color; //  The same background, because of button state
+      TextColor := GetTextColorFromBackground(Color);
     end;
 
   //  Paint background
@@ -293,90 +318,95 @@ end;
 
 { MESSAGES }
 
-procedure TUButton.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonDblClk(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsPress;
+      ButtonState := csPress;
       inherited;
     end;
 end;
 
-procedure TUButton.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonDown(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
       if AllowFocus = true then
         SetFocus;
-      ButtonState := bsPress;
+      ButtonState := csPress;
       inherited;
     end;
 end;
 
-procedure TUButton.WM_LButtonUp(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonUp(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsHover;
+      if IsToggleButton = true then
+        FIsToggled := not FIsToggled;
+      ButtonState := csHover;
       inherited;
     end;
 end;
 
-procedure TUButton.CM_MouseEnter(var Msg: TMessage);
+procedure TUCustomButton.CM_MouseEnter(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsHover;
+      ButtonState := csHover;
       inherited;
     end;
 end;
 
-procedure TUButton.CM_MouseLeave(var Msg: TMessage);
+procedure TUCustomButton.CM_MouseLeave(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
+      //  Dont allow focus
       if AllowFocus = false then
-        ButtonState := bsNone
+        ButtonState := csNone //  No keep border
+
+      //  Allow focus
       else if Focused = false then
-        ButtonState := bsNone
+        ButtonState := csNone //  No focus, no border
       else
-        ButtonState := bsFocused;
+        ButtonState := csFocused; //  Keep focus border
 
       inherited;
     end;
 end;
 
-procedure TUButton.WM_SetFocus(var Msg: TMessage);
+procedure TUCustomButton.WM_SetFocus(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsFocused;
+      ButtonState := csFocused;
       inherited;
     end;
 end;
 
-procedure TUButton.WM_KillFocus(var Msg: TMessage);
+procedure TUCustomButton.WM_KillFocus(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsNone;
+      ButtonState := csNone;
       inherited;
     end;
 end;
 
 { GROUP PROPERTY CHANGE }
 
-procedure TUButton.DoCustomBorderColorsChange(Sender: TObject);
+procedure TUCustomButton.DoCustomBorderColorsChange(Sender: TObject);
 begin
   UpdateTheme;
 end;
 
-procedure TUButton.DoCustomBackColorsChange(Sender: TObject);
+procedure TUCustomButton.DoCustomBackColorsChange(Sender: TObject);
 begin
   UpdateTheme;
 end;
 
-procedure TUButton.DoCustomTextColorsChange(Sender: TObject);
+procedure TUCustomButton.DoCustomTextColorsChange(Sender: TObject);
 begin
   UpdateTheme;
 end;

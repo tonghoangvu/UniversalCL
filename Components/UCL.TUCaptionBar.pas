@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.ExtCtrls, VCL.Forms, VCL.Graphics;
 
 type
-  TUCaptionBar = class(TCustomPanel, IUThemeControl)
+  TUCustomCaptionBar = class(TCustomPanel, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
@@ -41,22 +41,21 @@ type
 
       //  Setter property
       property UseNormalStyle: Boolean read FUseNormalStyle write SetUseNormalStyle default false;
+  end;
 
-      {$REGION 'Common properties'}
+  TUCaptionBar = class(TUCustomCaptionBar)
+    published
+      //  Common property
       property Align;
       property Alignment;
       property Anchors;
       property BiDiMode;
       property Caption;
-      //property Color;
       property DoubleBuffered;
       property Enabled;
       property Font;
       property Padding;
       property ParentBiDiMode;
-      //property ParentBackground;
-      //property ParentColor;
-      //property ParentCtl3D;
       property ParentDoubleBuffered;
       property ParentFont;
       property ParentShowHint;
@@ -65,6 +64,8 @@ type
       property Touch;
       property VerticalAlignment;
       property Visible;
+
+      //  Common events
       property OnClick;
       property OnDblClick;
       property OnGesture;
@@ -74,14 +75,13 @@ type
       property OnMouseMove;
       property OnMouseUp;
       property OnResize;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TUCaptionBar.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomCaptionBar.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -98,7 +98,7 @@ begin
     end;
 end;
 
-procedure TUCaptionBar.UpdateTheme;
+procedure TUCustomCaptionBar.UpdateTheme;
 begin
   //  Not set ThemeManager
   if ThemeManager = nil then
@@ -127,7 +127,7 @@ end;
 
 { SETTERS }
 
-procedure TUCaptionBar.SetUseNormalStyle(const Value: Boolean);
+procedure TUCustomCaptionBar.SetUseNormalStyle(const Value: Boolean);
 begin
   if Value <> FUseNormalStyle then
     begin
@@ -138,7 +138,7 @@ end;
 
 { MAIN CLASS }
 
-constructor TUCaptionBar.Create(aOwner: TComponent);
+constructor TUCustomCaptionBar.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -167,7 +167,7 @@ end;
 
 { MESSAGES }
 
-procedure TUCaptionBar.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomCaptionBar.WM_LButtonDblClk(var Msg: TMessage);
 begin
   inherited;
   if DoubleClickMaximize = true then
@@ -180,7 +180,7 @@ begin
       end;
 end;
 
-procedure TUCaptionBar.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TMessage);
 begin
   inherited;
   if DragMovement = true then
@@ -190,7 +190,7 @@ begin
     end;
 end;
 
-procedure TUCaptionBar.WM_RButtonUp(var Msg: TMessage);
+procedure TUCustomCaptionBar.WM_RButtonUp(var Msg: TMessage);
 const
   WM_SYSMENU = 787;
 var

@@ -54,7 +54,10 @@ contains
   UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
   UCL.TURadioButton in 'Components\UCL.TURadioButton.pas',
   UCL.TUPopupBox in 'Components\UCL.TUPopupBox.pas',
-  UCL.TUPopupMenu in 'Components\UCL.TUPopupMenu.pas';
+  UCL.TUPopupMenu in 'Components\UCL.TUPopupMenu.pas',
+  UCL.TUItemButton in 'Components\UCL.TUItemButton.pas',
+  UCL.TUSeparator in 'Components\UCL.TUSeparator.pas',
+  UCL.TUEdit in 'Components\UCL.TUEdit.pas';
 
 end.
 

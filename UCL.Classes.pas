@@ -13,9 +13,11 @@ type
 
   TUOrientation = (oHorizontal, oVertical);
 
-  TUButtonState = (bsNone, bsHover, bsPress, bsDisabled, bsFocused);
+  //TUButtonState = (csNone, csHover, csPress, csDisabled, csFocused);
 
-  TDefColor = array [TUTheme, TUButtonState] of TColor;
+  TUControlState = (csNone, csHover, csPress, csDisabled, csFocused);
+
+  TDefColor = array [TUTheme, TUControlState] of TColor;
 
   TControlStateColors = class(TPersistent)
     private
@@ -34,7 +36,7 @@ type
     
     public
       constructor Create(aNone, aHover, aPress, aDisabled, aFocused: TColor); overload;
-      function GetStateColor(const State: TUButtonState): TColor;
+      function GetStateColor(const State: TUControlState): TColor;
 
     published
       property None: TColor index 0 read FNone write SetStateColor default $000000;
@@ -67,18 +69,18 @@ begin
   FFocused := aFocused;
 end;
 
-function TControlStateColors.GetStateColor(const State: TUButtonState): TColor;
+function TControlStateColors.GetStateColor(const State: TUControlState): TColor;
 begin
   case State of
-    bsNone:
+    csNone:
       Result := None;
-    bsHover:
+    csHover:
       Result := Hover;
-    bsPress:
+    csPress:
       Result := Press;
-    bsDisabled:
+    csDisabled:
       Result := Disabled;
-    bsFocused:
+    csFocused:
       Result := Focused;
     else
       Result := None;

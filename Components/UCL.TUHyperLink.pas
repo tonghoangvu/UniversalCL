@@ -17,7 +17,7 @@ type
 
     private
       FThemeManager: TUThemeManager;
-      FButtonState: TUButtonState;
+      FButtonState: TUControlState;
       FCustomTextColors: TControlStateColors;
 
       FEnabled: Boolean;
@@ -29,7 +29,7 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Value setters
-      procedure SetButtonState(const Value: TUButtonState);
+      procedure SetButtonState(const Value: TUControlState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
 
       //  Messages
@@ -49,7 +49,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property ButtonState: TUButtonState read FButtonState write SetButtonState default bsNone;
+      property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property Enabled: Boolean read FEnabled write SetEnabled default true;
@@ -85,7 +85,7 @@ begin
     Font.Color := CustomTextColors.GetStateColor(ButtonState)
   else
     begin
-      if ButtonState = bsNone then
+      if ButtonState = csNone then
         Font.Color := ThemeManager.ActiveColor
       else
         Font.Color := DefTextColor[ThemeManager.Theme, ButtonState];
@@ -94,12 +94,12 @@ end;
 
 { VALUE SETTERS }
 
-procedure TUHyperLink.SetButtonState(const Value: TUButtonState);
+procedure TUHyperLink.SetButtonState(const Value: TUControlState);
 begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      if Value = bsDisabled then
+      if Value = csDisabled then
         Cursor := crDefault
       else
         Cursor := crHandPoint;
@@ -114,12 +114,12 @@ begin
       FEnabled := Value;
       if Value = false then
         begin
-          FButtonState := bsDisabled;
+          FButtonState := csDisabled;
           Cursor := crDefault;
         end
       else
         begin
-          FButtonState := bsNone;
+          FButtonState := csNone;
           Cursor := crHandPoint;
         end;
       UpdateTheme;
@@ -132,7 +132,7 @@ constructor TUHyperLink.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  FButtonState := bsNone;
+  FButtonState := csNone;
   FCustomTextColors := TControlStateColors.Create($D77800, clGray, clMedGray, clMedGray, $D77800);
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
@@ -164,7 +164,7 @@ procedure TUHyperLink.WM_LButtonDblClk(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsPress;
+      ButtonState := csPress;
       inherited;
     end;
 end;
@@ -173,7 +173,7 @@ procedure TUHyperLink.WM_LButtonDown(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsPress;
+      ButtonState := csPress;
       inherited;
     end;
 end;
@@ -184,7 +184,7 @@ begin
     begin
       if OpenLink = true then
         ShellExecute(0, '', PWideChar(URL), '', '', SW_SHOWNORMAL);
-      ButtonState := bsHover;
+      ButtonState := csHover;
       inherited;
     end;
 end;
@@ -193,7 +193,7 @@ procedure TUHyperLink.CM_MouseEnter(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsHover;
+      ButtonState := csHover;
       inherited;
     end;
 end;
@@ -202,7 +202,7 @@ procedure TUHyperLink.CM_MouseLeave(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
-      ButtonState := bsNone;
+      ButtonState := csNone;
       inherited;
     end;
 end;
