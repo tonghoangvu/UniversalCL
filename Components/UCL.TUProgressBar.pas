@@ -10,7 +10,7 @@ uses
   UCL.IntAnimation;
 
 type
-  TUProgressBar = class(TGraphicControl, IUThemeControl)
+  TUCustomProgressBar = class(TGraphicControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
@@ -40,8 +40,11 @@ type
       property Orientation: TUOrientation read FOrientation write SetOrientation;
       property CustomForeColor: TColor read FCustomForeColor write FCustomForeColor;
       property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor;
+  end;
 
-      {$REGION 'Common properties'}
+  TUProgressBar = class(TUCustomProgressBar)
+    published
+      // Common properties
       property Align;
       property AlignWithMargins;
       property Anchors;
@@ -51,14 +54,13 @@ type
       property DragKind;
       property DragMode;
       property Enabled;
-      //property Font;
-      //property ParentColor;
-      //property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
       property Touch;
       property Visible;
+
+      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -75,14 +77,13 @@ type
       property OnMouseUp;
       property OnStartDock;
       property OnStartDrag;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TUProgressBar.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomProgressBar.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -99,14 +100,14 @@ begin
     end;
 end;
 
-procedure TUProgressBar.UpdateTheme;
+procedure TUCustomProgressBar.UpdateTheme;
 begin
   Paint;
 end;
 
 { SETTERS }
 
-procedure TUProgressBar.SetValue(const Value: Integer);
+procedure TUCustomProgressBar.SetValue(const Value: Integer);
 begin
   if FValue <> Value then
     begin
@@ -115,7 +116,7 @@ begin
     end;
 end;
 
-procedure TUProgressBar.SetOrientation(const Value: TUOrientation);
+procedure TUCustomProgressBar.SetOrientation(const Value: TUOrientation);
 begin
   if FOrientation <> Value then
     begin
@@ -126,7 +127,7 @@ end;
 
 { MAIN CLASS }
 
-constructor TUProgressBar.Create(aOnwer: TComponent);
+constructor TUCustomProgressBar.Create(aOnwer: TComponent);
 begin
   inherited Create(aOnwer);
 
@@ -136,7 +137,7 @@ begin
   FValue := 0;
 end;
 
-procedure TUProgressBar.GoToValue(Value: Integer);
+procedure TUCustomProgressBar.GoToValue(Value: Integer);
 var
   Ani: TIntAni;
 begin
@@ -154,7 +155,7 @@ end;
 
 { CUSTOM METHODS }
 
-procedure TUProgressBar.Paint;
+procedure TUCustomProgressBar.Paint;
 var
   BackColor, ForeColor: TColor;
   BackRect, FillRect: TRect;

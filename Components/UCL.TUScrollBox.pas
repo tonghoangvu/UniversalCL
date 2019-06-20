@@ -17,6 +17,8 @@ type
       FIsScrolling: Boolean;
       FScrollLength: Integer;
       FScrollTime: Integer;
+      FScrollOrientation: TUOrientation;
+      FShowScrollBar: Boolean;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -41,6 +43,8 @@ type
       property IsScrolling: Boolean read FIsScrolling;
       property ScrollLength: Integer read FScrollLength write FScrollLength default 320;
       property ScrollTime: Integer read FScrollTime write FScrollTime default 300;
+      property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
+      property ShowScrollBar: Boolean read FShowScrollBar write FShowScrollBar default false;
   end;
 
 implementation
@@ -92,6 +96,7 @@ begin
 
   FScrollLength := 320;
   FScrollTime := 300;
+  FScrollOrientation := oVertical;
 
   UpdateTheme;
 end;
@@ -109,38 +114,46 @@ procedure TUScrollBox.WM_MouseWheel(var Msg: TWMMouseWheel);
 var
   Ani: TIntAni;
   Start, Stop: Integer;
+  aScrollbar: TControlScrollBar;
 begin
   inherited;
-
-  BeginUpdate;
 
   if FIsScrolling = true then
     exit
   else
     FIsScrolling := true;
 
-  Start := VertScrollBar.Position;
-  Stop := VertScrollBar.Position - ScrollLength * Msg.WheelDelta div Abs(Msg.WheelDelta);
+  BeginUpdate;
+
+  if ScrollOrientation = oVertical then
+    aScrollbar := VertScrollBar
+  else
+    aScrollbar := HorzScrollBar;
+
+  Start := aScrollbar.Position;
+  Stop := aScrollbar.Position - ScrollLength * Msg.WheelDelta div Abs(Msg.WheelDelta);
   //  If ScrollLength > Out of range, reduce it to fit
   if Stop < 0 then
     Stop := 0
-  else if Stop > VertScrollBar.Range then
-    Stop := VertScrollBar.Range;
+  else if Stop > aScrollbar.Range then
+    Stop := aScrollbar.Range;
 
   Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop,
     procedure (Value: Integer)
     begin
-      VertScrollBar.Position := Value;
+      aScrollbar.Position := Value;
     end, true);
 
   //  On scroll done
-  Ani.AniDoneProc :=
+  Ani.OnDone :=
     procedure
     begin
       FIsScrolling := false;
-      HideScrollBar;
+      if ShowScrollBar = false then
+        HideScrollBar;
       EndUpdate;
     end;
+  Ani.Step := 20;
 
   Ani.Duration := ScrollTime;
 
@@ -152,8 +165,9 @@ end;
 procedure TUScrollBox.WM_Paint(var Msg: TWMPaint);
 begin
   //  Hide scrollbar after construction
-  HideScrollBar;
   inherited;
+  if ShowScrollBar = false then
+    HideScrollBar;
 end;
 
 procedure TUScrollBox.BeginUpdate;

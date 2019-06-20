@@ -167,6 +167,9 @@
         <DCCReference Include="Components\UCL.TURadioButton.pas"/>
         <DCCReference Include="Components\UCL.TUPopupBox.pas"/>
         <DCCReference Include="Components\UCL.TUPopupMenu.pas"/>
+        <DCCReference Include="Components\UCL.TUItemButton.pas"/>
+        <DCCReference Include="Components\UCL.TUSeparator.pas"/>
+        <DCCReference Include="Components\UCL.TUEdit.pas"/>
         <None Include="UCLPackage.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

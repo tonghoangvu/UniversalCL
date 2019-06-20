@@ -11,7 +11,7 @@ uses
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
-  TUCheckBox = class(TGraphicCOntrol, IUThemeControl)
+  TUCustomCheckBox = class(TGraphicControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
@@ -47,8 +47,11 @@ type
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
+  end;
 
-      {$REGION 'Common properties'}
+  TUCheckBox = class(TUCustomCheckBox)
+    published
+      //  Common properties
       property Align;
       property Anchors;
       property Color;
@@ -65,6 +68,8 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+
+      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -81,14 +86,13 @@ type
       property OnMouseUp;
       property OnStartDock;
       property OnStartDrag;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TUCheckBox.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomCheckBox.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -105,14 +109,14 @@ begin
     end;
 end;
 
-procedure TUCheckBox.UpdateTheme;
+procedure TUCustomCheckBox.UpdateTheme;
 begin
   Paint;
 end;
 
 { VALUE SETTERS }
 
-procedure TUCheckBox.SetState(const Value: TUCheckBoxState);
+procedure TUCustomCheckBox.SetState(const Value: TUCheckBoxState);
 begin
   if Value <> FState then
     if (AllowGrayed = false) and (Value = cbsGrayed) then
@@ -123,7 +127,7 @@ begin
       end;
 end;
 
-procedure TUCheckBox.SetAllowGrayed(const Value: Boolean);
+procedure TUCustomCheckBox.SetAllowGrayed(const Value: Boolean);
 begin
   if Value <> FAllowGrayed then
     begin
@@ -134,7 +138,7 @@ begin
     end;
 end;
 
-procedure TUCheckBox.SetText(const Value: string);
+procedure TUCustomCheckBox.SetText(const Value: string);
 begin
   if Value <> FText then
     begin
@@ -145,11 +149,11 @@ end;
 
 { MAIN CLASS }
 
-constructor TUCheckBox.Create(aOwner: TComponent);
+constructor TUCustomCheckBox.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  Height := 24;
+  Height := 30;
   Width := 200;
   ParentColor := true;
 
@@ -168,7 +172,10 @@ end;
 
 { CUSTOM METHODS }
 
-procedure TUCheckBox.Paint;
+procedure TUCustomCheckBox.Paint;
+const
+  ICON_LEFT = 5;
+  TEXT_LEFT = 35;
 var
   TextH: Integer;
   IconH: Integer;
@@ -181,19 +188,23 @@ begin
   Canvas.Brush.Style := bsClear;
 
   //  Paint text
-  Canvas.Font := Font;
+  Canvas.Font.Name := 'Segoe UI';
+  Canvas.Font.Size := 10;
+
   if ThemeManager = nil then
     Canvas.Font.Color := $000000
   else if ThemeManager.Theme = utLight then
     Canvas.Font.Color := $000000
   else
     Canvas.Font.Color := $FFFFFF;
+
   TextH := Canvas.TextHeight(Text);
-  Canvas.TextOut(30, (Height - TextH) div 2, Text);
+  Canvas.TextOut(TEXT_LEFT, (Height - TextH) div 2, Text);
 
   //  Paint check
   Canvas.Font.Name := 'Segoe MDL2 Assets';
   Canvas.Font.Size := 15;
+
   case State of
     cbsChecked:
       begin
@@ -203,7 +214,8 @@ begin
         else
           Canvas.Font.Color := ThemeManager.ActiveColor;
         IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
+
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
       end;
 
     cbsUnchecked:
@@ -216,7 +228,8 @@ begin
         else
           Canvas.Font.Color := $FFFFFF;
         IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
+
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
       end;
 
     cbsGrayed:
@@ -227,7 +240,7 @@ begin
         else
           Canvas.Font.Color := ThemeManager.ActiveColor;
         IconH := Canvas.TextHeight('');
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
+        Canvas.TextOut(5, (Height - IconH) div 2, '');
 
         //  Paint small box
         IconH := Canvas.TextHeight('');
@@ -237,14 +250,14 @@ begin
           Canvas.Font.Color := $000000
         else
           Canvas.Font.Color := $FFFFFF;
-        Canvas.TextOut(0, (Height - IconH) div 2, '');
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
       end;
   end;
 end;
 
 { MESSAGES }
 
-procedure TUCheckBox.WMLButtonUp(var Msg: TMessage);
+procedure TUCustomCheckBox.WMLButtonUp(var Msg: TMessage);
 begin
   //  Unchecked > Checked > Grayed > ...
   if (Enabled = true) and (HitTest = true) then

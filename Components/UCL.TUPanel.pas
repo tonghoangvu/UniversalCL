@@ -4,14 +4,16 @@ interface
 
 uses
   UCL.Classes, UCL.Utils, UCL.SystemSettings, UCL.TUThemeManager,
-  Winapi.Windows,
+  Winapi.Windows, Winapi.Messages,
   System.Classes, System.SysUtils,
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
 type
-  TUPanel = class(TCustomPanel, IUThemeControl)
+  TUCustomPanel = class(TCustomPanel, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
+
+      FHitTest: Boolean;
 
       FCustomTextColor: TColor;
       FCustomBackColor: TColor;
@@ -28,10 +30,15 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+
+      property HitTest: Boolean read FHitTest write FHitTest default true;
       property CustomTextColor: TColor read FCustomTextColor write SetCustomTextColor;
       property CustomBackColor: TColor read FCustomBackColor write SetCustomBackColor;
+  end;
 
-      {$REGION 'Common properties'}
+  TUPanel = class(TUCustomPanel)
+    published
+      //  Common properties
       property Align;
       property Alignment;
       property Anchors;
@@ -45,7 +52,6 @@ type
       property BorderWidth;
       property BorderStyle;
       property Caption;
-      //property Color;
       property Constraints;
       property Ctl3D;
       property UseDockManager default True;
@@ -61,7 +67,6 @@ type
       property Padding;
       property ParentBiDiMode;
       property ParentBackground;
-      //property ParentColor;
       property ParentCtl3D;
       property ParentDoubleBuffered;
       property ParentFont;
@@ -75,6 +80,8 @@ type
       property VerticalAlignment;
       property Visible;
       property StyleElements;
+
+      //  Common events
       property OnAlignInsertBefore;
       property OnAlignPosition;
       property OnCanResize;
@@ -102,14 +109,13 @@ type
       property OnStartDock;
       property OnStartDrag;
       property OnUnDock;
-      {$ENDREGION}
   end;
 
 implementation
 
 { THEME }
 
-procedure TUPanel.SetThemeManager(const Value: TUThemeManager);
+procedure TUCustomPanel.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -126,7 +132,7 @@ begin
     end;
 end;
 
-procedure TUPanel.UpdateTheme;
+procedure TUCustomPanel.UpdateTheme;
 begin
   if ThemeManager = nil then
     begin
@@ -147,7 +153,7 @@ end;
 
 { SETTERS }
 
-procedure TUPanel.SetCustomBackColor(const Value: TColor);
+procedure TUCustomPanel.SetCustomBackColor(const Value: TColor);
 begin
   if FCustomBackColor <> Value then
     begin
@@ -156,7 +162,7 @@ begin
     end;
 end;
 
-procedure TUPanel.SetCustomTextColor(const Value: TColor);
+procedure TUCustomPanel.SetCustomTextColor(const Value: TColor);
 begin
   if FCustomTextColor <> Value then
     begin
@@ -167,7 +173,7 @@ end;
 
 { MAIN CLASS }
 
-constructor TUPanel.Create(aOwner: TComponent);
+constructor TUCustomPanel.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -175,7 +181,9 @@ begin
   BevelOuter := bvNone;
   Font.Name := 'Segoe UI';
   Font.Size := 9;
+  FullRepaint := false;
 
+  FHitTest := true;
   FCustomTextColor := $00000000;
   FCustomBackColor := $00E6E6E6;
 
