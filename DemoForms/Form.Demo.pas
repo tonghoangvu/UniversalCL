@@ -147,7 +147,7 @@ begin
       buttonRunning.Left := Value;
     end, false);
 
-  Ani.OnDone := procedure begin buttonRunning.Caption := '3' end;
+  Ani.OnDone := procedure begin ShowMessage('Animation done') end;
   Ani.Start;
 end;
 

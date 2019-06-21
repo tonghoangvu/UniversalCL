@@ -705,7 +705,7 @@ object FormDemo: TFormDemo
     CustomBackColor = 15132390
     Align = alLeft
     BevelOuter = bvNone
-    DoubleBuffered = True
+    DoubleBuffered = False
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1691,6 +1691,7 @@ object FormDemo: TFormDemo
       Align = alTop
       BevelOuter = bvNone
       Caption = 'editAccountName'
+      DoubleBuffered = True
       FullRepaint = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1698,10 +1699,11 @@ object FormDemo: TFormDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       Padding.Left = 5
-      Padding.Top = 4
+      Padding.Top = 5
       Padding.Right = 5
-      Padding.Bottom = 3
+      Padding.Bottom = 2
       ParentBackground = False
+      ParentDoubleBuffered = False
       ParentFont = False
       ShowCaption = False
       TabOrder = 4
@@ -2206,6 +2208,6 @@ object FormDemo: TFormDemo
   object popupDemo: TUPopupMenu
     PopupBox = popupboxDemo
     Left = 680
-    Top = 450
+    Top = 460
   end
 end
