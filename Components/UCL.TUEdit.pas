@@ -98,7 +98,7 @@ type
       property NumbersOnly: Boolean read GetNumbersOnly write SetNumbersOnly;
       property PasswordChar: Char read GetPasswordChar write SetPasswordChar;
 
-      property OnChange: TNotifyEvent read FOnChange write FOnChange;
+      property OnChange: TNotifyEvent read GetOnChange write SetOnChange;
   end;
 
   TUEdit = class(TUCustomEdit)

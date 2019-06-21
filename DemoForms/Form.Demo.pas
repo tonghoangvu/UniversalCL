@@ -124,7 +124,6 @@ type
     procedure symbolbuttonSaveVertClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
-    procedure symbolbuttonSaveHorzClick(Sender: TObject);
 
   private
 
@@ -146,7 +145,9 @@ begin
   Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 200, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
-    end, true);
+    end, false);
+
+  Ani.OnDone := procedure begin buttonRunning.Caption := '3' end;
   Ani.Start;
 end;
 
@@ -164,11 +165,6 @@ end;
 procedure TFormDemo.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := UThemeManager1;
-end;
-
-procedure TFormDemo.symbolbuttonSaveHorzClick(Sender: TObject);
-begin
-  ShowMessage(popupboxDemo.Width.ToString + sLineBreak + popupboxDemo.Height.ToString);
 end;
 
 procedure TFormDemo.symbolbuttonSaveVertClick(Sender: TObject);
@@ -228,19 +224,23 @@ procedure TFormDemo.buttonMenuSettingsClick(Sender: TObject);
 var
   NewWidth: Integer;
   Ani: TIntAni;
+  DPI: Single;
 begin
+  DPI := Self.PixelsPerInch / 96;
+
   boxSmoothScrolling.HideScrollBar;
 
   if boxSmoothScrolling.Width <> 0 then
     NewWidth := 0 //  Go to 40 (close menu)
   else
-    NewWidth := 250; //  Go to 220 (open menu)
+    NewWidth := Round(250 * DPI); //  Go to 220 (open menu)
 
   Ani := TIntAni.Create(akOut, afkQuartic, boxSmoothScrolling.Width, NewWidth,
     procedure (Value: Integer)
     begin
       boxSmoothScrolling.Width := Value;
     end, true);
+
   Ani.Step := 20;
   Ani.Duration := 200;
 

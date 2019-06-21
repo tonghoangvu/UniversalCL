@@ -414,7 +414,6 @@ object FormDemo: TFormDemo
     ShowHint = False
     TabOrder = 12
     TabStop = True
-    OnClick = symbolbuttonSaveHorzClick
   end
   object symbolButtonOpenDisabled: TUSymbolButton
     Left = 130
