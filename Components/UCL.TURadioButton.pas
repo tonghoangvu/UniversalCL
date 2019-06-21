@@ -5,11 +5,15 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager,
   System.Classes, System.SysUtils, System.Types,
-  Winapi.Messages,
+  Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Graphics;
 
 type
   TUCustomRadioButton = class(TGraphicControl, IUThemeControl)
+    private var
+      ICON_LEFT: Integer;
+      TEXT_LEFT: Integer;
+
     private
       FThemeManager: TUThemeManager;
 
@@ -19,6 +23,8 @@ type
       FCustomActiveColor: TColor;
       FText: string;
 
+      FIconFont: TFont;
+
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetText(const Value: string);
       procedure SetIsChecked(const Value: Boolean);
@@ -26,6 +32,7 @@ type
       procedure WMLButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
 
     protected
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
 
     public
@@ -40,6 +47,8 @@ type
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
       property Text: string read FText write SetText;
+
+      property IconFont: TFont read FIconFont write FIconFont;
   end;
 
   TURadioButton = class(TUCustomRadioButton)
@@ -53,6 +62,8 @@ type
       property DragKind;
       property DragMode;
       property Enabled;
+      property Font;
+      property ParentFont;
       property ParentColor;
       property ParentShowHint;
       property PopupMenu;
@@ -131,10 +142,20 @@ constructor TUCustomRadioButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  ICON_LEFT := 5;
+  TEXT_LEFT := 35;
+
   FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
   FText := 'URadioButton';
+
+  FIconFont := TFont.Create;
+  FIconFont.Name := 'Segoe MDL2 Assets';
+  FIconFont.Size := 15;
+
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
 
   Height := 30;
   Width := 200;
@@ -149,10 +170,18 @@ end;
 
 { CUSTOM METHODS }
 
+procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+
+  ICON_LEFT := MulDiv(ICON_LEFT, M, D);
+  TEXT_LEFT := MulDiv(TEXT_LEFT, M, D);
+
+  //Font.Height := MulDiv(Font.Height, M, D);   //  Not neccesary
+  IconFont.Height := MulDiv(IconFont.Height, M, D);
+end;
+
 procedure TUCustomRadioButton.Paint;
-const
-  ICON_LEFT = 5;
-  TEXT_LEFT = 35;
 var
   TextH: Integer;
   IconH: Integer;
@@ -165,8 +194,7 @@ begin
   Canvas.Brush.Style := bsClear;
 
   //  Paint text
-  Canvas.Font.Name := 'Segoe UI';
-  Canvas.Font.Size := 10;
+  Canvas.Font := Self.Font;
   if ThemeManager = nil then
     Canvas.Font.Color := $000000
   else if ThemeManager.Theme = utLight then
@@ -178,8 +206,7 @@ begin
   Canvas.TextOut(TEXT_LEFT, (Height - TextH) div 2, Text);
 
   //  Paint radio
-  Canvas.Font.Name := 'Segoe MDL2 Assets';
-  Canvas.Font.Size := 15;
+  Canvas.Font := IconFont;
   if IsChecked = false then
     begin
       //  Paint circle border (black in light, white in dark)

@@ -12,7 +12,8 @@ uses
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls,
-  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, Vcl.Buttons;
+  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, Vcl.Buttons,
+  Vcl.Samples.Gauges, UCL.TUItemButton;
 
 type
   TFormDemo = class(TUForm)
@@ -32,7 +33,6 @@ type
     linkConnected: TUHyperLink;
     linkCustomColor: TUHyperLink;
     linkDisabled: TUHyperLink;
-    panelPopup: TUPanel;
     buttonReloadSettings: TUSymbolButton;
     buttonAniStart: TButton;
     progressCustomColor: TUProgressBar;
@@ -108,6 +108,7 @@ type
     buttonAppBack: TUButton;
     buttonAppQuit: TUButton;
     editAccountName: TUEdit;
+    UItemButton1: TUItemButton;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -123,6 +124,7 @@ type
     procedure symbolbuttonSaveVertClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
+    procedure symbolbuttonSaveHorzClick(Sender: TObject);
 
   private
 
@@ -162,6 +164,11 @@ end;
 procedure TFormDemo.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := UThemeManager1;
+end;
+
+procedure TFormDemo.symbolbuttonSaveHorzClick(Sender: TObject);
+begin
+  ShowMessage(popupboxDemo.Width.ToString + sLineBreak + popupboxDemo.Height.ToString);
 end;
 
 procedure TFormDemo.symbolbuttonSaveVertClick(Sender: TObject);
@@ -252,11 +259,13 @@ procedure TFormDemo.buttonOpenMenuClick(Sender: TObject);
 var
   NewPos: Integer;
   Ani: TIntAni;
+  DPI: Single;
 begin
-  if drawerNavigation.Width <> 40 then
-    NewPos := 40 //  Go to 40 (close menu)
+  DPI := Self.PixelsPerInch / 96;
+  if drawerNavigation.Width <> Round(40 * DPI) then
+    NewPos := Round(40 * DPI) // Go to 40 (close menu)
   else
-    NewPos := 220; //  Go to 220 (open menu)
+    NewPos := Round(220 * DPI); // 220:40 and DPI change
 
   Ani := TIntAni.Create(akOut, afkQuartic, drawerNavigation.Width, NewPos,
     procedure (Value: Integer)

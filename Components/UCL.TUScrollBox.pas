@@ -7,7 +7,7 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
   System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Forms, VCL.Dialogs;
+  VCL.Controls, VCL.Forms;
 
 type
   TUScrollBox = class(TScrollBox, IUThemeControl)

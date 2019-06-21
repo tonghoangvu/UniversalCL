@@ -5,7 +5,7 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.IntAnimation,
   System.Classes, System.SysUtils, System.Types,
-  Winapi.Messages,
+  Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.ExtCtrls, VCL.Forms, VCL.Graphics;
 
 type
@@ -19,6 +19,8 @@ type
       FCustomBackColor: TColor;
       FCustomBorderColor: TColor;
       FIsShowing: Boolean;
+
+      FOldParent: TWinControl;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
@@ -94,6 +96,7 @@ begin
   FPopupKind := pkDown;
   FCustomBackColor := $E6E6E6;
   FCustomBorderColor := $C6C6C6;
+
   FIsShowing := false;
 
   if csDesigning in ComponentState then
@@ -127,8 +130,8 @@ begin
   ClickPoint.Y := Y;
 
   Application.CreateForm(TForm, PopupForm);
-  PopupForm.FormStyle := fsStayOnTop;
   PopupForm.BorderStyle := bsNone;
+  PopupForm.FormStyle := fsStayOnTop;
   PopupForm.Width := Self.Width;
   PopupForm.Color := Self.Color;
 
@@ -138,6 +141,7 @@ begin
   Self.Left := 0;
   Self.Align := alTop;
 
+  FOldParent := Self.Parent;
   Self.Parent := PopupForm;
   Self.Visible := true;
 
@@ -177,6 +181,8 @@ var
   Ani: TIntAni;
   FirstTop: Integer;
 begin
+  //  Not inherited
+
   if Sender is TForm = false then
     exit;
 
@@ -201,6 +207,9 @@ begin
     begin
       (Sender as TForm).Close;
       FIsShowing := false;
+      Self.Align := alNone;
+      Self.Visible := false;
+      Self.Parent := FOldParent;
     end;
 
   Ani.Step := 20;

@@ -75,6 +75,7 @@ type
       procedure UM_SubEditKillFocus(var Msg: TMessage); message UM_SUBEDIT_KILLFOCUS;
 
     protected
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
 
     public
@@ -354,8 +355,11 @@ begin
 
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
-  FEdit.Font.Name := 'Segoe UI';
-  FEdit.Font.Size := 10;
+
+  Self.Font.Name := 'Segoe UI';
+  Self.Font.Size := 10;
+
+  FEdit.Font := Self.Font;
   FEdit.BorderStyle := bsNone;
   FEdit.AutoSize := true;
 
@@ -371,6 +375,11 @@ begin
 end;
 
 { CUSTOM METHODS }
+
+procedure TUCustomEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+end;
 
 procedure TUCustomEdit.Paint;
 var

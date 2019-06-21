@@ -21,6 +21,7 @@ type
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
 
@@ -88,6 +89,8 @@ constructor TUForm.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  PixelsPerInch := Screen.PixelsPerInch;  //  Get PPI on create
+
   FResizeable := true;
 
   UpdateTheme;
@@ -127,6 +130,12 @@ end;
 
 { MESSAGES }
 
+procedure TUForm.WM_DPIChanged(var Msg: TWMDpi);
+begin
+  PixelsPerInch := Msg.XDpi;
+  inherited;
+end;
+
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
@@ -135,7 +144,7 @@ end;
 
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
 begin
-  //  Do nothing
+  //  Do nothing = skip message
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);

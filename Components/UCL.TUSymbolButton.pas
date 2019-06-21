@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils,
-  Winapi.Messages,
+  Winapi.Messages, Winapi.Windows,
   System.Classes, System.Types,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
@@ -67,8 +67,10 @@ type
       procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_FontChanged(var Msg: TMessage); message CM_FONTCHANGED;
 
     protected
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
 
     public
@@ -326,6 +328,18 @@ end;
 
 { CUSTOM METHODS }
 
+procedure TUCustomSymbolButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+
+  TextOffset := MulDiv(TextOffset, M, D);
+  DetailRightOffset := MulDiv(DetailRightOffset, M, D);
+
+  SymbolFont.Height := MulDiv(SymbolFont.Height, M, D);
+  TextFont.Height := MulDiv(TextFont.Height, M, D);
+  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
+end;
+
 procedure TUCustomSymbolButton.Paint;
 var
   aTheme: TUTheme;
@@ -480,6 +494,11 @@ begin
       ButtonState := csNone;
       inherited;
     end;
+end;
+
+procedure TUCustomSymbolButton.CM_FontChanged(var Msg: TMessage);
+begin
+  UpdateTheme;
 end;
 
 end.

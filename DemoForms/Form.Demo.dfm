@@ -20,9 +20,9 @@ object FormDemo: TFormDemo
   object textTitle: TUText
     Left = 60
     Top = 100
-    Width = 186
+    Width = 132
     Height = 38
-    Caption = 'This is title text'
+    Caption = 'This is title'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -28
@@ -37,9 +37,9 @@ object FormDemo: TFormDemo
   object textHeading: TUText
     Left = 60
     Top = 140
-    Width = 166
+    Width = 128
     Height = 28
-    Caption = 'This is heading text'
+    Caption = 'This is heading'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -20
@@ -197,6 +197,11 @@ object FormDemo: TFormDemo
     Text = '3-state checkbox'
     AllowGrayed = True
     CustomActiveColor = 14120960
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -212,6 +217,11 @@ object FormDemo: TFormDemo
     ThemeManager = UThemeManager1
     Text = '2-state checkbox'
     CustomActiveColor = 14120960
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -222,7 +232,7 @@ object FormDemo: TFormDemo
   object radioA1: TURadioButton
     Left = 390
     Top = 290
-    Width = 150
+    Width = 191
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -231,12 +241,23 @@ object FormDemo: TFormDemo
     ThemeManager = UThemeManager1
     Group = 'GroupA'
     CustomActiveColor = 14120960
-    Text = 'Radio 1 in group A'
+    Text = 'Radio 1A'
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object radioA2: TURadioButton
     Left = 390
     Top = 320
-    Width = 150
+    Width = 191
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -246,37 +267,20 @@ object FormDemo: TFormDemo
     IsChecked = True
     Group = 'GroupA'
     CustomActiveColor = 14120960
-    Text = 'Radio 2 in group A'
+    Text = 'Radio 2A'
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object radioB1: TURadioButton
-    Left = 390
-    Top = 420
-    Width = 181
-    Height = 30
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 0
-    ThemeManager = UThemeManager1
-    Group = 'GroupB'
-    CustomActiveColor = 14120960
-    Text = 'Radio 1 in group B'
-  end
-  object radioA3: TURadioButton
-    Left = 390
-    Top = 350
-    Width = 150
-    Height = 30
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 0
-    ThemeManager = UThemeManager1
-    Group = 'GroupA'
-    CustomActiveColor = 14120960
-    Text = 'Radio 3 in group A'
-  end
-  object radioB2: TURadioButton
     Left = 390
     Top = 390
     Width = 181
@@ -286,10 +290,71 @@ object FormDemo: TFormDemo
     Margins.Right = 0
     Margins.Bottom = 0
     ThemeManager = UThemeManager1
+    Group = 'GroupB'
+    CustomActiveColor = 14120960
+    Text = 'Radio 1B'
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioA3: TURadioButton
+    Left = 390
+    Top = 350
+    Width = 191
+    Height = 30
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    ThemeManager = UThemeManager1
+    Group = 'GroupA'
+    CustomActiveColor = 14120960
+    Text = 'Radio 3A'
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object radioB2: TURadioButton
+    Left = 390
+    Top = 420
+    Width = 181
+    Height = 30
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
+    ThemeManager = UThemeManager1
     IsChecked = True
     Group = 'GroupB'
     CustomActiveColor = 14120960
-    Text = 'Radio 2 in group B'
+    Text = 'Radio 2B'
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
   end
   object symbolbuttonSaveVert: TUSymbolButton
     Left = 60
@@ -303,7 +368,7 @@ object FormDemo: TFormDemo
     SymbolFont.Name = 'Segoe MDL2 Assets'
     SymbolFont.Style = []
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clWindowText
+    TextFont.Color = clBlack
     TextFont.Height = -13
     TextFont.Name = 'Segoe UI'
     TextFont.Style = []
@@ -316,7 +381,7 @@ object FormDemo: TFormDemo
     SymbolChar = #57696
     Text = 'New'
     Detail = 'Ctrl+N'
-    TabOrder = 11
+    TabOrder = 10
     TabStop = True
     OnClick = symbolbuttonSaveVertClick
   end
@@ -332,7 +397,7 @@ object FormDemo: TFormDemo
     SymbolFont.Name = 'Segoe MDL2 Assets'
     SymbolFont.Style = []
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clWindowText
+    TextFont.Color = clBlack
     TextFont.Height = -13
     TextFont.Name = 'Segoe UI'
     TextFont.Style = []
@@ -347,8 +412,9 @@ object FormDemo: TFormDemo
     IsToggleButton = True
     ParentShowHint = False
     ShowHint = False
-    TabOrder = 13
+    TabOrder = 12
     TabStop = True
+    OnClick = symbolbuttonSaveHorzClick
   end
   object symbolButtonOpenDisabled: TUSymbolButton
     Left = 130
@@ -362,7 +428,7 @@ object FormDemo: TFormDemo
     SymbolFont.Name = 'Segoe MDL2 Assets'
     SymbolFont.Style = []
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clWindowText
+    TextFont.Color = 6710886
     TextFont.Height = -13
     TextFont.Name = 'Segoe UI'
     TextFont.Style = []
@@ -376,7 +442,7 @@ object FormDemo: TFormDemo
     SymbolChar = #60739
     Text = 'Open file (disabled)'
     Detail = 'Ctrl+O'
-    TabOrder = 14
+    TabOrder = 13
     TabStop = True
   end
   object buttonReloadSettings: TUSymbolButton
@@ -391,7 +457,7 @@ object FormDemo: TFormDemo
     SymbolFont.Name = 'Segoe MDL2 Assets'
     SymbolFont.Style = []
     TextFont.Charset = DEFAULT_CHARSET
-    TextFont.Color = clWindowText
+    TextFont.Color = clBlack
     TextFont.Height = -13
     TextFont.Name = 'Segoe UI'
     TextFont.Style = []
@@ -404,7 +470,7 @@ object FormDemo: TFormDemo
     Text = 'Reload settings'
     Detail = 'Detail'
     ShowDetail = False
-    TabOrder = 17
+    TabOrder = 16
     TabStop = True
     OnClick = buttonReloadSettingsClick
   end
@@ -430,10 +496,10 @@ object FormDemo: TFormDemo
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
-    Font.Name = 'Segoe UI'
+    Font.Name = 'Times New Roman'
     Font.Style = []
     ParentFont = False
-    TabOrder = 12
+    TabOrder = 11
     TabStop = True
   end
   object buttonRunning: TButton
@@ -497,7 +563,7 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
     TabStop = True
   end
   object buttonDisabled: TUButton
@@ -526,29 +592,8 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     TabStop = True
-  end
-  object panelPopup: TUPanel
-    Left = 380
-    Top = 530
-    Width = 201
-    Height = 51
-    ThemeManager = UThemeManager1
-    CustomTextColor = clBlack
-    CustomBackColor = 15132390
-    BevelOuter = bvNone
-    Caption = 'Right click to open menu'
-    FullRepaint = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentBackground = False
-    ParentFont = False
-    PopupMenu = popupDemo
-    TabOrder = 1
   end
   object buttonAniStart: TButton
     Left = 280
@@ -556,7 +601,7 @@ object FormDemo: TFormDemo
     Width = 151
     Height = 25
     Caption = 'Start animation'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = buttonAniStartClick
   end
   object buttonRandomProgress: TUButton
@@ -583,7 +628,7 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
+    TabOrder = 4
     TabStop = True
     OnClick = buttonRandomProgressClick
   end
@@ -593,7 +638,7 @@ object FormDemo: TFormDemo
     Width = 141
     Height = 25
     Caption = 'Reserve animation'
-    TabOrder = 6
+    TabOrder = 5
     OnClick = buttonAniInverseClick
   end
   object buttonCanFocus: TUButton
@@ -620,7 +665,7 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 7
+    TabOrder = 6
     TabStop = True
   end
   object buttonHighlight: TUButton
@@ -648,7 +693,7 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 8
+    TabOrder = 7
     TabStop = True
   end
   object drawerNavigation: TUPanel
@@ -671,7 +716,7 @@ object FormDemo: TFormDemo
     ParentBackground = False
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 9
+    TabOrder = 8
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -684,7 +729,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -15
       TextFont.Name = 'Segoe UI'
       TextFont.Style = [fsBold]
@@ -715,7 +760,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -745,7 +790,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -774,7 +819,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -803,7 +848,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -832,7 +877,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -865,7 +910,7 @@ object FormDemo: TFormDemo
     Padding.Bottom = 15
     ParentColor = False
     ParentDoubleBuffered = False
-    TabOrder = 10
+    TabOrder = 9
     ThemeManager = UThemeManager1
     object UText1: TUText
       AlignWithMargins = True
@@ -900,7 +945,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 10
       Align = alTop
-      Caption = 'Account settings'
+      Caption = 'User profile'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13
@@ -909,7 +954,7 @@ object FormDemo: TFormDemo
       ParentFont = False
       ThemeManager = UThemeManager1
       TextKind = tkEntry
-      ExplicitWidth = 102
+      ExplicitWidth = 69
     end
     object UCheckBox1: TUCheckBox
       Left = 15
@@ -919,6 +964,11 @@ object FormDemo: TFormDemo
       ThemeManager = UThemeManager1
       Text = 'Auto sync your data'
       CustomActiveColor = 14120960
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -936,6 +986,11 @@ object FormDemo: TFormDemo
       ThemeManager = UThemeManager1
       Text = 'Send me email'
       CustomActiveColor = 14120960
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -956,7 +1011,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 10
       Align = alTop
-      Caption = 'Account type'
+      Caption = 'Account'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -13
@@ -965,7 +1020,7 @@ object FormDemo: TFormDemo
       ParentFont = False
       ThemeManager = UThemeManager1
       TextKind = tkEntry
-      ExplicitWidth = 81
+      ExplicitWidth = 50
     end
     object URadioButton1: TURadioButton
       Left = 15
@@ -977,7 +1032,18 @@ object FormDemo: TFormDemo
       Group = 'AccountType'
       CustomActiveColor = 14120960
       Text = 'Free user'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       ExplicitTop = 264
     end
     object URadioButton2: TURadioButton
@@ -989,7 +1055,18 @@ object FormDemo: TFormDemo
       Group = 'AccountType'
       CustomActiveColor = 14120960
       Text = 'Professional user'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       ExplicitTop = 288
     end
     object URadioButton3: TURadioButton
@@ -1001,7 +1078,18 @@ object FormDemo: TFormDemo
       Group = 'AccountType'
       CustomActiveColor = 14120960
       Text = 'Developer'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       ExplicitTop = 318
     end
     object UText4: TUText
@@ -1015,7 +1103,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 10
       Align = alTop
-      Caption = 'Upgrade your account to Developer and get more features'
+      Caption = 'Upgrade to Developer account to get more features'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
       Font.Height = -13
@@ -1025,7 +1113,7 @@ object FormDemo: TFormDemo
       WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
-      ExplicitWidth = 195
+      ExplicitWidth = 201
     end
     object UText5: TUText
       AlignWithMargins = True
@@ -1060,7 +1148,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 10
       Align = alTop
-      Caption = 'You are using 3.2 / 5 GB of free storage'
+      Caption = 'Your are using 3/5 GB of free cloud storage'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
       Font.Height = -13
@@ -1070,7 +1158,7 @@ object FormDemo: TFormDemo
       WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
-      ExplicitWidth = 187
+      ExplicitWidth = 174
     end
     object UProgressBar1: TUProgressBar
       AlignWithMargins = True
@@ -1190,7 +1278,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 5
       Align = alTop
-      Caption = 'About this app'
+      Caption = 'About'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -20
@@ -1199,12 +1287,12 @@ object FormDemo: TFormDemo
       ParentFont = False
       ThemeManager = UThemeManager1
       TextKind = tkHeading
-      ExplicitWidth = 130
+      ExplicitWidth = 55
     end
     object UText8: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 921
+      Top = 966
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1212,7 +1300,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 5
       Align = alTop
-      Caption = 'App version: 3.5-alpha'
+      Caption = 'App version: 1.1'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
       Font.Height = -13
@@ -1222,12 +1310,12 @@ object FormDemo: TFormDemo
       WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
-      ExplicitWidth = 131
+      ExplicitWidth = 94
     end
     object UText9: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 943
+      Top = 988
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1235,7 +1323,7 @@ object FormDemo: TFormDemo
       Margins.Right = 0
       Margins.Bottom = 5
       Align = alTop
-      Caption = 'Flash version: 32.0.0.136'
+      Caption = 'Flash version: 31.0.0.14'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
       Font.Height = -13
@@ -1245,12 +1333,12 @@ object FormDemo: TFormDemo
       WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
-      ExplicitWidth = 140
+      ExplicitWidth = 133
     end
     object UText10: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 965
+      Top = 1010
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1306,6 +1394,11 @@ object FormDemo: TFormDemo
       ThemeManager = UThemeManager1
       Text = 'Keep my email in private'
       CustomActiveColor = 14120960
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1347,7 +1440,18 @@ object FormDemo: TFormDemo
       Group = 'AppTheme'
       CustomActiveColor = 14120960
       Text = 'Use system setting'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       OnClick = URadioButton4Click
     end
     object URadioButton5: TURadioButton
@@ -1359,7 +1463,18 @@ object FormDemo: TFormDemo
       Group = 'AppTheme'
       CustomActiveColor = 14120960
       Text = 'Light'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       OnClick = URadioButton5Click
       ExplicitTop = 110
     end
@@ -1372,7 +1487,18 @@ object FormDemo: TFormDemo
       Group = 'AppTheme'
       CustomActiveColor = 14120960
       Text = 'Dark'
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       OnClick = URadioButton6Click
       ExplicitTop = 145
     end
@@ -1394,6 +1520,7 @@ object FormDemo: TFormDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
+      WordWrap = True
       ThemeManager = UThemeManager1
       TextKind = tkDescription
       ExplicitWidth = 163
@@ -1406,6 +1533,11 @@ object FormDemo: TFormDemo
       ThemeManager = UThemeManager1
       Text = 'Color on window border'
       CustomActiveColor = 14120960
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -1452,7 +1584,7 @@ object FormDemo: TFormDemo
     object UButton2: TUButton
       AlignWithMargins = True
       Left = 15
-      Top = 992
+      Top = 926
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -1561,11 +1693,17 @@ object FormDemo: TFormDemo
       BevelOuter = bvNone
       Caption = 'editAccountName'
       FullRepaint = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       Padding.Left = 5
       Padding.Top = 4
       Padding.Right = 5
       Padding.Bottom = 3
       ParentBackground = False
+      ParentFont = False
       ShowCaption = False
       TabOrder = 4
     end
@@ -1655,7 +1793,6 @@ object FormDemo: TFormDemo
     Width = 180
     Height = 150
     ThemeManager = UThemeManager1
-    PopupKind = pkUp
     object USymbolButton4: TUSymbolButton
       Left = 1
       Top = 5
@@ -1668,7 +1805,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1696,7 +1833,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1724,7 +1861,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1752,7 +1889,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1796,7 +1933,7 @@ object FormDemo: TFormDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 15
+    TabOrder = 14
     TabStop = True
   end
   object panelRibbon: TUScrollBox
@@ -1810,7 +1947,7 @@ object FormDemo: TFormDemo
     Color = 15132390
     ParentColor = False
     ParentDoubleBuffered = False
-    TabOrder = 16
+    TabOrder = 15
     ThemeManager = UThemeManager1
     object separator1: TUSeparator
       Left = 120
@@ -1843,7 +1980,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1875,7 +2012,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1907,7 +2044,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1939,7 +2076,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -1971,7 +2108,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -2003,7 +2140,7 @@ object FormDemo: TFormDemo
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
       TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
+      TextFont.Color = clBlack
       TextFont.Height = -13
       TextFont.Name = 'Segoe UI'
       TextFont.Style = []
@@ -2024,6 +2161,38 @@ object FormDemo: TFormDemo
       TabStop = True
     end
   end
+  object UItemButton1: TUItemButton
+    Left = 390
+    Top = 540
+    Width = 341
+    Height = 41
+    ThemeManager = UThemeManager1
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    DetailFont.Charset = DEFAULT_CHARSET
+    DetailFont.Color = clWindowText
+    DetailFont.Height = -13
+    DetailFont.Name = 'Segoe UI'
+    DetailFont.Style = []
+    ShowCheckBox = True
+    ShowRightIcon = True
+    LeftIcon = #58031
+    Text = 'Open popup'
+    Detail = 'Right click'
+    RightIcon = #57345
+    CustomActiveColor = 14120960
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    PopupMenu = popupDemo
+    TabOrder = 20
+  end
   object UThemeManager1: TUThemeManager
     CustomColor = clGreen
     Left = 660
@@ -2038,6 +2207,6 @@ object FormDemo: TFormDemo
   object popupDemo: TUPopupMenu
     PopupBox = popupboxDemo
     Left = 680
-    Top = 470
+    Top = 450
   end
 end

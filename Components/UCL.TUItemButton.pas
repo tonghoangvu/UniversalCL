@@ -31,6 +31,9 @@ type
       FEnabled: Boolean;
       FHitTest: Boolean;
 
+      FIconFont: TFont;
+      FDetailFont: TFont;
+
       FShowCheckBox: Boolean;
       FShowLeftIcon: Boolean;
       FShowText: Boolean;
@@ -78,6 +81,7 @@ type
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
     protected
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
 
     public
@@ -91,6 +95,9 @@ type
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
+
+      property IconFont: TFont read FIconFont write FIconFont;
+      property DetailFont: TFont read FDetailFont write FDetailFont;
 
       //  Object visible
       property ShowCheckBox: Boolean index 0 read FShowCheckBox write SetObjectVisible default false;
@@ -126,6 +133,8 @@ type
       property DragCursor;
       property DragKind;
       property DragMode;
+      property Font;
+      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
@@ -346,6 +355,17 @@ begin
   FEnabled := true;
   FHitTest := true;
 
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
+
+  FIconFont := TFont.Create;
+  FIconFont.Name := 'Segoe MDL2 Assets';
+  FIconFont.Size := 15;
+
+  FDetailFont := TFont.Create;
+  FDetailFont.Name := 'Segoe UI';
+  FDetailFont.Size := 10;
+
   FShowCheckBox := false;
   FShowLeftIcon := true;
   FShowText := true;
@@ -374,6 +394,20 @@ end;
 
 { CUSTOM METHODS }
 
+procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+
+  //Font.Height := MulDiv(Font.Height, M, D);   // Not neccesary
+  IconFont.Height := MulDiv(IconFont.Height, M, D);
+  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
+
+  CheckBoxWidth := MulDiv(CheckBoxWidth, M, D);
+  LeftIconWidth := MulDiv(LeftIconWidth, M, D);
+  RightIconWidth := MulDiv(RightIconWidth, M, D);
+  AlignSpace := MulDiv(AlignSpace, M, D);
+end;
+
 procedure TUCustomItemButton.Paint;
 var
   aTheme: TUTheme;
@@ -400,9 +434,7 @@ begin
     Canvas.Brush.Color := DefBackColor[aTheme, ButtonState];
   Canvas.FillRect(TRect.Create(0, 0, Width, Height));
 
-  Canvas.Font.Name := 'Segoe MDL2 Assets';
-  Canvas.Font.Size := 15;
-
+  Canvas.Font := IconFont;
   //  Paint checkbox
   if ShowCheckBox = true then
     begin
@@ -456,8 +488,8 @@ begin
       dec(RPos, RightIconWidth);
     end;
 
-  Canvas.Font.Name := 'Segoe UI';
-  Canvas.Font.Size := 10;
+  Canvas.Font := Self.Font; //  Default font = text font
+  Canvas.Font.Color := DefTextColor[aTheme, ButtonState];
 
   // Paint text
   if ShowText = true then
@@ -471,6 +503,7 @@ begin
   //  Paint detail
   if ShowDetail = true then
     begin
+      Canvas.Font := DetailFont;
       Canvas.Font.Color := DefDetailColor[aTheme, ButtonState];
 
       ObjectH := Canvas.TextHeight(Detail);

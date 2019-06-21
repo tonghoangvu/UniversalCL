@@ -4,7 +4,8 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes,
+  System.Classes, System.SysUtils,
+  Winapi.Windows,
   VCL.Controls, VCL.StdCtrls;
 
 type
@@ -21,6 +22,7 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
+      procedure UpdateTextKind;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -59,6 +61,41 @@ begin
     Font.Color := $000000
   else
     Font.Color := $FFFFFF;
+end;
+
+{ SETTERS }
+
+procedure TUText.SetTextKind(Value: TUTextKind);
+begin
+  if Value <> FTextKind then
+    begin
+      FTextKind := Value;
+      UpdateTextKind;
+    end;
+end;
+
+{ MAIN CLASS }
+
+constructor TUText.Create(aOwner: TComponent);
+begin
+  inherited Create(aOwner);
+
+  //  New properties
+  FTextKind := tkNormal;
+
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
+
+  //  Common properties
+  //  Nothing
+
+  UpdateTheme;
+end;
+
+procedure TUText.UpdateTextKind;
+begin
+  if csDesigning in ComponentState = false then
+    exit;
 
   //  Font name
   if TextKind = tkEntry then
@@ -79,34 +116,9 @@ begin
     tkTitle:
       Font.Size := 21;
   end;
-end;
-
-{ GETTERS & SETTERS }
-
-procedure TUText.SetTextKind(Value: TUTextKind);
-begin
-  if Value <> FTextKind then
-    begin
-      FTextKind := Value;
-      UpdateTheme;
-    end;
-end;
-
-{ MAIN CLASS }
-
-constructor TUText.Create(aOwner: TComponent);
-begin
-  inherited Create(aOwner);
-
-  //  New properties
-  FTextKind := tkNormal;
-
-  //  Common properties
-  //  Nothing
 
   UpdateTheme;
 end;
-
 
 end.
 
