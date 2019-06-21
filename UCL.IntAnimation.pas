@@ -34,6 +34,8 @@ type
       //  Setters
       procedure SetAniFunctionKind(const Value: TAniFunctionKind);
 
+      procedure SetOnDone(const Value: TProc);
+
       procedure UpdateControl;
       procedure DoneControl;
 
@@ -42,14 +44,14 @@ type
 
     public
       constructor Create(
-        aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
+        aAniKind: TAniKind; aFunctionKind: TAniFunctionKind;
         aStartValue, aStopValue: Integer;
-        aAniSyncProc: TAniSyncProc;
+        aSyncProc: TAniSyncProc;
         FreeOnFinish: Boolean = false);
 
       property AniFunction: TAniFunction read FAniFunction write FAniFunction;
       property OnSync: TAniSyncProc read FOnSync write FOnSync;
-      property OnDone: TProc read FOnDone write FOnDone;
+      property OnDone: TProc read FOnDone write SetOnDone;
 
       class function afLinear(Value: Integer): Int64;
       class function afQuadratic(Value: Integer): Int64;
@@ -93,17 +95,24 @@ begin
     end;
 end;
 
+procedure TIntAni.SetOnDone(const Value: TProc);
+begin
+  FOnDone := Value;
+end;
+
 { MAIN CLASS }
 
 constructor TIntAni.Create(
-  aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
+  aAniKind: TAniKind; aFunctionKind: TAniFunctionKind;
   aStartValue, aStopValue: Integer;
-  aAniSyncProc: TAniSyncProc;
+  aSyncProc: TAniSyncProc;
   FreeOnFinish: Boolean);
 begin
   inherited Create(true);
 
   FreeOnTerminate := FreeOnFinish;
+
+  FOnDone := nil;
 
   //  Default properties
   FStep := 25;
@@ -114,8 +123,8 @@ begin
 
   //  Params properties
   AniKind := aAniKind;
-  AniFunctionKind := aAniFunctionKind;
-  OnSync := aAniSyncProc;
+  AniFunctionKind := aFunctionKind;
+  OnSync := aSyncProc;
 end;
 
 procedure TIntAni.Execute;
@@ -164,12 +173,14 @@ end;
 
 procedure TIntAni.UpdateControl;
 begin
-  OnSync(FCurrent);
+  if Assigned(FOnSync) then
+    FOnSync(FCurrent);
 end;
 
 procedure TIntAni.DoneControl;
 begin
-  OnDone;
+  if Assigned(FOnDone) then
+    FOnDone();
 end;
 
 { SOME EASING FUNCTION }
