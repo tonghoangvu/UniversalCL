@@ -33,6 +33,12 @@ UWP controls for Delphi VCL
 
 **14. TUPopupMenu:** Replace TPopupMenu with PopupBox
 
+**15. TUItemButton:** Awesome button, can use as list item, with checkbox, left icon, text, detail and right icon.
+
+**16. TUSeparator:**
+
+**17. TUEdit:**
+
 ## Screenshots
 
 ![image](https://4.bp.blogspot.com/-qLwgvOiblw0/XQd95dJZjZI/AAAAAAAAAYU/sj1jJIYSodIWSN2wUUDRN2kLeeUOWRtlwCK4BGAYYCw/s1600/Screenshot1.png)
