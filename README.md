@@ -47,3 +47,4 @@ UWP controls for Delphi VCL
 
 ![image](https://1.bp.blogspot.com/-Slnt5qMZDJA/XQd95Q52WkI/AAAAAAAAAYY/c_SFFCE3R30KVnCfi0fTnFdirP70ljMOgCK4BGAYYCw/s1600/Screenshot6.png)
 
+![image](https://1.bp.blogspot.com/-TASI8O1d7vw/XQxUuH799_I/AAAAAAAAAY0/1a4MadRAZQQ8u1PfyHjs7IlasU4qTfSuQCLcBGAs/s1600/Screenshot7.png)
