@@ -2,13 +2,13 @@ program Demo;
 
 uses
   Vcl.Forms,
-  Form.Demo in 'DemoForms\Form.Demo.pas' {FormDemo};
+  Form.Demo in 'DemoForms\Form.Demo.pas' {formDemo};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TFormDemo, FormDemo);
+  Application.CreateForm(TformDemo, formDemo);
   Application.Run;
 end.

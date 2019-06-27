@@ -3,8 +3,7 @@ unit UCL.IntAnimation;
 interface
 
 uses
-  System.Classes, System.Threading,
-  VCL.Dialogs, System.SysUtils;
+  System.Classes, System.Threading, System.SysUtils;
 
 type
   TAniSyncProc = reference to procedure (Value: Integer);

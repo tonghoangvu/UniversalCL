@@ -27,8 +27,6 @@ var
   Reg: TRegistry;
   aColor: Cardinal;
 begin
-  aColor := $FFD77800;  //  Default blue
-
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
@@ -46,8 +44,6 @@ function IsAccentColorEnabled: Boolean;
 var
   Reg: TRegistry;
 begin
-  Result := false;
-
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;

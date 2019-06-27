@@ -6,7 +6,7 @@ uses
   UCL.Classes, UCL.TUThemeManager,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
+  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
@@ -30,6 +30,10 @@ type
       FButtonState: TUControlState;
       FEnabled: Boolean;
       FHitTest: Boolean;
+      FLeftIconKind: TUImageKind;
+
+      FImageIndex: Integer;
+      FImages: TCustomImageList;
 
       FIconFont: TFont;
       FDetailFont: TFont;
@@ -59,6 +63,7 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
       procedure SetEnabled(const Value: Boolean); reintroduce;
+      procedure SetImageIndex(const Value: Integer);
 
       procedure SetObjectVisible(const Index: Integer; const Value: Boolean);
       procedure SetObjectWidth(const Index: Integer; const Value: Integer);
@@ -72,6 +77,7 @@ type
       procedure SetAlignSpace(const Value: Integer);
       procedure SetCustomActiveColor(const Value: TColor);
       procedure SetTransparent(const Value: Boolean);
+      procedure SetLeftIconKind(const Value: TUImageKind);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
@@ -95,6 +101,8 @@ type
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
+      property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
+      property Images: TCustomImageList read FImages write FImages;
 
       property IconFont: TFont read FIconFont write FIconFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
@@ -122,6 +130,7 @@ type
       property AlignSpace: Integer read FAlignSpace write SetAlignSpace default 5;
       property CustomActiveColor: TColor read FCustomActiveColor write SetCustomActiveColor;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+      property LeftIconKind: TUImageKind read FLeftIconKind write SetLeftIconKind default ikFontIcon;
   end;
 
   TUItemButton = class(TUCustomItemButton)
@@ -208,6 +217,15 @@ begin
         FButtonState := csDisabled
       else
         FButtonState := csNone;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomItemButton.SetImageIndex(const Value: Integer);
+begin
+  if Value <> FImageIndex then
+    begin
+      FImageIndex := Value;
       UpdateTheme;
     end;
 end;
@@ -344,6 +362,15 @@ begin
     end;
 end;
 
+procedure TUCustomItemButton.SetLeftIconKind(const Value: TUImageKind);
+begin
+  if Value <> FLeftIconKind then
+    begin
+      FLeftIconKind := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUCustomItemButton.Create(aOwner: TComponent);
@@ -354,6 +381,7 @@ begin
   FButtonState := csNone;
   FEnabled := true;
   FHitTest := true;
+  FImageIndex := -1;
 
   Font.Name := 'Segoe UI';
   Font.Size := 10;
@@ -385,6 +413,7 @@ begin
   FAlignSpace := 5;
   FCustomActiveColor := $D77800;
   FTransparent := false;
+  FLeftIconKind := ikFontIcon;
 
   //  Common properties
   FullRepaint := false;
@@ -413,6 +442,7 @@ var
   aTheme: TUTheme;
   LPos, RPos: Integer;
   ObjectH, ObjectW: Integer;
+  ImgW, ImgH, ImgX, ImgY: Integer;
 begin
   inherited;
 
@@ -470,13 +500,24 @@ begin
 
   //  Paint left icon
   if ShowLeftIcon = true then
-    begin
-      ObjectH := Canvas.TextHeight(LeftIcon);
-      ObjectW := Canvas.TextWidth(LeftIcon);
-      Canvas.TextOut(LPos + (LeftIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, LeftIcon);
+    if LeftIconKind = ikFontIcon then
+      begin
+        ObjectH := Canvas.TextHeight(LeftIcon);
+        ObjectW := Canvas.TextWidth(LeftIcon);
+        Canvas.TextOut(LPos + (LeftIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, LeftIcon);
 
-      inc(LPos, LeftIconWidth);
-    end;
+        inc(LPos, LeftIconWidth);
+      end
+    else if (Images <> nil) and (ImageIndex >= 0) then
+      begin
+        ImgW := Images.Width;
+        ImgH := Images.Height;
+        ImgX := LPos + (LeftIconWidth - ImgW) div 2;
+        ImgY := (Height - ImgH) div 2;
+
+        Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+        inc(LPos, LeftIconWidth);
+      end;
 
   //  Paint right icon
   if ShowRightIcon = true then

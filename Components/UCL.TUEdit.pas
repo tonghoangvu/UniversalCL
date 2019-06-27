@@ -40,9 +40,6 @@ type
       FNumbersOnly: Boolean;
       FPasswordChar: Char;
 
-      //  Events
-      FOnChange: TNotifyEvent;
-
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
@@ -71,6 +68,8 @@ type
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
+      procedure WM_Size(var Msg: TMessage); message WM_SIZE;
+
       procedure UM_SubEditSetFocus(var Msg: TMessage); message UM_SUBEDIT_SETFOCUS;
       procedure UM_SubEditKillFocus(var Msg: TMessage); message UM_SUBEDIT_KILLFOCUS;
 
@@ -352,12 +351,17 @@ begin
   BevelOuter := bvNone;
   Caption := '';
   ShowCaption := false;
+  Self.Font.Name := 'Segoe UI';
+  Self.Font.Size := 10;
 
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
 
-  Self.Font.Name := 'Segoe UI';
-  Self.Font.Size := 10;
+  FText := FEdit.Text;
+  FTextHint := FEdit.TextHint;
+  FMaxLength := FEdit.MaxLength;
+  FNumbersOnly := FEdit.NumbersOnly;
+  FPasswordChar := FEdit.PasswordChar;
 
   FEdit.Font := Self.Font;
   FEdit.BorderStyle := bsNone;
@@ -384,6 +388,7 @@ end;
 procedure TUCustomEdit.Paint;
 var
   BorderColor, BackColor, TextColor: TColor;
+  BorderThickness, ThicknessPos: Integer;
 begin
   inherited;
 
@@ -429,18 +434,30 @@ begin
       TextColor := clGray;
     end;
 
+  //  Paint border
+  BorderThickness := 2; //  Default thickness for 100% scale
+  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
+  if BorderThickness mod 2 = 0 then
+    ThicknessPos := BorderThickness div 2 - 1
+  else
+    ThicknessPos := BorderThickness div 2;
+
+  Canvas.Pen.Color := BorderColor;
+  Canvas.Pen.Width := BorderThickness;
+  Canvas.Rectangle(TRect.Create(
+    BorderThickness div 2,
+    BorderThickness div 2,
+    Width - ThicknessPos,
+    Height - ThicknessPos));
+
   //  Fit subedit
   Padding.Left := 5;
   Padding.Right := 5;
-  Padding.Bottom := (Height - FEdit.Height) div 2;
+  Padding.Bottom := (Height - FEdit.Height) div 2 - 1;
   Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
 
-  //  Paint border
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Pen.Width := 2;
-  Canvas.Rectangle(1, 1, Width, Height);
+  Self.Color := BackColor;
 
-  Color := BackColor;
   FEdit.Color := BackColor;
   FEdit.Font.Color := TextColor;
 end;
@@ -511,6 +528,18 @@ begin
       ButtonState := csNone;
       inherited;
     end;
+end;
+
+procedure TUCustomEdit.WM_Size(var Msg: TMessage);
+var
+  BorderThickness: Integer;
+begin
+  inherited;
+  BorderThickness := 2;
+  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
+
+  Canvas.Brush.Color := FEdit.Color;
+  Canvas.FillRect(TRect.Create(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 end;
 
 procedure TUCustomEdit.UM_SubEditSetFocus(var Msg: TMessage);

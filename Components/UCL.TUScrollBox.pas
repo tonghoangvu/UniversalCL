@@ -33,8 +33,6 @@ type
       procedure AfterContrusction;
 
       procedure UpdateTheme;
-      procedure BeginUpdate;
-      procedure EndUpdate;
       procedure HideScrollBar;
 
     published
@@ -123,8 +121,6 @@ begin
   else
     FIsScrolling := true;
 
-  BeginUpdate;
-
   if ScrollOrientation = oVertical then
     aScrollbar := VertScrollBar
   else
@@ -151,7 +147,6 @@ begin
       FIsScrolling := false;
       if ShowScrollBar = false then
         HideScrollBar;
-      EndUpdate;
     end;
   Ani.Step := 20;
 
@@ -168,16 +163,6 @@ begin
   inherited;
   if ShowScrollBar = false then
     HideScrollBar;
-end;
-
-procedure TUScrollBox.BeginUpdate;
-begin
-
-end;
-
-procedure TUScrollBox.EndUpdate;
-begin
-
 end;
 
 procedure TUScrollBox.HideScrollBar;

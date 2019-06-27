@@ -6,7 +6,7 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   Winapi.Messages,
   System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
+  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
   TUCustomButton = class(TCustomPanel, IUThemeControl)
@@ -30,6 +30,8 @@ type
 
       //  Fields
       FButtonState: TUControlState;
+      FImageIndex: Integer;
+      FImages: TCustomImageList;
       FEnabled: Boolean;
       FHitTest: Boolean;
       FText: string;
@@ -44,6 +46,7 @@ type
 
       //  Value setters
       procedure SetButtonState(const Value: TUControlState);
+      procedure SetImageIndex(const Value: Integer);
       procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
       procedure SetHighlight(const Value: Boolean);
@@ -78,6 +81,8 @@ type
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
+      property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
+      property Images: TCustomImageList read FImages write FImages;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
@@ -163,6 +168,15 @@ begin
     end;
 end;
 
+procedure TUCustomButton.SetImageIndex(const Value: Integer);
+begin
+  if Value <> FImageIndex then
+    begin
+      FImageIndex := Value;
+      UpdateTheme;
+    end;
+end;
+
 procedure TUCustomButton.SetEnabled(const Value: Boolean);
 begin
   if Value <> FEnabled then
@@ -219,6 +233,7 @@ begin
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
   FButtonState := csNone;
+  FImageIndex := -1;
   FEnabled := true;
   FHitTest := true;
   FText := 'Button';
@@ -252,8 +267,12 @@ end;
 { CUSTOM METHODS }
 
 procedure TUCustomButton.Paint;
+const
+  IMG_SPACE = 10;
 var
   TextX, TextY, TextW, TextH: Integer;
+  ImgX, ImgY, ImgW, ImgH: Integer;
+  BorderThickness, ThicknessPos: Integer;
   BorderColor, BackColor, TextColor: TColor;
 begin
   inherited;
@@ -302,17 +321,45 @@ begin
   Canvas.FillRect(TRect.Create(0, 0, Width, Height));
 
   //  Paint border
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Pen.Width := 2;
-  Canvas.Rectangle(1, 1, Width, Height);
+  BorderThickness := 2; //  Default for 100% scale
+  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
+  if BorderThickness mod 2 = 0 then
+    ThicknessPos := BorderThickness div 2 - 1
+  else
+    ThicknessPos := BorderThickness div 2;
 
-  //  Paint text
+  Canvas.Pen.Color := BorderColor;
+  Canvas.Pen.Width := BorderThickness;
+  Canvas.Rectangle(TRect.Create(
+    BorderThickness div 2,
+    BorderThickness div 2,
+    Width - ThicknessPos,
+    Height - ThicknessPos));
+
   Font.Color := TextColor;
   Canvas.Font := Font;
-  TextH := Canvas.TextHeight(Text);
+
   TextW := Canvas.TextWidth(Text);
-  TextX := (Width - TextW) div 2;
-  TextY := (Height - TextH) div 2;
+  TextH := Canvas.TextHeight(Text);
+
+  if (Images <> nil) and (ImageIndex >= 0) then
+    begin
+      ImgW := Images.Width;
+      ImgH := Images.Height;
+      ImgX := (Width - ImgW - IMG_SPACE - TextW) div 2;
+      ImgY := (Height - ImgH) div 2;
+      Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+
+      TextX := ImgX + ImgW + IMG_SPACE;
+      TextY := (Height - TextH) div 2;
+    end
+  else
+    begin
+      TextX := (Width - TextW) div 2;
+      TextY := (Height - TextH) div 2;
+    end;
+
+  //  Paint text
   Canvas.TextOut(TextX, TextY, Text);
 end;
 

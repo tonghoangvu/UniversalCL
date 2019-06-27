@@ -13,35 +13,13 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls,
   Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, Vcl.Buttons,
-  Vcl.Samples.Gauges, UCL.TUItemButton;
+  Vcl.Samples.Gauges, UCL.TUItemButton, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection,
+  Vcl.ImageCollection, System.Threading;
 
 type
-  TFormDemo = class(TUForm)
-    UThemeManager1: TUThemeManager;
-    symbolbuttonSaveVert: TUSymbolButton;
-    symbolbuttonSaveHorz: TUSymbolButton;
-    buttonRunning: TButton;
-    symbolButtonOpenDisabled: TUSymbolButton;
+  TformDemo = class(TUForm)
+    AppTheme: TUThemeManager;
     captionbarOldStyle: TUCaptionBar;
-    buttonNoFocus: TUButton;
-    buttonDisabled: TUButton;
-    textTitle: TUText;
-    textHeading: TUText;
-    textEntry: TUText;
-    textNormal: TUText;
-    textDescription: TUText;
-    linkConnected: TUHyperLink;
-    linkCustomColor: TUHyperLink;
-    linkDisabled: TUHyperLink;
-    buttonReloadSettings: TUSymbolButton;
-    buttonAniStart: TButton;
-    progressCustomColor: TUProgressBar;
-    progressConnected: TUProgressBar;
-    buttonRandomProgress: TUButton;
-    buttonAniInverse: TButton;
-    progressVert: TUProgressBar;
-    buttonCanFocus: TUButton;
-    buttonHighlight: TUButton;
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -50,52 +28,43 @@ type
     buttonMenuOpen: TUSymbolButton;
     buttonMenuRate: TUSymbolButton;
     boxSmoothScrolling: TUScrollBox;
-    buttonCustomColor: TUButton;
-    check2State: TUCheckBox;
-    check3State: TUCheckBox;
     captionbarNewStyle: TUCaptionBar;
-    radioA1: TURadioButton;
-    radioA2: TURadioButton;
-    radioB1: TURadioButton;
-    radioA3: TURadioButton;
-    radioB2: TURadioButton;
-    UText1: TUText;
-    UText2: TUText;
-    UCheckBox1: TUCheckBox;
-    UCheckBox2: TUCheckBox;
-    UButton1: TUButton;
-    UText3: TUText;
-    URadioButton1: TURadioButton;
-    URadioButton2: TURadioButton;
-    URadioButton3: TURadioButton;
-    UText4: TUText;
-    UText5: TUText;
-    UText6: TUText;
-    UProgressBar1: TUProgressBar;
-    Image1: TImage;
-    UText7: TUText;
-    UText8: TUText;
-    UText9: TUText;
-    UText10: TUText;
-    UButton2: TUButton;
-    UHyperLink1: TUHyperLink;
-    UButton3: TUButton;
-    UCheckBox3: TUCheckBox;
-    UText11: TUText;
-    URadioButton4: TURadioButton;
-    URadioButton5: TURadioButton;
-    URadioButton6: TURadioButton;
+    headingSettings: TUText;
+    entryUserProfile: TUText;
+    checkAutoSync: TUCheckBox;
+    checkSendEmail: TUCheckBox;
+    buttonDeleteAccount: TUButton;
+    entryAccountType: TUText;
+    radioFreeAccount: TURadioButton;
+    radioProAccount: TURadioButton;
+    radioDevAccount: TURadioButton;
+    desAccountHint: TUText;
+    entryStorage: TUText;
+    desStorageHint: TUText;
+    progressStorageUsed: TUProgressBar;
+    imgAvatar: TImage;
+    headingAbout: TUText;
+    desAppVersion: TUText;
+    desFlashVersion: TUText;
+    desChromiumVersion: TUText;
+    buttonCheckUpdate: TUButton;
+    linkEmbarcadero: TUHyperLink;
+    buttonUpgradeAccount: TUButton;
+    checkKeepEmailPrivate: TUCheckBox;
+    entryAppTheme: TUText;
+    radioDefaultTheme: TURadioButton;
+    radioLightTheme: TURadioButton;
+    radioDarkTheme: TURadioButton;
     dialogSelectColor: TColorDialog;
-    UPanel1: TUPanel;
-    UText12: TUText;
-    UCheckBox4: TUCheckBox;
+    panelSelectAccentColor: TUPanel;
+    desAccentColorHint: TUText;
+    checkColorBorder: TUCheckBox;
     popupboxDemo: TUPopupBox;
     USymbolButton4: TUSymbolButton;
     USymbolButton5: TUSymbolButton;
     USymbolButton6: TUSymbolButton;
     popupDemo: TUPopupMenu;
     buttonClosePopup: TUSymbolButton;
-    buttonToggle: TUButton;
     panelRibbon: TUScrollBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
@@ -108,18 +77,54 @@ type
     buttonAppBack: TUButton;
     buttonAppQuit: TUButton;
     editAccountName: TUEdit;
+    ImageCollection1: TImageCollection;
+    VirtualImageList1: TVirtualImageList;
+    linkConnected: TUHyperLink;
+    linkCustomColor: TUHyperLink;
+    linkDisabled: TUHyperLink;
+    buttonNoFocus: TUButton;
+    buttonCanFocus: TUButton;
+    buttonCustomColor: TUButton;
+    buttonReloadSettings: TUSymbolButton;
+    buttonHighlight: TUButton;
+    buttonDisabled: TUButton;
+    buttonToggle: TUButton;
+    radioA1: TURadioButton;
+    radioA2: TURadioButton;
+    radioA3: TURadioButton;
+    radioB1: TURadioButton;
+    radioB2: TURadioButton;
+    check2State: TUCheckBox;
+    check3State: TUCheckBox;
     UItemButton1: TUItemButton;
+    UItemButton2: TUItemButton;
+    symbolButtonOpenDisabled: TUSymbolButton;
+    symbolbuttonSaveHorz: TUSymbolButton;
+    symbolbuttonSaveVert: TUSymbolButton;
+    progressVert: TUProgressBar;
+    buttonRandomProgress: TUButton;
+    progressCustomColor: TUProgressBar;
+    progressConnected: TUProgressBar;
+    textDescription: TUText;
+    textNormal: TUText;
+    textEntry: TUText;
+    textHeading: TUText;
+    textTitle: TUText;
+    buttonRunning: TButton;
+    buttonAniStart: TButton;
+    buttonAniInverse: TButton;
+    UButton1: TUButton;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
     procedure buttonAniInverseClick(Sender: TObject);
     procedure buttonOpenMenuClick(Sender: TObject);
-    procedure URadioButton4Click(Sender: TObject);
-    procedure URadioButton5Click(Sender: TObject);
-    procedure URadioButton6Click(Sender: TObject);
-    procedure UPanel1Click(Sender: TObject);
-    procedure UCheckBox4Click(Sender: TObject);
+    procedure radioDefaultThemeClick(Sender: TObject);
+    procedure radioLightThemeClick(Sender: TObject);
+    procedure radioDarkThemeClick(Sender: TObject);
+    procedure panelSelectAccentColorClick(Sender: TObject);
+    procedure checkColorBorderClick(Sender: TObject);
     procedure buttonClosePopupClick(Sender: TObject);
     procedure symbolbuttonSaveVertClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
@@ -132,60 +137,65 @@ type
   end;
 
 var
-  FormDemo: TFormDemo;
+  formDemo: TformDemo;
 
 implementation
 
 {$R *.dfm}
 
-procedure TFormDemo.buttonAniStartClick(Sender: TObject);
+procedure TformDemo.buttonAniStartClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 200, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 210, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
     end, false);
 
-  Ani.OnDone := procedure begin ShowMessage('Animation done') end;
+  Ani.OnDone := procedure begin buttonRunning.Caption := 'Animated' end;
   Ani.Start;
 end;
 
-procedure TFormDemo.buttonAniInverseClick(Sender: TObject);
+procedure TformDemo.buttonAniInverseClick(Sender: TObject);
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 200, procedure (Value: Integer)
+  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 210, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
     end, true);
   Ani.Start;
 end;
 
-procedure TFormDemo.FormCreate(Sender: TObject);
+procedure TformDemo.FormCreate(Sender: TObject);
 begin
-  Self.ThemeManager := UThemeManager1;
+  Self.ThemeManager := AppTheme;
+  panelSelectAccentColor.CustomBackColor := AppTheme.ActiveColor;
+  if AppTheme.ColorOnBorder = true then
+    checkColorBorder.State := cbsChecked
+  else
+    checkColorBorder.State := cbsUnchecked;
 end;
 
-procedure TFormDemo.symbolbuttonSaveVertClick(Sender: TObject);
+procedure TformDemo.symbolbuttonSaveVertClick(Sender: TObject);
 begin
   ShowMessage('Your document was saved');
 end;
 
-procedure TFormDemo.buttonAppQuitClick(Sender: TObject);
+procedure TformDemo.buttonAppQuitClick(Sender: TObject);
 begin
   Self.Close;
 end;
 
-procedure TFormDemo.UCheckBox4Click(Sender: TObject);
+procedure TformDemo.checkColorBorderClick(Sender: TObject);
 begin
-  if UCheckBox4.State = cbsChecked then
-    UThemeManager1.ColorOnBorderKind := cobkTrue
+  if checkColorBorder.State = cbsChecked then
+    AppTheme.ColorOnBorderKind := cobkTrue
   else
-    UThemeManager1.ColorOnBorderKind := cobkFalse;
+    AppTheme.ColorOnBorderKind := cobkFalse;
 end;
 
-procedure TFormDemo.UPanel1Click(Sender: TObject);
+procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
 var
   NewColor: TColor;
 begin
@@ -193,34 +203,34 @@ begin
     begin
       NewColor := dialogSelectColor.Color;
 
-      UThemeManager1.CustomColor := NewColor;
-      UThemeManager1.UseAccentColor := false;
+      AppTheme.CustomColor := NewColor;
+      AppTheme.UseAccentColor := false;
 
-      UPanel1.CustomBackColor := NewColor;
+      panelSelectAccentColor.CustomBackColor := NewColor;
     end;
 end;
 
-procedure TFormDemo.URadioButton4Click(Sender: TObject);
+procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
 begin
-  UThemeManager1.ThemeKind := tkAuto;
+  AppTheme.ThemeKind := tkAuto;
 end;
 
-procedure TFormDemo.URadioButton5Click(Sender: TObject);
+procedure TformDemo.radioLightThemeClick(Sender: TObject);
 begin
-  UThemeManager1.ThemeKind := tkLight;
+  AppTheme.ThemeKind := tkLight;
 end;
 
-procedure TFormDemo.URadioButton6Click(Sender: TObject);
+procedure TformDemo.radioDarkThemeClick(Sender: TObject);
 begin
-  UThemeManager1.ThemeKind := tkDark;
+  AppTheme.ThemeKind := tkDark;
 end;
 
-procedure TFormDemo.buttonClosePopupClick(Sender: TObject);
+procedure TformDemo.buttonClosePopupClick(Sender: TObject);
 begin
   Self.SetFocus;  //  Set focus to main form to close popup
 end;
 
-procedure TFormDemo.buttonMenuSettingsClick(Sender: TObject);
+procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
 var
   NewWidth: Integer;
   Ani: TIntAni;
@@ -247,7 +257,7 @@ begin
   Ani.Start;
 end;
 
-procedure TFormDemo.buttonRandomProgressClick(Sender: TObject);
+procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
 begin
   Randomize;
   progressCustomColor.GoToValue(Random(101));
@@ -255,7 +265,7 @@ begin
   progressVert.GoToValue(Random(101));
 end;
 
-procedure TFormDemo.buttonOpenMenuClick(Sender: TObject);
+procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
   NewPos: Integer;
   Ani: TIntAni;
@@ -278,9 +288,9 @@ begin
   Ani.Start;
 end;
 
-procedure TFormDemo.buttonReloadSettingsClick(Sender: TObject);
+procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
-  UThemeManager1.ReloadAutoSettings;
+  AppTheme.ReloadAutoSettings;
 end;
 
 end.
