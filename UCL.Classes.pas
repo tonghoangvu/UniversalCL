@@ -6,16 +6,16 @@ interface
 
 uses
   System.Classes,
-  VCL.Graphics, Vcl.Controls, VCL.Dialogs;
+  VCL.Graphics, Vcl.Controls;
 
 type
   TUTheme = (utLight, utDark);
 
   TUOrientation = (oHorizontal, oVertical);
 
-  //TUButtonState = (csNone, csHover, csPress, csDisabled, csFocused);
-
   TUControlState = (csNone, csHover, csPress, csDisabled, csFocused);
+
+  TUImageKind = (ikFontIcon, ikImage);
 
   TDefColor = array [TUTheme, TUControlState] of TColor;
 

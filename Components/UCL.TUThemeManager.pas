@@ -169,7 +169,8 @@ var
 begin
   //  Call UpdateTheme for all controls in list
   for aControl in FControlList do
-    (aControl as IUThemeControl).UpdateTheme;
+    if aControl <> nil then
+      (aControl as IUThemeControl).UpdateTheme;
 end;
 
 procedure TUThemeManager.ReloadAutoSettings;

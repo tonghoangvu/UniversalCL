@@ -6,7 +6,7 @@ uses
   UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils,
   Winapi.Messages, Winapi.Windows,
   System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
+  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
   TUCustomSymbolButton = class(TCustomPanel, IUThemeControl)
@@ -27,6 +27,10 @@ type
       FSymbolFont: TFont;
       FTextFont: TFont;
       FDetailFont: TFont;
+
+      FImageIndex: Integer;
+      FImageKind: TUImageKind;
+      FImages: TCustomImageList;
 
       FButtonState: TUControlState;
       FEnabled: Boolean;
@@ -61,6 +65,9 @@ type
       procedure SetTransparent(const Value: Boolean);
       procedure SetIsToggled(const Value: Boolean);
 
+      procedure SetImageIndex(const Value: Integer);
+      procedure SetImageKind(const Value: TUImageKind);
+
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
@@ -84,6 +91,10 @@ type
       property SymbolFont: TFont read FSymbolFont write FSymbolFont;
       property TextFont: TFont read FTextFont write FTextFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
+
+      property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
+      property ImageKind: TUImageKind read FImageKind write SetImageKind default ikFontIcon;
+      property Images: TCustomImageList read FImages write FImages;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Enabled: Boolean read FEnabled write SetEnabled default true;
@@ -277,11 +288,32 @@ begin
     end;
 end;
 
+procedure TUCustomSymbolButton.SetImageIndex(const Value: Integer);
+begin
+  if Value <> FImageIndex then
+    begin
+      FImageIndex := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomSymbolButton.SetImageKind(const Value: TUImageKind);
+begin
+  if Value <> FImageKind then
+    begin
+      FImageKind := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUCustomSymbolButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
+
+  FImageIndex := -1;
+  FImageKind := ikFontIcon;
 
   FSymbolFont := TFont.Create;
   FSymbolFont.Name := 'Segoe MDL2 Assets';
@@ -343,6 +375,7 @@ end;
 procedure TUCustomSymbolButton.Paint;
 var
   aTheme: TUTheme;
+  ImgW, ImgH, ImgX, ImgY: Integer;
   IconX, IconY, IconW, IconH: Integer;
   TextX, TextY, TextW, TextH: Integer;
   DetailX, DetailY, DetailW, DetailH: Integer;
@@ -391,23 +424,40 @@ begin
 
   //  Paint icon
   if ShowIcon = true then
-    begin
-      Canvas.Font := SymbolFont;
-      Canvas.Font.Color := TextColor;
-      IconW := Canvas.TextWidth(SymbolChar);
-      IconH := Canvas.TextHeight(SymbolChar);
-      if Orientation = oHorizontal then
-        begin
-          IconX := (TextOffset - IconW) div 2;
-          IconY := (Height - IconH) div 2;
-        end
-      else
-        begin
-          IconX := (Width - IconW) div 2;
-          IconY := (TextOffset - IconH) div 2;
-        end;
-      Canvas.TextOut(IconX, IconY, SymbolChar);
-    end;
+    if ImageKind = ikFontIcon then
+      begin
+        Canvas.Font := SymbolFont;
+        Canvas.Font.Color := TextColor;
+        IconW := Canvas.TextWidth(SymbolChar);
+        IconH := Canvas.TextHeight(SymbolChar);
+        if Orientation = oHorizontal then
+          begin
+            IconX := (TextOffset - IconW) div 2;
+            IconY := (Height - IconH) div 2;
+          end
+        else
+          begin
+            IconX := (Width - IconW) div 2;
+            IconY := (TextOffset - IconH) div 2;
+          end;
+        Canvas.TextOut(IconX, IconY, SymbolChar);
+      end
+    else if (Images <> nil) and (ImageIndex >= 0) then
+      begin
+        ImgW := Images.Width;
+        ImgH := Images.Height;
+        if Orientation = oHorizontal then
+          begin
+            ImgX := (TextOffset - ImgW) div 2;
+            ImgY := (Height - ImgH) div 2;
+          end
+        else
+          begin
+            ImgX := (Width - ImgW) div 2;
+            ImgY := (TextOffset - ImgH) div 2;
+          end;
+        Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+      end;
 
   //  Paint text
   Canvas.Font := TextFont;
