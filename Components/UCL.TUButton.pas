@@ -30,11 +30,10 @@ type
 
       //  Fields
       FButtonState: TUControlState;
+      FText: string;
       FImageIndex: Integer;
       FImages: TCustomImageList;
-      FEnabled: Boolean;
       FHitTest: Boolean;
-      FText: string;
       FAllowFocus: Boolean;
       FHighlight: Boolean;
       FIsToggleButton: Boolean;
@@ -46,9 +45,8 @@ type
 
       //  Value setters
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetImageIndex(const Value: Integer);
-      procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
+      procedure SetImageIndex(const Value: Integer);
       procedure SetHighlight(const Value: Boolean);
       procedure SetTransparent(const Value: Boolean);
 
@@ -56,10 +54,12 @@ type
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
-      procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
-      procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure WM_SetFocus(var Msg: TMessage); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TMessage); message WM_KILLFOCUS;
+
+      procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+      procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
       //  Group property change
       procedure DoCustomBorderColorsChange(Sender: TObject);
@@ -81,11 +81,10 @@ type
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
+      property Text: string read FText write SetText;
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
-      property Text: string read FText write SetText;
       property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
@@ -102,6 +101,7 @@ type
       property DragCursor;
       property DragKind;
       property DragMode;
+      property Enabled;
       property Font;
       property ParentFont;
       property ParentShowHint;
@@ -168,33 +168,20 @@ begin
     end;
 end;
 
-procedure TUCustomButton.SetImageIndex(const Value: Integer);
-begin
-  if Value <> FImageIndex then
-    begin
-      FImageIndex := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomButton.SetEnabled(const Value: Boolean);
-begin
-  if Value <> FEnabled then
-    begin
-      FEnabled := Value;
-      if Value = false then
-        FButtonState := csDisabled
-      else
-        FButtonState := csNone;
-      UpdateTheme;
-    end;
-end;
-
 procedure TUCustomButton.SetText(const Value: string);
 begin
   if Value <> FText then
     begin
       FText := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomButton.SetImageIndex(const Value: Integer);
+begin
+  if Value <> FImageIndex then
+    begin
+      FImageIndex := Value;
       UpdateTheme;
     end;
 end;
@@ -233,10 +220,9 @@ begin
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
   FButtonState := csNone;
+  FText := ClassName;
   FImageIndex := -1;
-  FEnabled := true;
   FHitTest := true;
-  FText := 'Button';
   FAllowFocus := true;
   FHighlight := false;
   FIsToggleButton := false;
@@ -396,6 +382,24 @@ begin
     end;
 end;
 
+procedure TUCustomButton.WM_SetFocus(var Msg: TMessage);
+begin
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      ButtonState := csFocused;
+      inherited;
+    end;
+end;
+
+procedure TUCustomButton.WM_KillFocus(var Msg: TMessage);
+begin
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      ButtonState := csNone;
+      inherited;
+    end;
+end;
+
 procedure TUCustomButton.CM_MouseEnter(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
@@ -423,22 +427,14 @@ begin
     end;
 end;
 
-procedure TUCustomButton.WM_SetFocus(var Msg: TMessage);
+procedure TUCustomButton.CM_EnabledChanged(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
-    begin
-      ButtonState := csFocused;
-      inherited;
-    end;
-end;
-
-procedure TUCustomButton.WM_KillFocus(var Msg: TMessage);
-begin
-  if (Enabled = true) and (HitTest = true) then
-    begin
-      ButtonState := csNone;
-      inherited;
-    end;
+  inherited;
+  if Enabled = false then
+    FButtonState := csDisabled
+  else
+    FButtonState := csNone;
+  UpdateTheme;
 end;
 
 { GROUP PROPERTY CHANGE }

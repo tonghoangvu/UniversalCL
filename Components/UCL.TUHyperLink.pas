@@ -20,10 +20,10 @@ type
       FButtonState: TUControlState;
       FCustomTextColors: TControlStateColors;
 
-      FEnabled: Boolean;
       FHitTest: Boolean;
       FOpenLink: Boolean;
       FURL: string;
+      FEnabled: Boolean;
 
       //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -36,6 +36,7 @@ type
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
@@ -52,10 +53,10 @@ type
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
+      property Enabled: Boolean read FEnabled write SetEnabled default true;
   end;
 
 implementation
@@ -99,10 +100,6 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      if Value = csDisabled then
-        Cursor := crDefault
-      else
-        Cursor := crHandPoint;
       UpdateTheme;
     end;
 end;
@@ -112,16 +109,18 @@ begin
   if Value <> FEnabled then
     begin
       FEnabled := Value;
+
       if Value = false then
         begin
-          FButtonState := csDisabled;
           Cursor := crDefault;
+          FButtonState := csDisabled;
         end
       else
         begin
-          FButtonState := csNone;
           Cursor := crHandPoint;
+          FButtonState := csNone;
         end;
+
       UpdateTheme;
     end;
 end;
@@ -136,10 +135,10 @@ begin
   FCustomTextColors := TControlStateColors.Create($D77800, clGray, clMedGray, clMedGray, $D77800);
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
-  FEnabled := true;
   FHitTest := true;
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
+  FEnabled := true;
 
   Caption := 'Embarcadero website';
 

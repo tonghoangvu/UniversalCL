@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes, System.Types,
+  System.Classes, System.Types, System.Math,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Graphics;
 
@@ -36,7 +36,7 @@ type
       procedure SetState(const Value: TUCheckBoxState);
 
       //  Messages
-      procedure WMLButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+      procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
 
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -204,8 +204,6 @@ var
   TextH: Integer;
   IconH: Integer;
 begin
-  inherited;
-
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;  //  Paint empty background
   Canvas.FillRect(TRect.Create(0, 0, Width, Height));
@@ -273,15 +271,16 @@ begin
         Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
       end;
   end;
+
 end;
 
 { MESSAGES }
 
-procedure TUCustomCheckBox.WMLButtonUp(var Msg: TMessage);
+procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TMessage);
 begin
-  //  Unchecked > Checked > Grayed > ...
   if (Enabled = true) and (HitTest = true) then
     begin
+      //  Unchecked > Checked > Grayed > ...
       case State of
         cbsChecked:
           if AllowGrayed = true then

@@ -7,18 +7,31 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
   System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Forms;
+  VCL.Controls, VCL.Forms, VCL.ExtCtrls;
 
 type
   TUScrollBox = class(TScrollBox, IUThemeControl)
     private
-      FThemeManager: TUThemeManager;
+      //  Temp variables
+      var ScrollCount: Integer;
+      var WheelDelta: SmallInt;
 
+      //  Object fields
+      FThemeManager: TUThemeManager;
+      FTimer: TTimer;
+
+      //  Read-only
       FIsScrolling: Boolean;
-      FScrollLength: Integer;
-      FScrollTime: Integer;
+
       FScrollOrientation: TUOrientation;
       FShowScrollBar: Boolean;
+      FWaitEventTime: Integer;
+
+      FMaxScrollCount: Integer;
+      FLengthPerStep: Integer;
+      FTimePerStep: Integer;
+
+      procedure DoTimer(Sender: TObject);
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -26,6 +39,7 @@ type
       //  Messages
       procedure WM_MouseWheel(var Msg: TWMMouseWheel); message WM_MOUSEWHEEL;
       procedure WM_Paint(var Msg: TWMPaint); message WM_PAINT;
+      procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -39,13 +53,79 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property IsScrolling: Boolean read FIsScrolling;
-      property ScrollLength: Integer read FScrollLength write FScrollLength default 320;
-      property ScrollTime: Integer read FScrollTime write FScrollTime default 300;
+
       property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
       property ShowScrollBar: Boolean read FShowScrollBar write FShowScrollBar default false;
+      property WaitEventTime: Integer read FWaitEventTime write FWaitEventTime default 50;
+
+      property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 5;
+      property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 90;
+      property TimePerStep: Integer read FTimePerStep write FTimePerStep default 120;
   end;
 
 implementation
+
+procedure TUScrollBox.HideScrollBar;
+begin
+  if csDesigning in ComponentState = false then
+    FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
+end;
+
+procedure TUScrollBox.DoTimer(Sender: TObject);
+var
+  Ani: TIntAni;
+  aScrollBar: TControlScrollBar;
+  Start, Stop: Integer;
+  Length: Integer;
+begin
+  //  Begin scroll
+  FTimer.Enabled := false;
+  FIsScrolling := true;
+
+  if ScrollCount > MaxScrollCount then
+    ScrollCount := MaxScrollCount;
+
+  //  Get scrollbar
+  if ScrollOrientation = oVertical then
+    aScrollBar := VertScrollBar
+  else
+    aScrollBar := HorzScrollBar;
+
+  Start := aScrollBar.Position;
+  Stop := aScrollBar.Position - LengthPerStep * ScrollCount * (WheelDelta div Abs(WheelDelta));
+
+  //  Scroll out of range
+  if Stop < 0 then
+    Stop := 0
+  else if Stop > aScrollBar.Range then
+    Stop := aScrollBar.Range;
+
+  //  Reduce ScrollCount when scroll out of range
+  Length := Abs(Stop - Start);
+  ScrollCount := Round(Length / LengthPerStep);
+
+  Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop,
+    procedure (Value: Integer)
+    begin
+      aScrollBar.Position := Value;
+    end, true);
+
+  Ani.OnDone :=
+    procedure
+    begin
+      ScrollCount := 0;
+      FIsScrolling := false;
+      if ShowScrollBar = false then
+        HideScrollBar;
+    end;
+
+  Ani.Step := 23;
+  Ani.Duration := Round(TimePerStep * Sqrt(ScrollCount));
+
+  if csDesigning in ComponentState = false then
+    EnableAlign;
+  Ani.Start;
+end;
 
 { THEME }
 
@@ -78,23 +158,31 @@ end;
 
 { MAIN CLASS }
 
-procedure TUScrollBox.AfterContrusction;
-begin
-  InitializeFlatSB(Handle);
-end;
-
 constructor TUScrollBox.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  //  Common properties
   DoubleBuffered := true;
   BorderStyle := bsNone;
 
+  //  Temp variables
   FIsScrolling := false;
+  ScrollCount := 0;
 
-  FScrollLength := 320;
-  FScrollTime := 300;
   FScrollOrientation := oVertical;
+  FShowScrollBar := false;
+  FWaitEventTime := 50;
+
+  FMaxScrollCount := 5;
+  FLengthPerStep := 90;
+  FTimePerStep := 120;
+
+  //  Catch event timer
+  FTimer := TTimer.Create(Self);
+  FTimer.Enabled := false;
+  FTimer.Interval := FWaitEventTime;
+  FTimer.OnTimer := DoTimer;
 
   UpdateTheme;
 end;
@@ -103,58 +191,36 @@ destructor TUScrollBox.Destroy;
 begin
   UninitializeFlatSB(Handle);
 
+  FTimer.Free;
+
   inherited Destroy;
+end;
+
+procedure TUScrollBox.AfterContrusction;
+begin
+  InitializeFlatSB(Handle);
 end;
 
 { MESSAGES }
 
 procedure TUScrollBox.WM_MouseWheel(var Msg: TWMMouseWheel);
-var
-  Ani: TIntAni;
-  Start, Stop: Integer;
-  aScrollbar: TControlScrollBar;
 begin
   inherited;
 
-  if FIsScrolling = true then
-    exit
-  else
-    FIsScrolling := true;
+  WheelDelta := Msg.WheelDelta;
 
-  if ScrollOrientation = oVertical then
-    aScrollbar := VertScrollBar
-  else
-    aScrollbar := HorzScrollBar;
-
-  Start := aScrollbar.Position;
-  Stop := aScrollbar.Position - ScrollLength * Msg.WheelDelta div Abs(Msg.WheelDelta);
-  //  If ScrollLength > Out of range, reduce it to fit
-  if Stop < 0 then
-    Stop := 0
-  else if Stop > aScrollbar.Range then
-    Stop := aScrollbar.Range;
-
-  Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop,
-    procedure (Value: Integer)
+  if ScrollCount = 0 then
+    //  Begin get scroll event
     begin
-      aScrollbar.Position := Value;
-    end, true);
+      FIsScrolling := true;
+      ScrollCount := 1;
 
-  //  On scroll done
-  Ani.OnDone :=
-    procedure
-    begin
-      FIsScrolling := false;
-      if ShowScrollBar = false then
-        HideScrollBar;
-    end;
-  Ani.Step := 20;
-
-  Ani.Duration := ScrollTime;
-
-  if csDesigning in ComponentState = false then
-    EnableAlign;  //  Neccesary
-  Ani.Start;
+      FTimer.Interval := WaitEventTime;
+      FTimer.Enabled := true;
+    end
+  else
+    //  Continue get scroll event count
+    ScrollCount := ScrollCount + 1;
 end;
 
 procedure TUScrollBox.WM_Paint(var Msg: TWMPaint);
@@ -165,10 +231,11 @@ begin
     HideScrollBar;
 end;
 
-procedure TUScrollBox.HideScrollBar;
+procedure TUScrollBox.WM_Size(var Msg: TWMSize);
 begin
-  if csDesigning in ComponentState = false then
-    FlatSB_ShowScrollBar(Handle, SB_BOTH, false);
+  inherited;
+  if ShowScrollBar = false then
+    HideScrollBar;
 end;
 
 end.

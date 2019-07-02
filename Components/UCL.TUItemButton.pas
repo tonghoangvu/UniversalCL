@@ -28,12 +28,13 @@ type
 
       FObjectSelected: TUItemObjectKind;
       FButtonState: TUControlState;
-      FEnabled: Boolean;
       FHitTest: Boolean;
       FLeftIconKind: TUImageKind;
+      FRightIconKind: TUImageKind;
 
-      FImageIndex: Integer;
       FImages: TCustomImageList;
+      FImageLeftIndex: Integer;
+      FImageRightIndex: Integer;
 
       FIconFont: TFont;
       FDetailFont: TFont;
@@ -62,8 +63,8 @@ type
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetEnabled(const Value: Boolean); reintroduce;
-      procedure SetImageIndex(const Value: Integer);
+      procedure SetImageLeftIndex(const Value: Integer);
+      procedure SetImageRightIndex(const Value: Integer);
 
       procedure SetObjectVisible(const Index: Integer; const Value: Boolean);
       procedure SetObjectWidth(const Index: Integer; const Value: Integer);
@@ -78,13 +79,16 @@ type
       procedure SetCustomActiveColor(const Value: TColor);
       procedure SetTransparent(const Value: Boolean);
       procedure SetLeftIconKind(const Value: TUImageKind);
+      procedure SetRightIconKind(const Value: TUImageKind);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
+
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -99,10 +103,11 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
-      property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
+
       property Images: TCustomImageList read FImages write FImages;
+      property ImageLeftIndex: Integer read FImageLeftIndex write SetImageLeftIndex default -1;
+      property ImageRightIndex: Integer read FImageRightIndex write SetImageRightIndex default -1;
 
       property IconFont: TFont read FIconFont write FIconFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
@@ -131,6 +136,7 @@ type
       property CustomActiveColor: TColor read FCustomActiveColor write SetCustomActiveColor;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
       property LeftIconKind: TUImageKind read FLeftIconKind write SetLeftIconKind default ikFontIcon;
+      property RightIconKind: TUImageKind read FRightIconKind write SetRightIconKind default ikFontIcon;
   end;
 
   TUItemButton = class(TUCustomItemButton)
@@ -142,6 +148,7 @@ type
       property DragCursor;
       property DragKind;
       property DragMode;
+      property Enabled;
       property Font;
       property ParentFont;
       property ParentShowHint;
@@ -208,24 +215,20 @@ begin
     end;
 end;
 
-procedure TUCustomItemButton.SetEnabled(const Value: Boolean);
+procedure TUCustomItemButton.SetImageLeftIndex(const Value: Integer);
 begin
-  if Value <> FEnabled then
+  if Value <> FImageLeftIndex then
     begin
-      FEnabled := Value;
-      if Value = false then
-        FButtonState := csDisabled
-      else
-        FButtonState := csNone;
+      FImageLeftIndex := Value;
       UpdateTheme;
     end;
 end;
 
-procedure TUCustomItemButton.SetImageIndex(const Value: Integer);
+procedure TUCustomItemButton.SetImageRightIndex(const Value: Integer);
 begin
-  if Value <> FImageIndex then
+  if Value <> FImageRightIndex then
     begin
-      FImageIndex := Value;
+      FImageRightIndex := Value;
       UpdateTheme;
     end;
 end;
@@ -371,6 +374,15 @@ begin
     end;
 end;
 
+procedure TUCustomItemButton.SetRightIconKind(const Value: TUImageKind);
+begin
+  if Value <> FRightIconKind then
+    begin
+      FRightIconKind := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUCustomItemButton.Create(aOwner: TComponent);
@@ -379,17 +391,21 @@ begin
 
   FObjectSelected := iokNone;
   FButtonState := csNone;
-  FEnabled := true;
   FHitTest := true;
-  FImageIndex := -1;
+  FImageLeftIndex := -1;
+  FImageRightIndex := -1;
 
+
+  //  Init text font
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
+  //  Init icon font
   FIconFont := TFont.Create;
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
+  //  Init detail font
   FDetailFont := TFont.Create;
   FDetailFont.Name := 'Segoe UI';
   FDetailFont.Size := 10;
@@ -414,6 +430,7 @@ begin
   FCustomActiveColor := $D77800;
   FTransparent := false;
   FLeftIconKind := ikFontIcon;
+  FRightIconKind := ikFontIcon;
 
   //  Common properties
   FullRepaint := false;
@@ -508,26 +525,37 @@ begin
 
         inc(LPos, LeftIconWidth);
       end
-    else if (Images <> nil) and (ImageIndex >= 0) then
+    else if (Images <> nil) and (ImageLeftIndex >= 0) then
       begin
         ImgW := Images.Width;
         ImgH := Images.Height;
         ImgX := LPos + (LeftIconWidth - ImgW) div 2;
         ImgY := (Height - ImgH) div 2;
 
-        Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+        Images.Draw(Canvas, ImgX, ImgY, ImageLeftIndex, Enabled);
         inc(LPos, LeftIconWidth);
       end;
 
   //  Paint right icon
   if ShowRightIcon = true then
-    begin
-      ObjectH := Canvas.TextHeight(RightIcon);
-      ObjectW := Canvas.TextWidth(RightIcon);
-      Canvas.TextOut(RPos - RightIconWidth + (RightIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, RightIcon);
+    if RightIconKind = ikFontIcon then
+      begin
+        ObjectH := Canvas.TextHeight(RightIcon);
+        ObjectW := Canvas.TextWidth(RightIcon);
+        Canvas.TextOut(RPos - RightIconWidth + (RightIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, RightIcon);
 
-      dec(RPos, RightIconWidth);
-    end;
+        dec(RPos, RightIconWidth);
+      end
+    else if (Images <> nil) and (ImageRightIndex >= 0) then
+      begin
+        ImgW := Images.Width;
+        ImgH := Images.Height;
+        ImgX := RPos - RightIconWidth + (RightIconWidth - ImgW) div 2;
+        ImgY := (Height - ImgH) div 2;
+
+        Images.Draw(Canvas, ImgX, ImgY, ImageRightIndex, Enabled);
+        dec(RPos, RightIconWidth);
+      end;
 
   Canvas.Font := Self.Font; //  Default font = text font
   Canvas.Font.Color := DefTextColor[aTheme, ButtonState];
@@ -619,6 +647,16 @@ begin
       ButtonState := csNone;
       inherited;
     end;
+end;
+
+procedure TUCustomItemButton.CM_EnabledChanged(var Msg: TMessage);
+begin
+  inherited;
+  if Enabled = false then
+    FButtonState := csDisabled
+  else
+    FButtonState := csNone;
+  UpdateTheme;
 end;
 
 end.

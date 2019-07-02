@@ -156,7 +156,7 @@ begin
   Ctl3D := false;
   Enabled := true;
   FullRepaint := false;
-  StyleElements := [];  //  Neccesary
+  StyleElements := [];  //  Neccesary if not, it will be white
   TabStop := false;
 
   Font.Name := 'Segoe UI';
