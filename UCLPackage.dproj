@@ -163,13 +163,13 @@
         <DCCReference Include="UCL.SystemSettings.pas"/>
         <DCCReference Include="UCL.IntAnimation.pas"/>
         <DCCReference Include="Components\UCL.TUSwitch.pas"/>
-        <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
         <DCCReference Include="Components\UCL.TURadioButton.pas"/>
         <DCCReference Include="Components\UCL.TUPopupBox.pas"/>
         <DCCReference Include="Components\UCL.TUPopupMenu.pas"/>
         <DCCReference Include="Components\UCL.TUItemButton.pas"/>
         <DCCReference Include="Components\UCL.TUSeparator.pas"/>
         <DCCReference Include="Components\UCL.TUEdit.pas"/>
+        <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
         <None Include="UCLPackage.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -197,13 +197,25 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="$(BDS)\Redist\osx64\libcgsqlite3.dylib" Class="DependencyModule">
-                    <Platform Name="OSX64">
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>UCLPackage.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>UCLPackage.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\osx64\libcgsqlite3.dylib" Class="DependencyModule">
+                    <Platform Name="OSX64">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -219,12 +231,6 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Release" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>UCLPackage.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

@@ -30,7 +30,6 @@ type
       FButtonState: TUControlState;
 
       FEdit: TUSubEdit;
-      FEnabled: Boolean;
       FHitTest: Boolean;
       FTransparent: Boolean;
 
@@ -43,7 +42,6 @@ type
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetTransparent(const Value: Boolean);
 
       procedure SetText(const Value: string);
@@ -64,11 +62,13 @@ type
       //  Messages
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
-      procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
-      procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
       procedure WM_Size(var Msg: TMessage); message WM_SIZE;
+
+      procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
+      procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
       procedure UM_SubEditSetFocus(var Msg: TMessage); message UM_SUBEDIT_SETFOCUS;
       procedure UM_SubEditKillFocus(var Msg: TMessage); message UM_SUBEDIT_KILLFOCUS;
@@ -87,7 +87,6 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Transparent: Boolean read FTransparent write SetTransparent default true;
 
@@ -226,20 +225,6 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.SetEnabled(const Value: Boolean);
-begin
-  if Value <> FEnabled then
-    begin
-      if Value = false then
-        FButtonState := csDisabled
-      else
-        FButtonState := csNone;
-      FEnabled := Value;
-      FEdit.Enabled := Value;
-      UpdateTheme;
-    end;
-end;
-
 procedure TUCustomEdit.SetTransparent(const Value: Boolean);
 begin
   if Value <> FTransparent then
@@ -342,7 +327,6 @@ begin
   inherited Create(aOwner);
 
   FButtonState := csNone;
-  FEnabled := true;
   FHitTest := true;
   FTransparent := true;
 
@@ -487,31 +471,6 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.CM_MouseEnter(var Msg: TMessage);
-begin
-  if (Enabled = true) and (HitTest = true) then
-    begin
-      if (Focused = true) or (FEdit.Focused = true) then
-        ButtonState := csFocused
-      else
-        ButtonState := csHover;
-      inherited;
-    end;
-end;
-
-procedure TUCustomEdit.CM_MouseLeave(var Msg: TMessage);
-begin
-  if (Enabled = true) and (HitTest = true) then
-    begin
-      if (Focused = true) or (FEdit.Focused = true) then
-        ButtonState := csFocused
-      else
-        ButtonState := csNone;
-
-      inherited;
-    end;
-end;
-
 procedure TUCustomEdit.WM_SetFocus(var Msg: TWMSetFocus);
 begin
   if (Enabled = true) and (HitTest = true) then
@@ -554,6 +513,42 @@ begin
   if (Enabled = true) and (HitTest = true) then
     ButtonState := csNone;
   //inherited;  //  Cancel this message
+end;
+
+procedure TUCustomEdit.CM_MouseEnter(var Msg: TMessage);
+begin
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      if (Focused = true) or (FEdit.Focused = true) then
+        ButtonState := csFocused
+      else
+        ButtonState := csHover;
+      inherited;
+    end;
+end;
+
+procedure TUCustomEdit.CM_MouseLeave(var Msg: TMessage);
+begin
+  if (Enabled = true) and (HitTest = true) then
+    begin
+      if (Focused = true) or (FEdit.Focused = true) then
+        ButtonState := csFocused
+      else
+        ButtonState := csNone;
+
+      inherited;
+    end;
+end;
+
+procedure TUCustomEdit.CM_EnabledChanged(var Msg: TMessage);
+begin
+  inherited;
+  if Enabled = false then
+    FButtonState := csDisabled
+  else
+    FButtonState := csNone;
+  FEdit.Enabled := Enabled;
+  UpdateTheme;
 end;
 
 end.

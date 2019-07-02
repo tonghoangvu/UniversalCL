@@ -9,21 +9,21 @@ package UCLPackage;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS OFF}
+{$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
+{$OPTIMIZATION OFF}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO OFF}
+{$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE RELEASE}
+{$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
@@ -51,13 +51,13 @@ contains
   UCL.SystemSettings in 'UCL.SystemSettings.pas',
   UCL.IntAnimation in 'UCL.IntAnimation.pas',
   UCL.TUSwitch in 'Components\UCL.TUSwitch.pas',
-  UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
   UCL.TURadioButton in 'Components\UCL.TURadioButton.pas',
   UCL.TUPopupBox in 'Components\UCL.TUPopupBox.pas',
   UCL.TUPopupMenu in 'Components\UCL.TUPopupMenu.pas',
   UCL.TUItemButton in 'Components\UCL.TUItemButton.pas',
   UCL.TUSeparator in 'Components\UCL.TUSeparator.pas',
-  UCL.TUEdit in 'Components\UCL.TUEdit.pas';
+  UCL.TUEdit in 'Components\UCL.TUEdit.pas',
+  UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas';
 
 end.
 

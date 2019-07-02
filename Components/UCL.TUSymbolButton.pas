@@ -33,7 +33,6 @@ type
       FImages: TCustomImageList;
 
       FButtonState: TUControlState;
-      FEnabled: Boolean;
       FHitTest: Boolean;
       FOrientation: TUOrientation;
       FSymbolChar: string;
@@ -53,7 +52,6 @@ type
 
       //  Value setters
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetEnabled(const Value: Boolean); reintroduce;
       procedure SetOrientation(const Value: TUOrientation);
       procedure SetSymbolChar(const Value: string);
       procedure SetText(const Value: string);
@@ -72,9 +70,11 @@ type
       procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure CM_FontChanged(var Msg: TMessage); message CM_FONTCHANGED;
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -97,7 +97,6 @@ type
       property Images: TCustomImageList read FImages write FImages;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property SymbolChar: string read FSymbolChar write SetSymbolChar;
@@ -121,6 +120,7 @@ type
       property DragCursor;
       property DragKind;
       property DragMode;
+      property Enabled;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
@@ -181,19 +181,6 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomSymbolButton.SetEnabled(const Value: Boolean);
-begin
-  if Value <> FEnabled then
-    begin
-      FEnabled := Value;
-      if Value = false then
-        FButtonState := csDisabled
-      else
-        FButtonState := csNone;
       UpdateTheme;
     end;
 end;
@@ -328,7 +315,6 @@ begin
   FDetailFont.Size := 10;
 
   FButtonState := csNone;
-  FEnabled := true;
   FHitTest := true;
   FOrientation := oHorizontal;
   FSymbolChar := '';
@@ -548,6 +534,16 @@ end;
 
 procedure TUCustomSymbolButton.CM_FontChanged(var Msg: TMessage);
 begin
+  UpdateTheme;
+end;
+
+procedure TUCustomSymbolButton.CM_EnabledChanged(var Msg: TMessage);
+begin
+  inherited;
+  if Enabled = false then
+    FButtonState := csDisabled
+  else
+    FButtonState := csNone;
   UpdateTheme;
 end;
 
