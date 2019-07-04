@@ -11,7 +11,7 @@ uses
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
-  TUCustomCheckBox = class(TGraphicControl, IUThemeControl)
+  TUCustomCheckBox = class(TCustomControl, IUThemeControl)
     private var
       ICON_LEFT: Integer;
       TEXT_LEFT: Integer;
@@ -36,7 +36,8 @@ type
       procedure SetState(const Value: TUCheckBoxState);
 
       //  Messages
-      procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
+      procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -204,6 +205,8 @@ var
   TextH: Integer;
   IconH: Integer;
 begin
+  Resize;
+
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;  //  Paint empty background
   Canvas.FillRect(TRect.Create(0, 0, Width, Height));
@@ -276,7 +279,13 @@ end;
 
 { MESSAGES }
 
-procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TMessage);
+procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMMouse);
+begin
+  SetFocus;
+  inherited;
+end;
+
+procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin

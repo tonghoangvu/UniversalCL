@@ -64,7 +64,7 @@ type
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
-      procedure WM_Size(var Msg: TMessage); message WM_SIZE;
+      procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -103,7 +103,6 @@ type
     published
       //  Common properties
       property Align;
-      property Alignment;
       property Anchors;
       property AutoSize;
       property BevelEdges;
@@ -113,7 +112,6 @@ type
       property BevelWidth;
       property BiDiMode;
       property BorderWidth;
-      property BorderStyle;
       property Caption;
       property Constraints;
       property Ctl3D;
@@ -124,9 +122,7 @@ type
       property DragKind;
       property DragMode;
       property Enabled;
-      property FullRepaint;
       property Font;
-      property Locked;
       property Padding;
       property ParentBiDiMode;
       property ParentBackground;
@@ -135,12 +131,10 @@ type
       property ParentFont;
       property ParentShowHint;
       property PopupMenu;
-      property ShowCaption;
       property ShowHint;
       property TabOrder;
       property TabStop;
       property Touch;
-      property VerticalAlignment;
       property Visible;
       property StyleElements;
 
@@ -331,10 +325,8 @@ begin
   FTransparent := true;
 
   Height := 30;
-  FullRepaint := false;
   BevelOuter := bvNone;
   Caption := '';
-  ShowCaption := false;
   Self.Font.Name := 'Segoe UI';
   Self.Font.Size := 10;
 
@@ -489,7 +481,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.WM_Size(var Msg: TMessage);
+procedure TUCustomEdit.WM_Size(var Msg: TWMSize);
 var
   BorderThickness: Integer;
 begin

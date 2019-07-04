@@ -110,7 +110,7 @@ begin
       if ThemeManager.ColorOnBorder = true then
         Color := ThemeManager.ActiveColor //  Active color
       else
-        Color := $FFFFFF; //  White
+        Color := $FFFFFF;
     end
 
   //  New style (like UWP), depend AppTheme light or dark
@@ -154,7 +154,6 @@ begin
   BorderStyle := bsNone;
   Height := 32;
   Ctl3D := false;
-  Enabled := true;
   FullRepaint := false;
   StyleElements := [];  //  Neccesary if not, it will be white
   TabStop := false;
@@ -183,6 +182,7 @@ end;
 procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TMessage);
 begin
   inherited;
+
   if DragMovement = true then
     begin
       ReleaseCapture;
@@ -204,7 +204,7 @@ begin
       P := ClientToScreen(P);
       Msg.LParamLo := P.X;
       Msg.LParamHi := P.Y;
-      SendMessage(Parent.Handle, WM_SYSMENU, 0, Msg.LParam);
+      PostMessage(Parent.Handle, WM_SYSMENU, 0, Msg.LParam);
     end;
 end;
 

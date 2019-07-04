@@ -17,6 +17,7 @@ type
       FThemeManager: TUThemeManager;
 
       FBorderColor: TColor;
+
       FResizeable: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -24,6 +25,7 @@ type
       procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
+      procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;
 
     protected
       procedure CreateParams(var Params: TCreateParams); override;
@@ -111,7 +113,6 @@ end;
 
 procedure TUForm.Resize;
 begin
-  inherited;
   if WindowState = wsMaximized then
     begin
       Self.Left := Screen.WorkAreaRect.Left;
@@ -125,6 +126,7 @@ begin
   else
     Self.Padding.SetBounds(1, 1, 1, 1);
 
+  inherited;
   Invalidate; //  Neccesary
 end;
 
@@ -149,7 +151,7 @@ end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);
 const
-  EDGEDETECT = 12;
+  EDGEDETECT = 5;
 var
   deltaRect: TRect;
 begin
@@ -180,6 +182,13 @@ begin
         else if (Right < EDGEDETECT) then
           Result := HTRIGHT
       end;
+end;
+
+procedure TUForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
+begin
+  if Self.ThemeManager <> nil then
+    Self.ThemeManager.ReloadAutoSettings;
+  inherited;
 end;
 
 end.

@@ -8,7 +8,7 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomSeparator = class(TGraphicControl, IUThemeControl)
+  TUCustomSeparator = class(TCustomControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 

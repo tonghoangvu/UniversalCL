@@ -11,7 +11,7 @@ uses
 type
   TUPopupKind = (pkDown, pkUp);
 
-  TUPopupBox = class(TCustomPanel, IUThemeControl)
+  TUPopupBox = class(TCustomControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 
@@ -104,8 +104,6 @@ begin
   else
     Visible := false;
   BevelOuter := bvNone;
-  FullRepaint := false;
-  ShowCaption := false;
   Width := 240;
   Height := 115;
   Padding.SetBounds(1, 5, 1, 5);

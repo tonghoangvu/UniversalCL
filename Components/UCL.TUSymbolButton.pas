@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
-  TUCustomSymbolButton = class(TCustomPanel, IUThemeControl)
+  TUCustomSymbolButton = class(TCustomControl, IUThemeControl)
     const
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
@@ -331,7 +331,6 @@ begin
   Width := 250;
   Height := 40;
   TabStop := true;
-  FullRepaint := false;
 
   //UpdateTheme;
 end;

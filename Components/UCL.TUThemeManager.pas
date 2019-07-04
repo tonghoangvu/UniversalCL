@@ -37,6 +37,9 @@ type
 
       FControlList: TList<TControl>;
 
+      //  Events
+      FOnUpdate: TNotifyEvent;
+
       procedure SetThemeKind(const Value: TUThemeKind);
       procedure SetUseAccentColor(const Value: Boolean);
       procedure SetColorOnBorderKind(const Value: TUColorOnBorderKind);
@@ -65,6 +68,8 @@ type
       property ColorOnBorderKind: TUColorOnBorderKind read FColorOnBorderKind write SetColorOnBorderKind default cobkAuto;
 
       property AutoUpdateTheme: Boolean read FAutoUpdateTheme write FAutoUpdateTheme default true;
+
+      property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
   end;
 
 implementation
@@ -156,11 +161,14 @@ begin
 
   FControlList := TList<TControl>.Create;
 
-  ThemeKind := tkAuto;
-  UseAccentColor := true;
   CustomColor := $00D77800;
   AutoUpdateTheme := true;
+
+  ThemeKind := tkAuto;
+  UseAccentColor := true;
   ColorOnBorderKind := cobkAuto;
+
+  ReloadAutoSettings;
 end;
 
 procedure TUThemeManager.UpdateThemeForControls;
@@ -171,6 +179,9 @@ begin
   for aControl in FControlList do
     if aControl <> nil then
       (aControl as IUThemeControl).UpdateTheme;
+
+  if Assigned(FOnUpdate) then
+    FOnUpdate(Self);
 end;
 
 procedure TUThemeManager.ReloadAutoSettings;
@@ -180,6 +191,8 @@ begin
     FTheme := GetAppTheme;
   if UseAccentColor = true then
     FActiveColor := GetAccentColor;
+  if ColorOnBorderKind = cobkAuto then
+    FColorOnBorder := IsAccentColorEnabled;
 
   if AutoUpdateTheme = true then
     UpdateThemeForControls;
