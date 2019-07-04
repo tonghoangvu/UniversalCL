@@ -33,9 +33,9 @@ type
       procedure SetEnabled(const Value: Boolean); reintroduce;
 
       //  Messages
-      procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
-      procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
-      procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+      procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
+      procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -159,7 +159,7 @@ end;
 
 { MESSAGES }
 
-procedure TUHyperLink.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUHyperLink.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -168,7 +168,7 @@ begin
     end;
 end;
 
-procedure TUHyperLink.WM_LButtonDown(var Msg: TMessage);
+procedure TUHyperLink.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -177,7 +177,7 @@ begin
     end;
 end;
 
-procedure TUHyperLink.WM_LButtonUp(var Msg: TMessage);
+procedure TUHyperLink.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin

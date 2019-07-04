@@ -3,7 +3,7 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
@@ -11,7 +11,7 @@ uses
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
 
-  TUCustomItemButton = class(TCustomPanel, IUThemeControl)
+  TUCustomItemButton = class(TCustomControl, IUThemeControl)
     const
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
@@ -59,6 +59,8 @@ type
 
       FCustomActiveColor: TColor;
       FTransparent: Boolean;
+      FIsToggleButton: Boolean;
+      FIsToggled: Boolean;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -80,10 +82,11 @@ type
       procedure SetTransparent(const Value: Boolean);
       procedure SetLeftIconKind(const Value: TUImageKind);
       procedure SetRightIconKind(const Value: TUImageKind);
+      procedure SetIsToggled(const Value: Boolean);
 
       //  Messages
-      procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
-      procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
+      procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
@@ -137,6 +140,8 @@ type
       property Transparent: Boolean read FTransparent write SetTransparent default false;
       property LeftIconKind: TUImageKind read FLeftIconKind write SetLeftIconKind default ikFontIcon;
       property RightIconKind: TUImageKind read FRightIconKind write SetRightIconKind default ikFontIcon;
+      property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
+      property IsToggled: Boolean read FIsToggled write SetIsToggled default false;
   end;
 
   TUItemButton = class(TUCustomItemButton)
@@ -383,6 +388,15 @@ begin
     end;
 end;
 
+procedure TUCustomItemButton.SetIsToggled(const Value: Boolean);
+begin
+  if Value <> FIsToggled then
+    begin
+      FIsToggled := Value;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUCustomItemButton.Create(aOwner: TComponent);
@@ -394,7 +408,6 @@ begin
   FHitTest := true;
   FImageLeftIndex := -1;
   FImageRightIndex := -1;
-
 
   //  Init text font
   Font.Name := 'Segoe UI';
@@ -431,9 +444,11 @@ begin
   FTransparent := false;
   FLeftIconKind := ikFontIcon;
   FRightIconKind := ikFontIcon;
+  FIsToggleButton := false;
+  FIsToggled := false;
 
   //  Common properties
-  FullRepaint := false;
+  TabStop := true;
 
   //UpdateTheme;
 end;
@@ -460,6 +475,8 @@ var
   LPos, RPos: Integer;
   ObjectH, ObjectW: Integer;
   ImgW, ImgH, ImgX, ImgY: Integer;
+
+  BackColor, TextColor, DetailColor: TColor;
 begin
   inherited;
 
@@ -471,14 +488,37 @@ begin
   else
     aTheme := ThemeManager.Theme;
 
-  //  Paint background
+  //  Transparent enabled
   if (ButtonState = csNone) and (Transparent = true) then
     begin
       ParentColor := true;
-      Canvas.Brush.Color := Color;
+      BackColor := Color;
+      TextColor := GetTextColorFromBackground(Color);
+      DetailColor := DefDetailColor[aTheme, ButtonState];
     end
+
+  //  Highlight enabled
+  else if
+    (ThemeManager <> nil)
+    and ((IsToggleButton = true) and (IsToggled = true))
+    and (ButtonState in [csNone, csHover, csFocused])
+  then
+    begin
+      BackColor := ThemeManager.ActiveColor;
+      TextColor := GetTextColorFromBackground(BackColor);
+      DetailColor := clSilver;
+    end
+
+  //  Default colors
   else
-    Canvas.Brush.Color := DefBackColor[aTheme, ButtonState];
+    begin
+      BackColor := DefBackColor[aTheme, ButtonState];
+      TextColor := DefTextColor[aTheme, ButtonState];
+      DetailColor := DefDetailColor[aTheme, ButtonState];
+    end;
+
+  //  Paint background
+  Canvas.Brush.Color := BackColor;
   Canvas.FillRect(TRect.Create(0, 0, Width, Height));
 
   Canvas.Font := IconFont;
@@ -513,7 +553,7 @@ begin
       inc(LPos, CheckBoxWidth);
     end;
 
-  Canvas.Font.Color := DefTextColor[aTheme, ButtonState];
+  Canvas.Font.Color := TextColor;
 
   //  Paint left icon
   if ShowLeftIcon = true then
@@ -558,12 +598,11 @@ begin
       end;
 
   Canvas.Font := Self.Font; //  Default font = text font
-  Canvas.Font.Color := DefTextColor[aTheme, ButtonState];
 
   // Paint text
   if ShowText = true then
     begin
-      Canvas.Font.Color := DefTextColor[aTheme, ButtonState];
+      Canvas.Font.Color := TextColor;
 
       ObjectH := Canvas.TextHeight(Text);
       Canvas.TextOut(LPos + AlignSpace, (Height - ObjectH) div 2, Text);
@@ -573,7 +612,7 @@ begin
   if ShowDetail = true then
     begin
       Canvas.Font := DetailFont;
-      Canvas.Font.Color := DefDetailColor[aTheme, ButtonState];
+      Canvas.Font.Color := DetailColor;
 
       ObjectH := Canvas.TextHeight(Detail);
       ObjectW := Canvas.TextWidth(Detail);
@@ -583,7 +622,7 @@ end;
 
 { MESSAGES }
 
-procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -592,7 +631,7 @@ begin
     end;
 end;
 
-procedure TUCustomItemButton.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomItemButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -625,6 +664,10 @@ begin
         iokDetail: ;
         iokRightIcon: ;
       end;
+
+      //  Switch toggle state
+      if (IsToggleButton = true) and (FObjectSelected <> iokCheckBox) then
+        FIsToggled := not FIsToggled;
 
       ButtonState := csHover;
       inherited;

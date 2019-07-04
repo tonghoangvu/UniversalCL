@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
-  TUCustomButton = class(TCustomPanel, IUThemeControl)
+  TUCustomButton = class(TCustomControl, IUThemeControl)
     const
       DefBackColor: TDefColor = (
         ($CCCCCC, $CCCCCC, $999999, $CCCCCC, $CCCCCC),
@@ -51,11 +51,11 @@ type
       procedure SetTransparent(const Value: Boolean);
 
       //  Messages
-      procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
-      procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
-      procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
-      procedure WM_SetFocus(var Msg: TMessage); message WM_SETFOCUS;
-      procedure WM_KillFocus(var Msg: TMessage); message WM_KILLFOCUS;
+      procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
+      procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
+      procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
+      procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -235,7 +235,6 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
   TabStop := true;
-  FullRepaint := false;
 
   //UpdateTheme;
   //  Dont update theme in constructor when UpdateTheme call Paint method
@@ -351,7 +350,7 @@ end;
 
 { MESSAGES }
 
-procedure TUCustomButton.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -360,7 +359,7 @@ begin
     end;
 end;
 
-procedure TUCustomButton.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -371,7 +370,7 @@ begin
     end;
 end;
 
-procedure TUCustomButton.WM_LButtonUp(var Msg: TMessage);
+procedure TUCustomButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -382,16 +381,19 @@ begin
     end;
 end;
 
-procedure TUCustomButton.WM_SetFocus(var Msg: TMessage);
+procedure TUCustomButton.WM_SetFocus(var Msg: TWMSetFocus);
 begin
   if (Enabled = true) and (HitTest = true) then
-    begin
-      ButtonState := csFocused;
-      inherited;
-    end;
+    if AllowFocus = true then
+      begin
+        ButtonState := csFocused;
+        inherited;
+      end
+    else
+      Msg.Msg := WM_NULL;
 end;
 
-procedure TUCustomButton.WM_KillFocus(var Msg: TMessage);
+procedure TUCustomButton.WM_KillFocus(var Msg: TWMKillFocus);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin

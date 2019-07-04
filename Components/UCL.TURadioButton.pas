@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomRadioButton = class(TGraphicControl, IUThemeControl)
+  TUCustomRadioButton = class(TCustomControl, IUThemeControl)
     private var
       ICON_LEFT: Integer;
       TEXT_LEFT: Integer;
@@ -29,7 +29,8 @@ type
       procedure SetText(const Value: string);
       procedure SetIsChecked(const Value: Boolean);
 
-      procedure WMLButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
+      procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -246,7 +247,13 @@ end;
 
 { MESSAGES }
 
-procedure TUCustomRadioButton.WMLButtonUp(var Msg: TMessage);
+procedure TUCustomRadioButton.WM_LButtonDown(var Msg: TWMLButtonDown);
+begin
+  SetFocus;
+  inherited;
+end;
+
+procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 var 
   i: Integer;
 begin

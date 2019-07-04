@@ -3,18 +3,23 @@
 interface
 
 uses
-  flatsb,
-  UCL.Utils,
-  UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
+  //  UCL units
+  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUPopupBox,
+  UCL.TUPopupBox, UCL.TUSlider, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
 
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Types, Vcl.WinXCtrls,
-  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, Vcl.Buttons,
-  Vcl.Samples.Gauges, UCL.TUItemButton, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection,
-  Vcl.ImageCollection, System.Threading;
+  //  Winapi units
+  Winapi.Windows, Winapi.Messages,
+
+  //  System units
+  System.SysUtils, System.Variants, System.Classes, System.Types, System.ImageList,
+  System.Threading,
+
+  //  VCL units
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.WinXCtrls,
+  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, Vcl.Buttons, Vcl.Samples.Gauges, Vcl.ImgList, Vcl.VirtualImageList,
+  Vcl.BaseImageCollection, Vcl.ImageCollection;
 
 type
   TformDemo = class(TUForm)
@@ -113,7 +118,11 @@ type
     buttonRunning: TButton;
     buttonAniStart: TButton;
     buttonAniInverse: TButton;
-    UButton1: TUButton;
+    buttonWithImage: TUButton;
+    buttonAppMaximized: TUButton;
+    buttonAppMinimized: TUButton;
+    sliderOne: TUSlider;
+    sliderDisabled: TUSlider;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -129,11 +138,12 @@ type
     procedure symbolbuttonSaveVertClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
+    procedure buttonAppMaximizedClick(Sender: TObject);
+    procedure buttonAppMinimizedClick(Sender: TObject);
+    procedure sliderOneChange(Sender: TObject);
 
   private
-
   public
-
   end;
 
 var
@@ -180,6 +190,24 @@ end;
 procedure TformDemo.symbolbuttonSaveVertClick(Sender: TObject);
 begin
   ShowMessage('Your document was saved');
+end;
+
+procedure TformDemo.sliderOneChange(Sender: TObject);
+begin
+  progressConnected.Value := sliderOne.Value;
+end;
+
+procedure TformDemo.buttonAppMaximizedClick(Sender: TObject);
+begin
+  if WindowState <> wsMaximized then
+    WindowState := wsMaximized
+  else
+    WindowState := wsNormal;
+end;
+
+procedure TformDemo.buttonAppMinimizedClick(Sender: TObject);
+begin
+  WindowState := wsMinimized;
 end;
 
 procedure TformDemo.buttonAppQuitClick(Sender: TObject);
@@ -272,10 +300,10 @@ var
   DPI: Single;
 begin
   DPI := Self.PixelsPerInch / 96;
-  if drawerNavigation.Width <> Round(40 * DPI) then
-    NewPos := Round(40 * DPI) // Go to 40 (close menu)
+  if drawerNavigation.Width <> Round(45 * DPI) then
+    NewPos := Round(45 * DPI) // Go to 45 (close menu)
   else
-    NewPos := Round(220 * DPI); // 220:40 and DPI change
+    NewPos := Round(220 * DPI); // 220:45 and DPI change
 
   Ani := TIntAni.Create(akOut, afkQuartic, drawerNavigation.Width, NewPos,
     procedure (Value: Integer)

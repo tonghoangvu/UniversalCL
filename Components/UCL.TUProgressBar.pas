@@ -10,7 +10,7 @@ uses
   UCL.IntAnimation;
 
 type
-  TUCustomProgressBar = class(TGraphicControl, IUThemeControl)
+  TUCustomProgressBar = class(TCustomControl, IUThemeControl)
     private
       FThemeManager: TUThemeManager;
 

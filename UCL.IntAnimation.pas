@@ -111,8 +111,6 @@ begin
 
   FreeOnTerminate := FreeOnFinish;
 
-  FOnDone := nil;
-
   //  Default properties
   FStep := 25;
   FDelayStart := 0;
