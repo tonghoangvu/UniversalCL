@@ -11,33 +11,35 @@ UWP controls for Delphi VCL
 
 **4. TUButton:** Like windows 10 button and can customize colors
 
-**5. TUCheckBox**
+**5. TUSymbolButton:** A button with font icon, text and detail
 
-**6. TURadioButton**
+**6. TUItemButton:** Awesome button, can use as list item, with checkbox, left icon, text, detail and right icon.
 
-**7. TUPanel**
+**7. TUCheckBox:**
 
-**8. TUSwitch**
+**8. TURadioButton:**
 
-**8. TUHyperLink:** Open URL in browser
+**9. TUPanel:**
 
-**9. TUText:** Text with Styles
+**10. TUSwitch:**
 
-**10. TUScrollBox:** Scrollbox without scrollbar, smooth scrolling enabled
+**11. TUHyperLink:** Open URL in browser
 
-**11. TUProgressBar:** Like windows 10
+**12. TUText:** Text with Styles
 
-**12. TUSymbolButton:** A button with font icon, text and detail
+**13. TUScrollBox:** Scrollbox without scrollbar, smooth scrolling enabled
 
-**13. TUPopupBox:** Like windows 10 popup menu
+**14. TUProgressBar:** Like windows 10
 
-**14. TUPopupMenu:** Replace TPopupMenu with PopupBox
+**15. TUPopupBox:** Like windows 10 popup menu
 
-**15. TUItemButton:** Awesome button, can use as list item, with checkbox, left icon, text, detail and right icon.
+**16. TUPopupMenu:** Replace TPopupMenu with PopupBox
 
-**16. TUSeparator:**
+**17. TUSeparator:**
 
-**17. TUEdit:**
+**18. TUEdit:**
+
+**19. TUSlider:**
 
 ## Screenshots
 
