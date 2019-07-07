@@ -1,5 +1,21 @@
 # UniversalCL
-UWP controls for Delphi VCL. Compatible with Delphi 10.3
+UWP controls for Delphi VCL. Compatible with Delphi 10.3 and Windows 8+
+
+## How to install
+
+**Step 1:** Open file *UniversalCL.groupproj*
+
+**Step 2:** In *Project Manager*, right click on *UCLPackage.bpl* and select *Install*
+
+**Step 3:** Open Delphi library option (Tools > Options > Language > Delphi Options > Library)
+
+![image](https://2.bp.blogspot.com/-RkP2bDqb82g/XSH1pCgmR3I/AAAAAAAAAZo/g5D8m6nTVJErcLi062pc2HcSAd6izzbkQCK4BGAYYCw/s1600/Howtoinstall1.png)
+
+**Step 4:** Add 2 sources folder (*VuioUCL* and *VuioUCL\Components*) to editbox, click *Add*
+
+![image](https://3.bp.blogspot.com/-PM93WZDl0hE/XSH1wDkn2mI/AAAAAAAAAZw/0RhcDtAHJuE7KIPpM9tC3ogvXHMzasyEACK4BGAYYCw/s1600/Howtoinstall2.png)
+
+**Step 5:** OK > Save > Check it now
 
 ## List of controls
 
