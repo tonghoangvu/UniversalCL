@@ -303,7 +303,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(TRect.Create(0, 0, Width, Height));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint border
   BorderThickness := 2; //  Default for 100% scale
@@ -315,7 +315,7 @@ begin
 
   Canvas.Pen.Color := BorderColor;
   Canvas.Pen.Width := BorderThickness;
-  Canvas.Rectangle(TRect.Create(
+  Canvas.Rectangle(Rect(
     BorderThickness div 2,
     BorderThickness div 2,
     Width - ThicknessPos,

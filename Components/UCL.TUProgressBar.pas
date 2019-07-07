@@ -182,13 +182,13 @@ begin
   //  PERFORMANCE UPGRADE: Calculate rectangle for paint faster
   if Orientation = oHorizontal then
     begin
-      FillRect := TRect.Create(0, 0, Round(Value / 100 * Width), Height);
-      BackRect := TRect.Create(FillRect.Right, 0, Width, Height);
+      FillRect := Rect(0, 0, Round(Value / 100 * Width), Height);
+      BackRect := Rect(FillRect.Right, 0, Width, Height);
     end
   else
     begin
-      BackRect := TRect.Create(0, 0, Width, Round(Value / 100 * Height));
-      FillRect := TRect.Create(0, BackRect.Bottom, Width, Height);
+      BackRect := Rect(0, 0, Width, Round(Value / 100 * Height));
+      FillRect := Rect(0, BackRect.Bottom, Width, Height);
     end;
 
   //  Paint background (not full, only unfilled area)

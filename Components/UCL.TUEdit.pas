@@ -420,7 +420,7 @@ begin
 
   Canvas.Pen.Color := BorderColor;
   Canvas.Pen.Width := BorderThickness;
-  Canvas.Rectangle(TRect.Create(
+  Canvas.Rectangle(Rect(
     BorderThickness div 2,
     BorderThickness div 2,
     Width - ThicknessPos,
@@ -490,7 +490,7 @@ begin
   BorderThickness := Round(BorderThickness * CurrentPPI / 96);
 
   Canvas.Brush.Color := FEdit.Color;
-  Canvas.FillRect(TRect.Create(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
+  Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 end;
 
 procedure TUCustomEdit.UM_SubEditSetFocus(var Msg: TMessage);

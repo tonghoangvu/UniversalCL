@@ -32,6 +32,7 @@ type
 
       FThemeManager: TUThemeManager;
       FControlState: TUControlState;
+      FOrientation: TUOrientation;
       FHitTest: Boolean;
       FMin: Integer;
       FMax: Integer;
@@ -42,6 +43,7 @@ type
 
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetControlState(const Value: TUControlState);
+      procedure SetOrientation(const Value: TUOrientation);
       procedure SetMin(const Value: Integer);
       procedure SetMax(const Value: Integer);
       procedure SetValue(const Value: Integer);
@@ -66,6 +68,7 @@ type
       //  Properties
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ControlState: TUControlState read FControlState write SetControlState default csNone;
+      property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property IsSliding: Boolean read FIsSliding;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Min: Integer read FMin write SetMin default 0;
@@ -152,6 +155,23 @@ begin
     end;
 end;
 
+procedure TUCustomSlider.SetOrientation(const Value: TUOrientation);
+var
+  TempSize: Integer;
+begin
+  if Value <> FOrientation then
+    begin
+      FOrientation := Value;
+
+      //  Switch CurWidth and CurHeight
+      TempSize := CurWidth;
+      CurWidth := CurHeight;
+      CurHeight := TempSize;
+
+      UpdateTheme;
+    end;
+end;
+
 procedure TUCustomSlider.SetMin(const Value: Integer);
 begin
   if Value <> FMin then
@@ -195,6 +215,9 @@ begin
 
   FIsSliding := false;
 
+  FControlState := csNone;
+  FOrientation := oHorizontal;
+
   FHitTest := true;
   FMin := 0;
   FMax := 100;
@@ -237,20 +260,41 @@ begin
     end;
 
   //  Calc rect
-  ActiveRect.Left := 0;
-  ActiveRect.Top := (Height - BarHeight) div 2;
-  ActiveRect.Right := Round((Width - CurWidth) * (Value - Min) / (Max - Min));
-  ActiveRect.Bottom := ActiveRect.Top + BarHeight;
+  if Orientation = oHorizontal then
+    begin
+      ActiveRect.Left := 0;
+      ActiveRect.Top := (Height - BarHeight) div 2;
+      ActiveRect.Right := Round((Width - CurWidth) * (Value - Min) / (Max - Min));
+      ActiveRect.Bottom := ActiveRect.Top + BarHeight;
 
-  NormalRect.Left := ActiveRect.Right + 1;
-  NormalRect.Top := ActiveRect.Top;
-  NormalRect.Right := Width;
-  NormalRect.Bottom := ActiveRect.Bottom;
+      NormalRect.Left := ActiveRect.Right + 1;
+      NormalRect.Top := ActiveRect.Top;
+      NormalRect.Right := Width;
+      NormalRect.Bottom := ActiveRect.Bottom;
 
-  CurRect.Left := ActiveRect.Right;
-  CurRect.Top := Height div 2 - CurHeight div 2;
-  CurRect.Right := CurRect.Left + CurWidth;
-  CurRect.Bottom := CurRect.Top + CurHeight;
+      CurRect.Left := ActiveRect.Right;
+      CurRect.Top := Height div 2 - CurHeight div 2;
+      CurRect.Right := CurRect.Left + CurWidth;
+      CurRect.Bottom := CurRect.Top + CurHeight;
+    end
+  else
+    begin
+      ActiveRect.Left := (Width - BarHeight) div 2;
+      ActiveRect.Top := 0;
+      ActiveRect.Right := ActiveRect.Left + BarHeight;
+      ActiveRect.Bottom := Round((Height - CurHeight) * (Value - Min) / (Max - Min));
+
+      NormalRect.Left := ActiveRect.Left;
+      NormalRect.Top := ActiveRect.Bottom + 1;
+      NormalRect.Right := ActiveRect.Right;
+      NormalRect.Bottom := Height;
+
+      CurRect.Left := Width div 2 - CurWidth div 2;
+      CurRect.Top := ActiveRect.Bottom;
+      CurRect.Right := CurRect.Left + CurWidth;
+      CurRect.Bottom := CurRect.Top + CurHeight;
+    end;
+
 
   //  Paint active part
   Canvas.Brush.Color := ActiveColor;
@@ -311,13 +355,17 @@ begin
   FControlState := csPress;
   FIsSliding := true;
 
+  //  If press in cursor
   if
     (Msg.XPos < CurRect.Left)
     or (Msg.XPos > CurRect.Right)
     or (Msg.YPos < CurRect.Top)
     or (Msg.YPos > CurRect.Bottom)
   then
-    Value := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth));
+    if Orientation = oHorizontal then
+      Value := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
+    else
+      Value := Min + Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
 
   inherited;
 end;
@@ -330,7 +378,10 @@ begin
 
   if FIsSliding = true then
     begin
-      TempValue := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth));
+      if Orientation = oHorizontal then
+        TempValue := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
+      else
+        TempValue := Min + Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
 
       //  Keep value in range [Min..Max]
       if TempValue < Min then

@@ -171,6 +171,7 @@
         <DCCReference Include="Components\UCL.TUEdit.pas"/>
         <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
         <DCCReference Include="Components\UCL.TUSlider.pas"/>
+        <DCCReference Include="Components\UCL.TUTooltip.pas"/>
         <None Include="UCLPackage.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

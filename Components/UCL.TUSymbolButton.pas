@@ -405,7 +405,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(TRect.Create(0, 0, Width, Height));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint icon
   if ShowIcon = true then
