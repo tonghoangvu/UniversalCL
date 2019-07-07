@@ -154,7 +154,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Color := Color;
-  Canvas.FillRect(TRect.Create(0, 0, Width, Height));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   if ThemeManager = nil then
     Canvas.Pen.Color := CustomColor

@@ -191,7 +191,7 @@ begin
 
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;  //  Paint empty background
-  Canvas.FillRect(TRect.Create(0, 0, Width, Height));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
   Canvas.Brush.Style := bsClear;
 
   //  Paint text

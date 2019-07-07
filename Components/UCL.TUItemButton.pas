@@ -519,7 +519,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(TRect.Create(0, 0, Width, Height));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   Canvas.Font := IconFont;
   //  Paint checkbox
@@ -555,6 +555,7 @@ begin
 
   Canvas.Font.Color := TextColor;
 
+  inc(LPos, AlignSpace);
   //  Paint left icon
   if ShowLeftIcon = true then
     if LeftIconKind = ikFontIcon then
@@ -576,6 +577,7 @@ begin
         inc(LPos, LeftIconWidth);
       end;
 
+  dec(RPos, AlignSpace);
   //  Paint right icon
   if ShowRightIcon = true then
     if RightIconKind = ikFontIcon then

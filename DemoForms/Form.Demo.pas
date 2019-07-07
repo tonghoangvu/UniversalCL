@@ -121,8 +121,9 @@ type
     buttonWithImage: TUButton;
     buttonAppMaximized: TUButton;
     buttonAppMinimized: TUButton;
-    sliderOne: TUSlider;
+    sliderHorz: TUSlider;
     sliderDisabled: TUSlider;
+    sliderVert: TUSlider;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -135,12 +136,11 @@ type
     procedure panelSelectAccentColorClick(Sender: TObject);
     procedure checkColorBorderClick(Sender: TObject);
     procedure buttonClosePopupClick(Sender: TObject);
-    procedure symbolbuttonSaveVertClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
     procedure buttonAppMaximizedClick(Sender: TObject);
     procedure buttonAppMinimizedClick(Sender: TObject);
-    procedure sliderOneChange(Sender: TObject);
+    procedure sliderHorzChange(Sender: TObject);
 
   private
   public
@@ -187,14 +187,10 @@ begin
     checkColorBorder.State := cbsUnchecked;
 end;
 
-procedure TformDemo.symbolbuttonSaveVertClick(Sender: TObject);
+procedure TformDemo.sliderHorzChange(Sender: TObject);
 begin
-  ShowMessage('Your document was saved');
-end;
-
-procedure TformDemo.sliderOneChange(Sender: TObject);
-begin
-  progressConnected.Value := sliderOne.Value;
+  //  Change progress bar value
+  progressConnected.Value := sliderHorz.Value;
 end;
 
 procedure TformDemo.buttonAppMaximizedClick(Sender: TObject);
@@ -227,10 +223,12 @@ procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
 var
   NewColor: TColor;
 begin
+  //  Open dialog
   if dialogSelectColor.Execute = true then
     begin
       NewColor := dialogSelectColor.Color;
 
+      //  Change accent color
       AppTheme.CustomColor := NewColor;
       AppTheme.UseAccentColor := false;
 

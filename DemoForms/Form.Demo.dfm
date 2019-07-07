@@ -2,7 +2,7 @@ object formDemo: TformDemo
   Left = 0
   Top = 0
   Caption = 'Test UCL controls'
-  ClientHeight = 617
+  ClientHeight = 615
   ClientWidth = 1040
   Color = clWhite
   Ctl3D = False
@@ -369,11 +369,13 @@ object formDemo: TformDemo
     Caption = 
       '                   This is NEW style TUCaptionBar (use 3 spaces ' +
       'for left align)'
+    DoubleBuffered = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
+    ParentDoubleBuffered = False
     ParentFont = False
     object buttonAppBack: TUButton
       Left = 0
@@ -1060,8 +1062,8 @@ object formDemo: TformDemo
     ShowCheckBox = True
     ShowRightIcon = True
     LeftIcon = #58031
-    Text = 'Button with'
-    Detail = 'Left & right image'
+    Text = 'Button with left &'
+    Detail = 'right image'
     RightIcon = #57345
     CustomActiveColor = 14120960
     LeftIconKind = ikImage
@@ -1201,13 +1203,13 @@ object formDemo: TformDemo
     Detail = 'Ctrl+N'
     TabOrder = 17
     TabStop = True
-    OnClick = symbolbuttonSaveVertClick
   end
   object buttonRandomProgress: TUButton
     Left = 390
     Top = 530
     Width = 241
     Height = 30
+    Hint = 'This is tooltip'
     ThemeManager = AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -1227,6 +1229,8 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 18
     TabStop = True
     OnClick = buttonRandomProgressClick
@@ -1296,13 +1300,13 @@ object formDemo: TformDemo
     TabOrder = 22
     TabStop = True
   end
-  object sliderOne: TUSlider
+  object sliderHorz: TUSlider
     Left = 570
     Top = 410
     Width = 141
     Height = 25
     ThemeManager = AppTheme
-    OnChange = sliderOneChange
+    OnChange = sliderHorzChange
   end
   object sliderDisabled: TUSlider
     Left = 570
@@ -1318,7 +1322,7 @@ object formDemo: TformDemo
     Left = 790
     Top = 93
     Width = 250
-    Height = 492
+    Height = 490
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -2127,7 +2131,7 @@ object formDemo: TformDemo
     Left = 0
     Top = 93
     Width = 45
-    Height = 492
+    Height = 490
     ThemeManager = AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
@@ -2330,7 +2334,7 @@ object formDemo: TformDemo
   end
   object captionbarOldStyle: TUCaptionBar
     Left = 0
-    Top = 585
+    Top = 583
     Width = 1040
     Height = 32
     ThemeManager = AppTheme
@@ -2346,6 +2350,15 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+  end
+  object sliderVert: TUSlider
+    Left = 690
+    Top = 490
+    Width = 25
+    Height = 71
+    ThemeManager = AppTheme
+    Orientation = oVertical
+    Value = 50
   end
   object AppTheme: TUThemeManager
     CustomColor = clGreen

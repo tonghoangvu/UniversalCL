@@ -223,8 +223,8 @@ begin
   inherited;
 
   Canvas.Rectangle(0, 0, Width, Height);  //  Paint border
-  Canvas.FillRect(TRect.Create(1, 1, Width - 2, 5));  //  Paint top rect
-  Canvas.FillRect(TRect.Create(1, Height - 5, Width - 2, Height - 1));  //  Paint bottom rect
+  Canvas.FillRect(Rect(1, 1, Width - 2, 5));  //  Paint top rect
+  Canvas.FillRect(Rect(1, Height - 5, Width - 2, Height - 1));  //  Paint bottom rect
 end;
 
 end.

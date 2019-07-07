@@ -3,7 +3,7 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip,
   System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Forms, VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
@@ -68,11 +68,20 @@ procedure TUForm.UpdateTheme;
 begin
   //  Change background color
   if ThemeManager = nil then
-    Self.Color := $FFFFFF
+    begin
+      Self.Color := $FFFFFF;
+      HintWindowClass := TUTooltip;
+    end
   else if ThemeManager.Theme = utLight then
-    Self.Color := $FFFFFF
+    begin
+      Self.Color := $FFFFFF;
+      HintWindowClass := TUTooltip;
+    end
   else
-    Self.Color := $000000;
+    begin
+      Self.Color := $000000;
+      HintWindowClass := TUDarkTooltip;
+    end;
 
   //  Change border color
   if ThemeManager = nil then
@@ -91,6 +100,7 @@ constructor TUForm.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  HintWindowClass := TUTooltip;
   PixelsPerInch := Screen.PixelsPerInch;  //  Get PPI on create
 
   FResizeable := true;
