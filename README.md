@@ -35,9 +35,9 @@ UWP controls for Delphi VCL. Compatible with Delphi 10.3 and Windows 8+
 
 **8. TURadioButton:**
 
-**9. TUPanel:**
+**9. TUPanel:** Support theme color
 
-**10. TUSwitch:**
+**10. TUSwitch:** Upgrade from TToggleSwitch, with colors and theme support
 
 **11. TUHyperLink:** Open URL in browser
 
