@@ -35,7 +35,7 @@ type
 
       FAutoUpdateTheme: Boolean;
 
-      FControlList: TList<TControl>;
+      FControlList: TList<TComponent>;
 
       //  Events
       FOnUpdate: TNotifyEvent;
@@ -51,10 +51,10 @@ type
       procedure ReloadAutoSettings;
 
       //  Connect controls
-      class function CheckControlThemeAvailable(const aControl: TControl): Boolean;
+      class function CheckControlThemeAvailable(const aControl: TComponent): Boolean;
       function ConnectedControlCount: Integer;
-      procedure ConnectControl(const aControl: TControl);
-      procedure DisconnectControl(const aControl: TControl);
+      procedure ConnectControl(const aControl: TComponent);
+      procedure DisconnectControl(const aControl: TComponent);
 
     published
       property Theme: TUTheme read FTheme;
@@ -76,7 +76,7 @@ implementation
 
 { STATIC METHODS }
 
-class function TUThemeManager.CheckControlThemeAvailable(const aControl: TControl): Boolean;
+class function TUThemeManager.CheckControlThemeAvailable(const aControl: TComponent): Boolean;
 var
   GUID: TGUID;
 begin
@@ -159,7 +159,7 @@ constructor TUThemeManager.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  FControlList := TList<TControl>.Create;
+  FControlList := TList<TComponent>.Create;
 
   CustomColor := $00D77800;
   AutoUpdateTheme := true;
@@ -173,7 +173,7 @@ end;
 
 procedure TUThemeManager.UpdateThemeForControls;
 var
-  aControl: TControl;
+  aControl: TComponent;
 begin
   //  Call UpdateTheme for all controls in list
   for aControl in FControlList do
@@ -205,7 +205,7 @@ begin
   Result := FControlList.Count;
 end;
 
-procedure TUThemeManager.ConnectControl(const aControl: TControl);
+procedure TUThemeManager.ConnectControl(const aControl: TComponent);
 var
   HasBefore: Boolean;
 begin
@@ -218,7 +218,7 @@ begin
     end;
 end;
 
-procedure TUThemeManager.DisconnectControl(const aControl: TControl);
+procedure TUThemeManager.DisconnectControl(const aControl: TComponent);
 var
   ItemID: Integer;
 begin

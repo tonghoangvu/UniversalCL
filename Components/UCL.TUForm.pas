@@ -23,8 +23,9 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
 
       procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
-      procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
+
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
+      procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
       procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;
 
     protected
@@ -151,12 +152,12 @@ end;
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
-  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;  //  Enabled aerosnap
+  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW or CS_DROPSHADOW or WS_SIZEBOX;  //  Enabled aerosnap
 end;
 
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
 begin
-  //  Do nothing = skip message
+  Msg.Result := 0;
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);

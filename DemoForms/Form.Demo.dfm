@@ -18,8 +18,8 @@ object formDemo: TformDemo
   PixelsPerInch = 96
   TextHeight = 15
   object linkConnected: TUHyperLink
-    Left = 390
-    Top = 240
+    Left = 560
+    Top = 170
     Width = 146
     Height = 17
     Cursor = crHandPoint
@@ -30,6 +30,7 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    PopupMenu = popupHorz
     ThemeManager = AppTheme
     CustomTextColors.None = 14120960
     CustomTextColors.Hover = clGray
@@ -39,8 +40,8 @@ object formDemo: TformDemo
     URL = 'https://embarcadero.com/'
   end
   object linkCustomColor: TUHyperLink
-    Left = 390
-    Top = 260
+    Left = 560
+    Top = 190
     Width = 161
     Height = 17
     Cursor = crHandPoint
@@ -59,8 +60,8 @@ object formDemo: TformDemo
     URL = 'https://embarcadero.com/'
   end
   object linkDisabled: TUHyperLink
-    Left = 390
-    Top = 280
+    Left = 560
+    Top = 210
     Width = 135
     Height = 17
     Caption = 'TUHyperLink (disabled)'
@@ -158,7 +159,7 @@ object formDemo: TformDemo
   end
   object radioA1: TURadioButton
     Left = 390
-    Top = 310
+    Top = 240
     Width = 101
     Height = 30
     Margins.Left = 0
@@ -183,7 +184,7 @@ object formDemo: TformDemo
   end
   object radioA2: TURadioButton
     Left = 390
-    Top = 340
+    Top = 270
     Width = 101
     Height = 30
     Margins.Left = 0
@@ -209,7 +210,7 @@ object formDemo: TformDemo
   end
   object radioA3: TURadioButton
     Left = 390
-    Top = 370
+    Top = 300
     Width = 101
     Height = 30
     Margins.Left = 0
@@ -233,8 +234,8 @@ object formDemo: TformDemo
     ParentFont = False
   end
   object radioB1: TURadioButton
-    Left = 520
-    Top = 310
+    Left = 560
+    Top = 240
     Width = 101
     Height = 30
     Margins.Left = 0
@@ -258,9 +259,9 @@ object formDemo: TformDemo
     ParentFont = False
   end
   object radioB2: TURadioButton
-    Left = 520
-    Top = 340
-    Width = 101
+    Left = 560
+    Top = 270
+    Width = 111
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -285,7 +286,7 @@ object formDemo: TformDemo
   end
   object check2State: TUCheckBox
     Left = 390
-    Top = 410
+    Top = 340
     Width = 151
     Height = 30
     ThemeManager = AppTheme
@@ -306,7 +307,7 @@ object formDemo: TformDemo
   end
   object check3State: TUCheckBox
     Left = 390
-    Top = 438
+    Top = 368
     Width = 161
     Height = 30
     ThemeManager = AppTheme
@@ -326,8 +327,8 @@ object formDemo: TformDemo
     ParentFont = False
   end
   object progressVert: TUProgressBar
-    Left = 640
-    Top = 490
+    Left = 660
+    Top = 420
     Width = 5
     Height = 71
     ThemeManager = AppTheme
@@ -338,8 +339,8 @@ object formDemo: TformDemo
   end
   object progressCustomColor: TUProgressBar
     Left = 390
-    Top = 490
-    Width = 241
+    Top = 420
+    Width = 251
     Height = 5
     Value = 45
     Orientation = oHorizontal
@@ -349,8 +350,8 @@ object formDemo: TformDemo
   end
   object progressConnected: TUProgressBar
     Left = 390
-    Top = 510
-    Width = 241
+    Top = 440
+    Width = 251
     Height = 5
     ThemeManager = AppTheme
     Value = 0
@@ -369,7 +370,7 @@ object formDemo: TformDemo
     Caption = 
       '                   This is NEW style TUCaptionBar (use 3 spaces ' +
       'for left align)'
-    DoubleBuffered = False
+    DoubleBuffered = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
@@ -500,132 +501,11 @@ object formDemo: TformDemo
       OnClick = buttonAppMinimizedClick
     end
   end
-  object popupboxDemo: TUPopupBox
-    Left = 580
-    Top = 120
-    Width = 180
-    Height = 150
-    ThemeManager = AppTheme
-    object USymbolButton4: TUSymbolButton
-      Left = 1
-      Top = 5
-      Width = 178
-      Height = 35
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57707
-      Text = 'Cut'
-      Detail = 'Ctrl+X'
-      Align = alTop
-      TabOrder = 0
-      TabStop = True
-    end
-    object USymbolButton5: TUSymbolButton
-      Left = 1
-      Top = 40
-      Width = 178
-      Height = 35
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57711
-      Text = 'Copy'
-      Detail = 'Ctrl+C'
-      Align = alTop
-      TabOrder = 1
-      TabStop = True
-    end
-    object USymbolButton6: TUSymbolButton
-      Left = 1
-      Top = 75
-      Width = 178
-      Height = 35
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57709
-      Text = 'Paste'
-      Detail = 'Ctrl+V'
-      Align = alTop
-      TabOrder = 2
-      TabStop = True
-    end
-    object buttonClosePopup: TUSymbolButton
-      Left = 1
-      Top = 110
-      Width = 178
-      Height = 35
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57610
-      Text = 'Close'
-      Detail = 'Ctrl+V'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 3
-      TabStop = True
-      OnClick = buttonClosePopupClick
-    end
-  end
   object panelRibbon: TUScrollBox
     Left = 0
     Top = 32
     Width = 1040
-    Height = 61
+    Height = 60
     Align = alTop
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -638,7 +518,7 @@ object formDemo: TformDemo
       Left = 120
       Top = 0
       Width = 20
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       Align = alLeft
     end
@@ -646,7 +526,7 @@ object formDemo: TformDemo
       Left = 320
       Top = 0
       Width = 20
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       Align = alLeft
     end
@@ -654,7 +534,7 @@ object formDemo: TformDemo
       Left = 0
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -686,7 +566,7 @@ object formDemo: TformDemo
       Left = 60
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -718,7 +598,7 @@ object formDemo: TformDemo
       Left = 140
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -750,7 +630,7 @@ object formDemo: TformDemo
       Left = 200
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -782,7 +662,7 @@ object formDemo: TformDemo
       Left = 340
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -814,7 +694,7 @@ object formDemo: TformDemo
       Left = 260
       Top = 0
       Width = 60
-      Height = 61
+      Height = 60
       ThemeManager = AppTheme
       SymbolFont.Charset = DEFAULT_CHARSET
       SymbolFont.Color = clWindowText
@@ -1046,7 +926,7 @@ object formDemo: TformDemo
     Width = 311
     Height = 41
     ThemeManager = AppTheme
-    Images = VirtualImageList1
+    Images = imglistMain
     ImageLeftIndex = 3
     ImageRightIndex = 2
     IconFont.Charset = DEFAULT_CHARSET
@@ -1107,7 +987,7 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    PopupMenu = popupDemo
+    PopupMenu = popupVert
     TabOrder = 14
     TabStop = True
   end
@@ -1163,7 +1043,7 @@ object formDemo: TformDemo
     DetailFont.Style = []
     ImageIndex = 2
     ImageKind = ikImage
-    Images = VirtualImageList1
+    Images = imglistMain
     SymbolChar = #57605
     Text = 'Save file (toggle button)'
     Detail = 'Ctrl+S'
@@ -1196,7 +1076,7 @@ object formDemo: TformDemo
     DetailFont.Style = []
     ImageIndex = 1
     ImageKind = ikImage
-    Images = VirtualImageList1
+    Images = imglistMain
     Orientation = oVertical
     SymbolChar = #57696
     Text = 'New'
@@ -1206,8 +1086,8 @@ object formDemo: TformDemo
   end
   object buttonRandomProgress: TUButton
     Left = 390
-    Top = 530
-    Width = 241
+    Top = 460
+    Width = 251
     Height = 30
     Hint = 'This is tooltip'
     ThemeManager = AppTheme
@@ -1290,7 +1170,7 @@ object formDemo: TformDemo
     CustomTextColors.Disabled = clGray
     Text = 'Button with image'
     ImageIndex = 0
-    Images = VirtualImageList1
+    Images = imglistMain
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -1301,16 +1181,16 @@ object formDemo: TformDemo
     TabStop = True
   end
   object sliderHorz: TUSlider
-    Left = 570
-    Top = 410
+    Left = 560
+    Top = 370
     Width = 141
     Height = 25
     ThemeManager = AppTheme
     OnChange = sliderHorzChange
   end
   object sliderDisabled: TUSlider
-    Left = 570
-    Top = 440
+    Left = 560
+    Top = 340
     Width = 141
     Height = 25
     ThemeManager = AppTheme
@@ -1318,11 +1198,244 @@ object formDemo: TformDemo
     Value = 50
     Enabled = False
   end
+  object drawerNavigation: TUPanel
+    Left = 0
+    Top = 92
+    Width = 45
+    Height = 491
+    ThemeManager = AppTheme
+    CustomTextColor = clBlack
+    CustomBackColor = 15132390
+    Align = alLeft
+    BevelOuter = bvNone
+    DoubleBuffered = True
+    FullRepaint = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentBackground = False
+    ParentDoubleBuffered = False
+    ParentFont = False
+    TabOrder = 0
+    object buttonOpenMenu: TUSymbolButton
+      Left = 0
+      Top = 0
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -15
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = [fsBold]
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #59136
+      Text = 'Menu'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      Constraints.MaxWidth = 45
+      TabOrder = 0
+      TabStop = True
+      OnClick = buttonOpenMenuClick
+    end
+    object buttonMenuSettings: TUSymbolButton
+      Left = 0
+      Top = 90
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57621
+      Text = 'Settings'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      TabOrder = 1
+      TabStop = True
+      OnClick = buttonMenuSettingsClick
+    end
+    object buttonMenuProfile: TUSymbolButton
+      Left = 0
+      Top = 180
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57686
+      Text = 'My profile'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      TabOrder = 2
+      TabStop = True
+    end
+    object buttonMenuSave: TUSymbolButton
+      Left = 0
+      Top = 135
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57605
+      Text = 'Save document'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      TabOrder = 3
+      TabStop = True
+    end
+    object buttonMenuOpen: TUSymbolButton
+      Left = 0
+      Top = 45
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #60739
+      Text = 'Open document'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      TabOrder = 4
+      TabStop = True
+    end
+    object buttonMenuRate: TUSymbolButton
+      Left = 0
+      Top = 225
+      Width = 45
+      Height = 45
+      ThemeManager = AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      SymbolChar = #57806
+      Text = 'Rate this app'
+      TextOffset = 45
+      Detail = 'Detail'
+      ShowDetail = False
+      Align = alTop
+      TabOrder = 5
+      TabStop = True
+    end
+  end
+  object captionbarOldStyle: TUCaptionBar
+    Left = 0
+    Top = 583
+    Width = 1040
+    Height = 32
+    ThemeManager = AppTheme
+    UseNormalStyle = True
+    Align = alBottom
+    Alignment = taLeftJustify
+    Caption = 
+      '   This is NORMAL style TUCaptionBar (use 3 spaces for left alig' +
+      'n)'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object sliderVert: TUSlider
+    Left = 680
+    Top = 420
+    Width = 25
+    Height = 71
+    ThemeManager = AppTheme
+    Orientation = oVertical
+    Value = 30
+  end
   object boxSmoothScrolling: TUScrollBox
     Left = 790
-    Top = 93
+    Top = 92
     Width = 250
-    Height = 490
+    Height = 491
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -2127,256 +2240,18 @@ object formDemo: TformDemo
       TabOrder = 4
     end
   end
-  object drawerNavigation: TUPanel
-    Left = 0
-    Top = 93
-    Width = 45
-    Height = 490
-    ThemeManager = AppTheme
-    CustomTextColor = clBlack
-    CustomBackColor = 15132390
-    Align = alLeft
-    BevelOuter = bvNone
-    DoubleBuffered = True
-    FullRepaint = False
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentBackground = False
-    ParentDoubleBuffered = False
-    ParentFont = False
-    TabOrder = 0
-    object buttonOpenMenu: TUSymbolButton
-      Left = 0
-      Top = 0
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -15
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = [fsBold]
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #59136
-      Text = 'Menu'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      Constraints.MaxWidth = 45
-      TabOrder = 0
-      TabStop = True
-      OnClick = buttonOpenMenuClick
-    end
-    object buttonMenuSettings: TUSymbolButton
-      Left = 0
-      Top = 90
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57621
-      Text = 'Settings'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 1
-      TabStop = True
-      OnClick = buttonMenuSettingsClick
-    end
-    object buttonMenuProfile: TUSymbolButton
-      Left = 0
-      Top = 180
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57686
-      Text = 'My profile'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 2
-      TabStop = True
-    end
-    object buttonMenuSave: TUSymbolButton
-      Left = 0
-      Top = 135
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57605
-      Text = 'Save document'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 3
-      TabStop = True
-    end
-    object buttonMenuOpen: TUSymbolButton
-      Left = 0
-      Top = 45
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #60739
-      Text = 'Open document'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 4
-      TabStop = True
-    end
-    object buttonMenuRate: TUSymbolButton
-      Left = 0
-      Top = 225
-      Width = 45
-      Height = 45
-      ThemeManager = AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clBlack
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      SymbolChar = #57806
-      Text = 'Rate this app'
-      TextOffset = 45
-      Detail = 'Detail'
-      ShowDetail = False
-      Align = alTop
-      TabOrder = 5
-      TabStop = True
-    end
-  end
-  object captionbarOldStyle: TUCaptionBar
-    Left = 0
-    Top = 583
-    Width = 1040
-    Height = 32
-    ThemeManager = AppTheme
-    UseNormalStyle = True
-    Align = alBottom
-    Alignment = taLeftJustify
-    Caption = 
-      '   This is NORMAL style TUCaptionBar (use 3 spaces for left alig' +
-      'n)'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object sliderVert: TUSlider
-    Left = 690
-    Top = 490
-    Width = 25
-    Height = 71
-    ThemeManager = AppTheme
-    Orientation = oVertical
-    Value = 50
-  end
   object AppTheme: TUThemeManager
     CustomColor = clGreen
-    Left = 610
+    Left = 620
     Top = 40
   end
   object dialogSelectColor: TColorDialog
     Ctl3D = False
     Color = 14120960
-    Left = 690
+    Left = 700
     Top = 40
   end
-  object popupDemo: TUPopupMenu
-    PopupBox = popupboxDemo
-    Left = 770
-    Top = 40
-  end
-  object ImageCollection1: TImageCollection
+  object imgcollectionMain: TImageCollection
     Images = <
       item
         Name = 'iconfinder_google-drive_317713'
@@ -2636,10 +2511,10 @@ object formDemo: TformDemo
               FF70EDDAB5E7FF0F3C559D23F2E44C5B0000000049454E44AE426082}
           end>
       end>
-    Left = 430
+    Left = 450
     Top = 40
   end
-  object VirtualImageList1: TVirtualImageList
+  object imglistMain: TVirtualImageList
     AutoFill = True
     DisabledGrayscale = False
     DisabledSuffix = '_Disabled'
@@ -2668,10 +2543,67 @@ object formDemo: TformDemo
         Disabled = False
         Name = 'iconfinder_logo_brand_brands_logos_translate_google_2993668'
       end>
-    ImageCollection = ImageCollection1
+    ImageCollection = imgcollectionMain
     Width = 24
     Height = 24
-    Left = 520
+    Left = 540
+    Top = 40
+  end
+  object popupVert: TUContextMenu
+    Items = <
+      item
+        Text = 'Google Drive'
+        Detail = 'OpenLink'
+        SymbolChar = #57345
+        ShowIcon = True
+        ImageKind = ikImage
+        ImageIndex = 0
+      end
+      item
+        Text = 'TeamViewer'
+        Detail = 'Open link'
+        SymbolChar = #57345
+        ShowIcon = True
+        ImageKind = ikImage
+        ImageIndex = 1
+      end
+      item
+        Text = 'Gmail'
+        Detail = 'Open link'
+        SymbolChar = #57345
+        ShowIcon = True
+        ImageKind = ikImage
+        ImageIndex = 2
+      end>
+    Images = imglistMain
+    ThemeManager = AppTheme
+    PopupWidth = 210
+    PopupHeight = 40
+    ItemHeight = 35
+    Left = 800
+    Top = 40
+  end
+  object popupHorz: TUContextMenu
+    Items = <
+      item
+        Text = 'Copy'
+        Detail = 'Ctrl+C'
+        SymbolChar = #57711
+        ShowDetail = False
+        ShowIcon = True
+      end
+      item
+        Text = 'Cut'
+        Detail = 'Ctrl+X'
+        SymbolChar = #57707
+        ShowDetail = False
+        ShowIcon = True
+      end>
+    ThemeManager = AppTheme
+    PopupHeight = 35
+    ItemWidth = 80
+    Orientation = oHorizontal
+    Left = 870
     Top = 40
   end
 end

@@ -7,7 +7,7 @@ uses
   UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUPopupBox, UCL.TUSlider, UCL.TUPopupMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
+  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -64,12 +64,6 @@ type
     panelSelectAccentColor: TUPanel;
     desAccentColorHint: TUText;
     checkColorBorder: TUCheckBox;
-    popupboxDemo: TUPopupBox;
-    USymbolButton4: TUSymbolButton;
-    USymbolButton5: TUSymbolButton;
-    USymbolButton6: TUSymbolButton;
-    popupDemo: TUPopupMenu;
-    buttonClosePopup: TUSymbolButton;
     panelRibbon: TUScrollBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
@@ -82,8 +76,8 @@ type
     buttonAppBack: TUButton;
     buttonAppQuit: TUButton;
     editAccountName: TUEdit;
-    ImageCollection1: TImageCollection;
-    VirtualImageList1: TVirtualImageList;
+    imgcollectionMain: TImageCollection;
+    imglistMain: TVirtualImageList;
     linkConnected: TUHyperLink;
     linkCustomColor: TUHyperLink;
     linkDisabled: TUHyperLink;
@@ -124,6 +118,8 @@ type
     sliderHorz: TUSlider;
     sliderDisabled: TUSlider;
     sliderVert: TUSlider;
+    popupVert: TUContextMenu;
+    popupHorz: TUContextMenu;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -141,7 +137,6 @@ type
     procedure buttonAppMaximizedClick(Sender: TObject);
     procedure buttonAppMinimizedClick(Sender: TObject);
     procedure sliderHorzChange(Sender: TObject);
-
   private
   public
   end;
@@ -264,7 +259,8 @@ var
 begin
   DPI := Self.PixelsPerInch / 96;
 
-  boxSmoothScrolling.HideScrollBar;
+  boxSmoothScrolling.DisableAlign;
+  boxSmoothScrolling.HideOldScrollBar;
 
   if boxSmoothScrolling.Width <> 0 then
     NewWidth := 0 //  Go to 40 (close menu)
@@ -276,6 +272,8 @@ begin
     begin
       boxSmoothScrolling.Width := Value;
     end, true);
+
+  Ani.OnDone := procedure begin boxSmoothScrolling.EnableAlign end;
 
   Ani.Step := 20;
   Ani.Duration := 200;

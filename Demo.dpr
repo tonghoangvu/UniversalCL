@@ -2,7 +2,9 @@ program Demo;
 
 uses
   Vcl.Forms,
-  Form.Demo in 'DemoForms\Form.Demo.pas' {formDemo};
+  Form.Demo in 'DemoForms\Form.Demo.pas' {formDemo},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
