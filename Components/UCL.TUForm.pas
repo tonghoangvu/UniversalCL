@@ -23,8 +23,9 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
 
       procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
-      procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
+
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
+      procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
       procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;
 
     protected
@@ -156,7 +157,7 @@ end;
 
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
 begin
-  //  Do nothing = skip message
+  Msg.Result := 0;
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);

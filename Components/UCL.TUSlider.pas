@@ -234,11 +234,6 @@ var
 begin
   inherited;
 
-  //  Clear old cursor background
-  ParentColor := true;
-  Canvas.Brush.Color := Color;
-  Canvas.FillRect(CurRect);
-
   //  Get colors
   if ThemeManager = nil then
     begin
@@ -258,6 +253,11 @@ begin
       else
         CurColor := DefCurColor[ThemeManager.Theme, ControlState];
     end;
+
+  //  Clear old cursor background
+  ParentColor := true;
+  Canvas.Brush.Color := Color;
+  Canvas.FillRect(CurRect);
 
   //  Calc rect
   if Orientation = oHorizontal then
@@ -279,22 +279,21 @@ begin
     end
   else
     begin
-      ActiveRect.Left := (Width - BarHeight) div 2;
-      ActiveRect.Top := 0;
-      ActiveRect.Right := ActiveRect.Left + BarHeight;
-      ActiveRect.Bottom := Round((Height - CurHeight) * (Value - Min) / (Max - Min));
+      NormalRect.Left := (Width - BarHeight) div 2;
+      NormalRect.Top := 0;
+      NormalRect.Right := NormalRect.Left + BarHeight;
+      NormalRect.Bottom := Round((Height - CurHeight) * ({Value - Min}Max - Value) / (Max - Min));
 
-      NormalRect.Left := ActiveRect.Left;
-      NormalRect.Top := ActiveRect.Bottom + 1;
-      NormalRect.Right := ActiveRect.Right;
-      NormalRect.Bottom := Height;
+      ActiveRect.Left := NormalRect.Left;
+      ActiveRect.Top := NormalRect.Bottom + 1;
+      ActiveRect.Right := NormalRect.Right;
+      ActiveRect.Bottom := Height;
 
-      CurRect.Left := Width div 2 - CurWidth div 2;
-      CurRect.Top := ActiveRect.Bottom;
+      CurRect.Left := (Width - CurWidth) div 2;
+      CurRect.Top := NormalRect.Bottom;
       CurRect.Right := CurRect.Left + CurWidth;
       CurRect.Bottom := CurRect.Top + CurHeight;
     end;
-
 
   //  Paint active part
   Canvas.Brush.Color := ActiveColor;
@@ -348,6 +347,8 @@ begin
 end;
 
 procedure TUCustomSlider.WM_LButtonDown(var Msg: TWMLButtonDown);
+var
+  TempValue: Integer;
 begin
   if (Enabled = false) or (HitTest = false) then exit;
 
@@ -362,10 +363,21 @@ begin
     or (Msg.YPos < CurRect.Top)
     or (Msg.YPos > CurRect.Bottom)
   then
-    if Orientation = oHorizontal then
-      Value := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
-    else
-      Value := Min + Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
+    begin
+      //  Change Value by click position, click point is center of cursor
+      if Orientation = oHorizontal then
+        TempValue := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
+      else
+        TempValue := Max - Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
+
+      //  Keep value in range [Min..Max]
+      if TempValue < Min then
+        TempValue := Min
+      else if TempValue > Max then
+        TempValue := Max;
+
+      Value := TempValue;
+    end;
 
   inherited;
 end;
@@ -381,7 +393,7 @@ begin
       if Orientation = oHorizontal then
         TempValue := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
       else
-        TempValue := Min + Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
+        TempValue := Max - Round((Msg.YPos - CurHeight div 2) * (Max - Min) / (Height - CurHeight));
 
       //  Keep value in range [Min..Max]
       if TempValue < Min then
