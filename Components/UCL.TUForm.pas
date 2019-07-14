@@ -152,7 +152,7 @@ end;
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
-  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW or CS_DROPSHADOW or WS_SIZEBOX;  //  Enabled aerosnap
+  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;  //  Enabled aerosnap
 end;
 
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
