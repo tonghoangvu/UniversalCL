@@ -47,17 +47,15 @@ UWP controls for Delphi VCL. Compatible with Delphi 10.3 and Windows 8+
 
 **14. TUProgressBar:** Like windows 10
 
-**15. TUPopupBox:** Like windows 10 popup menu
+**15. TUContextMenu:** Like windows 10 popup menu, support image, font icon, text and detail
 
-**16. TUPopupMenu:** Replace TPopupMenu with PopupBox
+**16. TUSeparator:**
 
-**17. TUSeparator:**
+**17. TUEdit:**
 
-**18. TUEdit:**
+**18. TUSlider:**
 
-**19. TUSlider:**
-
-**20. TUTooltip:** Linked with TForm, show tooltip window like Windows 10
+**19. TUTooltip:** Linked with TForm, show tooltip window like Windows 10
 
 ## Screenshots
 
