@@ -2,8 +2,8 @@ object formDemo: TformDemo
   Left = 0
   Top = 0
   Caption = 'Test UCL controls'
-  ClientHeight = 615
-  ClientWidth = 1040
+  ClientHeight = 580
+  ClientWidth = 1000
   Color = clWhite
   Ctl3D = False
   Font.Charset = DEFAULT_CHARSET
@@ -18,14 +18,14 @@ object formDemo: TformDemo
   PixelsPerInch = 96
   TextHeight = 15
   object linkConnected: TUHyperLink
-    Left = 560
+    Left = 540
     Top = 170
-    Width = 146
+    Width = 190
     Height = 17
     Cursor = crHandPoint
-    Caption = 'Embarcadero homepage'
+    Caption = 'Right click to open context menu'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = 14120960
+    Font.Color = 11095412
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
@@ -40,7 +40,7 @@ object formDemo: TformDemo
     URL = 'https://embarcadero.com/'
   end
   object linkCustomColor: TUHyperLink
-    Left = 560
+    Left = 540
     Top = 190
     Width = 161
     Height = 17
@@ -60,7 +60,7 @@ object formDemo: TformDemo
     URL = 'https://embarcadero.com/'
   end
   object linkDisabled: TUHyperLink
-    Left = 560
+    Left = 540
     Top = 210
     Width = 135
     Height = 17
@@ -234,7 +234,7 @@ object formDemo: TformDemo
     ParentFont = False
   end
   object radioB1: TURadioButton
-    Left = 560
+    Left = 540
     Top = 240
     Width = 101
     Height = 30
@@ -259,7 +259,7 @@ object formDemo: TformDemo
     ParentFont = False
   end
   object radioB2: TURadioButton
-    Left = 560
+    Left = 540
     Top = 270
     Width = 111
     Height = 30
@@ -362,22 +362,27 @@ object formDemo: TformDemo
   object captionbarNewStyle: TUCaptionBar
     Left = 0
     Top = 0
-    Width = 1040
+    Width = 1000
     Height = 32
     ThemeManager = AppTheme
     Align = alTop
     Alignment = taLeftJustify
+    BevelOuter = bvNone
     Caption = 
       '                   This is NEW style TUCaptionBar (use 3 spaces ' +
       'for left align)'
-    DoubleBuffered = True
+    DoubleBuffered = False
+    FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
+    ParentBackground = False
     ParentDoubleBuffered = False
     ParentFont = False
+    TabOrder = 30
+    ExplicitWidth = 1040
     object buttonAppBack: TUButton
       Left = 0
       Top = 0
@@ -388,7 +393,7 @@ object formDemo: TformDemo
       CustomBorderColors.Press = 14652211
       CustomBorderColors.Disabled = 15921906
       CustomBorderColors.Focused = 15921906
-      CustomBackColors.None = 15921906
+      CustomBackColors.None = clRed
       CustomBackColors.Hover = 14320921
       CustomBackColors.Press = 14652211
       CustomBackColors.Disabled = 15921906
@@ -409,7 +414,7 @@ object formDemo: TformDemo
       TabStop = True
     end
     object buttonAppQuit: TUButton
-      Left = 995
+      Left = 955
       Top = 0
       Width = 45
       Height = 32
@@ -439,9 +444,10 @@ object formDemo: TformDemo
       TabOrder = 1
       TabStop = True
       OnClick = buttonAppQuitClick
+      ExplicitLeft = 995
     end
     object buttonAppMaximized: TUButton
-      Left = 950
+      Left = 910
       Top = 0
       Width = 45
       Height = 32
@@ -469,9 +475,10 @@ object formDemo: TformDemo
       TabOrder = 2
       TabStop = True
       OnClick = buttonAppMaximizedClick
+      ExplicitLeft = 950
     end
     object buttonAppMinimized: TUButton
-      Left = 905
+      Left = 865
       Top = 0
       Width = 45
       Height = 32
@@ -499,21 +506,23 @@ object formDemo: TformDemo
       TabOrder = 3
       TabStop = True
       OnClick = buttonAppMinimizedClick
+      ExplicitLeft = 905
     end
   end
   object panelRibbon: TUScrollBox
     Left = 0
     Top = 32
-    Width = 1040
+    Width = 1000
     Height = 60
     Align = alTop
     BorderStyle = bsNone
-    DoubleBuffered = True
+    DoubleBuffered = False
     Color = 15132390
     ParentColor = False
     ParentDoubleBuffered = False
     TabOrder = 2
     ThemeManager = AppTheme
+    ExplicitWidth = 1040
     object separator1: TUSeparator
       Left = 120
       Top = 0
@@ -1138,6 +1147,8 @@ object formDemo: TformDemo
     Width = 151
     Height = 31
     Caption = 'Start animation'
+    DoubleBuffered = False
+    ParentDoubleBuffered = False
     TabOrder = 20
     OnClick = buttonAniStartClick
   end
@@ -1202,13 +1213,13 @@ object formDemo: TformDemo
     Left = 0
     Top = 92
     Width = 45
-    Height = 491
+    Height = 488
     ThemeManager = AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
     Align = alLeft
     BevelOuter = bvNone
-    DoubleBuffered = True
+    DoubleBuffered = False
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1219,6 +1230,7 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 0
+    ExplicitHeight = 523
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -1403,25 +1415,6 @@ object formDemo: TformDemo
       TabStop = True
     end
   end
-  object captionbarOldStyle: TUCaptionBar
-    Left = 0
-    Top = 583
-    Width = 1040
-    Height = 32
-    ThemeManager = AppTheme
-    UseNormalStyle = True
-    Align = alBottom
-    Alignment = taLeftJustify
-    Caption = 
-      '   This is NORMAL style TUCaptionBar (use 3 spaces for left alig' +
-      'n)'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
   object sliderVert: TUSlider
     Left = 680
     Top = 420
@@ -1432,13 +1425,13 @@ object formDemo: TformDemo
     Value = 30
   end
   object boxSmoothScrolling: TUScrollBox
-    Left = 790
+    Left = 750
     Top = 92
     Width = 250
-    Height = 491
+    Height = 488
     Align = alRight
     BorderStyle = bsNone
-    DoubleBuffered = True
+    DoubleBuffered = False
     Color = 15132390
     Padding.Left = 15
     Padding.Top = 5
@@ -1448,6 +1441,8 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 1
     ThemeManager = AppTheme
+    ExplicitLeft = 790
+    ExplicitHeight = 523
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -1776,7 +1771,7 @@ object formDemo: TformDemo
       Align = alTop
       Caption = 'https://embarcadero.com/'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 14120960
+      Font.Color = 11095412
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []

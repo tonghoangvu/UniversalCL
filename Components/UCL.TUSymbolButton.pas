@@ -67,9 +67,10 @@ type
       procedure SetImageKind(const Value: TUImageKind);
 
       //  Messages
-      procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
-      procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
-      procedure WM_LButtonUp(var Msg: TMessage); message WM_LBUTTONUP;
+      procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
+      procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -82,7 +83,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
-      destructor Destroy; reintroduce;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
     published
@@ -484,7 +485,7 @@ end;
 
 { MESSAGES }
 
-procedure TUCustomSymbolButton.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomSymbolButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -493,7 +494,7 @@ begin
     end;
 end;
 
-procedure TUCustomSymbolButton.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomSymbolButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -502,7 +503,7 @@ begin
     end;
 end;
 
-procedure TUCustomSymbolButton.WM_LButtonUp(var Msg: TMessage);
+procedure TUCustomSymbolButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if (Enabled = true) and (HitTest = true) then
     begin
@@ -511,6 +512,11 @@ begin
       ButtonState := csHover;
       inherited;
     end;
+end;
+
+procedure TUCustomSymbolButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
 end;
 
 procedure TUCustomSymbolButton.CM_MouseEnter(var Msg: TMessage);

@@ -52,6 +52,7 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_MouseMove(var Msg: TWMMouseMove); message WM_MOUSEMOVE;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;

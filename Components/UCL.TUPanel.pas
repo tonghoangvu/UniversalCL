@@ -181,7 +181,6 @@ begin
   BevelOuter := bvNone;
   Font.Name := 'Segoe UI';
   Font.Size := 9;
-  FullRepaint := false;
 
   FHitTest := true;
   FCustomTextColor := $00000000;

@@ -6,6 +6,7 @@ uses
   UCL.Classes,
   UCL.SystemSettings, UCL.TUThemeManager,
   System.SysUtils, System.Classes, System.Types,
+  Winapi.Messages,
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics,
   UCL.IntAnimation;
 
@@ -23,6 +24,8 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetValue(const Value: Integer);
       procedure SetOrientation(const Value: TUOrientation);
+
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
     protected
       procedure Paint; override;
@@ -198,6 +201,13 @@ begin
   //  Paint foreround
   Canvas.Brush.Color := ForeColor;
   Canvas.FillRect(FillRect);
+end;
+
+{ MESSAGES }
+
+procedure TUCustomProgressBar.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
 end;
 
 end.
