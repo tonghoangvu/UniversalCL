@@ -79,7 +79,8 @@ begin
     begin
       FAniFunctionKind := Value;
       case Value of
-        afkCustom: ;
+        afkCustom:
+          FAniFunction := nil;
         afkLinear: 
           FAniFunction := afLinear;
         afkQuadratic: 

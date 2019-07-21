@@ -78,7 +78,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
-      destructor Destroy; reintroduce;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
       procedure Popup(X, Y: Integer); override;

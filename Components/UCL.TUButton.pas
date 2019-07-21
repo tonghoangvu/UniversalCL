@@ -54,6 +54,7 @@ type
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
 
@@ -71,7 +72,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
-      destructor Destroy; reintroduce;
+      destructor Destroy; override;
       procedure UpdateTheme;  //  IThemeControl
 
     published
@@ -366,6 +367,7 @@ begin
       if AllowFocus = true then
         SetFocus;
       ButtonState := csPress;
+      Font.Quality := fqAntialiased;
       inherited;
     end;
 end;
@@ -377,8 +379,14 @@ begin
       if IsToggleButton = true then
         FIsToggled := not FIsToggled;
       ButtonState := csHover;
+      Font.Quality := fqDefault;
       inherited;
     end;
+end;
+
+procedure TUCustomButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
 end;
 
 procedure TUCustomButton.WM_SetFocus(var Msg: TWMSetFocus);

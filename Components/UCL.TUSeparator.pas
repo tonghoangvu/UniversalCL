@@ -5,6 +5,7 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager,
   System.Classes, System.SysUtils, System.Types,
+  Winapi.Messages,
   VCL.Controls, VCL.Graphics;
 
 type
@@ -20,6 +21,8 @@ type
       procedure SetAlignSpace(const Value: Integer);
       procedure SetCustomColor(const Value: TColor);
       procedure SetOrientation(const Value: TUOrientation);
+
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
     protected
       procedure Paint; override;
@@ -174,6 +177,13 @@ begin
       Canvas.MoveTo(AlignSpace, Height div 2);
       Canvas.LineTo(Width - AlignSpace, Height div 2);
     end;
+end;
+
+{ MESSAGES }
+
+procedure TUCustomSeparator.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
 end;
 
 end.

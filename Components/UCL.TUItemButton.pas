@@ -85,6 +85,7 @@ type
       procedure SetIsToggled(const Value: Boolean);
 
       //  Messages
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
@@ -99,6 +100,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
       property ObjectSelected: TUItemObjectKind read FObjectSelected default iokNone;
@@ -453,6 +455,13 @@ begin
   //UpdateTheme;
 end;
 
+destructor TUCustomItemButton.Destroy;
+begin
+  FIconFont.Free;
+  FDetailFont.Free;
+  inherited Destroy;
+end;
+
 { CUSTOM METHODS }
 
 procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
@@ -623,6 +632,11 @@ begin
 end;
 
 { MESSAGES }
+
+procedure TUCustomItemButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
+end;
 
 procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin

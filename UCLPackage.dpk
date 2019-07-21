@@ -58,7 +58,8 @@ contains
   UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
   UCL.TUSlider in 'Components\UCL.TUSlider.pas',
   UCL.TUTooltip in 'Components\UCL.TUTooltip.pas',
-  UCL.TUContextMenu in 'Components\UCL.TUContextMenu.pas';
+  UCL.TUContextMenu in 'Components\UCL.TUContextMenu.pas',
+  UCL.TUWPForm in 'Components\UCL.TUWPForm.pas';
 
 end.
 

@@ -47,6 +47,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateThemeForControls;
       procedure ReloadAutoSettings;
 
@@ -169,6 +170,12 @@ begin
   ColorOnBorderKind := cobkAuto;
 
   ReloadAutoSettings;
+end;
+
+destructor TUThemeManager.Destroy;
+begin
+  FControlList.Free;
+  inherited Destroy;
 end;
 
 procedure TUThemeManager.UpdateThemeForControls;

@@ -48,8 +48,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
-      destructor Destroy; reintroduce;
-      procedure AfterContrusction;
+      destructor Destroy; override;
       procedure Loaded; override;
 
       procedure UpdateTheme;
@@ -97,10 +96,6 @@ begin
   FTimer.Enabled := false;  //  Disabled timer
   FIsScrolling := true;
 
-  //  Limit ScrollCount
-  if ScrollCount > MaxScrollCount then
-    ScrollCount := MaxScrollCount;
-
   //  Get scrollbar
   if ScrollOrientation = oVertical then
     aScrollBar := VertScrollBar
@@ -112,13 +107,17 @@ begin
 
   //  Scroll out of range
   if Stop < 0 then
-    Stop := 0
-  else if Stop > aScrollBar.Range then
-    Stop := aScrollBar.Range;
+    Stop := 0 //  Top
+  else if Stop > aScrollBar.Range - Height then
+    Stop := aScrollBar.Range - Height;  //  Bottom
 
   //  Reduce ScrollCount when scroll out of range
   Length := Abs(Stop - Start);
   ScrollCount := Round(Length / LengthPerStep);
+
+  //  Limit ScrollCount
+  if ScrollCount > MaxScrollCount then
+    ScrollCount := MaxScrollCount;
 
   Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop, nil, true);
 
@@ -189,8 +188,8 @@ begin
   inherited Create(aOwner);
 
   //  Common properties
-  DoubleBuffered := true;
   BorderStyle := bsNone;
+  DoubleBuffered := true;
 
   //  Temp variables
   FIsScrolling := false;
@@ -217,17 +216,10 @@ end;
 
 destructor TUScrollBox.Destroy;
 begin
-  UninitializeFlatSB(Handle);
-
   FTimer.Free;
   FCanvas.Free;
 
   inherited Destroy;
-end;
-
-procedure TUScrollBox.AfterContrusction;
-begin
-  InitializeFlatSB(Handle);
 end;
 
 procedure TUScrollBox.Loaded;

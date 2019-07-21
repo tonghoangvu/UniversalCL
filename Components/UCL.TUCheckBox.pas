@@ -36,6 +36,7 @@ type
       procedure SetState(const Value: TUCheckBoxState);
 
       //  Messages
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
@@ -45,6 +46,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
     published
@@ -187,6 +189,12 @@ begin
   //  Dont UpdateTheme if it call Paint method
 end;
 
+destructor TUCustomCheckBox.Destroy;
+begin
+  FIconFont.Free;
+  inherited Destroy;
+end;
+
 { CUSTOM METHODS }
 
 procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
@@ -278,6 +286,11 @@ begin
 end;
 
 { MESSAGES }
+
+procedure TUCustomCheckBox.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
+end;
 
 procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMMouse);
 begin

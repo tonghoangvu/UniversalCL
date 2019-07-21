@@ -7,7 +7,7 @@ uses
   UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
+  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUWPForm,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -22,9 +22,8 @@ uses
   Vcl.BaseImageCollection, Vcl.ImageCollection;
 
 type
-  TformDemo = class(TUForm)
+  TformDemo = class(TUWPForm)
     AppTheme: TUThemeManager;
-    captionbarOldStyle: TUCaptionBar;
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -155,7 +154,7 @@ begin
   Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 210, procedure (Value: Integer)
     begin
       buttonRunning.Left := Value;
-    end, false);
+    end, true);
 
   Ani.OnDone := procedure begin buttonRunning.Caption := 'Animated' end;
   Ani.Start;

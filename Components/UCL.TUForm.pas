@@ -118,7 +118,7 @@ begin
   if Self.WindowState <> wsMaximized then
     begin
       Canvas.Pen.Color := FBorderColor;
-      Canvas.Rectangle(0, 0, ClientWidth, ClientHeight);
+      Canvas.Rectangle(0, 0, Width, Height);
     end;
 end;
 

@@ -29,6 +29,7 @@ type
       procedure SetText(const Value: string);
       procedure SetIsChecked(const Value: Boolean);
 
+      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
@@ -38,6 +39,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
     published
@@ -169,6 +171,12 @@ begin
   //  Dont UpdateTheme if it call Paint method
 end;
 
+destructor TUCustomRadioButton.Destroy;
+begin
+  FIconFont.Free;
+  inherited Destroy;
+end;
+
 { CUSTOM METHODS }
 
 procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
@@ -246,6 +254,11 @@ begin
 end;
 
 { MESSAGES }
+
+procedure TUCustomRadioButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
+begin
+  //  Skip message
+end;
 
 procedure TUCustomRadioButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin

@@ -22,7 +22,7 @@ procedure Register;
 begin
   RegisterComponents('Universal CL', [
     TUThemeManager,
-    //TUForm,
+    //TUForm, TUWPForm
     TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel, TUCheckBox, TUProgressBar,
     TUSwitch, TUScrollBox, TURadioButton, TUItemButton, TUSeparator, TUEdit,
     TUSlider, TUContextMenu
