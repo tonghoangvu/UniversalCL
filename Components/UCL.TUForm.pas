@@ -71,12 +71,12 @@ begin
   if ThemeManager = nil then
     begin
       Self.Color := $FFFFFF;
-      HintWindowClass := TUTooltip;
+      HintWindowClass := TULightTooltip;
     end
   else if ThemeManager.Theme = utLight then
     begin
       Self.Color := $FFFFFF;
-      HintWindowClass := TUTooltip;
+      HintWindowClass := TULightTooltip;
     end
   else
     begin
@@ -101,7 +101,6 @@ constructor TUForm.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  HintWindowClass := TUTooltip;
   PixelsPerInch := Screen.PixelsPerInch;  //  Get PPI on create
 
   FResizeable := true;

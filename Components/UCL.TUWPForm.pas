@@ -68,12 +68,12 @@ begin
   if ThemeManager = nil then
     begin
       Color := $FFFFFF;
-      HintWindowClass := TUTooltip; //  Light tooltip
+      HintWindowClass := TULightTooltip; //  Light tooltip
     end
   else if ThemeManager.Theme = utLight then
     begin
       Color := $FFFFFF;
-      HintWindowClass := TUTooltip;
+      HintWindowClass := TULightTooltip;
     end
   else
     begin
@@ -98,7 +98,6 @@ constructor TUWPForm.Create(aOwner: TComponent);
 begin
   inherited;
 
-  HintWindowClass := TUTooltip;
   PixelsPerInch := Screen.PixelsPerInch;  //  Get screen PPI on create
   Padding.SetBounds(0, 1, 0, 0);
 
@@ -153,7 +152,7 @@ end;
 
 procedure TUWPForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
 begin
-  if ThemeManager = nil then
+  if ThemeManager <> nil then
     ThemeManager.ReloadAutoSettings;
   inherited;
 end;

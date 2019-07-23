@@ -13,7 +13,6 @@ object formDemo: TformDemo
   Font.Style = []
   OldCreateOrder = False
   Visible = True
-  StyleElements = []
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
@@ -25,7 +24,7 @@ object formDemo: TformDemo
     Cursor = crHandPoint
     Caption = 'Right click to open context menu'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = 11095412
+    Font.Color = 361033
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
@@ -369,8 +368,8 @@ object formDemo: TformDemo
     Alignment = taLeftJustify
     BevelOuter = bvNone
     Caption = 
-      '                   This is NEW style TUCaptionBar (use 3 spaces ' +
-      'for left align)'
+      '                  This is NEW style TUCaptionBar (use 3 spaces f' +
+      'or left align)'
     DoubleBuffered = False
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
@@ -382,37 +381,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 30
-    ExplicitWidth = 1040
-    object buttonAppBack: TUButton
-      Left = 0
-      Top = 0
-      Width = 45
-      Height = 32
-      CustomBorderColors.None = 15921906
-      CustomBorderColors.Hover = 14320921
-      CustomBorderColors.Press = 14652211
-      CustomBorderColors.Disabled = 15921906
-      CustomBorderColors.Focused = 15921906
-      CustomBackColors.None = clRed
-      CustomBackColors.Hover = 14320921
-      CustomBackColors.Press = 14652211
-      CustomBackColors.Disabled = 15921906
-      CustomBackColors.Focused = 15921906
-      CustomTextColors.Hover = clWhite
-      CustomTextColors.Press = clWhite
-      CustomTextColors.Disabled = clGray
-      Text = #57510
-      Transparent = True
-      Align = alLeft
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -15
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      TabStop = True
-    end
     object buttonAppQuit: TUButton
       Left = 955
       Top = 0
@@ -431,20 +399,19 @@ object formDemo: TformDemo
       CustomTextColors.Hover = clWhite
       CustomTextColors.Press = clWhite
       CustomTextColors.Disabled = clGray
-      Text = #57610
+      Text = #57606
       AllowFocus = False
       Transparent = True
       Align = alRight
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       TabStop = True
       OnClick = buttonAppQuitClick
-      ExplicitLeft = 995
     end
     object buttonAppMaximized: TUButton
       Left = 910
@@ -468,14 +435,13 @@ object formDemo: TformDemo
       Align = alRight
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -12
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 1
       TabStop = True
       OnClick = buttonAppMaximizedClick
-      ExplicitLeft = 950
     end
     object buttonAppMinimized: TUButton
       Left = 865
@@ -499,14 +465,28 @@ object formDemo: TformDemo
       Align = alRight
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -11
+      Font.Height = -15
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      TabStop = True
+      OnClick = buttonAppMinimizedClick
+    end
+    object buttonAppBack: TUQuickButton
+      Left = 0
+      Top = 0
+      Width = 45
+      Height = 32
+      FontIcon = #57510
+      Align = alLeft
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
       ParentFont = False
       TabOrder = 3
-      TabStop = True
-      OnClick = buttonAppMinimizedClick
-      ExplicitLeft = 905
     end
   end
   object panelRibbon: TUScrollBox
@@ -522,7 +502,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 2
     ThemeManager = AppTheme
-    ExplicitWidth = 1040
     object separator1: TUSeparator
       Left = 120
       Top = 0
@@ -978,6 +957,7 @@ object formDemo: TformDemo
     IconFont.Height = -20
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
+    IconFont.Quality = fqClearType
     DetailFont.Charset = DEFAULT_CHARSET
     DetailFont.Color = clWindowText
     DetailFont.Height = -13
@@ -1230,7 +1210,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 0
-    ExplicitHeight = 523
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -1441,8 +1420,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 1
     ThemeManager = AppTheme
-    ExplicitLeft = 790
-    ExplicitHeight = 523
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -1771,7 +1748,7 @@ object formDemo: TformDemo
       Align = alTop
       Caption = 'https://embarcadero.com/'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 11095412
+      Font.Color = 361033
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
@@ -2237,6 +2214,7 @@ object formDemo: TformDemo
   end
   object AppTheme: TUThemeManager
     CustomColor = clGreen
+    OnUpdate = AppThemeUpdate
     Left = 620
     Top = 40
   end
@@ -2555,20 +2533,20 @@ object formDemo: TformDemo
         ImageIndex = 0
       end
       item
-        Text = 'TeamViewer'
-        Detail = 'Open link'
-        SymbolChar = #57345
-        ShowIcon = True
-        ImageKind = ikImage
-        ImageIndex = 1
-      end
-      item
         Text = 'Gmail'
         Detail = 'Open link'
         SymbolChar = #57345
         ShowIcon = True
         ImageKind = ikImage
         ImageIndex = 2
+      end
+      item
+        Text = 'TeamViewer'
+        Detail = 'Open link'
+        SymbolChar = #57345
+        ShowIcon = True
+        ImageKind = ikImage
+        ImageIndex = 1
       end>
     Images = imglistMain
     ThemeManager = AppTheme
@@ -2581,6 +2559,13 @@ object formDemo: TformDemo
   object popupHorz: TUContextMenu
     Items = <
       item
+        Text = 'Cut'
+        Detail = 'Ctrl+X'
+        SymbolChar = #57707
+        ShowDetail = False
+        ShowIcon = True
+      end
+      item
         Text = 'Copy'
         Detail = 'Ctrl+C'
         SymbolChar = #57711
@@ -2588,9 +2573,9 @@ object formDemo: TformDemo
         ShowIcon = True
       end
       item
-        Text = 'Cut'
-        Detail = 'Ctrl+X'
-        SymbolChar = #57707
+        Text = 'Paste'
+        Detail = 'Ctrl+V'
+        SymbolChar = #57709
         ShowDetail = False
         ShowIcon = True
       end>
@@ -2598,6 +2583,7 @@ object formDemo: TformDemo
     PopupHeight = 35
     ItemWidth = 80
     Orientation = oHorizontal
+    OnItemClick = popupHorzItemClick
     Left = 870
     Top = 40
   end

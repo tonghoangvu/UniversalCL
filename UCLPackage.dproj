@@ -189,6 +189,7 @@
         <DCCReference Include="Components\UCL.TUTooltip.pas"/>
         <DCCReference Include="Components\UCL.TUContextMenu.pas"/>
         <DCCReference Include="Components\UCL.TUWPForm.pas"/>
+        <DCCReference Include="Components\UCL.TUQuickButton.pas"/>
         <None Include="UCLPackage.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

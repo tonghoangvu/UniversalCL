@@ -48,6 +48,7 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
+      procedure Loaded; override;
       procedure UpdateThemeForControls;
       procedure ReloadAutoSettings;
 
@@ -168,8 +169,6 @@ begin
   ThemeKind := tkAuto;
   UseAccentColor := true;
   ColorOnBorderKind := cobkAuto;
-
-  ReloadAutoSettings;
 end;
 
 destructor TUThemeManager.Destroy;
@@ -178,17 +177,23 @@ begin
   inherited Destroy;
 end;
 
+procedure TUThemeManager.Loaded;
+begin
+  ReloadAutoSettings;
+end;
+
 procedure TUThemeManager.UpdateThemeForControls;
 var
   aControl: TComponent;
 begin
+  //  Call Update event
+  if Assigned(FOnUpdate) then
+    FOnUpdate(Self);
+
   //  Call UpdateTheme for all controls in list
   for aControl in FControlList do
     if aControl <> nil then
       (aControl as IUThemeControl).UpdateTheme;
-
-  if Assigned(FOnUpdate) then
-    FOnUpdate(Self);
 end;
 
 procedure TUThemeManager.ReloadAutoSettings;
