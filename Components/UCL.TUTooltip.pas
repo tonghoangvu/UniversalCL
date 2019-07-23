@@ -3,13 +3,13 @@ unit UCL.TUTooltip;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.Graphics;
 
 type
-  TUTooltip = class(THintWindow)
+  TUCustomTooltip = class(THintWindow)
     const
       DEFAULT_HEIGHT = 26;
 
@@ -21,16 +21,30 @@ type
       procedure WMPaint(var Msg: TMessage); message WM_PAINT;
 
     public
-      constructor Create(aOwner: TComponent); override;
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
   end;
 
-  TUDarkTooltip = class(TUTooltip)
+  TULightTooltip = class(TUCustomTooltip)
+    public
+      constructor Create(aOwner: TComponent); override;
+  end;
+
+  TUDarkTooltip = class(TUCustomTooltip)
     public
       constructor Create(aOwner: TComponent); override;
   end;
 
 implementation
+
+{ LIGHT TOOLTIP }
+
+constructor TULightTooltip.Create(aOwner: TComponent);
+begin
+  inherited;
+
+  BorderColor := $CCCCCC;
+  BackColor := $F2F2F2;
+end;
 
 { DARK TOOLTIP }
 
@@ -42,17 +56,9 @@ begin
   BackColor := $2B2B2B;
 end;
 
-{ LIGHT TOOLTIP }
+{ CUSTOM TOOLTIP }
 
-constructor TUTooltip.Create(aOwner: TComponent);
-begin
-  inherited Create(aOwner);
-
-  BorderColor := $CCCCCC;
-  BackColor := $F2F2F2;
-end;
-
-function TUTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
+function TUCustomTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
 var
   TextW, TextH: Integer;
 begin
@@ -65,7 +71,7 @@ end;
 
 { MESSAGES }
 
-procedure TUTooltip.WMNCPaint(var Msg: TMessage);
+procedure TUCustomTooltip.WMNCPaint(var Msg: TMessage);
 var
   C: TCanvas;
   R: TRect;
@@ -87,7 +93,7 @@ begin
   end;
 end;
 
-procedure TUTooltip.WMPaint(var Msg: TMessage);
+procedure TUCustomTooltip.WMPaint(var Msg: TMessage);
 var
   TextW, TextH, TextX, TextY: Integer;
 begin
@@ -100,10 +106,7 @@ begin
 
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
-  if ClassType = TUTooltip then
-    Canvas.Font.Color := $000000
-  else
-    Canvas.Font.Color := $FFFFFF;
+  Canvas.Font.Color := GetTextColorFromBackground(BackColor);
 
   //  Paint text
   TextW := Canvas.TextWidth(Caption);

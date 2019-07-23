@@ -8,18 +8,18 @@ uses
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
   UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUWPForm,
+  UCL.TUQuickButton,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
 
   //  System units
   System.SysUtils, System.Variants, System.Classes, System.Types, System.ImageList,
-  System.Threading,
 
   //  VCL units
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.WinXCtrls,
-  Vcl.Imaging.pngimage, Vcl.WinXPanels, Vcl.Menus, Vcl.Buttons, Vcl.Samples.Gauges, Vcl.ImgList, Vcl.VirtualImageList,
-  Vcl.BaseImageCollection, Vcl.ImageCollection;
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.VirtualImageList,
+  Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
 
 type
   TformDemo = class(TUWPForm)
@@ -72,7 +72,6 @@ type
     buttonPrintDoc: TUSymbolButton;
     buttonSaveDoc: TUSymbolButton;
     separator2: TUSeparator;
-    buttonAppBack: TUButton;
     buttonAppQuit: TUButton;
     editAccountName: TUEdit;
     imgcollectionMain: TImageCollection;
@@ -119,6 +118,7 @@ type
     sliderVert: TUSlider;
     popupVert: TUContextMenu;
     popupHorz: TUContextMenu;
+    buttonAppBack: TUQuickButton;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -130,12 +130,13 @@ type
     procedure radioDarkThemeClick(Sender: TObject);
     procedure panelSelectAccentColorClick(Sender: TObject);
     procedure checkColorBorderClick(Sender: TObject);
-    procedure buttonClosePopupClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
     procedure buttonAppMaximizedClick(Sender: TObject);
     procedure buttonAppMinimizedClick(Sender: TObject);
     procedure sliderHorzChange(Sender: TObject);
+    procedure popupHorzItemClick(Sender: TObject; Index: Integer);
+    procedure AppThemeUpdate(Sender: TObject);
   private
   public
   end;
@@ -146,6 +147,35 @@ var
 implementation
 
 {$R *.dfm}
+
+{ MAIN FORM }
+
+procedure TformDemo.FormCreate(Sender: TObject);
+begin
+  Self.ThemeManager := AppTheme;
+end;
+
+{ SYSBUTTON }
+
+procedure TformDemo.buttonAppMaximizedClick(Sender: TObject);
+begin
+  if WindowState <> wsMaximized then
+    WindowState := wsMaximized
+  else
+    WindowState := wsNormal;
+end;
+
+procedure TformDemo.buttonAppMinimizedClick(Sender: TObject);
+begin
+  WindowState := wsMinimized;
+end;
+
+procedure TformDemo.buttonAppQuitClick(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+{ ANIMATION BUTTON }
 
 procedure TformDemo.buttonAniStartClick(Sender: TObject);
 var
@@ -169,85 +199,6 @@ begin
       buttonRunning.Left := Value;
     end, true);
   Ani.Start;
-end;
-
-procedure TformDemo.FormCreate(Sender: TObject);
-begin
-  Self.ThemeManager := AppTheme;
-  panelSelectAccentColor.CustomBackColor := AppTheme.ActiveColor;
-  if AppTheme.ColorOnBorder = true then
-    checkColorBorder.State := cbsChecked
-  else
-    checkColorBorder.State := cbsUnchecked;
-end;
-
-procedure TformDemo.sliderHorzChange(Sender: TObject);
-begin
-  //  Change progress bar value
-  progressConnected.Value := sliderHorz.Value;
-end;
-
-procedure TformDemo.buttonAppMaximizedClick(Sender: TObject);
-begin
-  if WindowState <> wsMaximized then
-    WindowState := wsMaximized
-  else
-    WindowState := wsNormal;
-end;
-
-procedure TformDemo.buttonAppMinimizedClick(Sender: TObject);
-begin
-  WindowState := wsMinimized;
-end;
-
-procedure TformDemo.buttonAppQuitClick(Sender: TObject);
-begin
-  Self.Close;
-end;
-
-procedure TformDemo.checkColorBorderClick(Sender: TObject);
-begin
-  if checkColorBorder.State = cbsChecked then
-    AppTheme.ColorOnBorderKind := cobkTrue
-  else
-    AppTheme.ColorOnBorderKind := cobkFalse;
-end;
-
-procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
-var
-  NewColor: TColor;
-begin
-  //  Open dialog
-  if dialogSelectColor.Execute = true then
-    begin
-      NewColor := dialogSelectColor.Color;
-
-      //  Change accent color
-      AppTheme.CustomColor := NewColor;
-      AppTheme.UseAccentColor := false;
-
-      panelSelectAccentColor.CustomBackColor := NewColor;
-    end;
-end;
-
-procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
-begin
-  AppTheme.ThemeKind := tkAuto;
-end;
-
-procedure TformDemo.radioLightThemeClick(Sender: TObject);
-begin
-  AppTheme.ThemeKind := tkLight;
-end;
-
-procedure TformDemo.radioDarkThemeClick(Sender: TObject);
-begin
-  AppTheme.ThemeKind := tkDark;
-end;
-
-procedure TformDemo.buttonClosePopupClick(Sender: TObject);
-begin
-  Self.SetFocus;  //  Set focus to main form to close popup
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
@@ -280,14 +231,6 @@ begin
   Ani.Start;
 end;
 
-procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
-begin
-  Randomize;
-  progressCustomColor.GoToValue(Random(101));
-  progressConnected.GoToValue(Random(101));
-  progressVert.GoToValue(Random(101));
-end;
-
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
   NewPos: Integer;
@@ -311,9 +254,94 @@ begin
   Ani.Start;
 end;
 
+{ THEME }
+
+procedure TformDemo.AppThemeUpdate(Sender: TObject);
+begin
+  //  Active color changed
+  panelSelectAccentColor.CustomBackColor := AppTheme.ActiveColor;
+  buttonAppBack.HighlightColor := AppTheme.ActiveColor;
+
+  //  Color on border setting changed
+  if AppTheme.ColorOnBorder = true then
+    checkColorBorder.State := cbsChecked
+  else
+    checkColorBorder.State := cbsUnchecked;
+end;
+
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
   AppTheme.ReloadAutoSettings;
+end;
+
+procedure TformDemo.checkColorBorderClick(Sender: TObject);
+begin
+  if checkColorBorder.State = cbsChecked then
+    AppTheme.ColorOnBorderKind := cobkTrue
+  else
+    AppTheme.ColorOnBorderKind := cobkFalse;
+end;
+
+procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
+var
+  NewColor: TColor;
+begin
+  //  Open dialog
+  if dialogSelectColor.Execute = true then
+    begin
+      NewColor := dialogSelectColor.Color;
+
+      //  Change accent color
+      AppTheme.CustomColor := NewColor;
+      AppTheme.UseAccentColor := false;
+
+      panelSelectAccentColor.CustomBackColor := NewColor;
+    end;
+end;
+
+{ POPUP MENU }
+
+procedure TformDemo.popupHorzItemClick(Sender: TObject; Index: Integer);
+begin
+  Self.SetFocus;
+  case Index of
+    0:  ShowMessage('Cut');
+    1:  ShowMessage('Copy');
+    2:  ShowMessage('Paste');
+  end;
+end;
+
+{ APP THEME SETTINGS }
+
+procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
+begin
+  AppTheme.ThemeKind := tkAuto;
+end;
+
+procedure TformDemo.radioLightThemeClick(Sender: TObject);
+begin
+  AppTheme.ThemeKind := tkLight;
+end;
+
+procedure TformDemo.radioDarkThemeClick(Sender: TObject);
+begin
+  AppTheme.ThemeKind := tkDark;
+end;
+
+{ CONTROLS }
+
+procedure TformDemo.sliderHorzChange(Sender: TObject);
+begin
+  //  Change progress bar value
+  progressConnected.Value := sliderHorz.Value;
+end;
+
+procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
+begin
+  Randomize;
+  progressCustomColor.GoToValue(Random(101));
+  progressConnected.GoToValue(Random(101));
+  progressVert.GoToValue(Random(101));
 end;
 
 end.

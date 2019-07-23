@@ -23,14 +23,12 @@ type
       FHitTest: Boolean;
       FOpenLink: Boolean;
       FURL: string;
-      FEnabled: Boolean;
 
       //  Object setters
       procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Value setters
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetEnabled(const Value: Boolean); reintroduce;
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -39,6 +37,7 @@ type
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
       //  Group property change
       procedure DoCustomTextColorsChange(Sender: TObject);
@@ -56,7 +55,6 @@ type
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
-      property Enabled: Boolean read FEnabled write SetEnabled default true;
   end;
 
 implementation
@@ -104,27 +102,6 @@ begin
     end;
 end;
 
-procedure TUHyperLink.SetEnabled(const Value: Boolean);
-begin
-  if Value <> FEnabled then
-    begin
-      FEnabled := Value;
-
-      if Value = false then
-        begin
-          Cursor := crDefault;
-          FButtonState := csDisabled;
-        end
-      else
-        begin
-          Cursor := crHandPoint;
-          FButtonState := csNone;
-        end;
-
-      UpdateTheme;
-    end;
-end;
-
 { MAIN CLASS }
 
 constructor TUHyperLink.Create(aOwner: TComponent);
@@ -138,7 +115,6 @@ begin
   FHitTest := true;
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
-  FEnabled := true;
 
   Caption := 'Embarcadero website';
 
@@ -204,6 +180,22 @@ begin
       ButtonState := csNone;
       inherited;
     end;
+end;
+
+procedure TUHyperLink.CM_EnabledChanged(var Msg: TMessage);
+begin
+  inherited;
+  if Enabled = false then
+    begin
+      FButtonState := csDisabled;
+      Cursor := crDefault;
+    end
+  else
+    begin
+      FButtonState := csNone;
+      Cursor := crHandPoint;
+    end;
+  UpdateTheme;
 end;
 
 { GROUP PROPERTY CHANGE }

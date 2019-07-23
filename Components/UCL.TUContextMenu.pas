@@ -9,6 +9,8 @@ uses
   VCL.Controls, VCL.Menus, VCL.ImgList, VCL.Forms, VCL.Graphics;
 
 type
+  TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;
+
   TUContextMenuItem = class(TCollectionItem)
     private
       FText: string;
@@ -22,9 +24,6 @@ type
 
       FImageKind: TUImageKind;
       FImageIndex: Integer;
-
-      FOnClick: TNotifyEvent;
-
     public
       constructor Create(aOwner: TCollection); override;
 
@@ -40,8 +39,6 @@ type
 
       property ImageKind: TUImageKind read FImageKind write FImageKind default ikFontIcon;
       property ImageIndex: Integer read FImageIndex write FImageIndex default -1;
-
-      property OnClick: TNotifyEvent read FOnClick write FOnClick;
   end;
 
   TUContextMenuItems = class(TOwnedCollection)
@@ -72,9 +69,14 @@ type
       FAutoSize: Boolean;
       FOrientation: TUOrientation;
 
+      //  Events
+      FOnItemClick: TIndexNotifyEvent;
+
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      //  Custom events
       procedure PopupForm_OnDeactive(Sender: TObject);
+      procedure Item_OnClick(Sender: TObject);
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -99,6 +101,9 @@ type
 
       property AutoSize: Boolean read FAutoSize write FAutoSize default true;
       property Orientation: TUOrientation read FOrientation write FOrientation default oVertical;
+
+      //  Events
+      property OnItemClick: TIndexNotifyEvent read FOnItemClick write FOnItemClick;
   end;
 
 implementation
@@ -243,16 +248,17 @@ begin
       Item.Width := ItemWidth;
       if Orientation = oVertical then
         begin
-          Item.Align := alTop;
           Item.Top := i * ItemHeight + 1;
+          Item.Align := alTop;
         end
       else
         begin
-          Item.Align := alLeft;
           Item.Left := i * ItemWidth + 1;
+          Item.Align := alLeft;
         end;
 
       Item.ThemeManager := ThemeManager;
+      Item.Tag := i;
       Item.Text := Items[i].Text;
       Item.Detail := Items[i].Detail;
       Item.SymbolChar := Items[i].SymbolChar;
@@ -263,7 +269,7 @@ begin
       Item.Images := Self.Images;
       Item.TextOffset := Items[i].TextOffset;
 
-      Item.OnClick := Items.Items[i].OnClick;
+      Item.OnClick := Item_OnClick;
 
       Item.Visible := true;
     end;
@@ -309,6 +315,13 @@ begin
   Ani.Duration := 120;
   Ani.OnDone := procedure begin aForm.Close end;
   Ani.Start;
+end;
+
+procedure TUContextMenu.Item_OnClick(Sender: TObject);
+begin
+  if (Sender is TUSymbolButton = false) or (Sender = nil) then exit;
+  if Assigned(FOnItemClick) then
+    FOnItemClick(Self, (Sender as TUSymbolButton).Tag);
 end;
 
 {$ENDREGION}
