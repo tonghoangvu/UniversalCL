@@ -17,8 +17,7 @@ type
       var BorderColor: TColor;
 
       FThemeManager: TUThemeManager;
-      FResizeable: Boolean;
-    FResizable: Boolean;
+      FResizable: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
@@ -101,7 +100,7 @@ begin
   PixelsPerInch := Screen.PixelsPerInch;  //  Get screen PPI on create
   Padding.SetBounds(0, 1, 0, 0);
 
-  FResizeable := true;
+  FResizable := true;
 
   UpdateTheme;
 end;
@@ -120,13 +119,16 @@ begin
 end;
 
 procedure TUWPForm.Resize;
+var
+  CurrentScreen: TMonitor;
 begin
   if WindowState = wsMaximized then
     begin
-      Left := Screen.WorkAreaRect.Left;
-      Top := Screen.WorkAreaRect.Top;
-      Width := Screen.WorkAreaRect.Right - Screen.WorkAreaRect.Left;
-      Height := Screen.WorkAreaRect.Bottom - Screen.WorkAreaRect.Top - 1;
+      CurrentScreen := Screen.MonitorFromWindow(Self.Handle);
+      Left := CurrentScreen.WorkAreaRect.Left;
+      Top := CurrentScreen.WorkAreaRect.Top;
+      Width := CurrentScreen.WorkAreaRect.Right - CurrentScreen.WorkAreaRect.Left;
+      Height := CurrentScreen.WorkAreaRect.Bottom - CurrentScreen.WorkAreaRect.Top - 1;
 
       Padding.SetBounds(0, 0, 0, 0);
     end
@@ -170,6 +172,8 @@ end;
 
 procedure TUWPForm.WM_NCHitTest(var Msg: TWMNCHitTest);
 begin
+  if Resizable = false then exit;
+
   inherited;
   if Msg.YPos - BoundsRect.Top < 5 then
     Msg.Result := HTTOP;
