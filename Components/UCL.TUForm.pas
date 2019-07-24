@@ -122,13 +122,16 @@ begin
 end;
 
 procedure TUForm.Resize;
+var
+  CurrentScreen: TMonitor;
 begin
   if WindowState = wsMaximized then
     begin
-      Self.Left := Screen.WorkAreaRect.Left;
-      Self.Top := Screen.WorkAreaRect.Top;
-      Self.Width := Screen.WorkAreaRect.Right - Screen.WorkAreaRect.Left;
-      Self.Height := Screen.WorkAreaRect.Bottom - Screen.WorkAreaRect.Top - 1;
+      CurrentScreen := Screen.MonitorFromWindow(Self.Handle);
+      Self.Left := CurrentScreen.WorkAreaRect.Left;
+      Self.Top := CurrentScreen.WorkAreaRect.Top;
+      Self.Width := CurrentScreen.WorkAreaRect.Right - CurrentScreen.WorkAreaRect.Left;
+      Self.Height := CurrentScreen.WorkAreaRect.Bottom - CurrentScreen.WorkAreaRect.Top - 1;
         //  Without -1, form will over screen size
 
       Self.Padding.SetBounds(0, 0, 0, 0);
