@@ -95,7 +95,7 @@ var
   Reg: TRegistry;
   Value: Byte;
 begin
-  if State = true then
+  if State then
     Value := 1
   else
     Value := 0;
