@@ -273,7 +273,7 @@ begin
 
   //  Highlight button
   else if
-    ((Highlight = true) or ((IsToggleButton = true) and (IsToggled = true)))  //  Is highlight button, or toggle on
+    ((Highlight) or ((IsToggleButton) and (IsToggled)))  //  Is highlight button, or toggle on
     and (ButtonState in [csNone, csHover, csFocused]) //  Highlight only when mouse normal, hover and focused
   then
     begin
@@ -294,7 +294,7 @@ begin
     end;
 
   //  Transparent
-  if (ButtonState = csNone) and (Transparent = true) then
+  if (ButtonState = csNone) and (Transparent) then
     begin
       ParentColor := true;
       BackColor := Color;
@@ -353,7 +353,7 @@ end;
 
 procedure TUCustomButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
       ButtonState := csPress;
       inherited;
@@ -362,9 +362,9 @@ end;
 
 procedure TUCustomButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
-      if AllowFocus = true then
+      if AllowFocus then
         SetFocus;
       ButtonState := csPress;
       Font.Quality := fqAntialiased;
@@ -374,9 +374,9 @@ end;
 
 procedure TUCustomButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
-      if IsToggleButton = true then
+      if IsToggleButton then
         FIsToggled := not FIsToggled;
       ButtonState := csHover;
       Font.Quality := fqDefault;
@@ -391,8 +391,8 @@ end;
 
 procedure TUCustomButton.WM_SetFocus(var Msg: TWMSetFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
-    if AllowFocus = true then
+  if (Enabled) and (HitTest) then
+    if AllowFocus then
       begin
         ButtonState := csFocused;
         inherited;
@@ -403,7 +403,7 @@ end;
 
 procedure TUCustomButton.WM_KillFocus(var Msg: TWMKillFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
       ButtonState := csNone;
       inherited;
@@ -412,7 +412,7 @@ end;
 
 procedure TUCustomButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
       ButtonState := csHover;
       inherited;
@@ -421,7 +421,7 @@ end;
 
 procedure TUCustomButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if (Enabled) and (HitTest) then
     begin
       //  Dont allow focus
       if AllowFocus = false then
