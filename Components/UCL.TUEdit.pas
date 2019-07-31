@@ -19,13 +19,15 @@ type
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
   end;
 
-  TUCustomEdit = class(TCustomPanel, IUThemeControl)
+  TUCustomEdit = class(TCustomPanel, IUThemeComponent)
     const
       DefBorderColor: TDefColor = (
         ($999999, $666666, $D77800, $CCCCCC, $D77800),
         ($666666, $999999, $D77800, $CCCCCC, $D77800));
 
     private
+      var BorderThickness: Integer;
+
       FThemeManager: TUThemeManager;
       FButtonState: TUControlState;
 
@@ -193,11 +195,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -321,6 +323,8 @@ constructor TUCustomEdit.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  BorderThickness := 2;
+
   FButtonState := csNone;
   FHitTest := true;
   FTransparent := true;
@@ -360,12 +364,13 @@ end;
 procedure TUCustomEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
+  BorderThickness := MulDiv(BorderThickness, M, D);
 end;
 
 procedure TUCustomEdit.Paint;
 var
   BorderColor, BackColor, TextColor: TColor;
-  BorderThickness, ThicknessPos: Integer;
+  ThicknessPos: Integer;
 begin
   inherited;
 
@@ -379,7 +384,7 @@ begin
     begin
       case ButtonState of
         csPress, csFocused:
-          BorderColor := ThemeManager.ActiveColor;
+          BorderColor := ThemeManager.AccentColor;
         else
           BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
       end;
@@ -412,8 +417,6 @@ begin
     end;
 
   //  Paint border
-  BorderThickness := 2; //  Default thickness for 100% scale
-  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
   if BorderThickness mod 2 = 0 then
     ThicknessPos := BorderThickness div 2 - 1
   else
@@ -488,13 +491,9 @@ begin
 end;
 
 procedure TUCustomEdit.WM_Size(var Msg: TWMSize);
-var
-  BorderThickness: Integer;
 begin
   inherited;
-  BorderThickness := 2;
-  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
-
+  tag := BorderThickness;
   Canvas.Brush.Color := FEdit.Color;
   Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 end;
@@ -503,14 +502,12 @@ procedure TUCustomEdit.UM_SubEditSetFocus(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     ButtonState := csFocused;
-  //inherited;  //  Cancel this message
 end;
 
 procedure TUCustomEdit.UM_SubEditKillFocus(var Msg: TMessage);
 begin
   if (Enabled = true) and (HitTest = true) then
     ButtonState := csNone;
-  //inherited;  //  Cancel this message
 end;
 
 procedure TUCustomEdit.CM_MouseEnter(var Msg: TMessage);

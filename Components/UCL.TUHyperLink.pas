@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.StdCtrls, VCL.Graphics;
 
 type
-  TUHyperLink = class(TLabel, IUThemeControl)
+  TUHyperLink = class(TLabel, IUThemeComponent)
     const
       DefTextColor: TDefColor = (
       ($D77800, clGray, clMedGray, clMedGray, clGray),
@@ -20,6 +20,7 @@ type
       FButtonState: TUControlState;
       FCustomTextColors: TControlStateColors;
 
+      FEnabled: Boolean;  //  Must override Enabled, if not disabled style wrong on Dark theme
       FHitTest: Boolean;
       FOpenLink: Boolean;
       FURL: string;
@@ -29,6 +30,7 @@ type
 
       //  Value setters
       procedure SetButtonState(const Value: TUControlState);
+      procedure SetEnabled(const Value: Boolean); reintroduce;
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -37,7 +39,6 @@ type
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
-      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
       //  Group property change
       procedure DoCustomTextColorsChange(Sender: TObject);
@@ -52,6 +53,7 @@ type
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
+      property Enabled: Boolean read FEnabled write SetEnabled default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
@@ -67,11 +69,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -85,7 +87,7 @@ begin
   else
     begin
       if ButtonState = csNone then
-        Font.Color := ThemeManager.ActiveColor
+        Font.Color := ThemeManager.AccentColor
       else
         Font.Color := DefTextColor[ThemeManager.Theme, ButtonState];
     end;
@@ -102,6 +104,25 @@ begin
     end;
 end;
 
+procedure TUHyperLink.SetEnabled(const Value: Boolean);
+begin
+  if Value <> FEnabled then
+    begin
+      FEnabled := Value;
+      if FEnabled = false then
+        begin
+          FButtonState := csDisabled;
+          Cursor := crDefault;
+        end
+      else
+        begin
+          FButtonState := csNone;
+          Cursor := crHandPoint;
+        end;
+      UpdateTheme;
+    end;
+end;
+
 { MAIN CLASS }
 
 constructor TUHyperLink.Create(aOwner: TComponent);
@@ -112,6 +133,7 @@ begin
   FCustomTextColors := TControlStateColors.Create($D77800, clGray, clMedGray, clMedGray, $D77800);
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
+  FEnabled := true;
   FHitTest := true;
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
@@ -180,22 +202,6 @@ begin
       ButtonState := csNone;
       inherited;
     end;
-end;
-
-procedure TUHyperLink.CM_EnabledChanged(var Msg: TMessage);
-begin
-  inherited;
-  if Enabled = false then
-    begin
-      FButtonState := csDisabled;
-      Cursor := crDefault;
-    end
-  else
-    begin
-      FButtonState := csNone;
-      Cursor := crHandPoint;
-    end;
-  UpdateTheme;
 end;
 
 { GROUP PROPERTY CHANGE }

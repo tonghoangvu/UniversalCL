@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomSeparator = class(TCustomControl, IUThemeControl)
+  TUCustomSeparator = class(TCustomControl, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -85,11 +85,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;

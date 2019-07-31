@@ -18,6 +18,7 @@ type
       FPressBrightnessDelta: Integer;
 
       procedure SetButtonState(const Value: TUControlState);
+      procedure SetFontIcon(const Value: string);
 
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
@@ -36,7 +37,7 @@ type
 
       property HighlightColor: TColor read FHighlightColor write FHighlightColor default $D77800;
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
-      property FontIcon: string read FFontIcon write FFontIcon;
+      property FontIcon: string read FFontIcon write SetFontIcon;
   end;
 
   TUQuickButton = class(TUCustomQuickButton)
@@ -87,6 +88,15 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
+      Paint;
+    end;
+end;
+
+procedure TUCustomQuickButton.SetFontIcon(const Value: string);
+begin
+  if Value <> FFontIcon then
+    begin
+      FFontIcon := Value;
       Paint;
     end;
 end;

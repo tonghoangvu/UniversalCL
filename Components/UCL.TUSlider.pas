@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
 type
-  TUCustomSlider = class(TCustomControl, IUThemeControl)
+  TUCustomSlider = class(TCustomControl, IUThemeComponent)
     const
       DefActiveColor: TDefColor = (
         ($D77800, $D77800, $D77800, $CCCCCC, $D77800),
@@ -129,11 +129,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -245,12 +245,12 @@ begin
   else
     begin
       if Enabled = true then
-        ActiveColor := ThemeManager.ActiveColor
+        ActiveColor := ThemeManager.AccentColor
       else
         ActiveColor := DefActiveColor[ThemeManager.Theme, ControlState];
       BackColor := DefBackColor[ThemeManager.Theme, ControlState];
       if ControlState = csNone then
-        CurColor := ThemeManager.ActiveColor
+        CurColor := ThemeManager.AccentColor
       else
         CurColor := DefCurColor[ThemeManager.Theme, ControlState];
     end;

@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.WinXCtrls;
 
 type
-  TUSwitch = class(TCustomToggleSwitch, IUThemeControl)
+  TUSwitch = class(TCustomToggleSwitch, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -107,11 +107,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -144,8 +144,8 @@ begin
       if IsOn = true then
         begin
           ThumbColor := $FFFFFF;
-          Color := ThemeManager.ActiveColor;
-          FrameColor := ThemeManager.ActiveColor;
+          Color := ThemeManager.AccentColor;
+          FrameColor := ThemeManager.AccentColor;
         end
       else
         begin
@@ -162,8 +162,8 @@ begin
       if IsOn = true then
         begin
           ThumbColor := $FFFFFF;
-          Color := ThemeManager.ActiveColor;
-          FrameColor := ThemeManager.ActiveColor;
+          Color := ThemeManager.AccentColor;
+          FrameColor := ThemeManager.AccentColor;
         end
       else
         begin

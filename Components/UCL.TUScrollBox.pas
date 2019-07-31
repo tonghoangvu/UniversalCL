@@ -7,12 +7,12 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
   System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
+  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics, VCL.Dialogs;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
 
-  TUScrollBox = class(TScrollBox, IUThemeControl)
+  TUScrollBox = class(TScrollBox, IUThemeComponent)
     private
       //  Temp variables
       var ScrollCount: Integer;
@@ -45,6 +45,9 @@ type
       procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+
+    protected
+      procedure ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -119,7 +122,7 @@ begin
   if ScrollCount > MaxScrollCount then
     ScrollCount := MaxScrollCount;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, Start, Stop, nil, true);
+  Ani := TIntAni.Create(true, akOut, afkQuartic, Start, Stop - Start, nil);
 
   if ScrollBarStyle = sbsMini then
     Ani.OnSync := procedure (Value: Integer)
@@ -147,8 +150,6 @@ begin
   Ani.Step := 23;
   Ani.Duration := Round(TimePerStep * Sqrt(ScrollCount));
 
-  if csDesigning in ComponentState = false then
-    DisableAlign;
   Ani.Start;
 end;
 
@@ -160,11 +161,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -248,7 +249,7 @@ begin
       ControlSize := Width;
     end;
   
-  if ScrollBar.Range = 0 then exit;
+  if (ScrollBar.Range = 0) or (ScrollBar.Range <= ControlSize) then exit;
   
   ThumbSize := Round(ControlSize * ControlSize / Scrollbar.Range);
   ThumbPos := Round(ControlSize * ScrollBar.Position / ScrollBar.Range);
@@ -278,7 +279,7 @@ begin
   FCanvas.Brush.Color := Color;
   if ScrollOrientation = oVertical then
     FCanvas.FillRect(Rect(Width - 5, 0, Width, Height))
-  else 
+  else
     FCanvas.FillRect(Rect(0, Height - 5, Width, Height));
 end;
 
@@ -317,6 +318,11 @@ begin
   inherited;
   if ScrollBarStyle <> sbsFull then
     HideOldScrollBar;
+end;
+
+procedure TUScrollBox.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
 end;
 
 procedure TUScrollBox.CM_MouseEnter(var Msg: TMessage);

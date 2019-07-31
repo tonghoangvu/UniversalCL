@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
-  TUCustomSymbolButton = class(TCustomControl, IUThemeControl)
+  TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
     const
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
@@ -159,11 +159,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -391,7 +391,7 @@ begin
     and (ButtonState in [csNone, csHover, csFocused])
   then
     begin
-      BackColor := ThemeManager.ActiveColor;
+      BackColor := ThemeManager.AccentColor;
       TextColor := GetTextColorFromBackground(BackColor);
       DetailColor := clSilver;
     end

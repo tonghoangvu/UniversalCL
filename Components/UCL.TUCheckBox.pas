@@ -11,7 +11,7 @@ uses
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
-  TUCustomCheckBox = class(TCustomControl, IUThemeControl)
+  TUCustomCheckBox = class(TCustomControl, IUThemeComponent)
     private var
       ICON_LEFT: Integer;
       TEXT_LEFT: Integer;
@@ -19,6 +19,7 @@ type
     private
       FThemeManager: TUThemeManager;
 
+      FAutoSize: Boolean;
       FHitTest: Boolean;
       FText: string;
       FAllowGrayed: Boolean;
@@ -31,6 +32,7 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Value setters
+      procedure SetAutoSize(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
       procedure SetAllowGrayed(const Value: Boolean);
       procedure SetState(const Value: TUCheckBoxState);
@@ -43,6 +45,7 @@ type
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -52,6 +55,7 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      property AutoSize: Boolean read FAutoSize write SetAutoSize default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
@@ -110,11 +114,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -150,6 +154,15 @@ begin
     end;
 end;
 
+procedure TUCustomCheckBox.SetAutoSize(const Value: Boolean);
+begin
+  if Value <> FAutoSize then
+    begin
+      FAutoSize := Value;
+      Resize;
+    end;
+end;
+
 procedure TUCustomCheckBox.SetText(const Value: string);
 begin
   if Value <> FText then
@@ -168,8 +181,6 @@ begin
   ICON_LEFT := 5;
   TEXT_LEFT := 35;
 
-  Height := 30;
-  Width := 200;
   ParentColor := true;
 
   Font.Name := 'Segoe UI';
@@ -179,14 +190,12 @@ begin
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
+  FAutoSize := true;
   FHitTest := true;
   FText := 'UCheckBox';
   FAllowGrayed := false;
   FState := cbsUnchecked;
   FCustomActiveColor := $D77800;  //  Default blue
-
-  //UpdateTheme;
-  //  Dont UpdateTheme if it call Paint method
 end;
 
 destructor TUCustomCheckBox.Destroy;
@@ -203,9 +212,9 @@ begin
 
   ICON_LEFT := MulDiv(ICON_LEFT, M, D);
   TEXT_LEFT := MulDiv(TEXT_LEFT, M, D);
-
-  //Font.Height := MulDiv(Font.Height, M, D);   //  Not neccesary
   IconFont.Height := MulDiv(IconFont.Height, M, D);
+
+  Resize;
 end;
 
 procedure TUCustomCheckBox.Paint;
@@ -213,7 +222,7 @@ var
   TextH: Integer;
   IconH: Integer;
 begin
-  Resize;
+  inherited;
 
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;  //  Paint empty background
@@ -241,7 +250,7 @@ begin
         if ThemeManager = nil then
           Canvas.Font.Color := CustomActiveColor
         else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
+          Canvas.Font.Color := ThemeManager.AccentColor;
         IconH := Canvas.TextHeight('');
 
         Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
@@ -267,7 +276,7 @@ begin
         if ThemeManager = nil then
           Canvas.Font.Color := CustomActiveColor
         else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
+          Canvas.Font.Color := ThemeManager.AccentColor;
         IconH := Canvas.TextHeight('');
         Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
 
@@ -283,6 +292,19 @@ begin
       end;
   end;
 
+end;
+
+procedure TUCustomCheckBox.Resize;
+begin
+  if AutoSize = true then
+    begin
+      Canvas.Font := IconFont;
+      Height := 2 * ICON_LEFT + Canvas.TextHeight('');
+      Canvas.Font := Font;
+      Width := TEXT_LEFT + Canvas.TextWidth(Text) + ICON_LEFT;
+    end
+  else
+    inherited;
 end;
 
 { MESSAGES }

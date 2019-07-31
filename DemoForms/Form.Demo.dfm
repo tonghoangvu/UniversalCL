@@ -2,7 +2,7 @@ object formDemo: TformDemo
   Left = 0
   Top = 0
   Caption = 'Test UCL controls'
-  ClientHeight = 580
+  ClientHeight = 570
   ClientWidth = 1000
   Color = clWhite
   Ctl3D = False
@@ -64,12 +64,14 @@ object formDemo: TformDemo
     Width = 135
     Height = 17
     Caption = 'TUHyperLink (disabled)'
+    Color = clWhite
     Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMedGray
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
+    ParentColor = False
     ParentFont = False
     ThemeManager = AppTheme
     ButtonState = csDisabled
@@ -83,12 +85,12 @@ object formDemo: TformDemo
   object textDescription: TUText
     Left = 390
     Top = 210
-    Width = 105
-    Height = 17
+    Width = 94
+    Height = 15
     Caption = 'This is description'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 6710886
-    Font.Height = -13
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -159,7 +161,7 @@ object formDemo: TformDemo
   object radioA1: TURadioButton
     Left = 390
     Top = 240
-    Width = 101
+    Width = 93
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -184,7 +186,7 @@ object formDemo: TformDemo
   object radioA2: TURadioButton
     Left = 390
     Top = 270
-    Width = 101
+    Width = 93
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -210,7 +212,7 @@ object formDemo: TformDemo
   object radioA3: TURadioButton
     Left = 390
     Top = 300
-    Width = 101
+    Width = 93
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -235,7 +237,7 @@ object formDemo: TformDemo
   object radioB1: TURadioButton
     Left = 540
     Top = 240
-    Width = 101
+    Width = 92
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -260,7 +262,7 @@ object formDemo: TformDemo
   object radioB2: TURadioButton
     Left = 540
     Top = 270
-    Width = 111
+    Width = 92
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -286,7 +288,7 @@ object formDemo: TformDemo
   object check2State: TUCheckBox
     Left = 390
     Top = 340
-    Width = 151
+    Width = 138
     Height = 30
     ThemeManager = AppTheme
     Text = '2-state checkbox'
@@ -307,7 +309,7 @@ object formDemo: TformDemo
   object check3State: TUCheckBox
     Left = 390
     Top = 368
-    Width = 161
+    Width = 138
     Height = 30
     ThemeManager = AppTheme
     Text = '3-state checkbox'
@@ -370,6 +372,7 @@ object formDemo: TformDemo
     Caption = 
       '                  This is NEW style TUCaptionBar (use 3 spaces f' +
       'or left align)'
+    Color = 15921906
     DoubleBuffered = False
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
@@ -381,98 +384,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 30
-    object buttonAppQuit: TUButton
-      Left = 955
-      Top = 0
-      Width = 45
-      Height = 32
-      CustomBorderColors.None = clBtnFace
-      CustomBorderColors.Hover = 2298344
-      CustomBorderColors.Press = 8024305
-      CustomBorderColors.Disabled = 15921906
-      CustomBorderColors.Focused = 15921906
-      CustomBackColors.None = clBtnFace
-      CustomBackColors.Hover = 2298344
-      CustomBackColors.Press = 8024305
-      CustomBackColors.Disabled = 15921906
-      CustomBackColors.Focused = 15921906
-      CustomTextColors.Hover = clWhite
-      CustomTextColors.Press = clWhite
-      CustomTextColors.Disabled = clGray
-      Text = #57606
-      AllowFocus = False
-      Transparent = True
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      TabStop = True
-      OnClick = buttonAppQuitClick
-    end
-    object buttonAppMaximized: TUButton
-      Left = 910
-      Top = 0
-      Width = 45
-      Height = 32
-      CustomBorderColors.None = clBtnFace
-      CustomBorderColors.Hover = 13619151
-      CustomBorderColors.Press = 12105912
-      CustomBorderColors.Disabled = 15921906
-      CustomBorderColors.Focused = 13619151
-      CustomBackColors.None = clBtnFace
-      CustomBackColors.Hover = 13619151
-      CustomBackColors.Press = 12105912
-      CustomBackColors.Disabled = 15921906
-      CustomBackColors.Focused = 13619151
-      CustomTextColors.Disabled = clGray
-      Text = #59193
-      AllowFocus = False
-      Transparent = True
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -12
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-      TabStop = True
-      OnClick = buttonAppMaximizedClick
-    end
-    object buttonAppMinimized: TUButton
-      Left = 865
-      Top = 0
-      Width = 45
-      Height = 32
-      CustomBorderColors.None = clBtnFace
-      CustomBorderColors.Hover = 13619151
-      CustomBorderColors.Press = 12105912
-      CustomBorderColors.Disabled = 15921906
-      CustomBorderColors.Focused = 13619151
-      CustomBackColors.None = clBtnFace
-      CustomBackColors.Hover = 13619151
-      CustomBackColors.Press = 12105912
-      CustomBackColors.Disabled = 15921906
-      CustomBackColors.Focused = 13619151
-      CustomTextColors.Disabled = clGray
-      Text = #59192
-      AllowFocus = False
-      Transparent = True
-      Align = alRight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -15
-      Font.Name = 'Segoe MDL2 Assets'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 2
-      TabStop = True
-      OnClick = buttonAppMinimizedClick
-    end
     object buttonAppBack: TUQuickButton
       Left = 0
       Top = 0
@@ -486,7 +397,83 @@ object formDemo: TformDemo
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
       ParentFont = False
+      TabOrder = 0
+    end
+    object buttonAppQuit: TUQuickButton
+      Left = 955
+      Top = 0
+      Width = 45
+      Height = 32
+      HighlightColor = 2298344
+      PressBrightnessDelta = 32
+      FontIcon = #57606
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      OnClick = buttonAppQuitClick
+    end
+    object buttonAppMaximized: TUQuickButton
+      Left = 910
+      Top = 0
+      Width = 45
+      Height = 32
+      HighlightColor = 13619151
+      PressBrightnessDelta = -32
+      FontIcon = #59193
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -12
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnClick = buttonAppMaximizedClick
+    end
+    object buttonAppMinimized: TUQuickButton
+      Left = 865
+      Top = 0
+      Width = 45
+      Height = 32
+      HighlightColor = 13619151
+      PressBrightnessDelta = -32
+      FontIcon = #59192
+      Align = alRight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -15
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 3
+      OnClick = buttonAppMinimizedClick
+    end
+    object comboAppDPI: TComboBox
+      AlignWithMargins = True
+      Left = 716
+      Top = 4
+      Width = 145
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alRight
+      Style = csDropDownList
+      ItemIndex = 0
+      TabOrder = 4
+      Text = '100%'
+      OnSelect = comboAppDPISelect
+      Items.Strings = (
+        '100%'
+        '125%'
+        '150%'
+        '175%')
     end
   end
   object panelRibbon: TUScrollBox
@@ -1193,7 +1180,7 @@ object formDemo: TformDemo
     Left = 0
     Top = 92
     Width = 45
-    Height = 488
+    Height = 478
     ThemeManager = AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
@@ -1401,13 +1388,14 @@ object formDemo: TformDemo
     Height = 71
     ThemeManager = AppTheme
     Orientation = oVertical
-    Value = 30
+    Max = 10
+    Value = 5
   end
   object boxSmoothScrolling: TUScrollBox
     Left = 750
     Top = 92
     Width = 250
-    Height = 488
+    Height = 478
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = False
@@ -1446,7 +1434,7 @@ object formDemo: TformDemo
     object entryUserProfile: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 267
+      Top = 240
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1468,7 +1456,7 @@ object formDemo: TformDemo
     object entryAccountType: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 546
+      Top = 519
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1490,9 +1478,9 @@ object formDemo: TformDemo
     object desAccountHint: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 668
+      Top = 641
       Width = 203
-      Height = 34
+      Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
@@ -1501,19 +1489,19 @@ object formDemo: TformDemo
       Caption = 'Upgrade to Developer account to get more features'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 201
+      ExplicitWidth = 198
     end
     object entryStorage: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 762
+      Top = 731
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1535,9 +1523,9 @@ object formDemo: TformDemo
     object desStorageHint: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 784
+      Top = 753
       Width = 203
-      Height = 34
+      Height = 30
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1546,18 +1534,18 @@ object formDemo: TformDemo
       Caption = 'Your are using 3/5 GB of free cloud storage'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 174
+      ExplicitWidth = 186
     end
     object imgAvatar: TImage
       Left = 15
-      Top = 294
+      Top = 267
       Width = 203
       Height = 72
       Hint = 'Click to change avatar'
@@ -1646,7 +1634,7 @@ object formDemo: TformDemo
     object headingAbout: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 863
+      Top = 828
       Width = 203
       Height = 28
       Margins.Left = 0
@@ -1668,9 +1656,9 @@ object formDemo: TformDemo
     object desAppVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 941
+      Top = 906
       Width = 203
-      Height = 17
+      Height = 15
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1679,21 +1667,21 @@ object formDemo: TformDemo
       Caption = 'App version: 1.1'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 94
+      ExplicitWidth = 84
     end
     object desFlashVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 963
+      Top = 926
       Width = 203
-      Height = 17
+      Height = 15
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1702,21 +1690,21 @@ object formDemo: TformDemo
       Caption = 'Flash version: 31.0.0.14'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 133
+      ExplicitWidth = 119
     end
     object desChromiumVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 985
+      Top = 946
       Width = 203
-      Height = 17
+      Height = 15
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1725,19 +1713,19 @@ object formDemo: TformDemo
       Caption = 'Chromium version: 71.0'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = 6710886
-      Font.Height = -13
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 137
+      ExplicitWidth = 126
     end
     object linkEmbarcadero: TUHyperLink
       AlignWithMargins = True
       Left = 15
-      Top = 1007
+      Top = 966
       Width = 203
       Height = 17
       Cursor = crHandPoint
@@ -1785,33 +1773,10 @@ object formDemo: TformDemo
       TextKind = tkEntry
       ExplicitWidth = 68
     end
-    object desAccentColorHint: TUText
-      AlignWithMargins = True
-      Left = 15
-      Top = 200
-      Width = 203
-      Height = 17
-      Margins.Left = 0
-      Margins.Top = 0
-      Margins.Right = 0
-      Margins.Bottom = 10
-      Align = alTop
-      Caption = 'Click to change accent color'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = 6710886
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-      WordWrap = True
-      ThemeManager = AppTheme
-      TextKind = tkDescription
-      ExplicitWidth = 163
-    end
     object checkAutoSync: TUCheckBox
       AlignWithMargins = True
       Left = 15
-      Top = 401
+      Top = 374
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -1819,6 +1784,7 @@ object formDemo: TformDemo
       Margins.Right = 0
       Margins.Bottom = 0
       ThemeManager = AppTheme
+      AutoSize = False
       Text = 'Auto sync your data'
       CustomActiveColor = 14120960
       IconFont.Charset = DEFAULT_CHARSET
@@ -1836,10 +1802,11 @@ object formDemo: TformDemo
     end
     object checkSendEmail: TUCheckBox
       Left = 15
-      Top = 461
+      Top = 434
       Width = 203
       Height = 30
       ThemeManager = AppTheme
+      AutoSize = False
       Text = 'Send me email'
       CustomActiveColor = 14120960
       IconFont.Charset = DEFAULT_CHARSET
@@ -1857,8 +1824,8 @@ object formDemo: TformDemo
     end
     object radioFreeAccount: TURadioButton
       Left = 15
-      Top = 573
-      Width = 203
+      Top = 546
+      Width = 94
       Height = 30
       ThemeManager = AppTheme
       IsChecked = True
@@ -1880,8 +1847,8 @@ object formDemo: TformDemo
     end
     object radioProAccount: TURadioButton
       Left = 15
-      Top = 603
-      Width = 203
+      Top = 576
+      Width = 140
       Height = 30
       ThemeManager = AppTheme
       Group = 'AccountType'
@@ -1902,8 +1869,8 @@ object formDemo: TformDemo
     end
     object radioDevAccount: TURadioButton
       Left = 15
-      Top = 633
-      Width = 203
+      Top = 606
+      Width = 100
       Height = 30
       ThemeManager = AppTheme
       Group = 'AccountType'
@@ -1924,10 +1891,11 @@ object formDemo: TformDemo
     end
     object checkKeepEmailPrivate: TUCheckBox
       Left = 15
-      Top = 431
+      Top = 404
       Width = 203
       Height = 30
       ThemeManager = AppTheme
+      AutoSize = False
       Text = 'Keep my email in private'
       CustomActiveColor = 14120960
       IconFont.Charset = DEFAULT_CHARSET
@@ -1946,7 +1914,7 @@ object formDemo: TformDemo
     object radioDefaultTheme: TURadioButton
       Left = 15
       Top = 65
-      Width = 203
+      Width = 149
       Height = 30
       ThemeManager = AppTheme
       IsChecked = True
@@ -1970,7 +1938,7 @@ object formDemo: TformDemo
     object radioLightTheme: TURadioButton
       Left = 15
       Top = 95
-      Width = 203
+      Width = 68
       Height = 30
       ThemeManager = AppTheme
       Group = 'AppTheme'
@@ -1993,7 +1961,7 @@ object formDemo: TformDemo
     object radioDarkTheme: TURadioButton
       Left = 15
       Top = 125
-      Width = 203
+      Width = 67
       Height = 30
       ThemeManager = AppTheme
       Group = 'AppTheme'
@@ -2015,10 +1983,11 @@ object formDemo: TformDemo
     end
     object checkColorBorder: TUCheckBox
       Left = 15
-      Top = 227
+      Top = 200
       Width = 203
       Height = 30
       ThemeManager = AppTheme
+      AutoSize = False
       Text = 'Color on window border'
       CustomActiveColor = 14120960
       IconFont.Charset = DEFAULT_CHARSET
@@ -2038,7 +2007,7 @@ object formDemo: TformDemo
     object progressStorageUsed: TUProgressBar
       AlignWithMargins = True
       Left = 15
-      Top = 828
+      Top = 793
       Width = 203
       Height = 5
       Margins.Left = 0
@@ -2055,7 +2024,7 @@ object formDemo: TformDemo
     object buttonDeleteAccount: TUButton
       AlignWithMargins = True
       Left = 15
-      Top = 496
+      Top = 469
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2088,7 +2057,7 @@ object formDemo: TformDemo
     object buttonCheckUpdate: TUButton
       AlignWithMargins = True
       Left = 15
-      Top = 901
+      Top = 866
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2121,7 +2090,7 @@ object formDemo: TformDemo
     object buttonUpgradeAccount: TUButton
       AlignWithMargins = True
       Left = 15
-      Top = 712
+      Top = 681
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2178,8 +2147,9 @@ object formDemo: TformDemo
       OnClick = panelSelectAccentColorClick
     end
     object editAccountName: TUEdit
+      Tag = 2
       Left = 15
-      Top = 366
+      Top = 339
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2213,7 +2183,8 @@ object formDemo: TformDemo
     end
   end
   object AppTheme: TUThemeManager
-    CustomColor = clGreen
+    AutoAccentColor = False
+    AccentColor = 361033
     OnUpdate = AppThemeUpdate
     Left = 620
     Top = 40

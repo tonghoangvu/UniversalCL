@@ -11,7 +11,7 @@ uses
   UCL.IntAnimation;
 
 type
-  TUCustomProgressBar = class(TCustomControl, IUThemeControl)
+  TUCustomProgressBar = class(TCustomControl, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -92,11 +92,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -148,11 +148,13 @@ begin
   if Enabled = false then
     exit;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, FValue, Value,
+  Ani := TIntAni.Create(true, akOut, afkQuartic, FValue, Value - FValue,
     procedure (Value: Integer)
     begin
       Self.Value := Value;
-    end, true);
+    end);
+  Ani.Step := 25;
+  Ani.Duration := 250;
   Ani.Start;
 end;
 
@@ -174,12 +176,12 @@ begin
   else if ThemeManager.Theme = utLight then
     begin
       BackColor := $CCCCCC;
-      ForeColor := ThemeManager.ActiveColor;
+      ForeColor := ThemeManager.AccentColor;
     end
   else
     begin
       BackColor := $333333;
-      ForeColor := ThemeManager.ActiveColor;
+      ForeColor := ThemeManager.AccentColor;
     end;
 
   //  PERFORMANCE UPGRADE: Calculate rectangle for paint faster

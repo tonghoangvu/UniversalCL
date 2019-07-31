@@ -59,9 +59,13 @@ contains
   UCL.TUSlider in 'Components\UCL.TUSlider.pas',
   UCL.TUTooltip in 'Components\UCL.TUTooltip.pas',
   UCL.TUContextMenu in 'Components\UCL.TUContextMenu.pas',
-  UCL.TUWPForm in 'Components\UCL.TUWPForm.pas',
-  UCL.TUQuickButton in 'Components\UCL.TUQuickButton.pas';
+  UCL.TUQuickButton in 'Components\UCL.TUQuickButton.pas',
+  UCL.TUBorder in 'Components\UCL.TUBorder.pas',
+  UCL.IntAnimation.Collection in 'UCL.IntAnimation.Collection.pas',
+  UCL.IntAnimation.Helpers in 'UCL.IntAnimation.Helpers.pas';
 
 end.
+
+
 
 

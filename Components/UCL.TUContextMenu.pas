@@ -3,10 +3,11 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.TUSymbolButton, UCL.TUForm,
+  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.IntAnimation.Helpers,
+  UCL.TUSymbolButton, UCL.TUForm,
   System.Classes, System.SysUtils,
   Winapi.Windows,
-  VCL.Controls, VCL.Menus, VCL.ImgList, VCL.Forms, VCL.Graphics;
+  VCL.Controls, VCL.Menus, VCL.ImgList, VCL.Forms, VCL.Graphics, VCL.Dialogs;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;
@@ -24,6 +25,7 @@ type
 
       FImageKind: TUImageKind;
       FImageIndex: Integer;
+
     public
       constructor Create(aOwner: TCollection); override;
 
@@ -51,8 +53,10 @@ type
       property Items[Index: Integer]: TUContextMenuItem read GetItem write SetItem; default;
   end;
 
-  TUContextMenu = class(TPopupMenu, IUThemeControl)
+  TUContextMenu = class(TPopupMenu, IUThemeComponent)
     private
+      var PPI: Integer;
+
       FItems: TUContextMenuItems;
       FThemeManager: TUThemeManager;
 
@@ -118,11 +122,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -154,6 +158,8 @@ constructor TUContextMenu.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  PPI := 96;
+
   FItems := TUContextMenuItems.Create(Self);
 
   FCustomBackColor := $E6E6E6;
@@ -181,21 +187,25 @@ var
   aForm: TForm;
   Ani: TIntAni;
   StopValue, i: Integer;
+  Item: TUSymbolButton;
+  BorderThickness, ThicknessPos: Integer;
 begin
   DoPopup(Self);
 
+  //  Init variable
+  BorderThickness := 1;
+
   //  Create popup form
   Application.CreateForm(TForm, aForm);
+  aForm.Visible := true;
   aForm.BorderStyle := bsNone;
   aForm.FormStyle := fsStayOnTop;
-  aForm.Visible := true;
-  aForm.Padding.SetBounds(1, 1, 1, 1);
-  aForm.Color := FBackColor;
-  aForm.Canvas.Pen.Color := FBorderColor;
+
   aForm.Left := X;
   aForm.Top := Y;
+  aForm.Color := FBackColor;
+  aForm.Padding.SetBounds(BorderThickness, BorderThickness, BorderThickness, BorderThickness);
 
-  //  Events
   aForm.OnDeactivate := PopupForm_OnDeactive;
 
   //  Popup animation
@@ -207,11 +217,10 @@ begin
       if AutoSize = false then
         StopValue := PopupHeight
       else
-        StopValue := 2 + Items.Count * ItemHeight;
+        StopValue := 2 * BorderThickness + Items.Count * ItemHeight;
 
-      Ani := TIntAni.Create(akOut, afkQuartic, 0, StopValue,
-        procedure (Value: Integer) begin aForm.Height := Value end,
-        true);
+      Ani := TIntAni.Create(true, akOut, afkQuartic, 0, StopValue,
+        procedure (Value: Integer) begin aForm.Height := Value end);
     end
   else
     begin
@@ -221,24 +230,33 @@ begin
       if AutoSize = false then
         StopValue := PopupWidth
       else
-        StopValue := 2 + Items.Count * ItemWidth;
+        StopValue := 2 * BorderThickness + Items.Count * ItemWidth;
 
-      Ani := TIntAni.Create(akOut, afkQuartic, 0, StopValue,
-        procedure (Value: Integer) begin aForm.Width := Value end,
-        true);
+      Ani := TIntAni.Create(true, akOut, afkQuartic, 0, StopValue,
+        procedure (Value: Integer) begin aForm.Width := Value end);
     end;
 
   //  Paint border
   Ani.OnDone := procedure
     begin
-      aForm.Canvas.Rectangle(0, 0, aForm.Width, aForm.Height);
+      if BorderThickness mod 2 = 0 then
+        ThicknessPos := BorderThickness div 2 - 1
+      else
+        ThicknessPos := BorderThickness div 2;
+
+      aForm.Canvas.Pen.Color := FBorderColor;
+      aForm.Canvas.Pen.Width := BorderThickness;
+      aForm.Canvas.Rectangle(Rect(
+        BorderThickness div 2,
+        BorderThickness div 2,
+        aForm.Width - ThicknessPos,
+        aForm.Height - ThicknessPos));
     end;
 
   Ani.Step := 20;
   Ani.Duration := 200;
 
   //  Add TUSymbolButton as items
-  var Item: TUSymbolButton;
   for i := 0 to Items.Count - 1 do
     begin
       Item := TUSymbolButton.Create(aForm);
@@ -292,29 +310,17 @@ end;
 procedure TUContextMenu.PopupForm_OnDeactive(Sender: TObject);
 var
   aForm: TForm;
-  Ani: TIntAni;
 begin
   if (Sender is TForm = false) or (Sender = nil) then exit;
 
   aForm := Sender as TForm;
 
   if Orientation = oVertical then
-    Ani := TIntAni.Create(akOut, afkQuartic, aForm.Height, 0,
-    procedure (Value: Integer)
-    begin
-      aForm.Height := Value;
-    end, true)
+    aForm.AnimationFromCurrent(apHeight, -aForm.Height, 20, 120, akOut, afkQuartic,
+    procedure begin aForm.Close end)
   else
-    Ani := TIntAni.Create(akOut, afkQuartic, aForm.Width, 0,
-    procedure (Value: Integer)
-    begin
-      aForm.Width := Value;
-    end, true);
-
-  Ani.Step := 20;
-  Ani.Duration := 120;
-  Ani.OnDone := procedure begin aForm.Close end;
-  Ani.Start;
+    aForm.AnimationFromCurrent(apWidth, -aForm.Width, 20, 120, akOut, afkQuartic,
+    procedure begin aForm.Close end);
 end;
 
 procedure TUContextMenu.Item_OnClick(Sender: TObject);

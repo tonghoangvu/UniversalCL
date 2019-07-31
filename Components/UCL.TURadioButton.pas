@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomRadioButton = class(TCustomControl, IUThemeControl)
+  TUCustomRadioButton = class(TCustomControl, IUThemeComponent)
     private var
       ICON_LEFT: Integer;
       TEXT_LEFT: Integer;
@@ -17,6 +17,7 @@ type
     private
       FThemeManager: TUThemeManager;
 
+      FAutoSize: Boolean;
       FHitTest: Boolean;
       FIsChecked: Boolean;
       FGroup: string;
@@ -26,6 +27,7 @@ type
       FIconFont: TFont;
 
       procedure SetThemeManager(const Value: TUThemeManager);
+      procedure SetAutoSize(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
       procedure SetIsChecked(const Value: Boolean);
 
@@ -36,6 +38,7 @@ type
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -45,6 +48,7 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
+      property AutoSize: Boolean read FAutoSize write SetAutoSize default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
       property Group: string read FGroup write FGroup;
@@ -103,11 +107,11 @@ begin
     begin
       //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
       //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -120,6 +124,15 @@ begin
 end;
 
 { SETTERS }
+
+procedure TUCustomRadioButton.SetAutoSize(const Value: Boolean);
+begin
+  if Value <> FAutoSize then
+    begin
+      FAutoSize := Value;
+      Resize;
+    end;
+end;
 
 procedure TUCustomRadioButton.SetIsChecked(const Value: Boolean);
 begin
@@ -145,9 +158,12 @@ constructor TUCustomRadioButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  //  Constants
   ICON_LEFT := 5;
   TEXT_LEFT := 35;
 
+  //  New props
+  FAutoSize := true;
   FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
@@ -160,15 +176,7 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
-  Height := 30;
-  Width := 200;
   ParentColor := true;
-
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
-  //UpdateTheme;
-  //  Dont UpdateTheme if it call Paint method
 end;
 
 destructor TUCustomRadioButton.Destroy;
@@ -185,9 +193,22 @@ begin
 
   ICON_LEFT := MulDiv(ICON_LEFT, M, D);
   TEXT_LEFT := MulDiv(TEXT_LEFT, M, D);
-
-  //Font.Height := MulDiv(Font.Height, M, D);   //  Not neccesary
   IconFont.Height := MulDiv(IconFont.Height, M, D);
+
+  Resize;
+end;
+
+procedure TUCustomRadioButton.Resize;
+begin
+  if AutoSize = true then
+    begin
+      Canvas.Font := IconFont;
+      Height := 2 * ICON_LEFT + Canvas.TextHeight('');
+      Canvas.Font := Font;
+      Width := TEXT_LEFT + Canvas.TextWidth(Text) + ICON_LEFT;
+    end
+  else
+    inherited;
 end;
 
 procedure TUCustomRadioButton.Paint;
@@ -235,7 +256,7 @@ begin
       if ThemeManager = nil then
         Canvas.Font.Color := CustomActiveColor
       else
-        Canvas.Font.Color := ThemeManager.ActiveColor;
+        Canvas.Font.Color := ThemeManager.AccentColor;
 
       IconH := Canvas.TextHeight('');
       Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');

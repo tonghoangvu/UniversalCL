@@ -3,38 +3,39 @@ unit UCL.IntAnimation;
 interface
 
 uses
-  System.Classes, System.Threading, System.SysUtils;
+  System.Classes, System.SysUtils, System.Threading;
 
 type
-  TAniSyncProc = reference to procedure (Value: Integer);
-  TAniFunction = reference to function (Value: Integer): Int64;
+  TAniSyncProc = reference to procedure (V: Integer);
+  TAniDoneProc = reference to procedure;  //  TProc
 
-  TAniKind = (akIn, akOut);
-  TAniFunctionKind = (afkCustom, afkLinear, afkQuadratic, afkCubic, afkQuartic, afkQuintic);
+  TAniFunction = reference to function (P: Single): Single;
+
+  TAniKind = (akIn, akOut, akInOut);
+  TAniFunctionKind = (
+    afkLinear, afkQuadratic, afkCubic, afkQuartic, afkQuintic,
+    afkBack, afkBounce, afkExpo, afkSine, afkCircle
+    );
 
   TIntAni = class(TThread)
+    var CurrentValue: Integer;
+
     private
-      FAniFunction: TAniFunction;
+      var FStep: Byte;
+      var AniFunction: TAniFunction;
+
       FOnSync: TAniSyncProc;
-      FOnDone: TProc;
+      FOnDone: TAniDoneProc;
 
       FAniKind: TAniKind;
       FAniFunctionKind: TAniFunctionKind;
 
-      FStep: Integer;
-      FDelayStart: Integer;
-      FDuration: Integer;
+      FDelayStartTime: Cardinal;
+      FDuration: Cardinal;
       FStartValue: Integer;
-      FStopValue: Integer;
+      FDeltaValue: Integer;
 
-      //  Temp
-      FCurrent: Integer;
-
-      //  Setters
-      procedure SetAniFunctionKind(const Value: TAniFunctionKind);
-
-      procedure SetOnDone(const Value: TProc);
-
+      function UpdateFunction: Boolean;
       procedure UpdateControl;
       procedure DoneControl;
 
@@ -43,137 +44,190 @@ type
 
     public
       constructor Create(
-        aAniKind: TAniKind; aFunctionKind: TAniFunctionKind;
-        aStartValue, aStopValue: Integer;
-        aSyncProc: TAniSyncProc;
-        FreeOnFinish: Boolean = false);
+        FreeOnFinish: Boolean;
+        aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
+        aStartValue, aDeltaValue: Integer;
+        aSyncProc: TAniSyncProc);
 
-      property AniFunction: TAniFunction read FAniFunction write FAniFunction;
+      //  Events
       property OnSync: TAniSyncProc read FOnSync write FOnSync;
-      property OnDone: TProc read FOnDone write SetOnDone;
+      property OnDone: TAniDoneProc read FOnDone write FOnDone;
 
-      class function afLinear(Value: Integer): Int64;
-      class function afQuadratic(Value: Integer): Int64;
-      class function afCubic(Value: Integer): Int64;
-      class function afQuartic(Value: Integer): Int64;
-      class function afQuintic(Value: Integer): Int64;
+      //  Props
+      property Step: Byte read FStep write FStep default 25;
+      property AniKind: TAniKind read FAniKind write FAniKind default akIn;
+      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write FAniFunctionKind default afkLinear;
 
-    //published   //  This causes RTTI (Slow)
-      property AniKind: TAniKind read FAniKind write FAniKind default akOut;  //  I like it
-      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write SetAniFunctionKind default afkLinear;
-
-      property Step: Integer read FStep write FStep default 25;
-      property DelayStart: Integer read FDelayStart write FDelayStart default 0;
-      property Duration: Integer read FDuration write FDuration default 250;
+      property DelayStartTime: Cardinal read FDelayStartTime write FDelayStartTime default 0;
+      property Duration: Cardinal read FDuration write FDuration default 400;
       property StartValue: Integer read FStartValue write FStartValue default 0;
-      property StopValue: Integer read FStopValue write FStopValue default 0;
+      property DeltaValue: Integer read FDeltaValue write FDeltaValue default 0;
   end;
 
 implementation
 
-{ SETTERS }
+uses
+  System.Math,
+  UCL.IntAnimation.Collection;
 
-procedure TIntAni.SetAniFunctionKind(const Value: TAniFunctionKind);
+{ SPECIAL }
+
+function TIntAni.UpdateFunction: Boolean;
 begin
-  if FAniFunctionKind <> Value then
-    begin
-      FAniFunctionKind := Value;
-      case Value of
-        afkCustom:
-          FAniFunction := nil;
-        afkLinear: 
-          FAniFunction := afLinear;
-        afkQuadratic: 
-          FAniFunction := afQuadratic;
-        afkCubic: 
-          FAniFunction := afCubic;
-        afkQuartic: 
-          FAniFunction := afQuartic;
-        afkQuintic: 
-          FAniFunction := afQuintic;
+  Result := true;
+  case AniKind of
+    akIn:
+      case AniFunctionKind of
+        afkLinear:
+          AniFunction := TIntAniCollection.Linear;
+        afkQuadratic:
+          AniFunction := TIntAniCollection.Quadratic_In;
+        afkCubic:
+          AniFunction := TIntAniCollection.Cubic_In;
+        afkQuartic:
+          AniFunction := TIntAniCollection.Quartic_In;
+        afkQuintic:
+          AniFunction := TIntAniCollection.Quintic_In;
+        afkBack:
+          AniFunction := TIntAniCollection.Back_In;
+        afkBounce:
+          AniFunction := TIntAniCollection.Bounce_In;
+        afkExpo:
+          AniFunction := TIntAniCollection.Expo_In;
+        afkSine:
+          AniFunction := TIntAniCollection.Sine_In;
+        afkCircle:
+          AniFunction := TIntAniCollection.Circle_In;
+        else
+          Result := false;
       end;
-    end;
-end;
 
-procedure TIntAni.SetOnDone(const Value: TProc);
-begin
-  FOnDone := Value;
+    akOut:
+      case AniFunctionKind of
+        afkLinear:
+          AniFunction := TIntAniCollection.Linear;
+        afkQuadratic:
+          AniFunction := TIntAniCollection.Quadratic_Out;
+        afkCubic:
+          AniFunction := TIntAniCollection.Cubic_Out;
+        afkQuartic:
+          AniFunction := TIntAniCollection.Quartic_Out;
+        afkQuintic:
+          AniFunction := TIntAniCollection.Quintic_Out;
+        afkBack:
+          AniFunction := TIntAniCollection.Back_Out;
+        afkBounce:
+          AniFunction := TIntAniCollection.Bounce_Out;
+        afkExpo:
+          AniFunction := TIntAniCollection.Expo_Out;
+        afkSine:
+          AniFunction := TIntAniCollection.Sine_Out;
+        afkCircle:
+          AniFunction := TIntAniCollection.Circle_Out;
+        else
+          Result := false;
+      end;
+
+    akInOut:
+      case AniFunctionKind of
+        afkLinear:
+          AniFunction := TIntAniCollection.Linear;
+        afkQuadratic:
+          AniFunction := TIntAniCollection.Quadratic_InOut;
+        afkCubic:
+          AniFunction := TIntAniCollection.Cubic_InOut;
+        afkQuartic:
+          AniFunction := TIntAniCollection.Quartic_InOut;
+        afkQuintic:
+          AniFunction := TIntAniCollection.Quintic_InOut;
+        afkBack:
+          AniFunction := TIntAniCollection.Back_InOut;
+        afkBounce:
+          AniFunction := TIntAniCollection.Bounce_InOut;
+        afkExpo:
+          AniFunction := TIntAniCollection.Expo_InOut;
+        afkSine:
+          AniFunction := TIntAniCollection.Sine_InOut;
+        afkCircle:
+          AniFunction := TIntAniCollection.Circle_InOut;
+        else
+          Result := false;
+      end;
+
+    else
+      Result := false;
+  end;
 end;
 
 { MAIN CLASS }
 
 constructor TIntAni.Create(
-  aAniKind: TAniKind; aFunctionKind: TAniFunctionKind;
-  aStartValue, aStopValue: Integer;
-  aSyncProc: TAniSyncProc;
-  FreeOnFinish: Boolean);
+  FreeOnFinish: Boolean;
+  aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
+  aStartValue, aDeltaValue: Integer;
+  aSyncProc: TAniSyncProc);
 begin
-  inherited Create(true);
+  inherited Create(True);
 
+  //  Internal
+  CurrentValue := 0;
+  AniFunction := nil;
+
+  //  New props
+  FStep := 25;
+  FAniKind := aAniKind;
+  FAniFunctionKind := aAniFunctionKind;
+
+  FDelayStartTime := 0;
+  FDuration := 400;
+  FStartValue := aStartValue;
+  FDeltaValue := aDeltaValue;
+
+  FOnDone := nil;
+  FOnSync := aSyncProc;
+
+  //  Old props
   FreeOnTerminate := FreeOnFinish;
 
-  //  Default properties
-  FStep := 25;
-  FDelayStart := 0;
-  FDuration := 250;
-  FStartValue := aStartValue;
-  FStopValue := aStopValue;
-
-  //  Params properties
-  AniKind := aAniKind;
-  AniFunctionKind := aFunctionKind;
-  OnSync := aSyncProc;
+  UpdateFunction;
 end;
 
 procedure TIntAni.Execute;
-var 
-  AniLength: Integer;
-  TimePerStep: Integer;
-  Max: Int64;
-  Part: Single;
-  BaseInverse: ShortInt;
-
-  i: Integer;
+var
+  i: Cardinal;
+  t, d, TimePerStep: Cardinal;
+  b, c: Integer;
 begin
-  AniLength := Abs(StopValue - StartValue);
-  TimePerStep := Round(Duration / Step);
-  Max := AniFunction(Step);
-  Part := AniLength / Max;
+  if UpdateFunction = false then exit;
+    ///  Update easing function
+    ///  Depend on AniKind (In, Out,...) and AniFunctionKind (Linear,...)
+    ///  If Result = false (error found), then exit
 
-  if StartValue < StopValue then
-    BaseInverse := 1
-  else
-    BaseInverse := -1;
+  d := Duration;
+  b := StartValue;
+  c := DeltaValue;
 
   //  Delay start
-  Sleep(DelayStart);
+  Sleep(DelayStartTime);
 
-  //  Loop
-  if AniKind = akIn then
-    for i := 1 to Step do
-      begin
-        FCurrent := StartValue + BaseInverse * Round(AniFunction(i) * Part);
-        Synchronize(UpdateControl);
-        Sleep(TimePerStep);
-      end
-  else
-    for i := 1 to Step do
-      begin
-        FCurrent := StartValue + BaseInverse * (AniLength - Round(AniFunction(Step + 1 - i) * Part));
-        Synchronize(UpdateControl);
-        Sleep(TimePerStep);
-      end;
+  //  Calc step by FPS
+  TimePerStep := Round(d / Step);
 
-  FCurrent := StopValue;
+  //  Run
+  for i := 1 to Step do
+    begin
+      t := i * TimePerStep;
+      CurrentValue := b + Round(c * AniFunction(t / d));
+      Synchronize(UpdateControl);
+      Sleep(TimePerStep);
+    end;
+
+  //  Finish
   Synchronize(UpdateControl);
   Synchronize(DoneControl);
 end;
 
-procedure TIntAni.UpdateControl;
-begin
-  if Assigned(FOnSync) then
-    FOnSync(FCurrent);
-end;
+{ PROCS }
 
 procedure TIntAni.DoneControl;
 begin
@@ -181,31 +235,10 @@ begin
     FOnDone();
 end;
 
-{ SOME EASING FUNCTION }
-
-class function TIntAni.afCubic(Value: Integer): Int64;
+procedure TIntAni.UpdateControl;
 begin
-  Result := Value;
-end;
-
-class function TIntAni.afLinear(Value: Integer): Int64;
-begin
-  Result := Value * Value;
-end;
-
-class function TIntAni.afQuadratic(Value: Integer): Int64;
-begin
-  Result := Value * Value * Value;
-end;
-
-class function TIntAni.afQuartic(Value: Integer): Int64;
-begin
-  Result := Value * Value * Value * Value;
-end;
-
-class function TIntAni.afQuintic(Value: Integer): Int64;
-begin
-  Result := Value * Value * Value * Value * Value;
+  if Assigned(FOnSync) then
+    FOnSync(CurrentValue);
 end;
 
 end.
