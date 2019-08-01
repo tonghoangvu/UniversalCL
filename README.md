@@ -59,16 +59,20 @@ UWP controls for Delphi VCL. Compatible with Delphi 10.3 and Windows 8+
 
 ## Screenshots
 
-![image](https://4.bp.blogspot.com/-qLwgvOiblw0/XQd95dJZjZI/AAAAAAAAAYU/sj1jJIYSodIWSN2wUUDRN2kLeeUOWRtlwCK4BGAYYCw/s1600/Screenshot1.png)
+![image](https://2.bp.blogspot.com/-Ujgv4l5Igl4/XULOQezo8AI/AAAAAAAAAbg/HqQy4ir-Gh47X4EQYjA0SOULqGsPX1gAQCK4BGAYYCw/s1600/1.png)
+UWP controls support accent color
 
-![image](https://4.bp.blogspot.com/-X0iqwB1Y_WM/XQd95Q6pkqI/AAAAAAAAAYg/YY-hD2TldHwzvoIXq4CGPSkTkWpe4aFpgCK4BGAYYCw/s1600/Screenshot2.png)
+![image](https://4.bp.blogspot.com/-K8cPYw1FJjs/XULOQRSaZFI/AAAAAAAAAbk/AHVIz2ks-Z8PLH8uiq5dGJWY_wN-BgiEACK4BGAYYCw/s1600/2.png)
+System darks theme
 
-![image](https://2.bp.blogspot.com/-ipWiAd-h18o/XQd95aerWrI/AAAAAAAAAYc/a59-0VfLPaQ8xY9E1F3DmbZFuOz3KzxiwCK4BGAYYCw/s1600/Screenshot3.png)
+![image](https://4.bp.blogspot.com/-G0cMPj83o0k/XULOQVqWmuI/AAAAAAAAAbo/YBlgUd-zpxcjSJsxHOZ-8wLvFdauk8ydACK4BGAYYCw/s1600/3.png)
+Custom accent color
 
-![image](https://4.bp.blogspot.com/-22UrIxwgG6E/XQd95c9FryI/AAAAAAAAAYQ/OYB7CR9c8PAt3rqRpdpKkSMRVghJqQCgwCK4BGAYYCw/s1600/Screenshot4.png)
+![image](https://3.bp.blogspot.com/-G7uWqXDHZIk/XULOQa1hyyI/AAAAAAAAAbs/6Rq-1p3WldY-12QEXMKs0uBTVecHRWK6wCK4BGAYYCw/s1600/4.png)
+Animation controls
 
-![image](https://1.bp.blogspot.com/-0PVekWKIzzM/XQd95RR6K8I/AAAAAAAAAYM/FCr4pIYXznAoC3YBU3s-Vlmn1BtBezIugCK4BGAYYCw/s1600/Screenshot5.png)
+![image](https://4.bp.blogspot.com/-aLIjV50i5Zc/XULOQcjOw1I/AAAAAAAAAbw/epeDGmUBEwAuHrjqPzysHlEDFAgdjJSsACK4BGAYYCw/s1600/5.png)
+Popup menu horizontal orientation
 
-![image](https://1.bp.blogspot.com/-Slnt5qMZDJA/XQd95Q52WkI/AAAAAAAAAYY/c_SFFCE3R30KVnCfi0fTnFdirP70ljMOgCK4BGAYYCw/s1600/Screenshot6.png)
-
-![image](https://1.bp.blogspot.com/-TASI8O1d7vw/XQxUuH799_I/AAAAAAAAAY0/1a4MadRAZQQ8u1PfyHjs7IlasU4qTfSuQCLcBGAs/s1600/Screenshot7.png)
+![image](https://2.bp.blogspot.com/-8f8c4f334Ok/XULObL5dBCI/AAAAAAAAAb4/DvSLJd8dC3EoBGRZ4Dv8DsFIbybg9YdZQCK4BGAYYCw/s1600/6.png)
+Working well on HighDPI
