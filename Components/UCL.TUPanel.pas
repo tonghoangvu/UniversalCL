@@ -9,15 +9,15 @@ uses
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
 type
-  TUCustomPanel = class(TCustomPanel, IUThemeControl)
+  TUCustomPanel = class(TCustomPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
       FHitTest: Boolean;
-
       FCustomTextColor: TColor;
       FCustomBackColor: TColor;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetCustomBackColor(const Value: TColor);
       procedure SetCustomTextColor(const Value: TColor);
@@ -25,8 +25,6 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-
-      property DockManager;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -37,8 +35,9 @@ type
   end;
 
   TUPanel = class(TUCustomPanel)
+    public
+      property DockManager;
     published
-      //  Common properties
       property Align;
       property Alignment;
       property Anchors;
@@ -81,7 +80,6 @@ type
       property Visible;
       property StyleElements;
 
-      //  Common events
       property OnAlignInsertBefore;
       property OnAlignPosition;
       property OnCanResize;
@@ -113,19 +111,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomPanel }
+
+//  THEME
 
 procedure TUCustomPanel.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -151,7 +149,7 @@ begin
     end;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomPanel.SetCustomBackColor(const Value: TColor);
 begin
@@ -171,7 +169,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomPanel.Create(aOwner: TComponent);
 begin

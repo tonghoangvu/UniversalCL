@@ -11,20 +11,21 @@ uses
   UCL.IntAnimation;
 
 type
-  TUCustomProgressBar = class(TCustomControl, IUThemeControl)
+  TUCustomProgressBar = class(TCustomControl, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
       FValue: Integer;
-
       FOrientation: TUOrientation;
       FCustomForeColor: TColor;
       FCustomBackColor: TColor;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetValue(const Value: Integer);
       procedure SetOrientation(const Value: TUOrientation);
 
+      //  Messages
       procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
     protected
@@ -39,7 +40,6 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property Value: Integer read FValue write SetValue;
-
       property Orientation: TUOrientation read FOrientation write SetOrientation;
       property CustomForeColor: TColor read FCustomForeColor write FCustomForeColor;
       property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor;
@@ -84,19 +84,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomProgressBar }
+
+//  THEME
 
 procedure TUCustomProgressBar.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -108,7 +108,7 @@ begin
   Paint;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomProgressBar.SetValue(const Value: Integer);
 begin
@@ -128,7 +128,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomProgressBar.Create(aOnwer: TComponent);
 begin
@@ -145,18 +145,20 @@ var
   Ani: TIntAni;
 begin
   //  If disabled, UI not change, but can not go to value
-  if Enabled = false then
+  if not Enabled then
     exit;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, FValue, Value,
+  Ani := TIntAni.Create(true, akOut, afkQuartic, FValue, Value - FValue,
     procedure (Value: Integer)
     begin
       Self.Value := Value;
-    end, true);
+    end);
+  Ani.Step := 25;
+  Ani.Duration := 250;
   Ani.Start;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomProgressBar.Paint;
 var
@@ -174,12 +176,12 @@ begin
   else if ThemeManager.Theme = utLight then
     begin
       BackColor := $CCCCCC;
-      ForeColor := ThemeManager.ActiveColor;
+      ForeColor := ThemeManager.AccentColor;
     end
   else
     begin
       BackColor := $333333;
-      ForeColor := ThemeManager.ActiveColor;
+      ForeColor := ThemeManager.AccentColor;
     end;
 
   //  PERFORMANCE UPGRADE: Calculate rectangle for paint faster
@@ -203,7 +205,7 @@ begin
   Canvas.FillRect(FillRect);
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomProgressBar.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin

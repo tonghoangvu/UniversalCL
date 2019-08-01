@@ -9,19 +9,22 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomSeparator = class(TCustomControl, IUThemeControl)
+  TUCustomSeparator = class(TCustomControl, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
       FCustomColor: TColor;
       FOrientation: TUOrientation;
       FAlignSpace: Integer;
+      FOnlySpace: Boolean;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetAlignSpace(const Value: Integer);
       procedure SetCustomColor(const Value: TColor);
       procedure SetOrientation(const Value: TUOrientation);
 
+      //  Messages
       procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
     protected
@@ -37,6 +40,7 @@ type
       property CustomColor: TColor read FCustomColor write SetCustomColor default $999999;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oVertical;
       property AlignSpace: Integer read FAlignSpace write SetAlignSpace default 10;
+      property OnlySpace: Boolean read FOnlySpace write FOnlySpace default false;
   end;
 
   TUSeparator = class(TUCustomSeparator)
@@ -77,19 +81,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomSeparator }
+
+//  THEME
 
 procedure TUCustomSeparator.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -101,7 +105,7 @@ begin
   Paint;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomSeparator.SetAlignSpace(const Value: Integer);
 begin
@@ -130,7 +134,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomSeparator.Create(aOwner: TComponent);
 begin
@@ -139,26 +143,27 @@ begin
   FCustomColor := $999999;
   FOrientation := oVertical;
   FAlignSpace := 10;
+  FOnlySpace := false;
 
   ParentColor := true;
   Width := 20;
   Height := 50;
-
-  //UpdateTheme;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomSeparator.Paint;
 begin
   inherited;
 
-  ParentColor := true;
-
   //  Paint background
+  ParentColor := true;
   Canvas.Brush.Color := Color;
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
+  if OnlySpace = true then
+    exit;
+  
   if ThemeManager = nil then
     Canvas.Pen.Color := CustomColor
   else if ThemeManager.Theme = utLight then
@@ -179,7 +184,7 @@ begin
     end;
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomSeparator.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin

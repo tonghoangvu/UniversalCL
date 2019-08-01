@@ -5,45 +5,47 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager,
   System.Classes, System.SysUtils,
-  Winapi.Windows,
+  Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.StdCtrls;
 
 type
-  TUTextKind = (tkNormal, tkDescription, tkEntry, tkHeading, tkTitle);
+  TUTextKind = (tkCustom, tkNormal, tkDescription, tkEntry, tkHeading, tkTitle);
 
-  TUText = class(TLabel, IUThemeControl)
+  TUText = class(TLabel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
       FTextKind: TUTextKind;
+      FUseAccentColor: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
-      procedure SetTextKind(Value: TUTextKind);
+      procedure SetTextKind(const Value: TUTextKind);
+      procedure SetUseAccentColor(const Value: Boolean);
 
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-      procedure UpdateTextKind;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property TextKind: TUTextKind read FTextKind write SetTextKind default tkNormal;
+      property UseAccentColor: Boolean read FUseAccentColor write SetUseAccentColor default false;
   end;
 
 implementation
 
-{ THEME }
+{ TUText }
+
+//  THEME
 
 procedure TUText.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -57,24 +59,61 @@ begin
     Font.Color := $666666
   else if ThemeManager = nil then
     Font.Color := $000000
-  else if ThemeManager.Theme = utLight then
-    Font.Color := $000000
   else
-    Font.Color := $FFFFFF;
+    begin
+      if UseAccentColor then
+        Font.Color := ThemeManager.AccentColor
+      else if ThemeManager.Theme = utLight then
+        Font.Color := $000000
+      else
+        Font.Color := $FFFFFF;
+    end;
 end;
 
-{ SETTERS }
+//  SETTERS
 
-procedure TUText.SetTextKind(Value: TUTextKind);
+procedure TUText.SetTextKind(const Value: TUTextKind);
 begin
   if Value <> FTextKind then
     begin
       FTextKind := Value;
-      UpdateTextKind;
+
+      if FTextKind <> tkCustom then
+        begin
+          if TextKind = tkEntry then
+            Font.Name := 'Segoe UI Semibold'
+          else
+            Font.Name := 'Segoe UI';
+
+          //  Font size
+          case TextKind of
+            tkNormal:
+              Font.Size := 10;
+            tkDescription:
+              Font.Size := 9;
+            tkEntry:
+              Font.Size := 10;
+            tkHeading:
+              Font.Size := 15;
+            tkTitle:
+              Font.Size := 21;
+          end;
+        end;
+
+      UpdateTheme;
     end;
 end;
 
-{ MAIN CLASS }
+procedure TUText.SetUseAccentColor(const Value: Boolean);
+begin
+  if Value <> FUseAccentColor then
+    begin
+      FUseAccentColor := Value;
+      UpdateTheme;
+    end;
+end;
+
+//  MAIN CLASS
 
 constructor TUText.Create(aOwner: TComponent);
 begin
@@ -82,40 +121,10 @@ begin
 
   //  New properties
   FTextKind := tkNormal;
+  FUseAccentColor := false;
 
   Font.Name := 'Segoe UI';
   Font.Size := 10;
-
-  //  Common properties
-  //  Nothing
-
-  UpdateTheme;
-end;
-
-procedure TUText.UpdateTextKind;
-begin
-  if csDesigning in ComponentState = false then
-    exit;
-
-  //  Font name
-  if TextKind = tkEntry then
-    Font.Name := 'Segoe UI Semibold'
-  else
-    Font.Name := 'Segoe UI';
-
-  //  Font size
-  case TextKind of
-    tkNormal:
-      Font.Size := 10;
-    tkDescription:
-      Font.Size := 10;
-    tkEntry:
-      Font.Size := 10;
-    tkHeading:
-      Font.Size := 15;
-    tkTitle:
-      Font.Size := 21;
-  end;
 
   UpdateTheme;
 end;

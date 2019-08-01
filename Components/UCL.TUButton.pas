@@ -4,12 +4,12 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Winapi.Messages,
+  Winapi.Windows, Winapi.Messages,
   System.Classes, System.Types,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
-  TUCustomButton = class(TCustomControl, IUThemeControl)
+  TUCustomButton = class(TCustomControl, IUThemeComponent)
     const
       DefBackColor: TDefColor = (
         ($CCCCCC, $CCCCCC, $999999, $CCCCCC, $CCCCCC),
@@ -22,6 +22,8 @@ type
         ($FFFFFF, $FFFFFF, $FFFFFF, $666666, $FFFFFF));
 
     private
+      var BorderThickness: Integer;
+
       //  Theme
       FThemeManager: TUThemeManager;
       FCustomBorderColors: TControlStateColors;
@@ -40,10 +42,8 @@ type
       FIsToggled: Boolean;
       FTransparent: Boolean;
 
-      //  Object setters
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
-
-      //  Value setters
       procedure SetButtonState(const Value: TUControlState);
       procedure SetText(const Value: string);
       procedure SetImageIndex(const Value: Integer);
@@ -57,7 +57,6 @@ type
       procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
-
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
@@ -68,6 +67,7 @@ type
       procedure DoCustomTextColorsChange(Sender: TObject);
 
     protected
+      procedure ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
 
     public
@@ -134,19 +134,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomButton }
+
+//  THEME
 
 procedure TUCustomButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -158,7 +158,7 @@ begin
   Paint;
 end;
 
-{ VALUE SETTER }
+//  SETTERS
 
 procedure TUCustomButton.SetButtonState(const Value: TUControlState);
 begin
@@ -205,11 +205,13 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomButton.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
+
+  BorderThickness := 2;
 
   //  New properties
   FCustomBorderColors := TControlStateColors.Create($F2F2F2, $E6E6E6, $CCCCCC, $F2F2F2, $F2F2F2);
@@ -236,9 +238,6 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
   TabStop := true;
-
-  //UpdateTheme;
-  //  Dont update theme in constructor when UpdateTheme call Paint method
 end;
 
 destructor TUCustomButton.Destroy;
@@ -250,7 +249,13 @@ begin
   inherited Destroy;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
+
+procedure TUCustomButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+  BorderThickness := MulDiv(BorderThickness, M, D);
+end;
 
 procedure TUCustomButton.Paint;
 const
@@ -258,7 +263,7 @@ const
 var
   TextX, TextY, TextW, TextH: Integer;
   ImgX, ImgY, ImgW, ImgH: Integer;
-  BorderThickness, ThicknessPos: Integer;
+  ThicknessPos: Integer;
   BorderColor, BackColor, TextColor: TColor;
 begin
   inherited;
@@ -273,15 +278,15 @@ begin
 
   //  Highlight button
   else if
-    ((Highlight = true) or ((IsToggleButton = true) and (IsToggled = true)))  //  Is highlight button, or toggle on
+    ((Highlight) or ((IsToggleButton) and (IsToggled)))  //  Is highlight button, or toggle on
     and (ButtonState in [csNone, csHover, csFocused]) //  Highlight only when mouse normal, hover and focused
   then
     begin
-      BackColor := ThemeManager.ActiveColor;
+      BackColor := ThemeManager.AccentColor;
       if ButtonState = csNone then
         BorderColor := BackColor
       else
-        BorderColor := ChangeColor(BackColor, 0.6);
+        BorderColor := MulColor(BackColor, 0.6);
       TextColor := GetTextColorFromBackground(BackColor);
     end
 
@@ -294,7 +299,7 @@ begin
     end;
 
   //  Transparent
-  if (ButtonState = csNone) and (Transparent = true) then
+  if (ButtonState = csNone) and (Transparent) then
     begin
       ParentColor := true;
       BackColor := Color;
@@ -307,8 +312,6 @@ begin
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint border
-  BorderThickness := 2; //  Default for 100% scale
-  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
   if BorderThickness mod 2 = 0 then
     ThicknessPos := BorderThickness div 2 - 1
   else
@@ -349,11 +352,11 @@ begin
   Canvas.TextOut(TextX, TextY, Text);
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csPress;
       inherited;
@@ -362,24 +365,22 @@ end;
 
 procedure TUCustomButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if AllowFocus = true then
+      if AllowFocus then
         SetFocus;
       ButtonState := csPress;
-      Font.Quality := fqAntialiased;
       inherited;
     end;
 end;
 
 procedure TUCustomButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if IsToggleButton = true then
+      if IsToggleButton then
         FIsToggled := not FIsToggled;
       ButtonState := csHover;
-      Font.Quality := fqDefault;
       inherited;
     end;
 end;
@@ -391,8 +392,8 @@ end;
 
 procedure TUCustomButton.WM_SetFocus(var Msg: TWMSetFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
-    if AllowFocus = true then
+  if Enabled and HitTest then
+    if AllowFocus then
       begin
         ButtonState := csFocused;
         inherited;
@@ -403,7 +404,7 @@ end;
 
 procedure TUCustomButton.WM_KillFocus(var Msg: TWMKillFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csNone;
       inherited;
@@ -412,7 +413,7 @@ end;
 
 procedure TUCustomButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csHover;
       inherited;
@@ -421,14 +422,14 @@ end;
 
 procedure TUCustomButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       //  Dont allow focus
-      if AllowFocus = false then
+      if not AllowFocus then
         ButtonState := csNone //  No keep border
 
       //  Allow focus
-      else if Focused = false then
+      else if not Focused then
         ButtonState := csNone //  No focus, no border
       else
         ButtonState := csFocused; //  Keep focus border
@@ -440,14 +441,14 @@ end;
 procedure TUCustomButton.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
-  if Enabled = false then
+  if not Enabled then
     FButtonState := csDisabled
   else
     FButtonState := csNone;
   UpdateTheme;
 end;
 
-{ GROUP PROPERTY CHANGE }
+//  GROUP PROPERTY CHANGE
 
 procedure TUCustomButton.DoCustomBorderColorsChange(Sender: TObject);
 begin

@@ -4,11 +4,11 @@ interface
 
 uses
   //  UCL units
-  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.TUThemeManager,
+  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUWPForm,
-  UCL.TUQuickButton,
+  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
+  UCL.TUQuickButton, UCL.TUBorder,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -22,7 +22,7 @@ uses
   Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
 
 type
-  TformDemo = class(TUWPForm)
+  TformDemo = class(TUForm)
     AppTheme: TUThemeManager;
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
@@ -31,38 +31,8 @@ type
     buttonMenuSave: TUSymbolButton;
     buttonMenuOpen: TUSymbolButton;
     buttonMenuRate: TUSymbolButton;
-    boxSmoothScrolling: TUScrollBox;
     captionbarNewStyle: TUCaptionBar;
-    headingSettings: TUText;
-    entryUserProfile: TUText;
-    checkAutoSync: TUCheckBox;
-    checkSendEmail: TUCheckBox;
-    buttonDeleteAccount: TUButton;
-    entryAccountType: TUText;
-    radioFreeAccount: TURadioButton;
-    radioProAccount: TURadioButton;
-    radioDevAccount: TURadioButton;
-    desAccountHint: TUText;
-    entryStorage: TUText;
-    desStorageHint: TUText;
-    progressStorageUsed: TUProgressBar;
-    imgAvatar: TImage;
-    headingAbout: TUText;
-    desAppVersion: TUText;
-    desFlashVersion: TUText;
-    desChromiumVersion: TUText;
-    buttonCheckUpdate: TUButton;
-    linkEmbarcadero: TUHyperLink;
-    buttonUpgradeAccount: TUButton;
-    checkKeepEmailPrivate: TUCheckBox;
-    entryAppTheme: TUText;
-    radioDefaultTheme: TURadioButton;
-    radioLightTheme: TURadioButton;
-    radioDarkTheme: TURadioButton;
     dialogSelectColor: TColorDialog;
-    panelSelectAccentColor: TUPanel;
-    desAccentColorHint: TUText;
-    checkColorBorder: TUCheckBox;
     panelRibbon: TUScrollBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
@@ -72,8 +42,6 @@ type
     buttonPrintDoc: TUSymbolButton;
     buttonSaveDoc: TUSymbolButton;
     separator2: TUSeparator;
-    buttonAppQuit: TUButton;
-    editAccountName: TUEdit;
     imgcollectionMain: TImageCollection;
     imglistMain: TVirtualImageList;
     linkConnected: TUHyperLink;
@@ -93,8 +61,8 @@ type
     radioB2: TURadioButton;
     check2State: TUCheckBox;
     check3State: TUCheckBox;
-    UItemButton1: TUItemButton;
-    UItemButton2: TUItemButton;
+    itembuttonImage: TUItemButton;
+    itembuttonFontIcon: TUItemButton;
     symbolButtonOpenDisabled: TUSymbolButton;
     symbolbuttonSaveHorz: TUSymbolButton;
     symbolbuttonSaveVert: TUSymbolButton;
@@ -111,14 +79,47 @@ type
     buttonAniStart: TButton;
     buttonAniInverse: TButton;
     buttonWithImage: TUButton;
-    buttonAppMaximized: TUButton;
-    buttonAppMinimized: TUButton;
     sliderHorz: TUSlider;
     sliderDisabled: TUSlider;
     sliderVert: TUSlider;
     popupVert: TUContextMenu;
     popupHorz: TUContextMenu;
     buttonAppBack: TUQuickButton;
+    buttonAppQuit: TUQuickButton;
+    buttonAppMaximized: TUQuickButton;
+    buttonAppMinimized: TUQuickButton;
+    comboAppDPI: TComboBox;
+    boxSmoothScrolling: TUScrollBox;
+    headingSettings: TUText;
+    entryAppTheme: TUText;
+    radioDefaultTheme: TURadioButton;
+    radioLightTheme: TURadioButton;
+    radioDarkTheme: TURadioButton;
+    panelSelectAccentColor: TUPanel;
+    checkColorBorder: TUCheckBox;
+    entryUserProfile: TUText;
+    imgAvatar: TImage;
+    editAccountName: TUEdit;
+    checkAutoSync: TUCheckBox;
+    checkKeepEmailPrivate: TUCheckBox;
+    checkSendEmail: TUCheckBox;
+    buttonDeleteAccount: TUButton;
+    entryAccountType: TUText;
+    radioFreeAccount: TURadioButton;
+    radioProAccount: TURadioButton;
+    radioDevAccount: TURadioButton;
+    desAccountHint: TUText;
+    buttonUpgradeAccount: TUButton;
+    entryStorage: TUText;
+    desStorageHint: TUText;
+    progressStorageUsed: TUProgressBar;
+    headingAbout: TUText;
+    buttonCheckUpdate: TUButton;
+    desAppVersion: TUText;
+    desFlashVersion: TUText;
+    desChromiumVersion: TUText;
+    linkEmbarcadero: TUHyperLink;
+    USeparator1: TUSeparator;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -137,6 +138,7 @@ type
     procedure sliderHorzChange(Sender: TObject);
     procedure popupHorzItemClick(Sender: TObject; Index: Integer);
     procedure AppThemeUpdate(Sender: TObject);
+    procedure comboAppDPISelect(Sender: TObject);
   private
   public
   end;
@@ -179,79 +181,54 @@ end;
 
 procedure TformDemo.buttonAniStartClick(Sender: TObject);
 var
-  Ani: TIntAni;
+  AniLength: Integer;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left + 210, procedure (Value: Integer)
-    begin
-      buttonRunning.Left := Value;
-    end, true);
-
-  Ani.OnDone := procedure begin buttonRunning.Caption := 'Animated' end;
-  Ani.Start;
+  AniLength := 210;
+  AniLength := Round(AniLength * PixelsPerInch / 96); //  Scale animation length
+  buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
 var
-  Ani: TIntAni;
+  AniLength: Integer;
 begin
-  Ani := TIntAni.Create(akOut, afkQuartic, buttonRunning.Left, buttonRunning.Left - 210, procedure (Value: Integer)
-    begin
-      buttonRunning.Left := Value;
-    end, true);
-  Ani.Start;
+  AniLength := 210;
+  AniLength := Round(AniLength * PixelsPerInch / 96); //  Scale animation length
+  buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
 var
-  NewWidth: Integer;
-  Ani: TIntAni;
   DPI: Single;
+  AniDelta: Integer;
 begin
   DPI := Self.PixelsPerInch / 96;
 
   boxSmoothScrolling.DisableAlign;
-  boxSmoothScrolling.HideOldScrollBar;
+  boxSmoothScrolling.SetOldScrollBarVisible(false);
 
-  if boxSmoothScrolling.Width <> 0 then
-    NewWidth := 0 //  Go to 40 (close menu)
+  if boxSmoothScrolling.Width = 0 then
+    AniDelta := Round(DPI * 250)
   else
-    NewWidth := Round(250 * DPI); //  Go to 220 (open menu)
+    AniDelta := - boxSmoothScrolling.Width;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, boxSmoothScrolling.Width, NewWidth,
-    procedure (Value: Integer)
-    begin
-      boxSmoothScrolling.Width := Value;
-    end, true);
-
-  Ani.OnDone := procedure begin boxSmoothScrolling.EnableAlign end;
-
-  Ani.Step := 20;
-  Ani.Duration := 200;
-
-  Ani.Start;
+  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 20, 200, akOut, afkQuartic,
+    procedure begin boxSmoothScrolling.EnableAlign end);
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
-  NewPos: Integer;
-  Ani: TIntAni;
   DPI: Single;
+  AniWidth: Integer;
 begin
   DPI := Self.PixelsPerInch / 96;
+  AniWidth := Round((225 - 45 ) * DPI);
   if drawerNavigation.Width <> Round(45 * DPI) then
-    NewPos := Round(45 * DPI) // Go to 45 (close menu)
-  else
-    NewPos := Round(220 * DPI); // 220:45 and DPI change
+    AniWidth := - AniWidth;
 
-  Ani := TIntAni.Create(akOut, afkQuartic, drawerNavigation.Width, NewPos,
-    procedure (Value: Integer)
-    begin
-      drawerNavigation.Width := Value;
-    end, true);
-  Ani.Step := 20;
-  Ani.Duration := 200;
-
-  Ani.Start;
+  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 20, 200, akOut, afkQuartic, nil);
 end;
 
 { THEME }
@@ -259,8 +236,8 @@ end;
 procedure TformDemo.AppThemeUpdate(Sender: TObject);
 begin
   //  Active color changed
-  panelSelectAccentColor.CustomBackColor := AppTheme.ActiveColor;
-  buttonAppBack.HighlightColor := AppTheme.ActiveColor;
+  panelSelectAccentColor.CustomBackColor := AppTheme.AccentColor;
+  buttonAppBack.HighlightColor := AppTheme.AccentColor;
 
   //  Color on border setting changed
   if AppTheme.ColorOnBorder = true then
@@ -276,10 +253,23 @@ end;
 
 procedure TformDemo.checkColorBorderClick(Sender: TObject);
 begin
-  if checkColorBorder.State = cbsChecked then
-    AppTheme.ColorOnBorderKind := cobkTrue
-  else
-    AppTheme.ColorOnBorderKind := cobkFalse;
+  AppTheme.ColorOnBorder := checkColorBorder.State = cbsChecked;
+end;
+
+procedure TformDemo.comboAppDPISelect(Sender: TObject);
+var
+  NewPPI: Integer;
+begin
+  case comboAppDPI.ItemIndex of
+    1: NewPPI := 120;
+    2: NewPPI := 144;
+    3: NewPPI := 168;
+    else
+      NewPPI := 96;
+  end;
+
+  PixelsPerInch := NewPPI;
+  ScaleForPPI(NewPPI);
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
@@ -292,9 +282,7 @@ begin
       NewColor := dialogSelectColor.Color;
 
       //  Change accent color
-      AppTheme.CustomColor := NewColor;
-      AppTheme.UseAccentColor := false;
-
+      AppTheme.AccentColor := NewColor;
       panelSelectAccentColor.CustomBackColor := NewColor;
     end;
 end;
@@ -315,17 +303,17 @@ end;
 
 procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
 begin
-  AppTheme.ThemeKind := tkAuto;
+  AppTheme.AutoTheme := true;
 end;
 
 procedure TformDemo.radioLightThemeClick(Sender: TObject);
 begin
-  AppTheme.ThemeKind := tkLight;
+  AppTheme.Theme := utLight;
 end;
 
 procedure TformDemo.radioDarkThemeClick(Sender: TObject);
 begin
-  AppTheme.ThemeKind := tkDark;
+  AppTheme.Theme := utDark;
 end;
 
 { CONTROLS }

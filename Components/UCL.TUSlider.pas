@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
 type
-  TUCustomSlider = class(TCustomControl, IUThemeControl)
+  TUCustomSlider = class(TCustomControl, IUThemeComponent)
     const
       DefActiveColor: TDefColor = (
         ($D77800, $D77800, $D77800, $CCCCCC, $D77800),
@@ -41,6 +41,7 @@ type
       //  Events
       FOnChange: TNotifyEvent;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetControlState(const Value: TUControlState);
       procedure SetOrientation(const Value: TUOrientation);
@@ -66,9 +67,9 @@ type
       procedure UpdateTheme;
 
     published
-      //  Properties
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ControlState: TUControlState read FControlState write SetControlState default csNone;
+
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property IsSliding: Boolean read FIsSliding;
       property HitTest: Boolean read FHitTest write FHitTest default true;
@@ -82,7 +83,6 @@ type
 
   TUSlider = class(TUCustomSlider)
     published
-      //  Common properties
       property Align;
       property Anchors;
       property Color;
@@ -100,7 +100,6 @@ type
       property Touch;
       property Visible;
 
-      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -121,19 +120,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomSlider }
+
+//  THEME
 
 procedure TUCustomSlider.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -145,7 +144,7 @@ begin
   Paint;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomSlider.SetControlState(const Value: TUControlState);
 begin
@@ -202,7 +201,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomSlider.Create(aOwner: TComponent);
 begin
@@ -226,6 +225,7 @@ begin
 
   //  Common properties
   Height := 25;
+  Width := 100;
 end;
 
 procedure TUCustomSlider.Paint;
@@ -244,13 +244,13 @@ begin
     end
   else
     begin
-      if Enabled = true then
-        ActiveColor := ThemeManager.ActiveColor
+      if Enabled then
+        ActiveColor := ThemeManager.AccentColor
       else
         ActiveColor := DefActiveColor[ThemeManager.Theme, ControlState];
       BackColor := DefBackColor[ThemeManager.Theme, ControlState];
       if ControlState = csNone then
-        CurColor := ThemeManager.ActiveColor
+        CurColor := ThemeManager.AccentColor
       else
         CurColor := DefCurColor[ThemeManager.Theme, ControlState];
     end;
@@ -320,12 +320,12 @@ begin
   BarHeight := MulDiv(BarHeight, M, D);
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomSlider.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
-  if Enabled = false then
+  if not Enabled then
     ControlState := csDisabled
   else
     ControlState := csNone;
@@ -333,25 +333,27 @@ end;
 
 procedure TUCustomSlider.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = false) or (HitTest = false) then exit;
-
-  ControlState := csHover;
-  inherited;
+  if Enabled and HitTest then
+    begin
+      ControlState := csHover;
+      inherited;
+    end;
 end;
 
 procedure TUCustomSlider.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = false) or (HitTest = false) then exit;
-
-  ControlState := csNone;
-  inherited;
+  if Enabled and HitTest then
+    begin
+      ControlState := csNone;
+      inherited;
+    end;
 end;
 
 procedure TUCustomSlider.WM_LButtonDown(var Msg: TWMLButtonDown);
 var
   TempValue: Integer;
 begin
-  if (Enabled = false) or (HitTest = false) then exit;
+  if not (Enabled and HitTest) then exit;
 
   SetFocus;
   FControlState := csPress;
@@ -387,9 +389,9 @@ procedure TUCustomSlider.WM_MouseMove(var Msg: TWMMouseMove);
 var
   TempValue: Integer;
 begin
-  if (Enabled = false) or (HitTest = false) then exit;
+  if not (Enabled and HitTest) then exit;
 
-  if FIsSliding = true then
+  if FIsSliding then
     begin
       if Orientation = oHorizontal then
         TempValue := Min + Round((Msg.XPos - CurWidth div 2) * (Max - Min) / (Width - CurWidth))
@@ -410,11 +412,12 @@ end;
 
 procedure TUCustomSlider.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = false) or (HitTest = false) then exit;
-
-  ControlState := csNone;
-  FIsSliding := false;
-  inherited;
+  if Enabled and HitTest then
+    begin
+      ControlState := csNone;
+      FIsSliding := false;
+      inherited;
+    end;
 end;
 
 end.
