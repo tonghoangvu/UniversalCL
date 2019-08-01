@@ -16,17 +16,17 @@ uses
   UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUHyperLink, UCL.TUPanel,
   UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUSwitch, UCL.TUScrollBox, UCL.TURadioButton,
   UCL.TUItemButton, UCL.TUSeparator, UCL.TUEdit, UCL.TUSlider, UCL.TUContextMenu,
-  UCL.TUQuickButton
+  UCL.TUQuickButton, UCL.TUBorder
   ;
 
 procedure Register;
 begin
   RegisterComponents('Universal CL', [
     TUThemeManager,
-    //TUForm, TUWPForm
+    //TUForm,
     TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel, TUCheckBox, TUProgressBar,
     TUSwitch, TUScrollBox, TURadioButton, TUItemButton, TUSeparator, TUEdit,
-    TUSlider, TUContextMenu, TUQuickButton
+    TUSlider, TUContextMenu, TUQuickButton, TUBorder
     ]);
 end;
 

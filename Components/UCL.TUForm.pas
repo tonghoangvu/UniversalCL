@@ -3,34 +3,35 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip,
-  System.Classes,
+  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.TUTooltip,
+  System.Classes, System.SysUtils,
   Winapi.Windows, Winapi.Messages,
   VCL.Forms, VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
 type
-  TUForm = class(TForm, IUThemeControl)
+  TUForm = class(TForm, IUThemeComponent)
     const
-      BorderColorDefault = $707070;
+      DEFAULT_BORDERCOLOR_ACTIVE_LIGHT = $707070;
+      DEFAULT_BORDERCOLOR_ACTIVE_DARK = $242424;
+      DEFAULT_BORDERCOLOR_INACTIVE_LIGHT = $9B9B9B;
+      DEFAULT_BORDERCOLOR_INACTIVE_DARK = $414141;
 
     private
+      var BorderColor: TColor;
+
       FThemeManager: TUThemeManager;
-
-      FBorderColor: TColor;
-
-      FResizeable: Boolean;
+      FIsActive: Boolean;
+      FResizable: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      procedure WM_Activate(var Msg: TWMActivate); message WM_ACTIVATE;
       procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
-
+      procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
-      procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;
 
     protected
-      procedure CreateParams(var Params: TCreateParams); override;
-
       procedure Paint; override;
       procedure Resize; override;
 
@@ -40,25 +41,25 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-
-      property Resizeable: Boolean read FResizeable write FResizeable;
+      property IsActive: Boolean read FIsActive default true;
+      property Resizable: Boolean read FResizable write FResizable default true;
   end;
 
 implementation
 
-{ THEME }
+{ TUForm }
+
+//  THEME
 
 procedure TUForm.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -67,57 +68,77 @@ end;
 
 procedure TUForm.UpdateTheme;
 begin
-  //  Change background color
+  //  Background color & tooltip style
   if ThemeManager = nil then
     begin
-      Self.Color := $FFFFFF;
-      HintWindowClass := TULightTooltip;
+      Color := $FFFFFF;
+      HintWindowClass := THintWindow; //  Default hint style
     end
   else if ThemeManager.Theme = utLight then
     begin
-      Self.Color := $FFFFFF;
+      Color := $FFFFFF;
       HintWindowClass := TULightTooltip;
     end
   else
     begin
-      Self.Color := $000000;
+      Color := $000000;
       HintWindowClass := TUDarkTooltip;
     end;
 
-  //  Change border color
+  //  Border color
   if ThemeManager = nil then
-    FBorderColor := BorderColorDefault
-  else if ThemeManager.ColorOnBorder = true then
-    FBorderColor := ThemeManager.ActiveColor
+    BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
+  else if ThemeManager.ColorOnBorder then
+    BorderColor := ThemeManager.AccentColor //  Use accent color
+  else if ThemeManager.Theme = utLight then
+    //  Light
+    begin
+      if IsActive then
+        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
+      else
+        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_LIGHT;
+    end
   else
-    FBorderColor := BorderColorDefault;
+    //  Dark
+    begin
+      if IsActive then
+        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK
+      else
+        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
+    end;
 
-  Invalidate; //  To repaint form border
+  Invalidate;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUForm.Create(aOwner: TComponent);
+var
+  CurrentScreen: TMonitor;
 begin
-  inherited Create(aOwner);
+  inherited;
+  FIsActive := true;
+  FResizable := true;
 
-  PixelsPerInch := Screen.PixelsPerInch;  //  Get PPI on create
+  Padding.SetBounds(0, 1, 0, 0);  //  Top space
 
-  FResizeable := true;
+  //  Get PPI from current screen
+  CurrentScreen := Screen.MonitorFromWindow(Handle);
+  PixelsPerInch := CurrentScreen.PixelsPerInch;
 
   UpdateTheme;
 end;
 
-{ CUSTOM EVENTS }
+//  CUSTOM METHODS
 
 procedure TUForm.Paint;
 begin
   inherited;
-
-  if Self.WindowState <> wsMaximized then
+  if WindowState <> wsMaximized then  //  No border on maximized
     begin
-      Canvas.Pen.Color := FBorderColor;
-      Canvas.Rectangle(0, 0, Width, Height);
+      Canvas.Pen.Color := BorderColor;
+      Canvas.MoveTo(0, 0);
+      Canvas.LineTo(Width, 0);  //  Paint top border
     end;
 end;
 
@@ -127,23 +148,31 @@ var
 begin
   if WindowState = wsMaximized then
     begin
-      CurrentScreen := Screen.MonitorFromWindow(Self.Handle);
-      Self.Left := CurrentScreen.WorkAreaRect.Left;
-      Self.Top := CurrentScreen.WorkAreaRect.Top;
-      Self.Width := CurrentScreen.WorkAreaRect.Right - CurrentScreen.WorkAreaRect.Left;
-      Self.Height := CurrentScreen.WorkAreaRect.Bottom - CurrentScreen.WorkAreaRect.Top - 1;
-        //  Without -1, form will over screen size
+      CurrentScreen := Screen.MonitorFromWindow(Handle);
+      Top := CurrentScreen.WorkareaRect.Top;
+      Left := CurrentScreen.WorkareaRect.Left;
+      Width := CurrentScreen.WorkareaRect.Right - CurrentScreen.WorkareaRect.Left;
+      Height := CurrentScreen.WorkareaRect.Bottom - CurrentScreen.WorkareaRect.Top - 1;
+        //  Without -1, form will be over screen
 
-      Self.Padding.SetBounds(0, 0, 0, 0);
+      Padding.SetBounds(0, 0, 0, 0);  //  No border space
+      Invalidate;
     end
   else
-    Self.Padding.SetBounds(1, 1, 1, 1);
-
-  inherited;
-  Invalidate; //  Neccesary
+    begin
+      Padding.SetBounds(0, 1, 0, 0);
+      Invalidate;
+      inherited;
+    end;
 end;
 
-{ MESSAGES }
+//  MESSAGES
+
+procedure TUForm.WM_Activate(var Msg: TWMActivate);
+begin
+  inherited;
+  FIsActive := Msg.Active <> WA_INACTIVE;
+end;
 
 procedure TUForm.WM_DPIChanged(var Msg: TWMDpi);
 begin
@@ -151,57 +180,43 @@ begin
   inherited;
 end;
 
-procedure TUForm.CreateParams(var Params: TCreateParams);
+procedure TUForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
 begin
+  if ThemeManager <> nil then
+    ThemeManager.ReloadAutoSettings;
   inherited;
-  Params.Style := Params.Style or WS_OVERLAPPEDWINDOW;  //  Enabled aerosnap
 end;
 
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
+var
+  CaptionBarHeight: Integer;
+  BorderThickness: Integer;
 begin
-  Msg.Result := 0;
+  inherited;
+
+  CaptionBarHeight :=
+    GetSystemMetrics(SM_CYFRAME) +
+    GetSystemMetrics(SM_CYCAPTION) +
+    GetSystemMetrics(SM_CXPADDEDBORDER);
+  Dec(Msg.CalcSize_Params.rgrc[0].Top, CaptionBarHeight); //  Hide caption bar
+
+  if WindowState = wsMaximized then
+    begin
+      BorderThickness := GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
+      Dec(Msg.CalcSize_Params.rgrc[0].Left, BorderThickness);
+      Inc(Msg.CalcSize_Params.rgrc[0].Right, BorderThickness);
+      Inc(Msg.CalcSize_Params.rgrc[0].Bottom, BorderThickness);
+    end;
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);
-const
-  EDGEDETECT = 5;
-var
-  deltaRect: TRect;
 begin
   inherited;
-
-  if (Resizeable = true) and (WindowState <> wsMaximized) then
-    with Msg, deltaRect do
-      begin
-        Left := XPos - BoundsRect.Left;
-        Right := BoundsRect.Right - XPos;
-        Top := YPos - BoundsRect.Top;
-        Bottom := BoundsRect.Bottom - YPos;
-
-        if (Top < EDGEDETECT) and (Left < EDGEDETECT) then
-          Result := HTTOPLEFT
-        else if (Top < EDGEDETECT) and (Right < EDGEDETECT) then
-          Result := HTTOPRIGHT
-        else if (Bottom < EDGEDETECT) and (Left < EDGEDETECT) then
-          Result := HTBOTTOMLEFT
-        else if (Bottom < EDGEDETECT) and (Right < EDGEDETECT) then
-          Result := HTBOTTOMRIGHT
-        else if (Top < EDGEDETECT) then
-          Result := HTTOP
-        else if (Left < EDGEDETECT) then
-          Result := HTLEFT
-        else if (Bottom < EDGEDETECT) then
-          Result := HTBOTTOM
-        else if (Right < EDGEDETECT) then
-          Result := HTRIGHT
-      end;
-end;
-
-procedure TUForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
-begin
-  if Self.ThemeManager <> nil then
-    Self.ThemeManager.ReloadAutoSettings;
-  inherited;
+  if Resizable then
+    begin
+      if Msg.YPos - BoundsRect.Top < 5 then
+        Msg.Result := HTTOP;
+    end;
 end;
 
 end.

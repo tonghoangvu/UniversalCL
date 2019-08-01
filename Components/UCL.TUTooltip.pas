@@ -11,14 +11,14 @@ uses
 type
   TUCustomTooltip = class(THintWindow)
     const
-      DEFAULT_HEIGHT = 26;
+      DEFAULT_TOOLTIP_HEIGHT = 26;
 
     private
       var BorderColor: TColor;
       var BackColor: TColor;
 
-      procedure WMNCPaint(var Msg: TMessage); message WM_NCPAINT;
-      procedure WMPaint(var Msg: TMessage); message WM_PAINT;
+      procedure WM_Paint(var Msg: TWMPaint); message WM_PAINT;
+      procedure WM_NCPaint(var Msg: TWMNCPaint); message WM_NCPAINT;
 
     public
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
@@ -36,64 +36,65 @@ type
 
 implementation
 
-{ LIGHT TOOLTIP }
+{ TULightTooltip }
 
 constructor TULightTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-
   BorderColor := $CCCCCC;
   BackColor := $F2F2F2;
 end;
 
-{ DARK TOOLTIP }
+{ TUDarkTooltip }
 
 constructor TUDarkTooltip.Create(aOwner: TComponent);
 begin
-  inherited Create(aOwner);
-
+  inherited;
   BorderColor := $767676;
   BackColor := $2B2B2B;
 end;
 
-{ CUSTOM TOOLTIP }
+{ TUCustomTooltip }
 
-function TUCustomTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
+//  CUSTOM METHODS
+
+function TUCustomTooltip.CalcHintRect(MaxWidth: Integer;
+  const AHint: string; AData: Pointer): TRect;
 var
   TextW, TextH: Integer;
 begin
   TextW := Canvas.TextWidth(AHint);
   TextH := Canvas.TextHeight(AHint);
-  TextW := TextW + (DEFAULT_HEIGHT - TextH);  //  Spacing
+  TextW := TextW + (DEFAULT_TOOLTIP_HEIGHT - TextH);  //  Spacing
 
-  Result := Rect(0, 0, TextW, DEFAULT_HEIGHT);
+  Result := Rect(0, 0, TextW, DEFAULT_TOOLTIP_HEIGHT);
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
-procedure TUCustomTooltip.WMNCPaint(var Msg: TMessage);
+procedure TUCustomTooltip.WM_NCPaint(var Msg: TWMNCPaint);
 var
-  C: TCanvas;
-  R: TRect;
+  TempCanvas: TCanvas;
+  TempRect: TRect;
 begin
   inherited;
-
-  GetWindowRect(Handle, R);
   Msg.Result := 1;
 
-  C := TCanvas.Create;
+  GetWindowRect(Handle, TempRect);
+
+  TempCanvas := TCanvas.Create;
   try
-    C.Handle := GetWindowDC(Handle);
-    C.Pen.Color := BorderColor;
-    C.Pen.Width := 2;
-    C.Brush.Style := bsClear;
-    C.Rectangle(1, 1, R.Right - R.Left, R.Bottom - R.Top);
+    TempCanvas.Handle := GetWindowDC(Handle);
+    TempCanvas.Pen.Color := BorderColor;
+    TempCanvas.Pen.Width := 2;
+    TempCanvas.Brush.Style := bsClear;
+    TempCanvas.Rectangle(1, 1, TempRect.Right - TempRect.Left, TempRect.Bottom - TempRect.Top);
   finally
-    C.Free;
+    TempCanvas.Free;
   end;
 end;
 
-procedure TUCustomTooltip.WMPaint(var Msg: TMessage);
+procedure TUCustomTooltip.WM_Paint(var Msg: TWMPaint);
 var
   TextW, TextH, TextX, TextY: Integer;
 begin

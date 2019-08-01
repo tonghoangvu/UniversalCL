@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
 
 type
-  TUCustomSymbolButton = class(TCustomControl, IUThemeControl)
+  TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
     const
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
@@ -47,10 +47,8 @@ type
       FIsToggleButton: Boolean;
       FIsToggled: Boolean;
 
-      //  Object setters
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
-
-      //  Value setters
       procedure SetButtonState(const Value: TUControlState);
       procedure SetOrientation(const Value: TUOrientation);
       procedure SetSymbolChar(const Value: string);
@@ -62,7 +60,6 @@ type
       procedure SetShowDetail(const Value: Boolean);
       procedure SetTransparent(const Value: Boolean);
       procedure SetIsToggled(const Value: Boolean);
-
       procedure SetImageIndex(const Value: Integer);
       procedure SetImageKind(const Value: TUImageKind);
 
@@ -151,19 +148,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomSymbolButton }
+
+//  THEME
 
 procedure TUCustomSymbolButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -175,7 +172,7 @@ begin
   Paint;
 end;
 
-{ VALUE SETTERS }
+//  SETTERS
 
 procedure TUCustomSymbolButton.SetButtonState(const Value: TUControlState);
 begin
@@ -294,7 +291,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomSymbolButton.Create(aOwner: TComponent);
 begin
@@ -344,7 +341,7 @@ begin
   inherited Destroy;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomSymbolButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
@@ -376,7 +373,7 @@ begin
     aTheme := ThemeManager.Theme;
 
   //  Transparent enabled
-  if (ButtonState = csNone) and (Transparent = true) then
+  if (ButtonState = csNone) and (Transparent) then
     begin
       ParentColor := true;
       BackColor := Color;
@@ -387,11 +384,11 @@ begin
   //  Highlight enabled
   else if
     (ThemeManager <> nil)
-    and ((IsToggleButton = true) and (IsToggled = true))
+    and ((IsToggleButton) and (IsToggled))
     and (ButtonState in [csNone, csHover, csFocused])
   then
     begin
-      BackColor := ThemeManager.ActiveColor;
+      BackColor := ThemeManager.AccentColor;
       TextColor := GetTextColorFromBackground(BackColor);
       DetailColor := clSilver;
     end
@@ -409,7 +406,7 @@ begin
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint icon
-  if ShowIcon = true then
+  if ShowIcon then
     if ImageKind = ikFontIcon then
       begin
         Canvas.Font := SymbolFont;
@@ -463,7 +460,7 @@ begin
   Canvas.TextOut(TextX, TextY, Text);
 
   //  Paint detail
-  if ShowDetail = true then
+  if ShowDetail then
     begin
       Canvas.Font := DetailFont;
       Canvas.Font.Color := DetailColor;
@@ -483,11 +480,11 @@ begin
     end;
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomSymbolButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csPress;
       inherited;
@@ -496,7 +493,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csPress;
       inherited;
@@ -505,9 +502,9 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if IsToggleButton = true then
+      if IsToggleButton then
         FIsToggled := not FIsToggled;
       ButtonState := csHover;
       inherited;
@@ -521,7 +518,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csHover;
       inherited;
@@ -530,7 +527,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csNone;
       inherited;
@@ -545,7 +542,7 @@ end;
 procedure TUCustomSymbolButton.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
-  if Enabled = false then
+  if not Enabled then
     FButtonState := csDisabled
   else
     FButtonState := csNone;

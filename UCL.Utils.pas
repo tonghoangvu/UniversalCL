@@ -3,17 +3,17 @@ unit UCL.Utils;
 interface
 
 uses
-  VCL.Graphics, VCL.GraphUtil,
-  Winapi.Windows;
+  Winapi.Windows,
+  VCL.Graphics, VCL.GraphUtil;
 
-//  Color utils
+//  Color
 function BrightenColor(aColor: TColor; Delta: Integer): TColor;
-function GetTextColorFromBackground(BackgroundColor: TColor): TColor;
-function ChangeColor(aColor: TColor; Base: Single): TColor;
+function GetTextColorFromBackground(BackColor: TColor): TColor;
+function MulColor(aColor: TColor; Base: Single): TColor;
 
 implementation
 
-{ COLOR UTILS }
+{ COLOR }
 
 function BrightenColor(aColor: TColor; Delta: Integer): TColor;
 var
@@ -24,22 +24,22 @@ begin
   Result := ColorHLSToRGB(H, L, S);
 end;
 
-function GetTextColorFromBackground(BackgroundColor: TColor): TColor;
+function GetTextColorFromBackground(BackColor: TColor): TColor;
 var
   C: Integer;
   R, G, B: Byte;
 begin
-  C := ColorToRGB(BackgroundColor);
+  C := ColorToRGB(BackColor);
   R := GetRValue(C);
   G := GetGValue(C);
   B := GetBValue(C);
-  if 0.299 * R + 0.587 * G + 0.114 * B > 186 then
-    Result := clBlack
+  if 0.299 * R + 0.587 * G + 0.114 * B > 156 then
+    Result := $000000
   else
-    Result := clWhite;
+    Result := $FFFFFF;
 end;
 
-function ChangeColor(aColor: TColor; Base: Single): TColor;
+function MulColor(aColor: TColor; Base: Single): TColor;
 var
   C: Integer;
   R, G, B: Byte;

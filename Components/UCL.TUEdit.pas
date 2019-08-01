@@ -19,13 +19,15 @@ type
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
   end;
 
-  TUCustomEdit = class(TCustomPanel, IUThemeControl)
+  TUCustomEdit = class(TCustomPanel, IUThemeComponent)
     const
       DefBorderColor: TDefColor = (
         ($999999, $666666, $D77800, $CCCCCC, $D77800),
         ($666666, $999999, $D77800, $CCCCCC, $D77800));
 
     private
+      var BorderThickness: Integer;
+
       FThemeManager: TUThemeManager;
       FButtonState: TUControlState;
 
@@ -43,7 +45,6 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
       procedure SetTransparent(const Value: Boolean);
-
       procedure SetText(const Value: string);
       procedure SetTextHint(const Value: string);
       procedure SetMaxLength(const Value: Integer);
@@ -171,7 +172,9 @@ type
 
 implementation
 
-{ TUSUBEDIT }
+{ TUSubEdit }
+
+//  MESSAGES
 
 procedure TUSubEdit.WM_SetFocus(var Msg: TWMSetFocus);
 begin
@@ -185,19 +188,19 @@ begin
   inherited;
 end;
 
-{ THEME }
+{ TUCustomEdit }
+
+//  THEME
 
 procedure TUCustomEdit.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -209,7 +212,7 @@ begin
   Paint;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomEdit.SetButtonState(const Value: TUControlState);
 begin
@@ -265,7 +268,7 @@ begin
     FEdit.OnChange := Value;
 end;
 
-{ GETTERS }
+//  GETTERS
 
 function TUCustomEdit.GetText: string;
 begin
@@ -315,11 +318,13 @@ begin
     Result := nil;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomEdit.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
+
+  BorderThickness := 2;
 
   FButtonState := csNone;
   FHitTest := true;
@@ -328,8 +333,8 @@ begin
   Height := 30;
   BevelOuter := bvNone;
   Caption := '';
-  Self.Font.Name := 'Segoe UI';
-  Self.Font.Size := 10;
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
 
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
@@ -350,22 +355,22 @@ begin
   Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
 
   FEdit.Align := alClient;
+  FEdit.SetSubComponent(true);
   FEdit.OnChange := Self.OnChange;
-
-  //UpdateTheme;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
+  BorderThickness := MulDiv(BorderThickness, M, D);
 end;
 
 procedure TUCustomEdit.Paint;
 var
   BorderColor, BackColor, TextColor: TColor;
-  BorderThickness, ThicknessPos: Integer;
+  ThicknessPos: Integer;
 begin
   inherited;
 
@@ -379,7 +384,7 @@ begin
     begin
       case ButtonState of
         csPress, csFocused:
-          BorderColor := ThemeManager.ActiveColor;
+          BorderColor := ThemeManager.AccentColor;
         else
           BorderColor := DefBorderColor[ThemeManager.Theme, ButtonState];
       end;
@@ -397,7 +402,7 @@ begin
     end;
 
   //  Transparent background (on csNone)
-  if (ButtonState = csNone) and (Transparent = true) then
+  if (ButtonState = csNone) and (Transparent) then
     begin
       ParentColor := true;
       BackColor := Color;
@@ -412,8 +417,6 @@ begin
     end;
 
   //  Paint border
-  BorderThickness := 2; //  Default thickness for 100% scale
-  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
   if BorderThickness mod 2 = 0 then
     ThicknessPos := BorderThickness div 2 - 1
   else
@@ -439,7 +442,7 @@ begin
   FEdit.Font.Color := TextColor;
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomEdit.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin
@@ -448,7 +451,7 @@ end;
 
 procedure TUCustomEdit.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       FEdit.SetFocus;
       ButtonState := csPress;
@@ -458,9 +461,9 @@ end;
 
 procedure TUCustomEdit.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if (Focused = true) or (FEdit.Focused = true) then
+      if (Focused) or (FEdit.Focused) then
         ButtonState := csFocused
       else
         ButtonState := csNone;
@@ -471,7 +474,7 @@ end;
 
 procedure TUCustomEdit.WM_SetFocus(var Msg: TWMSetFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csFocused;
       inherited;
@@ -480,7 +483,7 @@ end;
 
 procedure TUCustomEdit.WM_KillFocus(var Msg: TWMKillFocus);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csNone;
       inherited;
@@ -488,36 +491,29 @@ begin
 end;
 
 procedure TUCustomEdit.WM_Size(var Msg: TWMSize);
-var
-  BorderThickness: Integer;
 begin
   inherited;
-  BorderThickness := 2;
-  BorderThickness := Round(BorderThickness * CurrentPPI / 96);
-
   Canvas.Brush.Color := FEdit.Color;
   Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 end;
 
 procedure TUCustomEdit.UM_SubEditSetFocus(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     ButtonState := csFocused;
-  //inherited;  //  Cancel this message
 end;
 
 procedure TUCustomEdit.UM_SubEditKillFocus(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     ButtonState := csNone;
-  //inherited;  //  Cancel this message
 end;
 
 procedure TUCustomEdit.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if (Focused = true) or (FEdit.Focused = true) then
+      if (Focused) or (FEdit.Focused) then
         ButtonState := csFocused
       else
         ButtonState := csHover;
@@ -527,9 +523,9 @@ end;
 
 procedure TUCustomEdit.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
-      if (Focused = true) or (FEdit.Focused = true) then
+      if (Focused) or (FEdit.Focused) then
         ButtonState := csFocused
       else
         ButtonState := csNone;
@@ -541,7 +537,7 @@ end;
 procedure TUCustomEdit.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
-  if Enabled = false then
+  if not Enabled then
     FButtonState := csDisabled
   else
     FButtonState := csNone;

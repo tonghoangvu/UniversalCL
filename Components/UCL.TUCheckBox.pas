@@ -11,26 +11,24 @@ uses
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
-  TUCustomCheckBox = class(TCustomControl, IUThemeControl)
-    private var
-      ICON_LEFT: Integer;
-      TEXT_LEFT: Integer;
-
+  TUCustomCheckBox = class(TCustomControl, IUThemeComponent)
     private
-      FThemeManager: TUThemeManager;
+      var ICON_LEFT: Integer;
+      var TEXT_LEFT: Integer;
 
+      FThemeManager: TUThemeManager;
+      FIconFont: TFont;
+
+      FAutoSize: Boolean;
       FHitTest: Boolean;
       FText: string;
       FAllowGrayed: Boolean;
       FState: TUCheckBoxState;
       FCustomActiveColor: TColor;
 
-      FIconFont: TFont;
-
-      //  Object setters
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
-
-      //  Value setters
+      procedure SetAutoSize(const Value: Boolean); reintroduce;
       procedure SetText(const Value: string);
       procedure SetAllowGrayed(const Value: Boolean);
       procedure SetState(const Value: TUCheckBoxState);
@@ -43,6 +41,7 @@ type
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -51,19 +50,18 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property IconFont: TFont read FIconFont write FIconFont;
 
+      property AutoSize: Boolean read FAutoSize write SetAutoSize default true;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Text: string read FText write SetText;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
-
-      property IconFont: TFont read FIconFont write FIconFont;
   end;
 
   TUCheckBox = class(TUCustomCheckBox)
     published
-      //  Common properties
       property Align;
       property Anchors;
       property Color;
@@ -81,7 +79,6 @@ type
       property Touch;
       property Visible;
 
-      //  Common events
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
@@ -102,19 +99,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomCheckBox }
+
+//  THEME
 
 procedure TUCustomCheckBox.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -126,12 +123,12 @@ begin
   Paint;
 end;
 
-{ VALUE SETTERS }
+//  SETTERS
 
 procedure TUCustomCheckBox.SetState(const Value: TUCheckBoxState);
 begin
   if Value <> FState then
-    if (AllowGrayed = false) and (Value = cbsGrayed) then
+    if (not AllowGrayed) and (Value = cbsGrayed) then
     else
       begin
         FState := Value;
@@ -144,9 +141,18 @@ begin
   if Value <> FAllowGrayed then
     begin
       FAllowGrayed := Value;
-      if (FAllowGrayed = false) and (FState = cbsGrayed) then
+      if (not FAllowGrayed) and (FState = cbsGrayed) then
         FState := cbsUnchecked;
       UpdateTheme;
+    end;
+end;
+
+procedure TUCustomCheckBox.SetAutoSize(const Value: Boolean);
+begin
+  if Value <> FAutoSize then
+    begin
+      FAutoSize := Value;
+      Resize;
     end;
 end;
 
@@ -159,7 +165,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomCheckBox.Create(aOwner: TComponent);
 begin
@@ -168,8 +174,6 @@ begin
   ICON_LEFT := 5;
   TEXT_LEFT := 35;
 
-  Height := 30;
-  Width := 200;
   ParentColor := true;
 
   Font.Name := 'Segoe UI';
@@ -179,14 +183,12 @@ begin
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
+  FAutoSize := true;
   FHitTest := true;
   FText := 'UCheckBox';
   FAllowGrayed := false;
   FState := cbsUnchecked;
   FCustomActiveColor := $D77800;  //  Default blue
-
-  //UpdateTheme;
-  //  Dont UpdateTheme if it call Paint method
 end;
 
 destructor TUCustomCheckBox.Destroy;
@@ -195,7 +197,7 @@ begin
   inherited Destroy;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
 begin
@@ -203,9 +205,9 @@ begin
 
   ICON_LEFT := MulDiv(ICON_LEFT, M, D);
   TEXT_LEFT := MulDiv(TEXT_LEFT, M, D);
-
-  //Font.Height := MulDiv(Font.Height, M, D);   //  Not neccesary
   IconFont.Height := MulDiv(IconFont.Height, M, D);
+
+  Resize;
 end;
 
 procedure TUCustomCheckBox.Paint;
@@ -213,7 +215,7 @@ var
   TextH: Integer;
   IconH: Integer;
 begin
-  Resize;
+  inherited;
 
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;  //  Paint empty background
@@ -241,7 +243,7 @@ begin
         if ThemeManager = nil then
           Canvas.Font.Color := CustomActiveColor
         else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
+          Canvas.Font.Color := ThemeManager.AccentColor;
         IconH := Canvas.TextHeight('');
 
         Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
@@ -267,7 +269,7 @@ begin
         if ThemeManager = nil then
           Canvas.Font.Color := CustomActiveColor
         else
-          Canvas.Font.Color := ThemeManager.ActiveColor;
+          Canvas.Font.Color := ThemeManager.AccentColor;
         IconH := Canvas.TextHeight('');
         Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
 
@@ -285,7 +287,20 @@ begin
 
 end;
 
-{ MESSAGES }
+procedure TUCustomCheckBox.Resize;
+begin
+  if AutoSize then
+    begin
+      Canvas.Font := IconFont;
+      Height := 2 * ICON_LEFT + Canvas.TextHeight('');
+      Canvas.Font := Font;
+      Width := TEXT_LEFT + Canvas.TextWidth(Text) + ICON_LEFT;
+    end
+  else
+    inherited;
+end;
+
+//  MESSAGES
 
 procedure TUCustomCheckBox.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin
@@ -300,12 +315,12 @@ end;
 
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       //  Unchecked > Checked > Grayed > ...
       case State of
         cbsChecked:
-          if AllowGrayed = true then
+          if AllowGrayed then
             State := cbsGrayed
           else
             State := cbsUnchecked;

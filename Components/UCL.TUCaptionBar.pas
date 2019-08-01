@@ -3,28 +3,24 @@ unit UCL.TUCaptionBar;
 interface
 
 uses
-  UCL.Classes, UCL.Utils, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   Winapi.Windows, Winapi.Messages,
   System.Classes,
   VCL.Controls, VCL.ExtCtrls, VCL.Forms, VCL.Graphics;
 
 type
-  TUCustomCaptionBar = class(TCustomPanel, IUThemeControl)
+  TUCustomCaptionBar = class(TCustomPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
       FDoubleClickMaximize: Boolean;
-      FUseNormalStyle: Boolean;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
-      //  Setters
-      procedure SetUseNormalStyle(const Value: Boolean);
-
-      procedure WM_LButtonDblClk(var Msg: TMessage); message WM_LBUTTONDBLCLK;
-      procedure WM_LButtonDown(var Msg: TMessage); message WM_LBUTTONDOWN;
+      procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
+      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_RButtonUp(var Msg: TMessage); message WM_RBUTTONUP;
 
     public
@@ -33,19 +29,15 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-
-      //  Field property
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
       property DoubleClickMaximize: Boolean read FDoubleClickMaximize write FDoubleClickMaximize default true;
-
-      //  Setter property
-      property UseNormalStyle: Boolean read FUseNormalStyle write SetUseNormalStyle default false;
   end;
 
   TUCaptionBar = class(TUCustomCaptionBar)
+    public
+      property DockManager;
     published
-      //  Common properties
       property Align;
       property Alignment;
       property Anchors;
@@ -59,6 +51,7 @@ type
       property BorderWidth;
       property BorderStyle;
       property Caption;
+      property Color;
       property Constraints;
       property Ctl3D;
       property UseDockManager default True;
@@ -74,6 +67,7 @@ type
       property Padding;
       property ParentBiDiMode;
       property ParentBackground;
+      property ParentColor;
       property ParentCtl3D;
       property ParentDoubleBuffered;
       property ParentFont;
@@ -88,7 +82,6 @@ type
       property Visible;
       property StyleElements;
 
-      //  Common events
       property OnAlignInsertBefore;
       property OnAlignPosition;
       property OnCanResize;
@@ -120,19 +113,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomCaptionBar }
+
+//  THEME
 
 procedure TUCustomCaptionBar.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -141,62 +134,31 @@ end;
 
 procedure TUCustomCaptionBar.UpdateTheme;
 begin
-  //  Not set ThemeManager
+  //  Background color
   if ThemeManager = nil then
     Color := $FFFFFF
-
-  //  Normal style (like VCL)
-  else if UseNormalStyle = true then
-    begin
-      if ThemeManager.ColorOnBorder = true then
-        Color := ThemeManager.ActiveColor //  Active color
-      else
-        Color := $FFFFFF;
-    end
-
-  //  New style (like UWP), depend AppTheme light or dark
+  else if ThemeManager.Theme = utLight then
+    Color := $F2F2F2
   else
-    begin
-      if ThemeManager.Theme = utLight then
-        Color := $F2F2F2  //  Light color
-      else
-        Color := $2B2B2B; //  Dark color
-    end;
+    Color := $2B2B2B;
 
+  //  Font color
   Font.Color := GetTextColorFromBackground(Color);
 end;
 
-{ SETTERS }
-
-procedure TUCustomCaptionBar.SetUseNormalStyle(const Value: Boolean);
-begin
-  if Value <> FUseNormalStyle then
-    begin
-      FUseNormalStyle := Value;
-      UpdateTheme;
-    end;
-end;
-
-{ MAIN CLASS }
+// MAIN CLASS
 
 constructor TUCustomCaptionBar.Create(aOwner: TComponent);
 begin
-  inherited Create(aOwner);
-
-  //  New properties
+  inherited;
   FDragMovement := true;
   FSystemMenuEnabled := true;
   FDoubleClickMaximize := true;
-  FUseNormalStyle := false;
 
-  //  Common properties
   Align := alTop;
   BevelOuter := bvNone;
-  BorderStyle := bsNone;
-  Height := 32;
   TabStop := false;
-  ParentColor := false;
-  ParentBackground := false;
+  Height := 32;
 
   Font.Name := 'Segoe UI';
   Font.Size := 9;
@@ -204,26 +166,27 @@ begin
   UpdateTheme;
 end;
 
-{ MESSAGES }
+// MESSAGES
 
-procedure TUCustomCaptionBar.WM_LButtonDblClk(var Msg: TMessage);
+procedure TUCustomCaptionBar.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
+var
+  ParentForm: TCustomForm;
 begin
   inherited;
-  if DoubleClickMaximize = true then
-    if Parent is TForm then
-      begin
-        if (Parent as TForm).WindowState <> wsMaximized then
-          (Parent as TForm).WindowState := wsMaximized
-        else
-          (Parent as TForm).WindowState := wsNormal;
-      end;
+  if DoubleClickMaximize then
+    begin
+      ParentForm := GetParentForm(Self, true);
+      if ParentForm.WindowState <> wsMaximized then
+        ParentForm.WindowState := wsMaximized
+      else
+        ParentForm.WindowState := wsNormal;
+    end;
 end;
 
-procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TMessage);
+procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   inherited;
-
-  if DragMovement = true then
+  if DragMovement then
     begin
       ReleaseCapture;
       Parent.Perform(WM_SYSCOMMAND, $F012, 0);
@@ -237,7 +200,7 @@ var
   P: TPoint;
 begin
   inherited;
-  if SystemMenuEnabled = true then
+  if SystemMenuEnabled then
     begin
       P.X := Msg.LParamLo;
       P.Y := Msg.LParamHi;

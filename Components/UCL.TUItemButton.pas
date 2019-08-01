@@ -11,7 +11,7 @@ uses
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
 
-  TUCustomItemButton = class(TCustomControl, IUThemeControl)
+  TUCustomItemButton = class(TCustomControl, IUThemeComponent)
     const
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
@@ -110,10 +110,12 @@ type
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property HitTest: Boolean read FHitTest write FHitTest default true;
 
+      //  Image
       property Images: TCustomImageList read FImages write FImages;
       property ImageLeftIndex: Integer read FImageLeftIndex write SetImageLeftIndex default -1;
       property ImageRightIndex: Integer read FImageRightIndex write SetImageRightIndex default -1;
 
+      //  Font
       property IconFont: TFont read FIconFont write FIconFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
 
@@ -187,19 +189,19 @@ type
 
 implementation
 
-{ THEME }
+{ TUCustomItemButton }
+
+//  THEME
 
 procedure TUCustomItemButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
@@ -211,7 +213,7 @@ begin
   Paint;
 end;
 
-{ SETTERS }
+//  SETTERS
 
 procedure TUCustomItemButton.SetButtonState(const Value: TUControlState);
 begin
@@ -399,7 +401,7 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
 constructor TUCustomItemButton.Create(aOwner: TComponent);
 begin
@@ -462,7 +464,7 @@ begin
   inherited Destroy;
 end;
 
-{ CUSTOM METHODS }
+//  CUSTOM METHODS
 
 procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
 begin
@@ -498,7 +500,7 @@ begin
     aTheme := ThemeManager.Theme;
 
   //  Transparent enabled
-  if (ButtonState = csNone) and (Transparent = true) then
+  if (ButtonState = csNone) and (Transparent) then
     begin
       ParentColor := true;
       BackColor := Color;
@@ -509,11 +511,11 @@ begin
   //  Highlight enabled
   else if
     (ThemeManager <> nil)
-    and ((IsToggleButton = true) and (IsToggled = true))
+    and ((IsToggleButton) and (IsToggled))
     and (ButtonState in [csNone, csHover, csFocused])
   then
     begin
-      BackColor := ThemeManager.ActiveColor;
+      BackColor := ThemeManager.AccentColor;
       TextColor := GetTextColorFromBackground(BackColor);
       DetailColor := clSilver;
     end
@@ -532,15 +534,15 @@ begin
 
   Canvas.Font := IconFont;
   //  Paint checkbox
-  if ShowCheckBox = true then
+  if ShowCheckBox then
     begin
-      if IsChecked = true then
+      if IsChecked then
         begin
           //  Paint only check icon
           if ThemeManager = nil then
             Canvas.Font.Color := CustomActiveColor
           else
-            Canvas.Font.Color := ThemeManager.ActiveColor;
+            Canvas.Font.Color := ThemeManager.AccentColor;
 
           ObjectH := Canvas.TextHeight('');
           ObjectW := Canvas.TextWidth('');
@@ -566,7 +568,7 @@ begin
 
   inc(LPos, AlignSpace);
   //  Paint left icon
-  if ShowLeftIcon = true then
+  if ShowLeftIcon then
     if LeftIconKind = ikFontIcon then
       begin
         ObjectH := Canvas.TextHeight(LeftIcon);
@@ -588,7 +590,7 @@ begin
 
   dec(RPos, AlignSpace);
   //  Paint right icon
-  if ShowRightIcon = true then
+  if ShowRightIcon then
     if RightIconKind = ikFontIcon then
       begin
         ObjectH := Canvas.TextHeight(RightIcon);
@@ -611,7 +613,7 @@ begin
   Canvas.Font := Self.Font; //  Default font = text font
 
   // Paint text
-  if ShowText = true then
+  if ShowText then
     begin
       Canvas.Font.Color := TextColor;
 
@@ -620,7 +622,7 @@ begin
     end;
 
   //  Paint detail
-  if ShowDetail = true then
+  if ShowDetail then
     begin
       Canvas.Font := DetailFont;
       Canvas.Font.Color := DetailColor;
@@ -631,7 +633,7 @@ begin
     end;
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomItemButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin
@@ -640,7 +642,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csPress;
       inherited;
@@ -649,7 +651,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csPress;
       inherited;
@@ -658,7 +660,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       if Msg.XPos < CheckBoxWidth then
         FObjectSelected := iokCheckBox
@@ -682,7 +684,7 @@ begin
       end;
 
       //  Switch toggle state
-      if (IsToggleButton = true) and (FObjectSelected <> iokCheckBox) then
+      if (IsToggleButton) and (FObjectSelected <> iokCheckBox) then
         FIsToggled := not FIsToggled;
 
       ButtonState := csHover;
@@ -692,7 +694,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csHover;
       inherited;
@@ -701,7 +703,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       ButtonState := csNone;
       inherited;
@@ -711,7 +713,7 @@ end;
 procedure TUCustomItemButton.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
-  if Enabled = false then
+  if not Enabled then
     FButtonState := csDisabled
   else
     FButtonState := csNone;

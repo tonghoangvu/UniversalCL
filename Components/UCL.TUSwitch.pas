@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.WinXCtrls;
 
 type
-  TUSwitch = class(TCustomToggleSwitch, IUThemeControl)
+  TUCustomSwitch = class(TCustomToggleSwitch, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -32,8 +32,10 @@ type
 
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property CustomColor: TColor read FCustomColor write SetCustomColor;
+  end;
 
-      {$REGION 'Common properties'}
+  TUSwitch = class(TUCustomSwitch)
+    published
       property Action;
       property Align;
       property Alignment;
@@ -94,36 +96,35 @@ type
       property OnMouseUp;
       property OnStartDock;
       property OnStartDrag;
-      {$ENDREGION}
   end;
 
 implementation
 
-{ THEME }
+{ TUCustomSwitch }
 
-procedure TUSwitch.SetThemeManager(const Value: TUThemeManager);
+//  THEME
+
+procedure TUCustomSwitch.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
-      //  Disconnect current ThemeManager
       if FThemeManager <> nil then
-        FThemeManager.DisconnectControl(Self);
+        FThemeManager.Disconnect(Self);
 
-      //  Connect to new ThemeManager
       if Value <> nil then
-        Value.ConnectControl(Self);
+        Value.Connect(Self);
 
       FThemeManager := Value;
       UpdateTheme;
     end;
 end;
 
-procedure TUSwitch.UpdateTheme;
+procedure TUCustomSwitch.UpdateTheme;
 begin
   //  Dont set ThemeManager
   if ThemeManager = nil then
     begin
-      if IsOn = true then
+      if IsOn then
         begin
           ThumbColor := $FFFFFF;
           Color := CustomColor;
@@ -141,11 +142,11 @@ begin
   //  Light theme
   else if ThemeManager.Theme = utLight then
     begin
-      if IsOn = true then
+      if IsOn then
         begin
           ThumbColor := $FFFFFF;
-          Color := ThemeManager.ActiveColor;
-          FrameColor := ThemeManager.ActiveColor;
+          Color := ThemeManager.AccentColor;
+          FrameColor := ThemeManager.AccentColor;
         end
       else
         begin
@@ -159,11 +160,11 @@ begin
   //  Dark theme
   else
     begin
-      if IsOn = true then
+      if IsOn then
         begin
           ThumbColor := $FFFFFF;
-          Color := ThemeManager.ActiveColor;
-          FrameColor := ThemeManager.ActiveColor;
+          Color := ThemeManager.AccentColor;
+          FrameColor := ThemeManager.AccentColor;
         end
       else
         begin
@@ -175,9 +176,9 @@ begin
     end;
 end;
 
-{ SETTERS }
+//  SETTERS
 
-procedure TUSwitch.SetCustomColor(const Value: TColor);
+procedure TUCustomSwitch.SetCustomColor(const Value: TColor);
 begin
   if Value <> FCustomColor then
     begin
@@ -186,9 +187,9 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+//  MAIN CLASS
 
-constructor TUSwitch.Create(aOwner: TComponent);
+constructor TUCustomSwitch.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -202,11 +203,11 @@ begin
   UpdateTheme;
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
-procedure TUSwitch.WM_LButtonUp(var Msg: TMessage);
+procedure TUCustomSwitch.WM_LButtonUp(var Msg: TMessage);
 begin
-  if (Enabled = true) and (HitTest = true) then
+  if Enabled and HitTest then
     begin
       inherited;
       UpdateTheme;

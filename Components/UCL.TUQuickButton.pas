@@ -12,13 +12,15 @@ type
   TUCustomQuickButton = class(TCustomControl)
     private
       FButtonState: TUControlState;
-
       FHighlightColor: TColor;
       FFontIcon: string;
       FPressBrightnessDelta: Integer;
 
+      //  Setters
       procedure SetButtonState(const Value: TUControlState);
+      procedure SetFontIcon(const Value: string);
 
+      //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
@@ -33,10 +35,9 @@ type
 
     published
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-
       property HighlightColor: TColor read FHighlightColor write FHighlightColor default $D77800;
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
-      property FontIcon: string read FFontIcon write FFontIcon;
+      property FontIcon: string read FFontIcon write SetFontIcon;
   end;
 
   TUQuickButton = class(TUCustomQuickButton)
@@ -80,7 +81,9 @@ type
 
 implementation
 
-{ SETTERS }
+{ TUCustomQuickButton }
+
+//  SETTERS
 
 procedure TUCustomQuickButton.SetButtonState(const Value: TUControlState);
 begin
@@ -91,7 +94,16 @@ begin
     end;
 end;
 
-{ MAIN CLASS }
+procedure TUCustomQuickButton.SetFontIcon(const Value: string);
+begin
+  if Value <> FFontIcon then
+    begin
+      FFontIcon := Value;
+      Paint;
+    end;
+end;
+
+//  MAIN CLASS
 
 constructor TUCustomQuickButton.Create(aOwner: TComponent);
 begin
@@ -104,9 +116,11 @@ begin
 
   Font.Name := 'Segoe MDL2 Assets';
   Font.Size := 11;
+  Height := 32;
+  Width := 45;
 end;
 
-{ CUSTOM METHODS }
+// CUSTOM METHODS
 
 procedure TUCustomQuickButton.Paint;
 var
@@ -150,7 +164,7 @@ begin
   Canvas.TextOut(TextX, TextY, FontIcon);
 end;
 
-{ MESSAGES }
+//  MESSAGES
 
 procedure TUCustomQuickButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
 begin
@@ -159,7 +173,7 @@ end;
 
 procedure TUCustomQuickButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled = true then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -168,7 +182,7 @@ end;
 
 procedure TUCustomQuickButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled = true then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -177,7 +191,7 @@ end;
 
 procedure TUCustomQuickButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled = true then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -186,7 +200,7 @@ end;
 
 procedure TUCustomQuickButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -195,7 +209,7 @@ end;
 
 procedure TUCustomQuickButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled = true then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;
