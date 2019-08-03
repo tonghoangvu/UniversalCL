@@ -32,7 +32,6 @@ type
       procedure SetAutoAccentColor(const Value: Boolean);
       procedure SetAccentColor(const Value: TColor);
       procedure SetAutoColorOnBorder(const Value: Boolean);
-      procedure SetColorOnBorder(const Value: Boolean);
 
     public 
       constructor Create(aOwner: TComponent); override;
@@ -53,7 +52,7 @@ type
       property AutoAccentColor: Boolean read FAutoAccentColor write SetAutoAccentColor default true;
       property AccentColor: TColor read FAccentColor write SetAccentColor default $D77800;
       property AutoColorOnBorder: Boolean read FAutoColorOnBorder write SetAutoColorOnBorder default true;
-      property ColorOnBorder: Boolean read FColorOnBorder write SetColorOnBorder default false;
+      property ColorOnBorder: Boolean read FColorOnBorder default false;
       property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
   end;
 
@@ -124,17 +123,6 @@ begin
           if AutoUpdateControls then
             UpdateThemeForControls;
         end;
-    end;
-end;
-
-procedure TUThemeManager.SetColorOnBorder(const Value: Boolean);
-begin
-  FAutoColorOnBorder := false;
-  if Value <> FColorOnBorder then
-    begin
-      FColorOnBorder := Value;
-      if AutoUpdateControls then
-        UpdateThemeForControls;
     end;
 end;
 
