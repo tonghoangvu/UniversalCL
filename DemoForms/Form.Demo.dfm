@@ -6,12 +6,14 @@ object formDemo: TformDemo
   ClientWidth = 1000
   Color = clWhite
   Ctl3D = False
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
+  Scaled = False
   Visible = True
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -24,7 +26,7 @@ object formDemo: TformDemo
     Cursor = crHandPoint
     Caption = 'Right click to open context menu'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = 361033
+    Font.Color = 14120960
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
@@ -389,6 +391,9 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
+      ThemeManager = AppTheme
+      LightColor = 14120960
+      DarkColor = 14120960
       FontIcon = #57510
       Align = alLeft
       Font.Charset = DEFAULT_CHARSET
@@ -404,7 +409,9 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
-      HighlightColor = 2298344
+      ThemeManager = AppTheme
+      LightColor = 2298344
+      DarkColor = 2298344
       PressBrightnessDelta = 32
       FontIcon = #57606
       Align = alRight
@@ -422,7 +429,9 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
-      HighlightColor = 13619151
+      ThemeManager = AppTheme
+      LightColor = 13619151
+      DarkColor = 3947580
       PressBrightnessDelta = -32
       FontIcon = #59193
       Align = alRight
@@ -440,7 +449,9 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
-      HighlightColor = 13619151
+      ThemeManager = AppTheme
+      LightColor = 13619151
+      DarkColor = 3947580
       PressBrightnessDelta = -32
       FontIcon = #59192
       Align = alRight
@@ -468,7 +479,7 @@ object formDemo: TformDemo
       ItemIndex = 0
       TabOrder = 4
       Text = '100%'
-      OnSelect = comboAppDPISelect
+      OnChange = comboAppDPIChange
       Items.Strings = (
         '100%'
         '125%'
@@ -489,6 +500,7 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 1
     ThemeManager = AppTheme
+    ScrollOrientation = oHorizontal
     MaxScrollCount = 6
     object separator1: TUSeparator
       Left = 120
@@ -717,6 +729,7 @@ object formDemo: TformDemo
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
     Text = 'Button no focus'
+    TextAlignment = taLeftJustify
     AllowFocus = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -773,6 +786,7 @@ object formDemo: TformDemo
     CustomTextColors.Press = clWhite
     CustomTextColors.Disabled = clGray
     Text = 'Custom button'
+    TextAlignment = taRightJustify
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -1115,8 +1129,6 @@ object formDemo: TformDemo
     Width = 151
     Height = 31
     Caption = 'Start animation'
-    DoubleBuffered = False
-    ParentDoubleBuffered = False
     TabOrder = 19
     OnClick = buttonAniStartClick
   end
@@ -1430,7 +1442,7 @@ object formDemo: TformDemo
       Layout = tlCenter
       ThemeManager = AppTheme
       TextKind = tkHeading
-      ExplicitTop = -18
+      ExplicitWidth = 71
     end
     object entryAppTheme: TUText
       AlignWithMargins = True
@@ -1453,7 +1465,6 @@ object formDemo: TformDemo
       Layout = tlCenter
       ThemeManager = AppTheme
       TextKind = tkEntry
-      ExplicitTop = -517
       ExplicitWidth = 68
     end
     object entryUserProfile: TUText
@@ -1476,7 +1487,6 @@ object formDemo: TformDemo
       ParentFont = False
       ThemeManager = AppTheme
       TextKind = tkEntry
-      ExplicitTop = -320
       ExplicitWidth = 69
     end
     object imgAvatar: TImage
@@ -1589,7 +1599,6 @@ object formDemo: TformDemo
       ParentFont = False
       ThemeManager = AppTheme
       TextKind = tkEntry
-      ExplicitTop = -81
       ExplicitWidth = 50
     end
     object desAccountHint: TUText
@@ -1613,7 +1622,6 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitTop = 118
       ExplicitWidth = 198
     end
     object entryStorage: TUText
@@ -1636,7 +1644,6 @@ object formDemo: TformDemo
       ParentFont = False
       ThemeManager = AppTheme
       TextKind = tkEntry
-      ExplicitTop = 91
       ExplicitWidth = 76
     end
     object desStorageHint: TUText
@@ -1660,7 +1667,6 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitTop = 213
       ExplicitWidth = 186
     end
     object headingAbout: TUText
@@ -1683,7 +1689,6 @@ object formDemo: TformDemo
       ParentFont = False
       ThemeManager = AppTheme
       TextKind = tkHeading
-      ExplicitTop = 273
       ExplicitWidth = 55
     end
     object desAppVersion: TUText
@@ -1707,7 +1712,6 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitTop = 351
       ExplicitWidth = 84
     end
     object desFlashVersion: TUText
@@ -1731,7 +1735,6 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitTop = 371
       ExplicitWidth = 119
     end
     object desChromiumVersion: TUText
@@ -1755,7 +1758,6 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = AppTheme
       TextKind = tkDescription
-      ExplicitTop = 391
       ExplicitWidth = 126
     end
     object linkEmbarcadero: TUHyperLink
@@ -1772,7 +1774,7 @@ object formDemo: TformDemo
       Align = alTop
       Caption = 'https://example.com/'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = 361033
+      Font.Color = 14120960
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
@@ -1784,7 +1786,6 @@ object formDemo: TformDemo
       CustomTextColors.Disabled = clMedGray
       CustomTextColors.Focused = 14120960
       URL = 'https://example.com/'
-      ExplicitTop = 411
       ExplicitWidth = 124
     end
     object radioDefaultTheme: TURadioButton
@@ -1898,13 +1899,13 @@ object formDemo: TformDemo
       Text = 'Color on window border'
       CustomActiveColor = 14120960
       Align = alTop
+      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      OnClick = checkColorBorderClick
     end
     object editAccountName: TUEdit
       Tag = 2
@@ -2209,8 +2210,6 @@ object formDemo: TformDemo
     end
   end
   object AppTheme: TUThemeManager
-    AutoAccentColor = False
-    AccentColor = 361033
     OnUpdate = AppThemeUpdate
     Left = 620
     Top = 40
@@ -2519,69 +2518,29 @@ object formDemo: TformDemo
     Left = 540
     Top = 40
   end
-  object popupVert: TUContextMenu
-    Items = <
-      item
-        Text = 'Google Drive'
-        Detail = 'OpenLink'
-        SymbolChar = #57345
-        ShowIcon = True
-        ImageKind = ikImage
-        ImageIndex = 0
-      end
-      item
-        Text = 'Gmail'
-        Detail = 'Open link'
-        SymbolChar = #57345
-        ShowIcon = True
-        ImageKind = ikImage
-        ImageIndex = 2
-      end
-      item
-        Text = 'TeamViewer'
-        Detail = 'Open link'
-        SymbolChar = #57345
-        ShowIcon = True
-        ImageKind = ikImage
-        ImageIndex = 1
-      end>
+  object popupVert: TUPopupMenu
     Images = imglistMain
     ThemeManager = AppTheme
-    PopupWidth = 210
-    PopupHeight = 40
-    ItemHeight = 35
-    Left = 800
+    ItemsData.Strings = (
+      '0|Google Drive|Open link'
+      '2|Gmail|Open link'
+      '1|TeamViewer|Open link')
+    SeparatorChar = '|'
+    ItemWidth = 250
+    Left = 780
     Top = 40
   end
-  object popupHorz: TUContextMenu
-    Items = <
-      item
-        Text = 'Cut'
-        Detail = 'Ctrl+X'
-        SymbolChar = #57707
-        ShowDetail = False
-        ShowIcon = True
-      end
-      item
-        Text = 'Copy'
-        Detail = 'Ctrl+C'
-        SymbolChar = #57711
-        ShowDetail = False
-        ShowIcon = True
-      end
-      item
-        Text = 'Paste'
-        Detail = 'Ctrl+V'
-        SymbolChar = #57709
-        ShowDetail = False
-        ShowIcon = True
-      end>
+  object popupHorz: TUPopupMenu
     ThemeManager = AppTheme
-    PopupHeight = 35
-    ItemWidth = 80
+    ItemsData.Strings = (
+      #57707'|Cut|'
+      #57711'|Copy|'
+      #57709'|Paste|')
+    SeparatorChar = '|'
     Orientation = oHorizontal
+    ItemWidth = 80
     OnItemClick = popupHorzItemClick
-    Left = 870
+    Left = 850
     Top = 40
   end
 end

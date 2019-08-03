@@ -9,14 +9,17 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomQuickButton = class(TCustomControl)
+  TUCustomQuickButton = class(TCustomControl, IUThemeComponent)
     private
+      FThemeManager: TUThemeManager;
       FButtonState: TUControlState;
-      FHighlightColor: TColor;
+      FLightColor: TColor;
+      FDarkColor: TColor;
       FFontIcon: string;
       FPressBrightnessDelta: Integer;
 
       //  Setters
+      procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
       procedure SetFontIcon(const Value: string);
 
@@ -31,11 +34,14 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      procedure UpdateTheme;
       procedure Paint; override;
 
     published
+      property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property HighlightColor: TColor read FHighlightColor write FHighlightColor default $D77800;
+      property LightColor: TColor read FLightColor write FLightColor default $E6E6E6;
+      property DarkColor: TColor read FDarkColor write FDarkColor default $191919;
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
       property FontIcon: string read FFontIcon write SetFontIcon;
   end;
@@ -83,6 +89,28 @@ implementation
 
 { TUCustomQuickButton }
 
+//  THEME
+
+procedure TUCustomQuickButton.SetThemeManager(const Value: TUThemeManager);
+begin
+  if Value <> FThemeManager then
+    begin
+      if FThemeManager <> nil then
+        FThemeManager.Disconnect(Self);
+
+      if Value <> nil then
+        Value.Connect(Self);
+
+      FThemeManager := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomQuickButton.UpdateTheme;
+begin
+  Paint;
+end;
+
 //  SETTERS
 
 procedure TUCustomQuickButton.SetButtonState(const Value: TUControlState);
@@ -110,7 +138,8 @@ begin
   inherited;
 
   FButtonState := csNone;
-  FHighlightColor := $D77800;
+  FLightColor := $E6E6E6;
+  FDarkColor := $191919;
   FPressBrightnessDelta := 25;
   FFontIcon := '';
 
@@ -134,27 +163,47 @@ begin
         ParentColor := true;
         BackColor := Color;
       end;
+
     csHover:
-      BackColor := HighlightColor;
+      if ThemeManager = nil then
+        BackColor := LightColor
+      else if ThemeManager.Theme = utLight then
+        BackColor := LightColor
+      else
+        BackColor := DarkColor;
+
     csPress:
-      BackColor := BrightenColor(HighlightColor, PressBrightnessDelta);
+      if ThemeManager = nil then
+        BackColor := BrightenColor(LightColor, PressBrightnessDelta)
+      else if ThemeManager.Theme = utLight then
+        BackColor := BrightenColor(LightColor, PressBrightnessDelta)
+      else
+        BackColor := BrightenColor(DarkColor, -PressBrightnessDelta);
+
     csDisabled:
       BackColor := $666666;
+
     csFocused:
-      BackColor := HighlightColor;
+      if ThemeManager = nil then
+        BackColor := LightColor
+      else if ThemeManager.Theme = utLight then
+        BackColor := LightColor
+      else
+        BackColor := DarkColor;
+
     else
       BackColor := $D77800;
   end;
+
+  //  Overwrite background
+  Canvas.Brush.Color := BackColor;
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Get text color
   TextColor := GetTextColorFromBackground(BackColor);
 
   Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
-
-  //  Overwrite background
-  Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint text
   TextW := Canvas.TextWidth(FontIcon);

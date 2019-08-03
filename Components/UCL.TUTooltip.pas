@@ -20,6 +20,9 @@ type
       procedure WM_Paint(var Msg: TWMPaint); message WM_PAINT;
       procedure WM_NCPaint(var Msg: TWMNCPaint); message WM_NCPAINT;
 
+    protected
+      procedure CreateParams(var Params: TCreateParams); override;
+
     public
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
   end;
@@ -71,6 +74,12 @@ begin
 end;
 
 //  MESSAGES
+
+procedure TUCustomTooltip.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  Params.WindowClass.Style := Params.WindowClass.style and not CS_DROPSHADOW;
+end;
 
 procedure TUCustomTooltip.WM_NCPaint(var Msg: TWMNCPaint);
 var

@@ -58,11 +58,11 @@ contains
   UCL.TUScrollBox in 'Components\UCL.TUScrollBox.pas',
   UCL.TUSlider in 'Components\UCL.TUSlider.pas',
   UCL.TUTooltip in 'Components\UCL.TUTooltip.pas',
-  UCL.TUContextMenu in 'Components\UCL.TUContextMenu.pas',
   UCL.TUQuickButton in 'Components\UCL.TUQuickButton.pas',
   UCL.TUBorder in 'Components\UCL.TUBorder.pas',
   UCL.IntAnimation.Collection in 'UCL.IntAnimation.Collection.pas',
-  UCL.IntAnimation.Helpers in 'UCL.IntAnimation.Helpers.pas';
+  UCL.IntAnimation.Helpers in 'UCL.IntAnimation.Helpers.pas',
+  UCL.TUPopupMenu in 'Components\UCL.TUPopupMenu.pas';
 
 end.
 

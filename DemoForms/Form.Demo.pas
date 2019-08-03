@@ -7,8 +7,8 @@ uses
   UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUSlider, UCL.TUContextMenu, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton,
-  UCL.TUQuickButton, UCL.TUBorder,
+  UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton, UCL.TUBorder,
+  UCL.TUPopupMenu,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -82,8 +82,6 @@ type
     sliderHorz: TUSlider;
     sliderDisabled: TUSlider;
     sliderVert: TUSlider;
-    popupVert: TUContextMenu;
-    popupHorz: TUContextMenu;
     buttonAppBack: TUQuickButton;
     buttonAppQuit: TUQuickButton;
     buttonAppMaximized: TUQuickButton;
@@ -120,6 +118,8 @@ type
     desChromiumVersion: TUText;
     linkEmbarcadero: TUHyperLink;
     USeparator1: TUSeparator;
+    popupVert: TUPopupMenu;
+    popupHorz: TUPopupMenu;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -130,7 +130,6 @@ type
     procedure radioLightThemeClick(Sender: TObject);
     procedure radioDarkThemeClick(Sender: TObject);
     procedure panelSelectAccentColorClick(Sender: TObject);
-    procedure checkColorBorderClick(Sender: TObject);
     procedure buttonAppQuitClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
     procedure buttonAppMaximizedClick(Sender: TObject);
@@ -138,7 +137,7 @@ type
     procedure sliderHorzChange(Sender: TObject);
     procedure popupHorzItemClick(Sender: TObject; Index: Integer);
     procedure AppThemeUpdate(Sender: TObject);
-    procedure comboAppDPISelect(Sender: TObject);
+    procedure comboAppDPIChange(Sender: TObject);
   private
   public
   end;
@@ -184,7 +183,7 @@ var
   AniLength: Integer;
 begin
   AniLength := 210;
-  AniLength := Round(AniLength * PixelsPerInch / 96); //  Scale animation length
+  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
     procedure begin buttonRunning.SetFocus end);
 end;
@@ -194,7 +193,7 @@ var
   AniLength: Integer;
 begin
   AniLength := 210;
-  AniLength := Round(AniLength * PixelsPerInch / 96); //  Scale animation length
+  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
     procedure begin buttonRunning.SetFocus end);
 end;
@@ -204,7 +203,7 @@ var
   DPI: Single;
   AniDelta: Integer;
 begin
-  DPI := Self.PixelsPerInch / 96;
+  DPI := Self.PPI / 96;
 
   boxSmoothScrolling.DisableAlign;
   boxSmoothScrolling.SetOldScrollBarVisible(false);
@@ -223,7 +222,7 @@ var
   DPI: Single;
   AniWidth: Integer;
 begin
-  DPI := Self.PixelsPerInch / 96;
+  DPI := PPI / 96;
   AniWidth := Round((225 - 45 ) * DPI);
   if drawerNavigation.Width <> Round(45 * DPI) then
     AniWidth := - AniWidth;
@@ -237,7 +236,8 @@ procedure TformDemo.AppThemeUpdate(Sender: TObject);
 begin
   //  Active color changed
   panelSelectAccentColor.CustomBackColor := AppTheme.AccentColor;
-  buttonAppBack.HighlightColor := AppTheme.AccentColor;
+  buttonAppBack.LightColor := AppTheme.AccentColor;
+  buttonAppBack.DarkColor := AppTheme.AccentColor;
 
   //  Color on border setting changed
   if AppTheme.ColorOnBorder = true then
@@ -251,12 +251,7 @@ begin
   AppTheme.ReloadAutoSettings;
 end;
 
-procedure TformDemo.checkColorBorderClick(Sender: TObject);
-begin
-  AppTheme.ColorOnBorder := checkColorBorder.State = cbsChecked;
-end;
-
-procedure TformDemo.comboAppDPISelect(Sender: TObject);
+procedure TformDemo.comboAppDPIChange(Sender: TObject);
 var
   NewPPI: Integer;
 begin
@@ -268,7 +263,7 @@ begin
       NewPPI := 96;
   end;
 
-  PixelsPerInch := NewPPI;
+  Self.PPI := NewPPI;
   ScaleForPPI(NewPPI);
 end;
 

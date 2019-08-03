@@ -7,7 +7,7 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
   System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics, VCL.Dialogs;
+  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -39,7 +39,6 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Messages
-      procedure WM_Paint(var Msg: TWMPaint); message WM_PAINT;
       procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
       procedure WM_MouseWheel(var Msg: TWMMouseWheel); message WM_MOUSEWHEEL;
 
@@ -307,13 +306,6 @@ begin
   else
     //  Continue getting scroll messages
     Inc(ScrollCount);
-end;
-
-procedure TUScrollBox.WM_Paint(var Msg: TWMPaint);
-begin
-  inherited;
-  if ScrollBarStyle <> sbsFull then
-    SetOldScrollBarVisible(false);
 end;
 
 procedure TUScrollBox.WM_Size(var Msg: TWMSize);

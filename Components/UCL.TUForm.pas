@@ -22,6 +22,7 @@ type
       FThemeManager: TUThemeManager;
       FIsActive: Boolean;
       FResizable: Boolean;
+      FPPI: Integer;
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
@@ -38,16 +39,47 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
+      procedure UpdateBorderColor;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property IsActive: Boolean read FIsActive default true;
       property Resizable: Boolean read FResizable write FResizable default true;
+      property PPI: Integer read FPPI write FPPI default 96;
   end;
 
 implementation
 
 { TUForm }
+
+//  UTILS
+
+procedure TUForm.UpdateBorderColor;
+begin
+  //  Border color
+  if ThemeManager = nil then
+    BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
+
+  else if ThemeManager.ColorOnBorder then
+    BorderColor := ThemeManager.AccentColor //  Use accent color
+
+  else if ThemeManager.Theme = utLight then
+    //  Light
+    begin
+      if IsActive then
+        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
+      else
+        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_LIGHT;
+    end
+  else
+    //  Dark
+    begin
+      if IsActive then
+        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK
+      else
+        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
+    end;
+end;
 
 //  THEME
 
@@ -85,28 +117,7 @@ begin
       HintWindowClass := TUDarkTooltip;
     end;
 
-  //  Border color
-  if ThemeManager = nil then
-    BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
-  else if ThemeManager.ColorOnBorder then
-    BorderColor := ThemeManager.AccentColor //  Use accent color
-  else if ThemeManager.Theme = utLight then
-    //  Light
-    begin
-      if IsActive then
-        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
-      else
-        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_LIGHT;
-    end
-  else
-    //  Dark
-    begin
-      if IsActive then
-        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK
-      else
-        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
-    end;
-
+  UpdateBorderColor;
   Invalidate;
 end;
 
@@ -124,7 +135,7 @@ begin
 
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
-  PixelsPerInch := CurrentScreen.PixelsPerInch;
+  FPPI := CurrentScreen.PixelsPerInch;
 
   UpdateTheme;
 end;
@@ -143,27 +154,12 @@ begin
 end;
 
 procedure TUForm.Resize;
-var
-  CurrentScreen: TMonitor;
 begin
+  inherited;
   if WindowState = wsMaximized then
-    begin
-      CurrentScreen := Screen.MonitorFromWindow(Handle);
-      Top := CurrentScreen.WorkareaRect.Top;
-      Left := CurrentScreen.WorkareaRect.Left;
-      Width := CurrentScreen.WorkareaRect.Right - CurrentScreen.WorkareaRect.Left;
-      Height := CurrentScreen.WorkareaRect.Bottom - CurrentScreen.WorkareaRect.Top - 1;
-        //  Without -1, form will be over screen
-
-      Padding.SetBounds(0, 0, 0, 0);  //  No border space
-      Invalidate;
-    end
+    Padding.SetBounds(0, 0, 0, 0)
   else
-    begin
-      Padding.SetBounds(0, 1, 0, 0);
-      Invalidate;
-      inherited;
-    end;
+    Padding.SetBounds(0, 1, 0, 0);
 end;
 
 //  MESSAGES
@@ -172,11 +168,20 @@ procedure TUForm.WM_Activate(var Msg: TWMActivate);
 begin
   inherited;
   FIsActive := Msg.Active <> WA_INACTIVE;
+
+  //  Paint top border
+  if WindowState <> wsMaximized then
+    begin
+      UpdateBorderColor;
+      Canvas.Pen.Color := BorderColor;
+      Canvas.MoveTo(0, 0);
+      Canvas.LineTo(Width, 0);
+    end;
 end;
 
 procedure TUForm.WM_DPIChanged(var Msg: TWMDpi);
 begin
-  PixelsPerInch := Msg.XDpi;
+  PPI := Msg.XDpi;
   inherited;
 end;
 
@@ -190,7 +195,7 @@ end;
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
 var
   CaptionBarHeight: Integer;
-  BorderThickness: Integer;
+  BorderSpace: Integer;
 begin
   inherited;
 
@@ -200,12 +205,10 @@ begin
     GetSystemMetrics(SM_CXPADDEDBORDER);
   Dec(Msg.CalcSize_Params.rgrc[0].Top, CaptionBarHeight); //  Hide caption bar
 
-  if WindowState = wsMaximized then
+  if WindowState = wsMaximized then //  Add space on top
     begin
-      BorderThickness := GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
-      Dec(Msg.CalcSize_Params.rgrc[0].Left, BorderThickness);
-      Inc(Msg.CalcSize_Params.rgrc[0].Right, BorderThickness);
-      Inc(Msg.CalcSize_Params.rgrc[0].Bottom, BorderThickness);
+      BorderSpace := GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
+      Inc(Msg.CalcSize_Params.rgrc[0].Top, BorderSpace);
     end;
 end;
 
@@ -216,7 +219,11 @@ begin
     begin
       if Msg.YPos - BoundsRect.Top < 5 then
         Msg.Result := HTTOP;
-    end;
+    end
+  else if //  Preparing to resize
+    Msg.Result in [HTTOP, HTTOPLEFT, HTTOPRIGHT, HTLEFT, HTRIGHT, HTBOTTOM, HTBOTTOMLEFT, HTBOTTOMRIGHT]
+  then
+    Msg.Result := HTNOWHERE;
 end;
 
 end.

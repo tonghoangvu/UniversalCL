@@ -33,6 +33,7 @@ type
       //  Fields
       FButtonState: TUControlState;
       FText: string;
+      FTextAlignment: TAlignment;
       FImageIndex: Integer;
       FImages: TCustomImageList;
       FHitTest: Boolean;
@@ -46,6 +47,7 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
       procedure SetText(const Value: string);
+      procedure SetTextAlignment(const Value: TAlignment);
       procedure SetImageIndex(const Value: Integer);
       procedure SetHighlight(const Value: Boolean);
       procedure SetTransparent(const Value: Boolean);
@@ -83,6 +85,7 @@ type
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Text: string read FText write SetText;
+      property TextAlignment: TAlignment read FTextAlignment write SetTextAlignment default taCenter;
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
       property HitTest: Boolean read FHitTest write FHitTest default true;
@@ -99,6 +102,7 @@ type
       property Align;
       property Anchors;
       property Constraints;
+      property DoubleBuffered;
       property DragCursor;
       property DragKind;
       property DragMode;
@@ -178,6 +182,15 @@ begin
     end;
 end;
 
+procedure TUCustomButton.SetTextAlignment(const Value: TAlignment);
+begin
+  if Value <> FTextAlignment then
+    begin
+      FTextAlignment := Value;
+      UpdateTheme;
+    end;
+end;
+
 procedure TUCustomButton.SetImageIndex(const Value: Integer);
 begin
   if Value <> FImageIndex then
@@ -224,6 +237,7 @@ begin
 
   FButtonState := csNone;
   FText := ClassName;
+  FTextAlignment := taCenter;
   FImageIndex := -1;
   FHitTest := true;
   FAllowFocus := true;
@@ -261,10 +275,11 @@ procedure TUCustomButton.Paint;
 const
   IMG_SPACE = 10;
 var
-  TextX, TextY, TextW, TextH: Integer;
+  TextX, TextY, TextW, TextH, TextSpace: Integer;
   ImgX, ImgY, ImgW, ImgH: Integer;
   ThicknessPos: Integer;
   BorderColor, BackColor, TextColor: TColor;
+  ImgRect, TextRect: TRect;
 begin
   inherited;
 
@@ -325,30 +340,46 @@ begin
     Width - ThicknessPos,
     Height - ThicknessPos));
 
-  Font.Color := TextColor;
-  Canvas.Font := Font;
-
-  TextW := Canvas.TextWidth(Text);
-  TextH := Canvas.TextHeight(Text);
-
+  //  Paint images
   if (Images <> nil) and (ImageIndex >= 0) then
     begin
+      ImgRect := Rect(0, 0, Height, Height);
       ImgW := Images.Width;
       ImgH := Images.Height;
-      ImgX := (Width - ImgW - IMG_SPACE - TextW) div 2;
-      ImgY := (Height - ImgH) div 2;
+      ImgX := (ImgRect.Width - ImgW) div 2;
+      ImgY := (ImgRect.Height - ImgH) div 2;
       Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
 
-      TextX := ImgX + ImgW + IMG_SPACE;
-      TextY := (Height - TextH) div 2;
+      TextRect := Rect(Height, 0, Width, Height);
     end
   else
-    begin
-      TextX := (Width - TextW) div 2;
-      TextY := (Height - TextH) div 2;
-    end;
+    TextRect := Rect(0, 0, Width, Height);
 
   //  Paint text
+  Font.Color := TextColor;
+  Canvas.Font := Font;
+  TextW := Canvas.TextWidth(Text);
+  TextH := Canvas.TextHeight(Text);
+  case TextAlignment of
+    taLeftJustify:
+      begin
+        TextSpace := (TextRect.Height - TextH) div 2;
+        TextX := TextRect.Left + TextSpace;
+        TextY := TextSpace;
+      end;
+    taRightJustify:
+      begin
+        TextSpace := (TextRect.Height - TextH) div 2;
+        TextX := TextRect.Right - TextW - TextSpace;
+        TextY := TextSpace;
+      end;
+    //taCenter:
+    else  //  Default is center
+      begin
+        TextX := TextRect.Left + (TextRect.Width - TextW) div 2;
+        TextY := TextRect.Top + (TextRect.Height - TextH) div 2;
+      end;
+  end;
   Canvas.TextOut(TextX, TextY, Text);
 end;
 
