@@ -50,11 +50,11 @@ type
     published
       property AutoUpdateControls: Boolean read FAutoUpdateControls write FAutoUpdateControls default true;    
       property AutoTheme: Boolean read FAutoTheme write SetAutoTheme default true;
-      property Theme: TUTheme read FTheme write SetTheme default utLight;
+      property Theme: TUTheme read FTheme write SetTheme stored false;
       property AutoAccentColor: Boolean read FAutoAccentColor write SetAutoAccentColor default true;
-      property AccentColor: TColor read FAccentColor write SetAccentColor default $D77800;
+      property AccentColor: TColor read FAccentColor write SetAccentColor stored false;
       property AutoColorOnBorder: Boolean read FAutoColorOnBorder write SetAutoColorOnBorder default true;
-      property ColorOnBorder: Boolean read FColorOnBorder default false;
+      property ColorOnBorder: Boolean read FColorOnBorder stored false;
       property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
   end;
 
@@ -140,9 +140,7 @@ begin
   FAutoAccentColor := true;
   FAutoColorOnBorder := true;
 
-  FTheme := utLight;
-  FAccentColor := $D77800;
-  FColorOnBorder := false;
+  ReloadAutoSettings;
 end;
 
 destructor TUThemeManager.Destroy;
@@ -154,7 +152,8 @@ end;
 procedure TUThemeManager.Loaded;
 begin
   inherited;
-  ReloadAutoSettings;
+  if Assigned(FOnUpdate) then
+    FOnUpdate(Self);
 end;
 
 procedure TUThemeManager.Assign(Source: TPersistent);

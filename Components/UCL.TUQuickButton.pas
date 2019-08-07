@@ -6,7 +6,7 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Messages,
-  VCL.Controls, VCL.ExtCtrls, VCL.Graphics, VCL.Dialogs;
+  VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
 type
   TUCustomQuickButton = class(TCustomPanel, IUThemeComponent)
@@ -151,6 +151,7 @@ begin
 
   Color := BackColor;
   Font.Color := TextColor;
+  Invalidate;
 end;
 
 procedure TUCustomQuickButton.UpdateChange;

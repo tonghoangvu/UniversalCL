@@ -37,6 +37,8 @@ type
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
+
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
@@ -143,6 +145,13 @@ begin
     begin
       ActiveColor := ThemeManager.AccentColor;
       TextColor := $FFFFFF;
+    end;
+
+  //  Disabled
+  if not Enabled then
+    begin
+      ActiveColor := $808080;
+      TextColor := $808080;
     end;
 end;
 
@@ -287,14 +296,17 @@ end;
 
 procedure TUCustomRadioButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  SetFocus;
   inherited;
+  if Enabled and HitTest then
+    SetFocus;
 end;
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 var 
   i: Integer;
 begin
+  inherited;
+
   //  Only unchecked can change
   if Enabled and HitTest then
     begin
@@ -311,9 +323,12 @@ begin
               then
                 (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
         end;
-
-      inherited;
     end;
+end;
+
+procedure TUCustomRadioButton.CM_EnabledChanged(var Msg: TMessage);
+begin
+  UpdateTheme;
 end;
 
 end.

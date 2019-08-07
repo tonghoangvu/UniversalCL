@@ -6,7 +6,7 @@ uses
   UCL.Classes,
   System.Win.Registry,
   Winapi.Windows,
-  VCL.Graphics, VCL.Dialogs;
+  VCL.Graphics;
 
 function GetAccentColor: TColor;
 function GetColorOnBorderEnabled: Boolean;

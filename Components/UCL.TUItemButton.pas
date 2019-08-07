@@ -462,6 +462,8 @@ begin
   //  Init text font
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+  Height := 40;
+  Width := 250;
 
   //  Init icon font
   FIconFont := TFont.Create;

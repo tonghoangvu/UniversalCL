@@ -45,6 +45,8 @@ type
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
+      procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
+
     protected
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
@@ -148,6 +150,13 @@ begin
     begin
       ActiveColor := ThemeManager.AccentColor;
       TextColor := $FFFFFF;
+    end;
+
+  //  Disabled
+  if not Enabled then
+    begin
+      ActiveColor := $808080;
+      TextColor := $808080;
     end;
 end;
 
@@ -310,31 +319,34 @@ begin
   //  Skip message
 end;
 
-procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMMouse);
+procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  SetFocus;
   inherited;
+  if Enabled and HitTest then
+    SetFocus;
 end;
 
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
+  inherited;
   if Enabled and HitTest then
-    begin
-      //  Unchecked > Checked > Grayed > ...
-      case State of
-        cbsChecked:
-          if AllowGrayed then
-            State := cbsGrayed
-          else
-            State := cbsUnchecked;
-        cbsUnchecked:
-          State := cbsChecked;
-        cbsGrayed:
+    //  Unchecked > Checked > Grayed > ...
+    case State of
+      cbsChecked:
+        if AllowGrayed then
+          State := cbsGrayed
+        else
           State := cbsUnchecked;
-      end;
-
-      inherited;
+      cbsUnchecked:
+        State := cbsChecked;
+      cbsGrayed:
+        State := cbsUnchecked;
     end;
+end;
+
+procedure TUCustomCheckBox.CM_EnabledChanged(var Msg: TMessage);
+begin
+  UpdateTheme;
 end;
 
 end.

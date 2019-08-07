@@ -2,7 +2,7 @@ object formDemo: TformDemo
   Left = 0
   Top = 0
   Caption = 'Test UCL controls'
-  ClientHeight = 654
+  ClientHeight = 630
   ClientWidth = 1000
   Color = clWhite
   Ctl3D = False
@@ -212,7 +212,7 @@ object formDemo: TformDemo
   object radioA3: TURadioButton
     Left = 390
     Top = 300
-    Width = 93
+    Width = 128
     Height = 30
     Margins.Left = 0
     Margins.Top = 0
@@ -226,7 +226,8 @@ object formDemo: TformDemo
     IconFont.Style = []
     Group = 'GroupA'
     CustomActiveColor = 14120960
-    Text = 'Radio 3A'
+    Text = 'Radio disabled'
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -366,6 +367,7 @@ object formDemo: TformDemo
     Width = 1000
     Height = 32
     ThemeManager = AppTheme
+    CustomColor = 10197915
     Align = alTop
     Alignment = taLeftJustify
     BevelOuter = bvNone
@@ -1201,7 +1203,7 @@ object formDemo: TformDemo
     Left = 0
     Top = 92
     Width = 45
-    Height = 562
+    Height = 538
     ThemeManager = AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
@@ -1218,6 +1220,7 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 0
+    ExplicitHeight = 562
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -1415,7 +1418,7 @@ object formDemo: TformDemo
     Left = 750
     Top = 92
     Width = 250
-    Height = 562
+    Height = 538
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -1429,6 +1432,7 @@ object formDemo: TformDemo
     TabOrder = 33
     ThemeManager = AppTheme
     MaxScrollCount = 6
+    ExplicitHeight = 562
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -2216,13 +2220,13 @@ object formDemo: TformDemo
   object AppTheme: TUThemeManager
     OnUpdate = AppThemeUpdate
     Left = 250
-    Top = 590
+    Top = 570
   end
   object dialogSelectColor: TColorDialog
     Ctl3D = False
     Color = 14120960
     Left = 330
-    Top = 590
+    Top = 570
   end
   object imgcollectionMain: TImageCollection
     Images = <
@@ -2485,7 +2489,7 @@ object formDemo: TformDemo
           end>
       end>
     Left = 90
-    Top = 590
+    Top = 570
   end
   object imglistMain: TVirtualImageList
     AutoFill = True
@@ -2520,7 +2524,7 @@ object formDemo: TformDemo
     Width = 24
     Height = 24
     Left = 170
-    Top = 590
+    Top = 570
   end
   object popupVert: TUPopupMenu
     Images = imglistMain
@@ -2532,7 +2536,7 @@ object formDemo: TformDemo
     SeparatorChar = '|'
     ItemWidth = 250
     Left = 410
-    Top = 590
+    Top = 570
   end
   object popupHorz: TUPopupMenu
     ThemeManager = AppTheme
@@ -2545,6 +2549,6 @@ object formDemo: TformDemo
     ItemWidth = 80
     OnItemClick = popupHorzItemClick
     Left = 480
-    Top = 590
+    Top = 570
   end
 end

@@ -180,6 +180,9 @@ begin
   FCustomFillColor := $25B006;
   FCustomBackColor := $E6E6E6;
 
+  Height := 5;
+  Width := 100;
+
   UpdateChange;
 end;
 
@@ -214,8 +217,7 @@ begin
   Canvas.FillRect(FillRect);
 end;
 
-procedure TUCustomProgressBar.ChangeScale(M, D: Integer;
-  isDpiChange: Boolean);
+procedure TUCustomProgressBar.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
   UpdateChange;

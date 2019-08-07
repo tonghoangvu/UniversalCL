@@ -62,22 +62,20 @@ begin
   if ThemeManager = nil then
     BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
 
-  else if ThemeManager.ColorOnBorder then
-    BorderColor := ThemeManager.AccentColor //  Use accent color
-
-  else if ThemeManager.Theme = utLight then
-    //  Light
+  else if IsActive then
     begin
-      if IsActive then
+      if ThemeManager.ColorOnBorder then
+        BorderColor := ThemeManager.AccentColor
+      else if ThemeManager.Theme = utLight then
         BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
       else
-        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_LIGHT;
+        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK;
     end
+
   else
-    //  Dark
     begin
-      if IsActive then
-        BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK
+      if ThemeManager.Theme = utLight then
+        BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_LIGHT
       else
         BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
     end;
