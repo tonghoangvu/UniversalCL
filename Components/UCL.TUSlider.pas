@@ -27,6 +27,7 @@ type
       var CurCorner: Integer;
       var BarHeight: Integer;
       var ActiveRect, NormalRect, CurRect: TRect;
+      var ActiveColor, BackColor, CurColor: TColor;
 
       FIsSliding: Boolean;
 
@@ -65,6 +66,7 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
+      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -141,7 +143,31 @@ end;
 
 procedure TUCustomSlider.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomSlider.UpdateChange;
+begin
+  //  Update colors
+  if ThemeManager = nil then
+    begin
+      ActiveColor := DefActiveColor[utLight, ControlState];
+      BackColor := DefBackColor[utLight, ControlState];
+      CurColor := DefCurColor[utLight, ControlState];
+    end
+  else
+    begin
+      if Enabled then
+        ActiveColor := ThemeManager.AccentColor
+      else
+        ActiveColor := DefActiveColor[ThemeManager.Theme, ControlState];
+      BackColor := DefBackColor[ThemeManager.Theme, ControlState];
+      if ControlState = csNone then
+        CurColor := ThemeManager.AccentColor
+      else
+        CurColor := DefCurColor[ThemeManager.Theme, ControlState];
+    end;
 end;
 
 //  SETTERS
@@ -226,34 +252,13 @@ begin
   //  Common properties
   Height := 25;
   Width := 100;
+
+  UpdateChange;
 end;
 
 procedure TUCustomSlider.Paint;
-var
-  ActiveColor, BackColor: TColor;
-  CurColor: TColor;
 begin
   inherited;
-
-  //  Get colors
-  if ThemeManager = nil then
-    begin
-      ActiveColor := DefActiveColor[utLight, ControlState];
-      BackColor := DefBackColor[utLight, ControlState];
-      CurColor := DefCurColor[utLight, ControlState];
-    end
-  else
-    begin
-      if Enabled then
-        ActiveColor := ThemeManager.AccentColor
-      else
-        ActiveColor := DefActiveColor[ThemeManager.Theme, ControlState];
-      BackColor := DefBackColor[ThemeManager.Theme, ControlState];
-      if ControlState = csNone then
-        CurColor := ThemeManager.AccentColor
-      else
-        CurColor := DefCurColor[ThemeManager.Theme, ControlState];
-    end;
 
   //  Clear old cursor background
   ParentColor := true;

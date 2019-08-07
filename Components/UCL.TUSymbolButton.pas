@@ -17,11 +17,10 @@ type
       DefTextColor: TDefColor = (
         ($00000000, $00000000, $00000000, $00666666, $00000000),
         ($00FFFFFF, $00FFFFFF, $00FFFFFF, $00666666, $00FFFFFF));
-      DefDetailColor: TDefColor = (
-        ($00808080, $00808080, $00808080, $00808080, $00808080),
-        ($00808080, $00808080, $00808080, $00808080, $00808080));
 
     private
+      var BackColor, TextColor, DetailColor: TColor;
+
       FThemeManager: TUThemeManager;
 
       FSymbolFont: TFont;
@@ -82,6 +81,7 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
+      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -169,7 +169,47 @@ end;
 
 procedure TUCustomSymbolButton.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomSymbolButton.UpdateChange;
+var
+  TempTheme: TUTheme;
+begin
+  if ThemeManager = nil then
+    TempTheme := utLight
+  else
+    TempTheme := ThemeManager.Theme;
+
+  //  Transparent enabled
+  if (ButtonState = csNone) and (Transparent) then
+    begin
+      ParentColor := true;
+      BackColor := Color;
+      TextColor := GetTextColorFromBackground(Color);
+      DetailColor := $808080;
+    end
+
+  //  Highlight enabled
+  else if
+    (ThemeManager <> nil)
+    and ((IsToggleButton) and (IsToggled))
+    and (ButtonState in [csNone, csHover, csFocused])
+  then
+    begin
+      BackColor := ThemeManager.AccentColor;
+      TextColor := GetTextColorFromBackground(BackColor);
+      DetailColor := clSilver;
+    end
+
+  //  Default colors
+  else
+    begin
+      BackColor := DefBackColor[TempTheme, ButtonState];
+      TextColor := DefTextColor[TempTheme, ButtonState];
+      DetailColor := $808080;
+    end;
 end;
 
 //  SETTERS
@@ -330,7 +370,7 @@ begin
   Height := 40;
   TabStop := true;
 
-  //UpdateTheme;
+  UpdateChange;
 end;
 
 destructor TUCustomSymbolButton.Destroy;
@@ -357,49 +397,12 @@ end;
 
 procedure TUCustomSymbolButton.Paint;
 var
-  aTheme: TUTheme;
   ImgW, ImgH, ImgX, ImgY: Integer;
   IconX, IconY, IconW, IconH: Integer;
   TextX, TextY, TextW, TextH: Integer;
   DetailX, DetailY, DetailW, DetailH: Integer;
-
-  BackColor, TextColor, DetailColor: TColor;
 begin
   inherited;
-
-  if ThemeManager = nil then
-    aTheme := utLight
-  else
-    aTheme := ThemeManager.Theme;
-
-  //  Transparent enabled
-  if (ButtonState = csNone) and (Transparent) then
-    begin
-      ParentColor := true;
-      BackColor := Color;
-      TextColor := GetTextColorFromBackground(Color);
-      DetailColor := DefDetailColor[aTheme, ButtonState];
-    end
-
-  //  Highlight enabled
-  else if
-    (ThemeManager <> nil)
-    and ((IsToggleButton) and (IsToggled))
-    and (ButtonState in [csNone, csHover, csFocused])
-  then
-    begin
-      BackColor := ThemeManager.AccentColor;
-      TextColor := GetTextColorFromBackground(BackColor);
-      DetailColor := clSilver;
-    end
-
-  //  Default colors
-  else
-    begin
-      BackColor := DefBackColor[aTheme, ButtonState];
-      TextColor := DefTextColor[aTheme, ButtonState];
-      DetailColor := DefDetailColor[aTheme, ButtonState];
-    end;
 
   //  Paint background
   Canvas.Brush.Color := BackColor;

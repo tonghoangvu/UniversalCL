@@ -24,8 +24,10 @@ type
       FResizable: Boolean;
       FPPI: Integer;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      //  Messages
       procedure WM_Activate(var Msg: TWMActivate); message WM_ACTIVATE;
       procedure WM_DPIChanged(var Msg: TWMDpi); message WM_DPICHANGED;
       procedure WM_DWMColorizationColorChanged(var Msg: TMessage); message WM_DWMCOLORIZATIONCOLORCHANGED;

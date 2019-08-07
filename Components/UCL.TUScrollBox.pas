@@ -115,7 +115,8 @@ begin
   if ScrollCount = 0 then
     ScrollCount := 1;
 
-  DisableAlign;
+  if not (csDesigning in ComponentState) then
+    DisableAlign;
 
   Ani := TIntAni.Create(true, akOut, afkQuartic, Start, Stop - Start, nil);
   if ScrollBarStyle = sbsMini then
@@ -137,7 +138,8 @@ begin
       FIsScrolling := false;
       if ScrollBarStyle <> sbsFull then
         SetOldScrollBarVisible(false);
-      EnableAlign;
+      if not (csDesigning in ComponentState) then
+        EnableAlign;
     end;
 
   Ani.Duration := Round(TimePerStep * Sqrt(ScrollCount));

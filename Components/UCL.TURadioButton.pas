@@ -13,6 +13,8 @@ type
     private
       var ICON_LEFT: Integer;
       var TEXT_LEFT: Integer;
+      var ActiveColor: TColor;
+      var TextColor: TColor;
 
       FThemeManager: TUThemeManager;
       FIconFont: TFont;
@@ -44,6 +46,7 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
+      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -119,7 +122,28 @@ end;
 
 procedure TUCustomRadioButton.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomRadioButton.UpdateChange;
+begin
+  //  Active & text color
+  if ThemeManager = nil then
+    begin
+      ActiveColor := CustomActiveColor;
+      TextColor := $000000;
+    end
+  else if ThemeManager.Theme = utLight then
+    begin
+      ActiveColor := ThemeManager.AccentColor;
+      TextColor := $000000;
+    end
+  else
+    begin
+      ActiveColor := ThemeManager.AccentColor;
+      TextColor := $FFFFFF;
+    end;
 end;
 
 //  SETTERS
@@ -172,10 +196,11 @@ begin
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
+  ParentColor := true;
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
-  ParentColor := true;
+  UpdateChange;
 end;
 
 destructor TUCustomRadioButton.Destroy;
@@ -217,19 +242,15 @@ var
 begin
   inherited;
 
+  //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := Color;  //  Paint empty background
+  Canvas.Brush.Color := Color;
   Canvas.FillRect(Rect(0, 0, Width, Height));
   Canvas.Brush.Style := bsClear;
 
   //  Paint text
-  Canvas.Font := Self.Font;
-  if ThemeManager = nil then
-    Canvas.Font.Color := $000000
-  else if ThemeManager.Theme = utLight then
-    Canvas.Font.Color := $000000
-  else
-    Canvas.Font.Color := $FFFFFF;
+  Canvas.Font := Font;
+  Canvas.Font.Color := TextColor;
 
   TextH := Canvas.TextHeight(Text);
   Canvas.TextOut(TEXT_LEFT, (Height - TextH) div 2, Text);
@@ -238,36 +259,20 @@ begin
   Canvas.Font := IconFont;
   if not IsChecked then
     begin
-      //  Paint circle border (black in light, white in dark)
-      if ThemeManager = nil then
-        Canvas.Font.Color := $000000
-      else if ThemeManager.Theme = utLight then
-        Canvas.Font.Color := $000000
-      else
-        Canvas.Font.Color := $FFFFFF;
-
+      //  Paint circle border
+      Canvas.Font.Color := TextColor;
       IconH := Canvas.TextHeight('');
       Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
     end
   else
     begin
-      //  Paint circle border (active color)
-      if ThemeManager = nil then
-        Canvas.Font.Color := CustomActiveColor
-      else
-        Canvas.Font.Color := ThemeManager.AccentColor;
-
+      //  Paint circle border (colored)
+      Canvas.Font.Color := ActiveColor;
       IconH := Canvas.TextHeight('');
       Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
 
-      //  Paint small circle inside (black in light, white in dark)
-      if ThemeManager = nil then
-        Canvas.Font.Color := $000000
-      else if ThemeManager.Theme = utLight then
-        Canvas.Font.Color := $000000
-      else 
-        Canvas.Font.Color := $FFFFFF;
-
+      //  Paint small circle inside
+      Canvas.Font.Color := TextColor;
       IconH := Canvas.TextHeight('');
       Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
     end;

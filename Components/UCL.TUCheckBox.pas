@@ -12,9 +12,16 @@ type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
   TUCustomCheckBox = class(TCustomControl, IUThemeComponent)
+    const
+      ICON_CHECKED = '';
+      ICON_UNCHECKED = '';
+      ICON_GRAYED = '';
+
     private
       var ICON_LEFT: Integer;
       var TEXT_LEFT: Integer;
+      var ActiveColor: TColor;
+      var TextColor: TColor;
 
       FThemeManager: TUThemeManager;
       FIconFont: TFont;
@@ -47,6 +54,7 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
+      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -120,7 +128,27 @@ end;
 
 procedure TUCustomCheckBox.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomCheckBox.UpdateChange;
+begin
+  if ThemeManager = nil then
+    begin
+      ActiveColor := CustomActiveColor;
+      TextColor := $000000;
+    end
+  else if ThemeManager.Theme = utLight then
+    begin
+      ActiveColor := ThemeManager.AccentColor;
+      TextColor := $000000;
+    end
+  else
+    begin
+      ActiveColor := ThemeManager.AccentColor;
+      TextColor := $FFFFFF;
+    end;
 end;
 
 //  SETTERS
@@ -174,21 +202,22 @@ begin
   ICON_LEFT := 5;
   TEXT_LEFT := 35;
 
-  ParentColor := true;
-
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
   FIconFont := TFont.Create;
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
   FAutoSize := true;
   FHitTest := true;
-  FText := 'UCheckBox';
+  FText := 'CheckBox';
   FAllowGrayed := false;
   FState := cbsUnchecked;
   FCustomActiveColor := $D77800;  //  Default blue
+
+  ParentColor := true;
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
+
+  UpdateChange;
 end;
 
 destructor TUCustomCheckBox.Destroy;
@@ -217,74 +246,48 @@ var
 begin
   inherited;
 
+  //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := Color;  //  Paint empty background
+  Canvas.Brush.Color := Color;
   Canvas.FillRect(Rect(0, 0, Width, Height));
   Canvas.Brush.Style := bsClear;
 
   //  Paint text
-  Canvas.Font := Self.Font;
-  if ThemeManager = nil then
-    Canvas.Font.Color := $000000
-  else if ThemeManager.Theme = utLight then
-    Canvas.Font.Color := $000000
-  else
-    Canvas.Font.Color := $FFFFFF;
-
+  Canvas.Font := Font;
+  Canvas.Font.Color := TextColor;
   TextH := Canvas.TextHeight(Text);
   Canvas.TextOut(TEXT_LEFT, (Height - TextH) div 2, Text);
 
-  //  Paint check
+  //  Paint check icon
   Canvas.Font := IconFont;
   case State of
     cbsChecked:
       begin
-        //  Paint only check icon
-        if ThemeManager = nil then
-          Canvas.Font.Color := CustomActiveColor
-        else
-          Canvas.Font.Color := ThemeManager.AccentColor;
-        IconH := Canvas.TextHeight('');
-
-        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
+        Canvas.Font.Color := ActiveColor;
+        IconH := Canvas.TextHeight(ICON_CHECKED);
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, ICON_CHECKED);
       end;
 
     cbsUnchecked:
       begin
-        //  Paint a empty box
-        if ThemeManager = nil then
-          Canvas.Font.Color := $000000
-        else if ThemeManager.Theme = utLight then
-          Canvas.Font.Color := $000000
-        else
-          Canvas.Font.Color := $FFFFFF;
-        IconH := Canvas.TextHeight('');
-
-        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
+        Canvas.Font.Color := TextColor;
+        IconH := Canvas.TextHeight(ICON_UNCHECKED);
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, ICON_UNCHECKED);
       end;
 
     cbsGrayed:
       begin
-        //  Paint border
-        if ThemeManager = nil then
-          Canvas.Font.Color := CustomActiveColor
-        else
-          Canvas.Font.Color := ThemeManager.AccentColor;
-        IconH := Canvas.TextHeight('');
-        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
+        //  Paint outside box
+        Canvas.Font.Color := ActiveColor;
+        IconH := Canvas.TextHeight(ICON_UNCHECKED);
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, ICON_UNCHECKED);
 
-        //  Paint small box
-        IconH := Canvas.TextHeight('');
-        if ThemeManager = nil then
-          Canvas.Font.Color := $000000
-        else if ThemeManager.Theme = utLight then
-          Canvas.Font.Color := $000000
-        else
-          Canvas.Font.Color := $FFFFFF;
-        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, '');
+        //  Paint inside small square
+        Canvas.Font.Color := TextColor;
+        IconH := Canvas.TextHeight(ICON_GRAYED);
+        Canvas.TextOut(ICON_LEFT, (Height - IconH) div 2, ICON_GRAYED);
       end;
   end;
-
 end;
 
 procedure TUCustomCheckBox.Resize;
@@ -292,7 +295,7 @@ begin
   if AutoSize then
     begin
       Canvas.Font := IconFont;
-      Height := 2 * ICON_LEFT + Canvas.TextHeight('');
+      Height := 2 * ICON_LEFT + Canvas.TextHeight(ICON_UNCHECKED);
       Canvas.Font := Font;
       Width := TEXT_LEFT + Canvas.TextWidth(Text) + ICON_LEFT;
     end

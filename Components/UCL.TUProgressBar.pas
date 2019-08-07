@@ -13,11 +13,16 @@ uses
 type
   TUCustomProgressBar = class(TCustomControl, IUThemeComponent)
     private
+      var FillColor: TColor;
+      var BackColor: TColor;
+      var FillRect: TRect;
+      var BackRect: TRect;
+
       FThemeManager: TUThemeManager;
 
       FValue: Integer;
       FOrientation: TUOrientation;
-      FCustomForeColor: TColor;
+      FCustomFillColor: TColor;
       FCustomBackColor: TColor;
 
       //  Setters
@@ -30,10 +35,13 @@ type
 
     protected
       procedure Paint; override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOnwer: TComponent); override;
       procedure UpdateTheme;
+      procedure UpdateChange;
+
       procedure GoToValue(Value: Integer);
 
     published
@@ -41,7 +49,7 @@ type
 
       property Value: Integer read FValue write SetValue;
       property Orientation: TUOrientation read FOrientation write SetOrientation;
-      property CustomForeColor: TColor read FCustomForeColor write FCustomForeColor;
+      property CustomFillColor: TColor read FCustomFillColor write FCustomFillColor;
       property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor;
   end;
 
@@ -105,7 +113,40 @@ end;
 
 procedure TUCustomProgressBar.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomProgressBar.UpdateChange;
+begin
+  //  Background & fill color
+  if ThemeManager = nil then
+    begin
+      BackColor := FCustomBackColor;
+      FillColor := FCustomFillColor;
+    end
+  else if ThemeManager.Theme = utLight then
+    begin
+      BackColor := $CCCCCC;
+      FillColor := ThemeManager.AccentColor;
+    end
+  else
+    begin
+      BackColor := $333333;
+      FillColor := ThemeManager.AccentColor;
+    end;
+
+  //  Background & fill area
+  if Orientation = oHorizontal then
+    begin
+      FillRect := Rect(0, 0, Round(Value / 100 * Width), Height);
+      BackRect := Rect(FillRect.Right, 0, Width, Height);
+    end
+  else
+    begin
+      BackRect := Rect(0, 0, Width, Round(Value / 100 * Height));
+      FillRect := Rect(0, BackRect.Bottom, Width, Height);
+    end;
 end;
 
 //  SETTERS
@@ -115,7 +156,7 @@ begin
   if FValue <> Value then
     begin
       FValue := Value;
-      UpdateTheme;  //  Repaint when change value
+      UpdateTheme;
     end;
 end;
 
@@ -124,7 +165,7 @@ begin
   if FOrientation <> Value then
     begin
       FOrientation := Value;
-      UpdateTheme;  //  Repaint when change orientation
+      UpdateTheme;
     end;
 end;
 
@@ -134,19 +175,19 @@ constructor TUCustomProgressBar.Create(aOnwer: TComponent);
 begin
   inherited Create(aOnwer);
 
-  //  Default properties value
-  FCustomForeColor := $25B006;
-  FCustomBackColor := $E6E6E6;
+  //  Fields
   FValue := 0;
+  FCustomFillColor := $25B006;
+  FCustomBackColor := $E6E6E6;
+
+  UpdateChange;
 end;
 
 procedure TUCustomProgressBar.GoToValue(Value: Integer);
 var
   Ani: TIntAni;
 begin
-  //  If disabled, UI not change, but can not go to value
-  if not Enabled then
-    exit;
+  if not Enabled then exit;
 
   Ani := TIntAni.Create(true, akOut, afkQuartic, FValue, Value - FValue,
     procedure (Value: Integer)
@@ -161,48 +202,23 @@ end;
 //  CUSTOM METHODS
 
 procedure TUCustomProgressBar.Paint;
-var
-  BackColor, ForeColor: TColor;
-  BackRect, FillRect: TRect;
 begin
   inherited;
 
-  //  Getting BACK and FORE color
-  if ThemeManager = nil then
-    begin
-      BackColor := FCustomBackColor;
-      ForeColor := FCustomForeColor;
-    end
-  else if ThemeManager.Theme = utLight then
-    begin
-      BackColor := $CCCCCC;
-      ForeColor := ThemeManager.AccentColor;
-    end
-  else
-    begin
-      BackColor := $333333;
-      ForeColor := ThemeManager.AccentColor;
-    end;
-
-  //  PERFORMANCE UPGRADE: Calculate rectangle for paint faster
-  if Orientation = oHorizontal then
-    begin
-      FillRect := Rect(0, 0, Round(Value / 100 * Width), Height);
-      BackRect := Rect(FillRect.Right, 0, Width, Height);
-    end
-  else
-    begin
-      BackRect := Rect(0, 0, Width, Round(Value / 100 * Height));
-      FillRect := Rect(0, BackRect.Bottom, Width, Height);
-    end;
-
-  //  Paint background (not full, only unfilled area)
+  //  Paint background
   Canvas.Brush.Color := BackColor;
   Canvas.FillRect(BackRect);
 
-  //  Paint foreround
-  Canvas.Brush.Color := ForeColor;
+  //  Paint Fillround
+  Canvas.Brush.Color := FillColor;
   Canvas.FillRect(FillRect);
+end;
+
+procedure TUCustomProgressBar.ChangeScale(M, D: Integer;
+  isDpiChange: Boolean);
+begin
+  inherited;
+  UpdateChange;
 end;
 
 //  MESSAGES
