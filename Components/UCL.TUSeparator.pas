@@ -153,6 +153,8 @@ end;
 //  CUSTOM METHODS
 
 procedure TUCustomSeparator.Paint;
+var
+  LineColor: TColor;
 begin
   inherited;
 
@@ -165,13 +167,14 @@ begin
     exit;
   
   if ThemeManager = nil then
-    Canvas.Pen.Color := CustomColor
+    LineColor := CustomColor
   else if ThemeManager.Theme = utLight then
-    Canvas.Pen.Color := $999999
+    LineColor := $999999
   else
-    Canvas.Pen.Color := $666666;
+    LineColor := $666666;
 
   //  Paint line
+  Canvas.Pen.Color := LineColor;
   if Orientation = oVertical then
     begin
       Canvas.MoveTo(Width div 2, AlignSpace);

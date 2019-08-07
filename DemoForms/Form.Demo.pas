@@ -97,7 +97,6 @@ type
     checkColorBorder: TUCheckBox;
     entryUserProfile: TUText;
     imgAvatar: TImage;
-    editAccountName: TUEdit;
     checkAutoSync: TUCheckBox;
     checkKeepEmailPrivate: TUCheckBox;
     checkSendEmail: TUCheckBox;
@@ -120,6 +119,7 @@ type
     USeparator1: TUSeparator;
     popupVert: TUPopupMenu;
     popupHorz: TUPopupMenu;
+    editAccountName: TUEdit;
     procedure FormCreate(Sender: TObject);
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
@@ -138,6 +138,8 @@ type
     procedure popupHorzItemClick(Sender: TObject; Index: Integer);
     procedure AppThemeUpdate(Sender: TObject);
     procedure comboAppDPIChange(Sender: TObject);
+    procedure itembuttonImageClick(Sender: TObject);
+    procedure buttonPrintDocClick(Sender: TObject);
   private
   public
   end;
@@ -147,6 +149,9 @@ var
 
 implementation
 
+uses
+  Form.LoginDialog;
+
 {$R *.dfm}
 
 { MAIN FORM }
@@ -154,6 +159,27 @@ implementation
 procedure TformDemo.FormCreate(Sender: TObject);
 begin
   Self.ThemeManager := AppTheme;
+end;
+
+procedure TformDemo.itembuttonImageClick(Sender: TObject);
+var
+  MsgText: string;
+begin
+  case itembuttonImage.ObjectSelected of
+    iokNone:
+      MsgText := 'You clicked in background';
+    iokCheckBox:
+      MsgText := 'You clicked in checkbox';
+    iokLeftIcon:
+      MsgText := 'You clicked in left icon';
+    iokText:
+      MsgText := 'You clicked in text';
+    iokDetail:
+      MsgText := 'You clicked in detail';
+    iokRightIcon:
+      MsgText := 'You clicked in right icon';
+  end;
+  ShowMessage(MsgText);
 end;
 
 { SYSBUTTON }
@@ -228,6 +254,11 @@ begin
     AniWidth := - AniWidth;
 
   drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 20, 200, akOut, afkQuartic, nil);
+end;
+
+procedure TformDemo.buttonPrintDocClick(Sender: TObject);
+begin
+  formLoginDialog.ShowModal;
 end;
 
 { THEME }

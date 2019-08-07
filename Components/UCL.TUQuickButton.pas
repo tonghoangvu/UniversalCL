@@ -6,83 +6,122 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Messages,
-  VCL.Controls, VCL.Graphics;
+  VCL.Controls, VCL.ExtCtrls, VCL.Graphics, VCL.Dialogs;
 
 type
-  TUCustomQuickButton = class(TCustomControl, IUThemeComponent)
+  TUCustomQuickButton = class(TCustomPanel, IUThemeComponent)
     private
+      var BackColor: TColor;
+      var TextColor: TColor;
+
       FThemeManager: TUThemeManager;
       FButtonState: TUControlState;
       FLightColor: TColor;
       FDarkColor: TColor;
-      FFontIcon: string;
       FPressBrightnessDelta: Integer;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetFontIcon(const Value: string);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
+      procedure CM_ColorChanged(var Msg: TMessage); message CM_COLORCHANGED;
 
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-      procedure Paint; override;
+      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
+
       property LightColor: TColor read FLightColor write FLightColor default $E6E6E6;
       property DarkColor: TColor read FDarkColor write FDarkColor default $191919;
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
-      property FontIcon: string read FFontIcon write SetFontIcon;
   end;
 
   TUQuickButton = class(TUCustomQuickButton)
+    public
+      property DockManager;
     published
-      //  Common properties
       property Align;
+      property Alignment;
       property Anchors;
+      property AutoSize;
+      property BevelEdges;
+      property BevelInner;
+      property BevelKind;
+      property BevelOuter;
+      property BevelWidth;
+      property BiDiMode;
+      property BorderWidth;
+      property BorderStyle;
+      property Caption;
+      property Color;
       property Constraints;
+      property Ctl3D;
+      property UseDockManager default True;
+      property DockSite;
+      property DoubleBuffered;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Enabled;
+      property FullRepaint;
       property Font;
+      property Locked;
+      property Padding;
+      property ParentBiDiMode;
+      property ParentBackground;
+      property ParentColor;
+      property ParentCtl3D;
+      property ParentDoubleBuffered;
       property ParentFont;
       property ParentShowHint;
       property PopupMenu;
+      property ShowCaption;
       property ShowHint;
-      property Touch;
       property TabOrder;
       property TabStop;
+      property Touch;
+      property VerticalAlignment;
       property Visible;
+      property StyleElements;
 
-      //  Common events
+      property OnAlignInsertBefore;
+      property OnAlignPosition;
+      property OnCanResize;
       property OnClick;
+      property OnConstrainedResize;
       property OnContextPopup;
+      property OnDockDrop;
+      property OnDockOver;
       property OnDblClick;
       property OnDragDrop;
       property OnDragOver;
       property OnEndDock;
       property OnEndDrag;
+      property OnEnter;
+      property OnExit;
       property OnGesture;
+      property OnGetSiteInfo;
       property OnMouseActivate;
       property OnMouseDown;
       property OnMouseEnter;
       property OnMouseLeave;
       property OnMouseMove;
       property OnMouseUp;
+      property OnResize;
       property OnStartDock;
       property OnStartDrag;
+      property OnUnDock;
   end;
 
 implementation
@@ -108,59 +147,20 @@ end;
 
 procedure TUCustomQuickButton.UpdateTheme;
 begin
-  Paint;
+  UpdateChange;
+
+  Color := BackColor;
+  Font.Color := TextColor;
 end;
 
-//  SETTERS
-
-procedure TUCustomQuickButton.SetButtonState(const Value: TUControlState);
-begin
-  if Value <> FButtonState then
-    begin
-      FButtonState := Value;
-      Paint;
-    end;
-end;
-
-procedure TUCustomQuickButton.SetFontIcon(const Value: string);
-begin
-  if Value <> FFontIcon then
-    begin
-      FFontIcon := Value;
-      Paint;
-    end;
-end;
-
-//  MAIN CLASS
-
-constructor TUCustomQuickButton.Create(aOwner: TComponent);
-begin
-  inherited;
-
-  FButtonState := csNone;
-  FLightColor := $E6E6E6;
-  FDarkColor := $191919;
-  FPressBrightnessDelta := 25;
-  FFontIcon := '';
-
-  Font.Name := 'Segoe MDL2 Assets';
-  Font.Size := 11;
-  Height := 32;
-  Width := 45;
-end;
-
-// CUSTOM METHODS
-
-procedure TUCustomQuickButton.Paint;
-var
-  BackColor, TextColor: TColor;
-  TextW, TextH, TextX, TextY: Integer;
+procedure TUCustomQuickButton.UpdateChange;
 begin
   //  Get background color
   case ButtonState of
-    csNone:
+    csNone: //  Transparent
       begin
         ParentColor := true;
+        ParentBackground := true;
         BackColor := Color;
       end;
 
@@ -195,30 +195,48 @@ begin
       BackColor := $D77800;
   end;
 
-  //  Overwrite background
-  Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  ParentColor := ButtonState = csNone;
+  ParentBackground := ButtonState = csNone;
 
   //  Get text color
   TextColor := GetTextColorFromBackground(BackColor);
+end;
 
-  Canvas.Font := Font;
-  Canvas.Font.Color := TextColor;
+//  SETTERS
 
-  //  Paint text
-  TextW := Canvas.TextWidth(FontIcon);
-  TextH := Canvas.TextHeight(FontIcon);
-  TextX := (Width - TextW) div 2;
-  TextY := (Height - TextH) div 2;
-  Canvas.TextOut(TextX, TextY, FontIcon);
+procedure TUCustomQuickButton.SetButtonState(const Value: TUControlState);
+begin
+  if Value <> FButtonState then
+    begin
+      FButtonState := Value;
+      UpdateTheme;
+    end;
+end;
+
+//  MAIN CLASS
+
+constructor TUCustomQuickButton.Create(aOwner: TComponent);
+begin
+  inherited;
+
+  //  New props
+  FButtonState := csNone;
+  FLightColor := $E6E6E6;
+  FDarkColor := $191919;
+  FPressBrightnessDelta := 25;
+
+  //  Old props
+  BevelOuter := bvNone;
+  Caption := '';
+  Font.Name := 'Segoe MDL2 Assets';
+  Font.Size := 11;
+  Height := 32;
+  Width := 45;
+
+  UpdateChange;
 end;
 
 //  MESSAGES
-
-procedure TUCustomQuickButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
-end;
 
 procedure TUCustomQuickButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
@@ -263,6 +281,11 @@ begin
       ButtonState := csNone;
       inherited;
     end;
+end;
+
+procedure TUCustomQuickButton.CM_ColorChanged(var Msg: TMessage);
+begin
+  UpdateTheme;
 end;
 
 end.

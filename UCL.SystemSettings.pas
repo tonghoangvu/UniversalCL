@@ -6,7 +6,7 @@ uses
   UCL.Classes,
   System.Win.Registry,
   Winapi.Windows,
-  VCL.Graphics;
+  VCL.Graphics, VCL.Dialogs;
 
 function GetAccentColor: TColor;
 function GetColorOnBorderEnabled: Boolean;
@@ -17,49 +17,61 @@ implementation
 function GetAccentColor: TColor;
 var
   Reg: TRegistry;
-  ARGBColor: Cardinal;
+  ARGB: Cardinal;
 begin
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
-    Reg.OpenKeyReadOnly('Software\Microsoft\Windows\DWM');
-    ARGBColor := Reg.ReadInteger('AccentColor');
-    Reg.CloseKey;
+    try
+      Reg.OpenKeyReadOnly('Software\Microsoft\Windows\DWM\');
+      ARGB := Reg.ReadInteger('AccentColor');
+      Result := ARGB mod $FF000000; //  ARGB to RGB
+    except
+      Result := $D77800;  //  Default blue
+    end;
   finally
     Reg.Free;
   end;
-
-  Result := ARGBColor - $FF000000;  //  ARGB to RGB
 end;
 
 function GetColorOnBorderEnabled: Boolean;
-var
+var 
   Reg: TRegistry;
 begin
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
-    Reg.OpenKeyReadOnly('Software\Microsoft\Windows\DWM');
-    Result := Reg.ReadInteger('ColorPrevalence') <> 0;
-    Reg.CloseKey;
+    try
+      Reg.OpenKeyReadOnly('Software\Microsoft\Windows\DWM\');
+      Result := Reg.ReadInteger('ColorPrevalence') <> 0;
+    except
+      Result := false;
+    end;
   finally
     Reg.Free;
   end;
 end;
 
 function GetAppTheme: TUTheme;
-var
+var 
   Reg: TRegistry;
 begin
   Reg := TRegistry.Create;
   try
     Reg.RootKey := HKEY_CURRENT_USER;
-    Reg.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize');
-    if Reg.ReadInteger('AppsUseLightTheme') = 1 then
-      Result := utLight
-    else
-      Result := utDark;
-    Reg.CloseKey;
+    try
+      Reg.OpenKeyReadOnly('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\');
+      if Reg.ReadInteger('AppsUseLightTheme') = 0 then
+        Result := utDark
+      else 
+        Result := utLight;
+    except
+      Result := utLight;
+      //  Apply this fix
+      Reg.CloseKey;
+      Reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\', true);
+      Reg.WriteInteger('AppsUseLightTheme', 1);
+    end;
   finally
     Reg.Free;
   end;

@@ -37,6 +37,8 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure Loaded; override;
+      procedure Assign(Source: TPersistent); override;
+
       procedure UpdateThemeForControls;
       procedure ReloadAutoSettings;
 
@@ -153,6 +155,26 @@ procedure TUThemeManager.Loaded;
 begin
   inherited;
   ReloadAutoSettings;
+end;
+
+procedure TUThemeManager.Assign(Source: TPersistent);
+begin
+  if (Source is TUThemeManager) and (Source <> nil) then
+    begin
+      FTheme := (Source as TUThemeManager).Theme;
+      FAccentColor := (Source as TUThemeManager).AccentColor;
+      FColorOnBorder := (Source as TUThemeManager).ColorOnBorder;
+
+      FAutoUpdateControls := (Source as TUThemeManager).AutoUpdateControls;
+      FAutoTheme := (Source as TUThemeManager).AutoTheme;
+      FAutoAccentColor := (Source as TUThemeManager).AutoAccentColor;
+      FAutoColorOnBorder := (Source as TUThemeManager).AutoColorOnBorder;
+
+      if AutoUpdateControls then
+        UpdateThemeForControls;
+    end
+  else
+    inherited;
 end;
 
 //  METHODS

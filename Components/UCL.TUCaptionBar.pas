@@ -16,9 +16,12 @@ type
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
       FDoubleClickMaximize: Boolean;
+      FCustomColor: TColor;
 
+      //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
 
+      //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_RButtonUp(var Msg: TMessage); message WM_RBUTTONUP;
@@ -29,9 +32,11 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
       property DoubleClickMaximize: Boolean read FDoubleClickMaximize write FDoubleClickMaximize default true;
+      property CustomColor: TColor read FCustomColor write FCustomColor default $D77800;
   end;
 
   TUCaptionBar = class(TUCustomCaptionBar)
@@ -136,7 +141,7 @@ procedure TUCustomCaptionBar.UpdateTheme;
 begin
   //  Background color
   if ThemeManager = nil then
-    Color := $FFFFFF
+    Color := CustomColor
   else if ThemeManager.Theme = utLight then
     Color := $F2F2F2
   else
@@ -154,12 +159,12 @@ begin
   FDragMovement := true;
   FSystemMenuEnabled := true;
   FDoubleClickMaximize := true;
+  FCustomColor := $D77800;
 
   Align := alTop;
   BevelOuter := bvNone;
   TabStop := false;
   Height := 32;
-
   Font.Name := 'Segoe UI';
   Font.Size := 9;
 

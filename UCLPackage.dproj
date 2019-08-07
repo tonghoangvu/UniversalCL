@@ -141,10 +141,10 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.6;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.11;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Build>6</VerInfo_Build>
+        <VerInfo_Build>11</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -186,7 +186,6 @@
         <DCCReference Include="Components\UCL.TURadioButton.pas"/>
         <DCCReference Include="Components\UCL.TUItemButton.pas"/>
         <DCCReference Include="Components\UCL.TUSeparator.pas"/>
-        <DCCReference Include="Components\UCL.TUEdit.pas"/>
         <DCCReference Include="Components\UCL.TUScrollBox.pas"/>
         <DCCReference Include="Components\UCL.TUSlider.pas"/>
         <DCCReference Include="Components\UCL.TUTooltip.pas"/>
@@ -195,6 +194,7 @@
         <DCCReference Include="UCL.IntAnimation.Collection.pas"/>
         <DCCReference Include="UCL.IntAnimation.Helpers.pas"/>
         <DCCReference Include="Components\UCL.TUPopupMenu.pas"/>
+        <DCCReference Include="Components\UCL.TUEdit.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

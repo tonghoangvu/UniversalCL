@@ -19,11 +19,10 @@ type
       DefTextColor: TDefColor = (
         ($00000000, $00000000, $00000000, $00666666, $00000000),
         ($00FFFFFF, $00FFFFFF, $00FFFFFF, $00666666, $00FFFFFF));
-      DefDetailColor: TDefColor = (
-        ($00808080, $00808080, $00808080, $00808080, $00808080),
-        ($00808080, $00808080, $00808080, $00808080, $00808080));
 
     private
+      var BackColor, TextColor, DetailColor, ActiveColor: TColor;
+
       FThemeManager: TUThemeManager;
 
       FObjectSelected: TUItemObjectKind;
@@ -102,6 +101,7 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
+      procedure UpdateChange;
 
       property ObjectSelected: TUItemObjectKind read FObjectSelected default iokNone;
 
@@ -210,7 +210,53 @@ end;
 
 procedure TUCustomItemButton.UpdateTheme;
 begin
+  UpdateChange;
   Paint;
+end;
+
+procedure TUCustomItemButton.UpdateChange;
+var
+  TempTheme: TUTheme;
+begin
+  if ThemeManager = nil then
+    TempTheme := utLight
+  else
+    TempTheme := ThemeManager.Theme;
+
+  //  Transparent enabled
+  if (ButtonState = csNone) and (Transparent) then
+    begin
+      ParentColor := true;
+      BackColor := Color;
+      TextColor := GetTextColorFromBackground(Color);
+      DetailColor := $808080;
+    end
+
+  //  Highlight enabled
+  else if
+    (ThemeManager <> nil)
+    and ((IsToggleButton) and (IsToggled))
+    and (ButtonState in [csNone, csHover, csFocused])
+  then
+    begin
+      BackColor := ThemeManager.AccentColor;
+      TextColor := GetTextColorFromBackground(BackColor);
+      DetailColor := clSilver;
+    end
+
+  //  Default colors
+  else
+    begin
+      BackColor := DefBackColor[TempTheme, ButtonState];
+      TextColor := DefTextColor[TempTheme, ButtonState];
+      DetailColor := $808080;
+    end;
+
+  //  Active color
+  if ThemeManager = nil then
+    ActiveColor := CustomActiveColor
+  else
+    ActiveColor := ThemeManager.AccentColor;
 end;
 
 //  SETTERS
@@ -454,7 +500,7 @@ begin
   //  Common properties
   TabStop := true;
 
-  //UpdateTheme;
+  UpdateChange;
 end;
 
 destructor TUCustomItemButton.Destroy;
@@ -470,7 +516,6 @@ procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Bo
 begin
   inherited;
 
-  //Font.Height := MulDiv(Font.Height, M, D);   // Not neccesary
   IconFont.Height := MulDiv(IconFont.Height, M, D);
   DetailFont.Height := MulDiv(DetailFont.Height, M, D);
 
@@ -481,52 +526,18 @@ begin
 end;
 
 procedure TUCustomItemButton.Paint;
+const
+  ICON_CHECKED = '';
+  ICON_UNCHECKED = '';
 var
-  aTheme: TUTheme;
   LPos, RPos: Integer;
   ObjectH, ObjectW: Integer;
   ImgW, ImgH, ImgX, ImgY: Integer;
-
-  BackColor, TextColor, DetailColor: TColor;
 begin
   inherited;
 
   LPos := 0;
   RPos := Width;
-
-  if ThemeManager = nil then
-    aTheme := utLight
-  else
-    aTheme := ThemeManager.Theme;
-
-  //  Transparent enabled
-  if (ButtonState = csNone) and (Transparent) then
-    begin
-      ParentColor := true;
-      BackColor := Color;
-      TextColor := GetTextColorFromBackground(Color);
-      DetailColor := DefDetailColor[aTheme, ButtonState];
-    end
-
-  //  Highlight enabled
-  else if
-    (ThemeManager <> nil)
-    and ((IsToggleButton) and (IsToggled))
-    and (ButtonState in [csNone, csHover, csFocused])
-  then
-    begin
-      BackColor := ThemeManager.AccentColor;
-      TextColor := GetTextColorFromBackground(BackColor);
-      DetailColor := clSilver;
-    end
-
-  //  Default colors
-  else
-    begin
-      BackColor := DefBackColor[aTheme, ButtonState];
-      TextColor := DefTextColor[aTheme, ButtonState];
-      DetailColor := DefDetailColor[aTheme, ButtonState];
-    end;
 
   //  Paint background
   Canvas.Brush.Color := BackColor;
@@ -539,26 +550,17 @@ begin
       if IsChecked then
         begin
           //  Paint only check icon
-          if ThemeManager = nil then
-            Canvas.Font.Color := CustomActiveColor
-          else
-            Canvas.Font.Color := ThemeManager.AccentColor;
-
-          ObjectH := Canvas.TextHeight('');
-          ObjectW := Canvas.TextWidth('');
-          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, '');
+          Canvas.Font.Color := ActiveColor;
+          ObjectH := Canvas.TextHeight(ICON_CHECKED);
+          ObjectW := Canvas.TextWidth(ICON_CHECKED);
+          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, ICON_CHECKED);
         end
       else
         begin
-          //  Paint a empty box
-          if aTheme = utLight then
-            Canvas.Font.Color := $000000
-          else
-            Canvas.Font.Color := $FFFFFF;
-
-          ObjectH := Canvas.TextHeight('');
-          ObjectW := Canvas.TextWidth('');
-          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, '');
+          Canvas.Font.Color := TextColor;
+          ObjectH := Canvas.TextHeight(ICON_UNCHECKED);
+          ObjectW := Canvas.TextWidth(ICON_UNCHECKED);
+          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, ICON_UNCHECKED);
         end;
 
       inc(LPos, CheckBoxWidth);
@@ -567,6 +569,7 @@ begin
   Canvas.Font.Color := TextColor;
 
   inc(LPos, AlignSpace);
+
   //  Paint left icon
   if ShowLeftIcon then
     if LeftIconKind = ikFontIcon then
@@ -588,7 +591,8 @@ begin
         inc(LPos, LeftIconWidth);
       end;
 
-  dec(RPos, AlignSpace);
+  Dec(RPos, AlignSpace);
+
   //  Paint right icon
   if ShowRightIcon then
     if RightIconKind = ikFontIcon then
@@ -610,11 +614,10 @@ begin
         dec(RPos, RightIconWidth);
       end;
 
-  Canvas.Font := Self.Font; //  Default font = text font
-
   // Paint text
   if ShowText then
     begin
+      Canvas.Font := Font;
       Canvas.Font.Color := TextColor;
 
       ObjectH := Canvas.TextHeight(Text);

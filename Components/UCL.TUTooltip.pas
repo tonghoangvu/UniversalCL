@@ -78,7 +78,7 @@ end;
 procedure TUCustomTooltip.CreateParams(var Params: TCreateParams);
 begin
   inherited;
-  Params.WindowClass.Style := Params.WindowClass.style and not CS_DROPSHADOW;
+  Params.WindowClass.Style := Params.WindowClass.style and not CS_DROPSHADOW; //  Remove shadow
 end;
 
 procedure TUCustomTooltip.WM_NCPaint(var Msg: TWMNCPaint);
@@ -87,17 +87,16 @@ var
   TempRect: TRect;
 begin
   inherited;
-  Msg.Result := 1;
-
   GetWindowRect(Handle, TempRect);
 
+  //  Paint border (don't use Canvas)
   TempCanvas := TCanvas.Create;
   try
     TempCanvas.Handle := GetWindowDC(Handle);
     TempCanvas.Pen.Color := BorderColor;
-    TempCanvas.Pen.Width := 2;
+    TempCanvas.Pen.Width := 1;
     TempCanvas.Brush.Style := bsClear;
-    TempCanvas.Rectangle(1, 1, TempRect.Right - TempRect.Left, TempRect.Bottom - TempRect.Top);
+    TempCanvas.Rectangle(0, 0, TempRect.Width, TempRect.Height);
   finally
     TempCanvas.Free;
   end;
@@ -109,20 +108,23 @@ var
 begin
   inherited;
 
-  //  Clear background
-  Canvas.Brush.Color := BackColor;
-  Canvas.Brush.Style := bsSolid;
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  { OPTIMIZE }
 
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
   Canvas.Font.Color := GetTextColorFromBackground(BackColor);
 
-  //  Paint text
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := BackColor;
+
   TextW := Canvas.TextWidth(Caption);
   TextH := Canvas.TextHeight(Caption);
   TextX := (Width - TextW) div 2;
   TextY := (Height - TextH) div 2 - 1;
+
+  { PAINT }
+
+  Canvas.FillRect(Rect(0, 0, Width, Height)); //  Clear background
   Canvas.TextOut(TextX, TextY, Caption);
 end;
 
