@@ -1,9 +1,11 @@
 object formLoginDialog: TformLoginDialog
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'Login'
-  ClientHeight = 550
-  ClientWidth = 400
+  ClientHeight = 560
+  ClientWidth = 410
   Color = clWindow
   Constraints.MinHeight = 150
   Constraints.MinWidth = 290
@@ -21,8 +23,8 @@ object formLoginDialog: TformLoginDialog
   object boxMain: TUScrollBox
     Left = 0
     Top = 32
-    Width = 400
-    Height = 466
+    Width = 410
+    Height = 476
     Align = alClient
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -39,7 +41,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 50
-      Width = 320
+      Width = 330
       Height = 38
       Margins.Left = 0
       Margins.Top = 50
@@ -63,7 +65,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 88
-      Width = 320
+      Width = 330
       Height = 28
       Margins.Left = 0
       Margins.Top = 0
@@ -85,7 +87,7 @@ object formLoginDialog: TformLoginDialog
     object entryPassword: TUText
       Left = 40
       Top = 207
-      Width = 320
+      Width = 330
       Height = 17
       Align = alTop
       Caption = 'Password'
@@ -102,7 +104,7 @@ object formLoginDialog: TformLoginDialog
     object entryEmail: TUText
       Left = 40
       Top = 136
-      Width = 320
+      Width = 330
       Height = 17
       Align = alTop
       Caption = 'Email'
@@ -120,7 +122,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 349
-      Width = 320
+      Width = 330
       Height = 15
       Cursor = crHandPoint
       Margins.Left = 0
@@ -143,7 +145,7 @@ object formLoginDialog: TformLoginDialog
     object entryDescription: TUText
       Left = 40
       Top = 278
-      Width = 320
+      Width = 330
       Height = 17
       Align = alTop
       Caption = 'Description (optional)'
@@ -160,7 +162,7 @@ object formLoginDialog: TformLoginDialog
     object panelMoreOptions: TUPanel
       Left = 40
       Top = 369
-      Width = 320
+      Width = 330
       Height = 80
       ThemeManager = AppTheme
       CustomTextColor = clBlack
@@ -180,7 +182,7 @@ object formLoginDialog: TformLoginDialog
       object checkSendMeNews: TUCheckBox
         Left = 0
         Top = 30
-        Width = 320
+        Width = 330
         Height = 30
         ThemeManager = AppTheme
         IconFont.Charset = DEFAULT_CHARSET
@@ -201,7 +203,7 @@ object formLoginDialog: TformLoginDialog
       object checkKeepLogin: TUCheckBox
         Left = 0
         Top = 0
-        Width = 320
+        Width = 330
         Height = 30
         ThemeManager = AppTheme
         IconFont.Charset = DEFAULT_CHARSET
@@ -225,7 +227,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 158
-      Width = 320
+      Width = 330
       Height = 29
       Margins.Left = 0
       Margins.Top = 5
@@ -234,7 +236,7 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 310
+      Edit.Width = 320
       Edit.Height = 21
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
@@ -262,7 +264,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 229
-      Width = 320
+      Width = 330
       Height = 29
       Margins.Left = 0
       Margins.Top = 5
@@ -271,7 +273,7 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 310
+      Edit.Width = 320
       Edit.Height = 21
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
@@ -300,7 +302,7 @@ object formLoginDialog: TformLoginDialog
       AlignWithMargins = True
       Left = 40
       Top = 300
-      Width = 320
+      Width = 330
       Height = 29
       Margins.Left = 0
       Margins.Top = 5
@@ -309,7 +311,7 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 310
+      Edit.Width = 320
       Edit.Height = 21
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
@@ -338,9 +340,10 @@ object formLoginDialog: TformLoginDialog
   object captionbarMain: TUCaptionBar
     Left = 0
     Top = 0
-    Width = 400
+    Width = 410
     Height = 32
     ThemeManager = AppTheme
+    DoubleClickMaximize = False
     Align = alTop
     Alignment = taLeftJustify
     BevelOuter = bvNone
@@ -355,7 +358,7 @@ object formLoginDialog: TformLoginDialog
     ParentFont = False
     TabOrder = 1
     object buttonAppQuit: TUQuickButton
-      Left = 355
+      Left = 365
       Top = 0
       Width = 45
       Height = 32
@@ -377,7 +380,7 @@ object formLoginDialog: TformLoginDialog
       TabOrder = 0
     end
     object buttonAppMinimized: TUQuickButton
-      Left = 310
+      Left = 320
       Top = 0
       Width = 45
       Height = 32
@@ -399,7 +402,7 @@ object formLoginDialog: TformLoginDialog
       TabOrder = 1
     end
     object buttonAppTheme: TUQuickButton
-      Left = 265
+      Left = 275
       Top = 0
       Width = 45
       Height = 32
@@ -424,8 +427,8 @@ object formLoginDialog: TformLoginDialog
   end
   object panelAction: TUPanel
     Left = 0
-    Top = 498
-    Width = 400
+    Top = 508
+    Width = 410
     Height = 52
     ThemeManager = AppTheme
     CustomTextColor = clBlack
@@ -446,7 +449,7 @@ object formLoginDialog: TformLoginDialog
     ShowCaption = False
     TabOrder = 2
     object buttonOk: TUButton
-      Left = 260
+      Left = 270
       Top = 10
       Width = 130
       Height = 32
@@ -477,7 +480,7 @@ object formLoginDialog: TformLoginDialog
     end
     object buttonCancel: TUButton
       AlignWithMargins = True
-      Left = 120
+      Left = 130
       Top = 10
       Width = 130
       Height = 32
@@ -511,6 +514,8 @@ object formLoginDialog: TformLoginDialog
     end
   end
   object AppTheme: TUThemeManager
+    Theme = utLight
+    AccentColor = 14120960
     Left = 270
     Top = 42
   end

@@ -141,10 +141,10 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.14;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.18;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Build>14</VerInfo_Build>
+        <VerInfo_Build>18</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -173,7 +173,6 @@
         <DCCReference Include="Sources\UCL.IntAnimation.Helpers.pas"/>
         <DCCReference Include="Sources\UCL.IntAnimation.pas"/>
         <DCCReference Include="Sources\UCL.SystemSettings.pas"/>
-        <DCCReference Include="Sources\UCL.TUBorder.pas"/>
         <DCCReference Include="Sources\UCL.TUButton.pas"/>
         <DCCReference Include="Sources\UCL.TUCaptionBar.pas"/>
         <DCCReference Include="Sources\UCL.TUCheckBox.pas"/>

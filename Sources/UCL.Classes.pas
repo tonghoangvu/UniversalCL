@@ -6,7 +6,7 @@ interface
 
 uses
   System.Classes,
-  VCL.Graphics, Vcl.Controls;
+  VCL.Graphics, Vcl.Controls, VCL.ExtCtrls;
 
 type
   TUTheme = (utLight, utDark);
@@ -18,6 +18,78 @@ type
   TUImageKind = (ikFontIcon, ikImage);
 
   TDefColor = array [TUTheme, TUControlState] of TColor;
+
+  TUControl = class(TCustomControl)
+    public
+      property DockManager;
+
+    published
+      property Align;
+      property Anchors;
+      property AutoSize;
+      property BevelEdges;
+      property BevelInner;
+      property BevelKind;
+      property BevelOuter;
+      property BevelWidth;
+      property BiDiMode;
+      property BorderWidth;
+      property Caption;
+      property Color;
+      property Constraints;
+      property Ctl3D;
+      property UseDockManager default True;
+      property DockSite;
+      property DoubleBuffered;
+      property DragCursor;
+      property DragKind;
+      property DragMode;
+      property Enabled;
+      property Font;
+      property Padding;
+      property ParentBiDiMode;
+      property ParentBackground;
+      property ParentColor;
+      property ParentCtl3D;
+      property ParentDoubleBuffered;
+      property ParentFont;
+      property ParentShowHint;
+      property PopupMenu;
+      property ShowHint;
+      property TabOrder;
+      property TabStop;
+      property Touch;
+      property Visible;
+      property StyleElements;
+
+      property OnAlignInsertBefore;
+      property OnAlignPosition;
+      property OnCanResize;
+      property OnClick;
+      property OnConstrainedResize;
+      property OnContextPopup;
+      property OnDockDrop;
+      property OnDockOver;
+      property OnDblClick;
+      property OnDragDrop;
+      property OnDragOver;
+      property OnEndDock;
+      property OnEndDrag;
+      property OnEnter;
+      property OnExit;
+      property OnGesture;
+      property OnGetSiteInfo;
+      property OnMouseActivate;
+      property OnMouseDown;
+      property OnMouseEnter;
+      property OnMouseLeave;
+      property OnMouseMove;
+      property OnMouseUp;
+      property OnResize;
+      property OnStartDock;
+      property OnStartDrag;
+      property OnUnDock;
+  end;
 
   TControlStateColors = class(TPersistent)
     private
@@ -33,7 +105,7 @@ type
 
     protected 
       procedure Change; virtual;
-    
+
     public
       constructor Create(aNone, aHover, aPress, aDisabled, aFocused: TColor); overload;
       function GetStateColor(const State: TUControlState): TColor;

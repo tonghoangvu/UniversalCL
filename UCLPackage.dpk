@@ -41,7 +41,6 @@ contains
   UCL.IntAnimation.Helpers in 'Sources\UCL.IntAnimation.Helpers.pas',
   UCL.IntAnimation in 'Sources\UCL.IntAnimation.pas',
   UCL.SystemSettings in 'Sources\UCL.SystemSettings.pas',
-  UCL.TUBorder in 'Sources\UCL.TUBorder.pas',
   UCL.TUButton in 'Sources\UCL.TUButton.pas',
   UCL.TUCaptionBar in 'Sources\UCL.TUCaptionBar.pas',
   UCL.TUCheckBox in 'Sources\UCL.TUCheckBox.pas',

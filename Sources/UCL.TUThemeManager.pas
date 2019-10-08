@@ -14,6 +14,10 @@ type
     procedure UpdateTheme;
   end;
 
+  IUComponent = interface
+    procedure UpdateTheme;
+  end;
+
   TUThemeManager = class(TComponent)
     private
       FAutoUpdateControls: Boolean;    
@@ -29,8 +33,10 @@ type
 
       procedure SetAutoTheme(const Value: Boolean);
       procedure SetTheme(const Value: TUTheme);
+
       procedure SetAutoAccentColor(const Value: Boolean);
       procedure SetAccentColor(const Value: TColor);
+
       procedure SetAutoColorOnBorder(const Value: Boolean);
 
     public 
@@ -48,13 +54,17 @@ type
       procedure Disconnect(const aComponent: TComponent);
 
     published
-      property AutoUpdateControls: Boolean read FAutoUpdateControls write FAutoUpdateControls default true;    
+      property AutoUpdateControls: Boolean read FAutoUpdateControls write FAutoUpdateControls default true;
+
       property AutoTheme: Boolean read FAutoTheme write SetAutoTheme default true;
-      property Theme: TUTheme read FTheme write SetTheme stored false;
+      property Theme: TUTheme read FTheme write SetTheme;
+
       property AutoAccentColor: Boolean read FAutoAccentColor write SetAutoAccentColor default true;
-      property AccentColor: TColor read FAccentColor write SetAccentColor stored false;
+      property AccentColor: TColor read FAccentColor write SetAccentColor;
+
       property AutoColorOnBorder: Boolean read FAutoColorOnBorder write SetAutoColorOnBorder default true;
       property ColorOnBorder: Boolean read FColorOnBorder stored false;
+
       property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
   end;
 

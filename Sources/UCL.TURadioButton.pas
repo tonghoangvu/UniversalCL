@@ -37,7 +37,6 @@ type
       procedure SetTextPosition(const Value: Integer);
 
       //  Messages
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
@@ -301,11 +300,6 @@ begin
 end;
 
 //  MESSAGES
-
-procedure TUCustomRadioButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
-end;
 
 procedure TUCustomRadioButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin

@@ -84,7 +84,6 @@ type
       procedure SetIsToggled(const Value: Boolean);
 
       //  Messages
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
@@ -641,11 +640,6 @@ begin
 end;
 
 //  MESSAGES
-
-procedure TUCustomItemButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
-end;
 
 procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin

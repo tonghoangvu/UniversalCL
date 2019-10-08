@@ -41,7 +41,6 @@ type
       procedure SetState(const Value: TUCheckBoxState);
 
       //  Messages
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
 
@@ -324,12 +323,6 @@ begin
 end;
 
 //  MESSAGES
-
-procedure TUCustomCheckBox.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  DefaultHandler(Msg);
-  //  Skip message
-end;
 
 procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin

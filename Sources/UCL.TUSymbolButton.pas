@@ -66,7 +66,6 @@ type
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
 
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
@@ -514,11 +513,6 @@ begin
       ButtonState := csHover;
       inherited;
     end;
-end;
-
-procedure TUCustomSymbolButton.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
 end;
 
 procedure TUCustomSymbolButton.CM_MouseEnter(var Msg: TMessage);

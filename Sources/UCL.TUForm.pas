@@ -21,9 +21,9 @@ type
 
       FThemeManager: TUThemeManager;
       FIsActive: Boolean;
-      FResizable: Boolean;
       FPPI: Integer;
       FSplashScreenDelay: Integer;
+      FFitDesktopForPopup: Boolean;
 
       FSplashImage: string;
       FCaptionBar: TUCaptionBar;
@@ -40,6 +40,10 @@ type
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
+      //  Utils
+      function GetBorderSpace: Integer;
+      function IsBorderless: Boolean;
+
     protected
       procedure Paint; override;
       procedure Resize; override;
@@ -53,9 +57,9 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property IsActive: Boolean read FIsActive default true;
-      property Resizable: Boolean read FResizable write FResizable default true;
       property PPI: Integer read FPPI write FPPI default 96;
       property SplashScreenDelay: Integer read FSplashScreenDelay write FSplashScreenDelay default 1500;
+      property FitDesktopForPopup: Boolean read FFitDesktopForPopup write FFitDesktopForPopup default false;
 
       property SplashImage: string read FSplashImage write FSplashImage;
       property CaptionBar: TUCaptionBar read FCaptionBar write FCaptionBar;
@@ -72,12 +76,38 @@ uses
 
 //  UTILS
 
+function TUForm.GetBorderSpace: Integer;
+begin
+  case BorderStyle of
+    bsSingle:
+      Result :=
+        GetSystemMetrics(SM_CYFIXEDFRAME);
+
+    bsDialog, bsToolWindow:
+      Result :=
+        GetSystemMetrics(SM_CYDLGFRAME);
+
+    bsSizeable, bsSizeToolWin:
+      Result :=
+        GetSystemMetrics(SM_CYSIZEFRAME) +
+        GetSystemMetrics(SM_CXPADDEDBORDER);
+    else
+      Result := 0;
+  end;
+end;
+
+function TUForm.IsBorderless: Boolean;
+begin
+  Result := BorderStyle in [bsNone, bsToolWindow, bsSizeToolWin];
+end;
+
 procedure TUForm.UpdateBorderColor;
 begin
-  //  Border color
+  //  Not set theme manager
   if ThemeManager = nil then
     BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
 
+  //  Active window
   else if IsActive then
     begin
       if ThemeManager.ColorOnBorder then
@@ -88,6 +118,7 @@ begin
         BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_DARK;
     end
 
+  //  In active window
   else
     begin
       if ThemeManager.Theme = utLight then
@@ -223,20 +254,16 @@ constructor TUForm.Create(aOwner: TComponent);
 var
   CurrentScreen: TMonitor;
 begin
-
-
   inherited;
   FIsActive := true;
-  FResizable := true;
   FSplashScreenDelay := 1500;
+  FFitDesktopForPopup := false;
 
   Padding.SetBounds(0, 1, 0, 0);  //  Top space
 
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
   FPPI := CurrentScreen.PixelsPerInch;
-
-  UpdateTheme;
 end;
 
 //  CUSTOM METHODS
@@ -244,7 +271,7 @@ end;
 procedure TUForm.Paint;
 begin
   inherited;
-  if WindowState <> wsMaximized then  //  No border on maximized
+  if (WindowState = wsNormal) and (not IsBorderless) then  //  No border on maximized
     begin
       Canvas.Pen.Color := BorderColor;
       Canvas.MoveTo(0, 0);
@@ -253,12 +280,33 @@ begin
 end;
 
 procedure TUForm.Resize;
+var
+  Space: Integer;
+  CurrentScreen: TMonitor;
 begin
   inherited;
-  if WindowState = wsMaximized then
-    Padding.SetBounds(0, 0, 0, 0)
+
+  if (WindowState = wsNormal) and (not IsBorderless) then
+    Padding.SetBounds(0, 1, 0, 0)
   else
-    Padding.SetBounds(0, 1, 0, 0);
+    Padding.SetBounds(0, 0, 0, 0);
+
+  //  Fit window to desktop - for WS_POPUP window style
+  //  If not, if not, window fill full screen when maximized
+  if
+    (FitDesktopForPopup) and
+    (WindowState = wsMaximized) and
+    (BorderStyle in [bsDialog, bsSizeToolWin, bsToolWindow])
+  then
+    begin
+      CurrentScreen := Screen.MonitorFromWindow(Handle);
+      Space := GetBorderSpace;
+
+      Top := - Space;
+      Left :=  - Space;
+      Width := CurrentScreen.WorkareaRect.Width + 2 * Space;
+      Height := CurrentScreen.WorkAreaRect.Height + 2 * Space;
+    end;
 end;
 
 //  MESSAGES
@@ -267,11 +315,11 @@ procedure TUForm.WM_Activate(var Msg: TWMActivate);
 begin
   inherited;
   FIsActive := Msg.Active <> WA_INACTIVE;
+  UpdateBorderColor;
 
-  //  Paint top border
-  if WindowState <> wsMaximized then
+  //  Repaint top border
+  if (WindowState = wsNormal) and (not IsBorderless) then
     begin
-      UpdateBorderColor;
       Canvas.Pen.Color := BorderColor;
       Canvas.MoveTo(0, 0);
       Canvas.LineTo(Width, 0);
@@ -294,35 +342,39 @@ end;
 procedure TUForm.WM_NCCalcSize(var Msg: TWMNCCalcSize);
 var
   CaptionBarHeight: Integer;
-  BorderSpace: Integer;
 begin
   inherited;
 
-  CaptionBarHeight :=
-    GetSystemMetrics(SM_CYFRAME) +
-    GetSystemMetrics(SM_CYCAPTION) +
-    GetSystemMetrics(SM_CXPADDEDBORDER);
-  Dec(Msg.CalcSize_Params.rgrc[0].Top, CaptionBarHeight); //  Hide caption bar
+  if BorderStyle = bsNone then exit;
 
-  if WindowState = wsMaximized then //  Add space on top
-    begin
-      BorderSpace := GetSystemMetrics(SM_CYFRAME) + GetSystemMetrics(SM_CXPADDEDBORDER);
-      Inc(Msg.CalcSize_Params.rgrc[0].Top, BorderSpace);
-    end;
+  CaptionBarHeight := GetSystemMetrics(SM_CYCAPTION);
+
+  if WindowState = wsNormal then
+    Inc(CaptionBarHeight, GetBorderSpace);
+
+  Dec(Msg.CalcSize_Params.rgrc[0].Top, CaptionBarHeight); //  Hide caption bar
 end;
 
 procedure TUForm.WM_NCHitTest(var Msg: TWMNCHitTest);
+var 
+  ResizeSpace: Integer;
 begin
   inherited;
-  if Resizable then
-    begin
-      if Msg.YPos - BoundsRect.Top < 5 then
-        Msg.Result := HTTOP;
-    end
-  else if //  Preparing to resize
-    Msg.Result in [HTTOP, HTTOPLEFT, HTTOPRIGHT, HTLEFT, HTRIGHT, HTBOTTOM, HTBOTTOMLEFT, HTBOTTOMRIGHT]
+  ResizeSpace := GetBorderSpace;
+
+  if
+    (WindowState = wsNormal) and
+    (BorderStyle in [bsSizeable, bsSizeToolWin]) and
+    (Msg.YPos - BoundsRect.Top <= ResizeSpace)
   then
-    Msg.Result := HTNOWHERE;
+    begin
+      if Msg.XPos - BoundsRect.Left <= 2 * ResizeSpace then
+        Msg.Result := HTTOPLEFT
+      else if BoundsRect.Right - Msg.XPos <= 2 * ResizeSpace then
+        Msg.Result := HTTOPRIGHT
+      else
+        Msg.Result := HTTOP;
+    end;
 end;
 
 end.

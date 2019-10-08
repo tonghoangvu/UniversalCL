@@ -44,7 +44,6 @@ type
       procedure SetTransparent(const Value: Boolean);
 
       //  Messages
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
@@ -326,11 +325,6 @@ begin
 end;
 
 //  MESSAGES
-
-procedure TUCustomEdit.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
-end;
 
 procedure TUCustomEdit.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin

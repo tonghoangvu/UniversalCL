@@ -7,7 +7,7 @@ uses
   UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers, UCL.TUThemeManager,
   UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
-  UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton, UCL.TUBorder,
+  UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
   UCL.TUPopupMenu,
 
   //  Winapi units
@@ -120,7 +120,7 @@ type
     popupVert: TUPopupMenu;
     popupHorz: TUPopupMenu;
     editAccountName: TUEdit;
-    procedure FormCreate(Sender: TObject);
+    comboAppBorderStyle: TComboBox;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -137,6 +137,8 @@ type
     procedure comboAppDPIChange(Sender: TObject);
     procedure itembuttonImageClick(Sender: TObject);
     procedure buttonPrintDocClick(Sender: TObject);
+    procedure comboAppBorderStyleChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
   public
   end;
@@ -152,11 +154,6 @@ uses
 {$R *.dfm}
 
 { MAIN FORM }
-
-procedure TformDemo.FormCreate(Sender: TObject);
-begin
-  Self.ThemeManager := AppTheme;
-end;
 
 procedure TformDemo.itembuttonImageClick(Sender: TObject);
 var
@@ -257,6 +254,17 @@ begin
   AppTheme.ReloadAutoSettings;
 end;
 
+procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
+begin
+  case comboAppBorderStyle.ItemIndex of
+    0:  BorderStyle := bsDialog;
+    1:  BorderStyle := bsSingle;
+    2:  BorderStyle := bsSizeable;
+    3:  BorderStyle := bsToolWindow;
+    4:  BorderStyle := bsSizeToolWin;
+  end;
+end;
+
 procedure TformDemo.comboAppDPIChange(Sender: TObject);
 var
   NewPPI: Integer;
@@ -271,6 +279,11 @@ begin
 
   Self.PPI := NewPPI;
   ScaleForPPI(NewPPI);
+end;
+
+procedure TformDemo.FormCreate(Sender: TObject);
+begin
+  ThemeManager := AppTheme;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);

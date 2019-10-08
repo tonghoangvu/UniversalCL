@@ -12,17 +12,13 @@ type
   TUCustomTooltip = class(THintWindow)
     const
       DEFAULT_TOOLTIP_HEIGHT = 26;
-
     private
       var BorderColor: TColor;
       var BackColor: TColor;
-
       procedure WM_Paint(var Msg: TWMPaint); message WM_PAINT;
       procedure WM_NCPaint(var Msg: TWMNCPaint); message WM_NCPAINT;
-
     protected
       procedure CreateParams(var Params: TCreateParams); override;
-
     public
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
   end;

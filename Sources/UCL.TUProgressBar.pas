@@ -30,9 +30,6 @@ type
       procedure SetValue(const Value: Integer);
       procedure SetOrientation(const Value: TUOrientation);
 
-      //  Messages
-      procedure WM_EraseBkGnd(var Msg: TWMEraseBkgnd); message WM_ERASEBKGND;
-
     protected
       procedure Paint; override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -221,13 +218,6 @@ procedure TUCustomProgressBar.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
   UpdateChange;
-end;
-
-//  MESSAGES
-
-procedure TUCustomProgressBar.WM_EraseBkGnd(var Msg: TWMEraseBkgnd);
-begin
-  //  Skip message
 end;
 
 end.

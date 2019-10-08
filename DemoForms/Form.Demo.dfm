@@ -345,13 +345,11 @@ object formDemo: TformDemo
     Width = 1000
     Height = 32
     ThemeManager = AppTheme
-    CustomColor = 10197915
+    CustomColor = clWhite
     Align = alTop
     Alignment = taLeftJustify
     BevelOuter = bvNone
-    Caption = 
-      '                  This is NEW style TUCaptionBar (use 3 spaces f' +
-      'or left align)'
+    Caption = '                  Delphi UWP app'
     Color = 15921906
     DoubleBuffered = True
     Font.Charset = DEFAULT_CHARSET
@@ -389,6 +387,7 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Close'
       ThemeManager = AppTheme
       ButtonStyle = qbsQuit
       LightColor = 2298344
@@ -404,6 +403,8 @@ object formDemo: TformDemo
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
     end
     object buttonAppMaximized: TUQuickButton
@@ -411,6 +412,7 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Maximize'
       ThemeManager = AppTheme
       ButtonStyle = qbsMax
       LightColor = 13619151
@@ -426,6 +428,8 @@ object formDemo: TformDemo
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
     end
     object buttonAppMinimized: TUQuickButton
@@ -433,6 +437,7 @@ object formDemo: TformDemo
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Minimize'
       ThemeManager = AppTheme
       ButtonStyle = qbsMin
       LightColor = 13619151
@@ -448,13 +453,15 @@ object formDemo: TformDemo
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
     end
     object comboAppDPI: TComboBox
       AlignWithMargins = True
-      Left = 716
+      Left = 741
       Top = 4
-      Width = 145
+      Width = 120
       Height = 23
       Margins.Left = 4
       Margins.Top = 4
@@ -471,6 +478,29 @@ object formDemo: TformDemo
         '125%'
         '150%'
         '175%')
+    end
+    object comboAppBorderStyle: TComboBox
+      AlignWithMargins = True
+      Left = 613
+      Top = 4
+      Width = 120
+      Height = 23
+      Margins.Left = 4
+      Margins.Top = 4
+      Margins.Right = 4
+      Margins.Bottom = 4
+      Align = alRight
+      Style = csDropDownList
+      ItemIndex = 2
+      TabOrder = 5
+      Text = 'bsSizeable'
+      OnChange = comboAppBorderStyleChange
+      Items.Strings = (
+        'bsDialog'
+        'bsSingle'
+        'bsSizeable'
+        'bsToolWindow'
+        'bsSizeToolWin')
     end
   end
   object panelRibbon: TUScrollBox
@@ -529,7 +559,7 @@ object formDemo: TformDemo
       SymbolChar = #57366
       Text = 'Back'
       TextOffset = 35
-      Detail = 'Detail'
+      Detail = 'Alt+Left'
       ShowDetail = False
       Transparent = True
       Align = alLeft
@@ -561,7 +591,7 @@ object formDemo: TformDemo
       SymbolChar = #57615
       Text = 'Home'
       TextOffset = 35
-      Detail = 'Detail'
+      Detail = 'Ctrl+H'
       ShowDetail = False
       Transparent = True
       Align = alLeft
@@ -593,7 +623,7 @@ object formDemo: TformDemo
       SymbolChar = #57696
       Text = 'New'
       TextOffset = 35
-      Detail = 'Detail'
+      Detail = 'Ctrl+N'
       ShowDetail = False
       Transparent = True
       Align = alLeft
@@ -625,7 +655,7 @@ object formDemo: TformDemo
       SymbolChar = #60739
       Text = 'Open'
       TextOffset = 35
-      Detail = 'Detail'
+      Detail = 'Ctrl+O'
       ShowDetail = False
       Transparent = True
       Align = alLeft
@@ -690,7 +720,7 @@ object formDemo: TformDemo
       SymbolChar = #57605
       Text = 'Save'
       TextOffset = 35
-      Detail = 'Detail'
+      Detail = 'Ctrl+S'
       ShowDetail = False
       Transparent = True
       Align = alLeft
@@ -1393,6 +1423,26 @@ object formDemo: TformDemo
     Orientation = oVertical
     Max = 5
   end
+  object check3State: TUCheckBox
+    Left = 390
+    Top = 368
+    Width = 134
+    Height = 30
+    ThemeManager = AppTheme
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Text = '3-state checkbox'
+    AllowGrayed = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object boxSmoothScrolling: TUScrollBox
     Left = 750
     Top = 92
@@ -1410,7 +1460,9 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 33
     ThemeManager = AppTheme
-    MaxScrollCount = 6
+    WaitEventTime = 70
+    MaxScrollCount = 10
+    LengthPerStep = 70
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -2190,36 +2242,20 @@ object formDemo: TformDemo
       TabOrder = 16
     end
   end
-  object check3State: TUCheckBox
-    Left = 390
-    Top = 368
-    Width = 134
-    Height = 30
-    ThemeManager = AppTheme
-    IconFont.Charset = DEFAULT_CHARSET
-    IconFont.Color = clWindowText
-    IconFont.Height = -20
-    IconFont.Name = 'Segoe MDL2 Assets'
-    IconFont.Style = []
-    Text = '3-state checkbox'
-    AllowGrayed = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
   object AppTheme: TUThemeManager
+    AutoTheme = False
+    Theme = utLight
+    AutoAccentColor = False
+    AccentColor = 14120960
     OnUpdate = AppThemeUpdate
-    Left = 250
-    Top = 570
+    Left = 680
+    Top = 40
   end
   object dialogSelectColor: TColorDialog
     Ctl3D = False
     Color = 14120960
-    Left = 330
-    Top = 570
+    Left = 760
+    Top = 40
   end
   object imgcollectionMain: TImageCollection
     Images = <
@@ -2481,8 +2517,8 @@ object formDemo: TformDemo
               FF70EDDAB5E7FF0F3C559D23F2E44C5B0000000049454E44AE426082}
           end>
       end>
-    Left = 90
-    Top = 570
+    Left = 520
+    Top = 40
   end
   object imglistMain: TVirtualImageList
     AutoFill = True
@@ -2516,8 +2552,8 @@ object formDemo: TformDemo
     ImageCollection = imgcollectionMain
     Width = 24
     Height = 24
-    Left = 170
-    Top = 570
+    Left = 600
+    Top = 40
   end
   object popupVert: TUPopupMenu
     Images = imglistMain
@@ -2528,8 +2564,8 @@ object formDemo: TformDemo
       '1|TeamViewer|Open link')
     SeparatorChar = '|'
     ItemWidth = 250
-    Left = 410
-    Top = 570
+    Left = 840
+    Top = 40
   end
   object popupHorz: TUPopupMenu
     ThemeManager = AppTheme
@@ -2541,7 +2577,7 @@ object formDemo: TformDemo
     Orientation = oHorizontal
     ItemWidth = 80
     OnItemClick = popupHorzItemClick
-    Left = 480
-    Top = 570
+    Left = 910
+    Top = 40
   end
 end
