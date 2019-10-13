@@ -4,7 +4,7 @@ interface
 
 uses
   FlatSB,
-  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation,
+  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils,
   System.Classes, System.SysUtils, System.TypInfo,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
@@ -192,13 +192,13 @@ begin
     end;
 
   //  Paint mini scroll bar
-  FCanvas.Brush.Color := MINI_SCROLLBAR_COLOR;
+  FCanvas.Brush.Handle := CreateSolidBrushWithAlpha(MINI_SCROLLBAR_COLOR, 255);
   FCanvas.FillRect(MiniSBRect);
 end;
 
 procedure TUScrollBox.ClearMiniScrollBar;
 begin
-  FCanvas.Brush.Color := Color;
+  FCanvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   FCanvas.FillRect(MiniSBRect);
 end;
 

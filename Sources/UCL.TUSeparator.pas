@@ -3,7 +3,7 @@ unit UCL.TUSeparator;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Messages,
   VCL.Controls, VCL.Graphics;
@@ -157,7 +157,7 @@ begin
 
   //  Paint background
   ParentColor := true;
-  Canvas.Brush.Color := Color;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
   if OnlySpace = true then

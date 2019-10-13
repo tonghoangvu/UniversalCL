@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes,
-  UCL.SystemSettings, UCL.TUThemeManager,
+  UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils,
   System.SysUtils, System.Classes, System.Types,
   Winapi.Messages,
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics,
@@ -206,11 +206,11 @@ begin
   inherited;
 
   //  Paint background
-  Canvas.Brush.Color := BackColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(BackRect);
 
   //  Paint Fillround
-  Canvas.Brush.Color := FillColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(FillColor, 255);
   Canvas.FillRect(FillRect);
 end;
 

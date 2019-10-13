@@ -4,8 +4,9 @@ interface
 
 uses
   //  UCL units
-  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers, UCL.TUThemeManager,
-  UCL.TUForm, UCL.TUSwitch, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
+  UCL.TUThemeManager,
+  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers,
+  UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
   UCL.TUPopupMenu,
@@ -18,8 +19,7 @@ uses
 
   //  VCL units
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.VirtualImageList,
-  Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Imaging.pngimage;
+  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage;
 
 type
   TformDemo = class(TUForm)
@@ -42,8 +42,6 @@ type
     buttonPrintDoc: TUSymbolButton;
     buttonSaveDoc: TUSymbolButton;
     separator2: TUSeparator;
-    imgcollectionMain: TImageCollection;
-    imglistMain: TVirtualImageList;
     linkConnected: TUHyperLink;
     linkCustomColor: TUHyperLink;
     linkDisabled: TUHyperLink;
@@ -139,8 +137,11 @@ type
     procedure buttonPrintDocClick(Sender: TObject);
     procedure comboAppBorderStyleChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+
   private
+
   public
+
   end;
 
 var
@@ -149,6 +150,7 @@ var
 implementation
 
 uses
+  UxTheme, DWMAPI,
   Form.LoginDialog;
 
 {$R *.dfm}
@@ -157,23 +159,24 @@ uses
 
 procedure TformDemo.itembuttonImageClick(Sender: TObject);
 var
-  MsgText: string;
+  ObjName: string;
 begin
   case itembuttonImage.ObjectSelected of
     iokNone:
-      MsgText := 'You clicked in background';
+      ObjName := 'Background';
     iokCheckBox:
-      MsgText := 'You clicked in checkbox';
+      ObjName := 'Checkbox';
     iokLeftIcon:
-      MsgText := 'You clicked in left icon';
+      ObjName := 'Left icon';
     iokText:
-      MsgText := 'You clicked in text';
+      ObjName := 'Text';
     iokDetail:
-      MsgText := 'You clicked in detail';
+      ObjName := 'Detail';
     iokRightIcon:
-      MsgText := 'You clicked in right icon';
+      ObjName := 'Right icon';
   end;
-  ShowMessage(MsgText);
+
+  itembuttonImage.Detail := ObjName;
 end;
 
 { ANIMATION BUTTON }
@@ -284,6 +287,7 @@ end;
 procedure TformDemo.FormCreate(Sender: TObject);
 begin
   ThemeManager := AppTheme;
+  CaptionBar := captionbarNewStyle;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);

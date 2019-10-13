@@ -6,7 +6,7 @@ uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   Winapi.Windows, Winapi.Messages,
   System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
+  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList, VCL.Themes;
 
 type
   TUCustomButton = class(TCustomControl, IUThemeComponent)
@@ -36,7 +36,7 @@ type
       //  Fields
       FButtonState: TUControlState;
       FText: string;
-      FTextAlignment: TAlignment;
+      FAlignment: TAlignment;
       FImageIndex: Integer;
       FImages: TCustomImageList;
       FHitTest: Boolean;
@@ -50,7 +50,7 @@ type
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
       procedure SetText(const Value: string);
-      procedure SetTextAlignment(const Value: TAlignment);
+      procedure SetAlignment(const Value: TAlignment);
       procedure SetImageIndex(const Value: Integer);
       procedure SetHighlight(const Value: Boolean);
       procedure SetTransparent(const Value: Boolean);
@@ -91,11 +91,11 @@ type
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
       property Text: string read FText write SetText;
-      property TextAlignment: TAlignment read FTextAlignment write SetTextAlignment default taCenter;
+      property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
       property HitTest: Boolean read FHitTest write FHitTest default true;
-      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
+      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write FIsToggled default false;
@@ -231,11 +231,11 @@ begin
     end;
 end;
 
-procedure TUCustomButton.SetTextAlignment(const Value: TAlignment);
+procedure TUCustomButton.SetAlignment(const Value: TAlignment);
 begin
-  if Value <> FTextAlignment then
+  if Value <> FAlignment then
     begin
-      FTextAlignment := Value;
+      FAlignment := Value;
       UpdateTheme;
     end;
 end;
@@ -286,10 +286,10 @@ begin
 
   FButtonState := csNone;
   FText := 'Button';
-  FTextAlignment := taCenter;
+  FAlignment := taCenter;
   FImageIndex := -1;
   FHitTest := true;
-  FAllowFocus := true;
+  FAllowFocus := false;
   FHighlight := false;
   FIsToggleButton := false;
   FIsToggled := false;
@@ -328,30 +328,18 @@ const
 var
   TextX, TextY, TextW, TextH, TextSpace: Integer;
   ImgX, ImgY, ImgW, ImgH: Integer;
-  ThicknessPos: Integer;
-  //BorderColor, BackColor, TextColor: TColor;
   ImgRect, TextRect: TRect;
 begin
   inherited;
 
-  //  Paint background
-  Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := BackColor;
-  Canvas.FillRect(Rect(0, 0, Width, Height));
-
   //  Paint border
-  if BorderThickness mod 2 = 0 then
-    ThicknessPos := BorderThickness div 2 - 1
-  else
-    ThicknessPos := BorderThickness div 2;
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
+  Canvas.FillRect(GetClientRect);
 
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Pen.Width := BorderThickness;
-  Canvas.Rectangle(Rect(
-    BorderThickness div 2,
-    BorderThickness div 2,
-    Width - ThicknessPos,
-    Height - ThicknessPos));
+  //  Paint background
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
+  Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 
   //  Paint images
   if (Images <> nil) and (ImageIndex >= 0) then
@@ -369,11 +357,11 @@ begin
     TextRect := Rect(0, 0, Width, Height);
 
   //  Paint text
-  Font.Color := TextColor;
   Canvas.Font := Font;
+  Canvas.Font.Color := TextColor;
   TextW := Canvas.TextWidth(Text);
   TextH := Canvas.TextHeight(Text);
-  case TextAlignment of
+  case Alignment of
     taLeftJustify:
       begin
         TextSpace := (TextRect.Height - TextH) div 2;
@@ -393,6 +381,7 @@ begin
         TextY := TextRect.Top + (TextRect.Height - TextH) div 2;
       end;
   end;
+
   Canvas.Brush.Style := bsClear;
   Canvas.TextOut(TextX, TextY, Text);
 end;

@@ -6,10 +6,7 @@ object formLoginDialog: TformLoginDialog
   Caption = 'Login'
   ClientHeight = 560
   ClientWidth = 410
-  Color = clWindow
-  Constraints.MinHeight = 150
-  Constraints.MinWidth = 290
-  Ctl3D = False
+  Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -343,7 +340,6 @@ object formLoginDialog: TformLoginDialog
     Width = 410
     Height = 32
     ThemeManager = AppTheme
-    DoubleClickMaximize = False
     Align = alTop
     Alignment = taLeftJustify
     BevelOuter = bvNone
@@ -362,6 +358,7 @@ object formLoginDialog: TformLoginDialog
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Close'
       ThemeManager = AppTheme
       ButtonStyle = qbsQuit
       LightColor = 2298344
@@ -377,6 +374,8 @@ object formLoginDialog: TformLoginDialog
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
     end
     object buttonAppMinimized: TUQuickButton
@@ -384,6 +383,7 @@ object formLoginDialog: TformLoginDialog
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Minimize'
       ThemeManager = AppTheme
       ButtonStyle = qbsMin
       LightColor = 13619151
@@ -399,6 +399,8 @@ object formLoginDialog: TformLoginDialog
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
     end
     object buttonAppTheme: TUQuickButton
@@ -406,6 +408,7 @@ object formLoginDialog: TformLoginDialog
       Top = 0
       Width = 45
       Height = 32
+      Hint = 'Switch theme'
       ThemeManager = AppTheme
       ButtonStyle = qbsSysButton
       LightColor = 13619151
@@ -421,6 +424,8 @@ object formLoginDialog: TformLoginDialog
       Font.Style = []
       ParentColor = True
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
       OnClick = buttonAppThemeClick
     end
@@ -514,7 +519,9 @@ object formLoginDialog: TformLoginDialog
     end
   end
   object AppTheme: TUThemeManager
+    AutoTheme = False
     Theme = utLight
+    AutoAccentColor = False
     AccentColor = 14120960
     Left = 270
     Top = 42

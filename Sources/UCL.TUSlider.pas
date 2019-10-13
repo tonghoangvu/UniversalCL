@@ -3,7 +3,7 @@ unit UCL.TUSlider;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager,UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
@@ -262,7 +262,7 @@ begin
 
   //  Clear old cursor background
   ParentColor := true;
-  Canvas.Brush.Color := Color;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   Canvas.FillRect(CurRect);
 
   //  Calc rect
@@ -302,16 +302,17 @@ begin
     end;
 
   //  Paint active part
-  Canvas.Brush.Color := ActiveColor;
+  //Canvas.Brush.Color := ActiveColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(ActiveColor, 255);
   Canvas.FillRect(ActiveRect);
 
   //  Paint normal part
-  Canvas.Brush.Color := BackColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(NormalRect);
 
   //  Paint cursor
   Canvas.Pen.Color := CurColor;
-  Canvas.Brush.Color := CurColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(CurColor, 255);
   Canvas.RoundRect(CurRect, CurCorner, CurCorner);
   Canvas.FloodFill(ActiveRect.Right, Height div 2, CurColor, fsSurface);
 end;

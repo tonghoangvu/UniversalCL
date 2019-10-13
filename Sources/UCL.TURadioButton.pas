@@ -3,7 +3,7 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   System.Classes, System.SysUtils, System.Types,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Graphics;
@@ -249,7 +249,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := Color;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
   Canvas.Brush.Style := bsClear;
 

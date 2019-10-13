@@ -85,7 +85,7 @@ begin
   inherited;
   GetWindowRect(Handle, TempRect);
 
-  //  Paint border (don't use Canvas)
+  //  Paint border (don't use default Canvas property)
   TempCanvas := TCanvas.Create;
   try
     TempCanvas.Handle := GetWindowDC(Handle);

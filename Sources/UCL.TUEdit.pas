@@ -318,7 +318,8 @@ begin
   Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
 
   Color := BackColor;
-  Canvas.Brush.Color := BackColor;
+  //Canvas.Brush.Color := BackColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
 
   FEdit.Color := BackColor;
   FEdit.Font.Color := TextColor;
