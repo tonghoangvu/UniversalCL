@@ -3,7 +3,7 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.TUTooltip, UCL.TUCaptionBar,
+  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.TUTooltip, UCL.TUCaptionBar, UCL.Utils,
   System.Classes, System.SysUtils, System.Threading,
   Winapi.Windows, Winapi.Messages,
   VCL.Forms, VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
@@ -271,6 +271,7 @@ end;
 procedure TUForm.Paint;
 begin
   inherited;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   if (WindowState = wsNormal) and (not IsBorderless) then  //  No border on maximized
     begin
       Canvas.Pen.Color := BorderColor;

@@ -114,6 +114,7 @@ type
       property Align;
       property Anchors;
       property Constraints;
+      property DoubleBuffered;
       property DragCursor;
       property DragKind;
       property DragMode;
@@ -405,7 +406,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := BackColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint icon

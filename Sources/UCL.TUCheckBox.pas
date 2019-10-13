@@ -263,7 +263,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := Color;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
   Canvas.Brush.Style := bsClear;
 

@@ -14,7 +14,7 @@ uses
   UCL.TUThemeManager,
   UCL.TUForm, UCL.TUCaptionBar,
   UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUHyperLink, UCL.TUPanel,
-  UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUSwitch, UCL.TUScrollBox, UCL.TURadioButton,
+  UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUScrollBox, UCL.TURadioButton,
   UCL.TUItemButton, UCL.TUSeparator, UCL.TUEdit, UCL.TUSlider, UCL.TUPopupMenu,
   UCL.TUQuickButton
   ;
@@ -24,9 +24,9 @@ begin
   RegisterComponents('Universal CL', [
     TUThemeManager,
     //TUForm,
-    TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel, TUCheckBox, TUProgressBar,
-    TUSwitch, TUScrollBox, TURadioButton, TUItemButton, TUSeparator, TUEdit,
-    TUSlider, TUQuickButton, TUPopupMenu
+    TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel,
+    TUCheckBox, TUProgressBar, TUScrollBox, TURadioButton, TUItemButton,
+    TUSeparator, TUEdit, TUSlider, TUQuickButton, TUPopupMenu
     ]);
 end;
 

@@ -3,12 +3,14 @@ unit Form.LoginDialog;
 interface
 
 uses
-  UCL.TUThemeManager,UCL.TUForm, UCL.TUScrollBox, UCL.Classes, UCL.Utils,
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls,
-  UCL.TUCaptionBar, UCL.TUButton, Vcl.WinXCtrls, Vcl.StdCtrls, UCL.TUText,
-  UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, Vcl.Menus, UCL.TUPopupMenu,
-  UCL.TUCheckBox, Vcl.Imaging.pngimage, Vcl.WinXPanels;
+  UCL.TUThemeManager, UCL.TUForm, UCL.TUScrollBox, UCL.Classes, UCL.Utils,
+  UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
+  UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton,
+
+  Winapi.Windows, Winapi.Messages,
+  System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus,
+  Vcl.StdCtrls, Vcl.Imaging.pngimage;
 
 type
   TformLoginDialog = class(TUForm)

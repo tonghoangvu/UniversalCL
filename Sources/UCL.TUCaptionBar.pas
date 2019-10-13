@@ -15,7 +15,6 @@ type
 
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
-      FDoubleClickMaximize: Boolean;
       FCustomColor: TColor;
 
       //  Setters
@@ -36,7 +35,6 @@ type
 
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
-      property DoubleClickMaximize: Boolean read FDoubleClickMaximize write FDoubleClickMaximize default true;
       property CustomColor: TColor read FCustomColor write FCustomColor default $D77800;
   end;
 
@@ -159,7 +157,6 @@ begin
   inherited;
   FDragMovement := true;
   FSystemMenuEnabled := true;
-  FDoubleClickMaximize := true;
   FCustomColor := $D77800;
 
   Align := alTop;
@@ -181,14 +178,16 @@ var
   ParentForm: TCustomForm;
 begin
   inherited;
-  if DoubleClickMaximize then
-    begin
-      ParentForm := GetParentForm(Self, true);
-      if ParentForm.WindowState <> wsMaximized then
-        ParentForm.WindowState := wsMaximized
-      else
-        ParentForm.WindowState := wsNormal;
-    end;
+
+  ParentForm := GetParentForm(Self, true);
+  if ParentForm is TForm then
+    if biMaximize in (ParentForm as TForm).BorderIcons then
+      begin
+        if ParentForm.WindowState = wsMaximized then
+          ParentForm.WindowState := wsNormal
+        else if ParentForm.WindowState = wsNormal then
+          ParentForm.WindowState := wsMaximized;
+      end;
 end;
 
 procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TWMLButtonDown);

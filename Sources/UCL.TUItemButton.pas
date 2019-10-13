@@ -542,7 +542,7 @@ begin
 
   //  Paint background
   Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := BackColor;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
 
   Canvas.Font := IconFont;

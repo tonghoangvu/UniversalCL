@@ -81,7 +81,11 @@ begin
       FAutoTheme := Value;
       if FAutoTheme then
         begin
-          FTheme := GetAppTheme;
+          if IsAppsUseDarkTheme then
+            FTheme := utDark
+          else
+            FTheme := utLight;
+
           if AutoUpdateControls then
             UpdateThemeForControls;
         end;
@@ -131,7 +135,7 @@ begin
       FAutoColorOnBorder := Value;
       if FAutoColorOnBorder then
         begin
-          FColorOnBorder := GetColorOnBorderEnabled;
+          FColorOnBorder := IsColorOnBorderEnabled;
           if AutoUpdateControls then
             UpdateThemeForControls;
         end;
@@ -243,11 +247,16 @@ end;
 procedure TUThemeManager.ReloadAutoSettings;
 begin
   if AutoTheme then
-    FTheme := GetAppTheme;
+    if IsAppsUseDarkTheme then
+      FTheme := utDark
+    else
+      FTheme := utLight;
+
   if AutoAccentColor then
     FAccentColor := GetAccentColor;
+
   if AutoColorOnBorder then
-    FColorOnBorder := GetColorOnBorderEnabled;
+    FColorOnBorder := IsColorOnBorderEnabled;
 
   if AutoUpdateControls then
     UpdateThemeForControls;
