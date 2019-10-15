@@ -194,13 +194,10 @@ end;
 
 class function TUThemeManager.IsThemeAvailable(
   const aComponent: TComponent): Boolean;
-var
-  GUID: TGUID;
 begin
-  GUID := StringToGUID('{C9D5D479-2F52-4BB9-8023-6EA00B5084F0}');
   Result :=
     IsPublishedProp(aComponent, 'ThemeManager')
-    and Supports(aComponent, GUID);
+    and Supports(aComponent, IUThemeComponent);
 end;
 
 function TUThemeManager.ConnectedComponentCount: Integer;
