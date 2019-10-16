@@ -178,6 +178,8 @@ begin
   begin
     Sleep(SplashScreenDelay);
     TThread.Synchronize(TThread.CurrentThread, procedure
+    var
+      j: Integer;
     begin
       //  Post event
       if Assigned(FOnEndSplashScreen) then
@@ -194,7 +196,7 @@ begin
           TempImg.Align := alNone;
         end;
 
-      for var j := 0 to ControlCount - 1 do
+      for j := 0 to ControlCount - 1 do
         if
           (Controls[j] = CaptionBar)
           or (Controls[j] = TempImg)

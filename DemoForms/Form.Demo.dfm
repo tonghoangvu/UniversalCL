@@ -1,7 +1,7 @@
 object formDemo: TformDemo
   Left = 0
   Top = 0
-  Caption = 'Test UCL controls'
+  Caption = 'Delphi UWP app'
   ClientHeight = 590
   ClientWidth = 1000
   Color = clWhite
@@ -345,6 +345,7 @@ object formDemo: TformDemo
     IconFont.Style = []
     Text = '3-state checkbox'
     AllowGrayed = True
+    State = cbsGrayed
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13

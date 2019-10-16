@@ -308,10 +308,10 @@ begin
 
   //  Paint cursor
   Canvas.Pen.Color := CurColor;
-  SetBkMode(Canvas.Handle, TRANSPARENT);
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(CurColor, 255);
   Canvas.RoundRect(CurRect, CurCorner, CurCorner);
-  Canvas.FloodFill(ActiveRect.Right, Height div 2, CurColor, fsSurface);
+  Canvas.FloodFill(CurRect.Left + CurRect.Width div 2, CurRect.Top + CurRect.Height div 2,
+    CurColor, fsSurface);
 end;
 
 procedure TUCustomSlider.ChangeScale(M, D: Integer; isDpiChange: Boolean);

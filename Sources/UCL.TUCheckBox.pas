@@ -333,18 +333,24 @@ end;
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if Enabled and HitTest then
-    //  Unchecked > Checked > Grayed > ...
-    case State of
-      cbsChecked:
-        if AllowGrayed then
-          State := cbsGrayed
-        else
+    if AllowGrayed then   //  Unchecked > Checked > Grayed > ...
+      case State of
+        cbsUnchecked:
+          State := cbsChecked;
+        cbsChecked:
+          State := cbsGrayed;
+        cbsGrayed:
           State := cbsUnchecked;
-      cbsUnchecked:
-        State := cbsChecked;
-      cbsGrayed:
-        State := cbsUnchecked;
-    end;
+      end
+    else
+      case State of
+        cbsUnchecked:
+          State := cbsChecked;
+        cbsChecked:
+          State := cbsUnchecked;
+        cbsGrayed:
+          State := cbsUnchecked;
+      end;
 
   inherited;
 end;
