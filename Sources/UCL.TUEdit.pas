@@ -177,7 +177,7 @@ end;
 procedure TUCustomEdit.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomEdit.UpdateChange;
@@ -293,34 +293,26 @@ end;
 
 procedure TUCustomEdit.Paint;
 var
-  ThicknessPos: Integer;
+  Space: Integer;
 begin
   inherited;
 
   //  Paint border
-  if BorderThickness mod 2 = 0 then
-    ThicknessPos := BorderThickness div 2 - 1
-  else
-    ThicknessPos := BorderThickness div 2;
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
+  Canvas.FillRect(GetClientRect);
 
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Pen.Width := BorderThickness;
-  Canvas.Rectangle(Rect(
-    BorderThickness div 2,
-    BorderThickness div 2,
-    Width - ThicknessPos,
-    Height - ThicknessPos));
+  //  Paint background
+  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
+  Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 
   //  Fit subedit
-  Padding.Left := 5;
-  Padding.Right := 5;
-  Padding.Bottom := (Height - FEdit.Height) div 2 - 1;
-  Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
+  Space := (Height - FEdit.Height) div 2;
+  Padding.Top := Space + 1;
+  Padding.Left := Space + 1;
+  Padding.Bottom := Space;
+  Padding.Right := Space;
 
-  Color := BackColor;
-  //Canvas.Brush.Color := BackColor;
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-
+  //  Subedit color
   FEdit.Color := BackColor;
   FEdit.Font.Color := TextColor;
 end;

@@ -157,6 +157,73 @@ object formDemo: TformDemo
     ThemeManager = AppTheme
     TextKind = tkTitle
   end
+  object sliderHorz: TUSlider
+    Left = 560
+    Top = 370
+    Width = 141
+    Height = 25
+    ThemeManager = AppTheme
+    OnChange = sliderHorzChange
+  end
+  object sliderDisabled: TUSlider
+    Left = 560
+    Top = 340
+    Width = 141
+    Height = 25
+    ThemeManager = AppTheme
+    ControlState = csDisabled
+    Value = 50
+    Enabled = False
+  end
+  object sliderVert: TUSlider
+    Left = 680
+    Top = 420
+    Width = 25
+    Height = 71
+    ThemeManager = AppTheme
+    Orientation = oVertical
+    Max = 4
+  end
+  object check2State: TUCheckBox
+    Left = 390
+    Top = 340
+    Width = 134
+    Height = 30
+    ThemeManager = AppTheme
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Text = '2-state checkbox'
+    State = cbsChecked
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object check3State: TUCheckBox
+    Left = 390
+    Top = 368
+    Width = 134
+    Height = 30
+    ThemeManager = AppTheme
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Text = '3-state checkbox'
+    AllowGrayed = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object radioA1: TURadioButton
     Left = 390
     Top = 240
@@ -278,26 +345,6 @@ object formDemo: TformDemo
     Group = 'GroupB'
     CustomActiveColor = 14120960
     Text = 'Radio 2B'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object check2State: TUCheckBox
-    Left = 390
-    Top = 340
-    Width = 134
-    Height = 30
-    ThemeManager = AppTheme
-    IconFont.Charset = DEFAULT_CHARSET
-    IconFont.Color = clWindowText
-    IconFont.Height = -20
-    IconFont.Name = 'Segoe MDL2 Assets'
-    IconFont.Style = []
-    Text = '2-state checkbox'
-    State = cbsChecked
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -1185,24 +1232,6 @@ object formDemo: TformDemo
     TabOrder = 20
     TabStop = True
   end
-  object sliderHorz: TUSlider
-    Left = 560
-    Top = 370
-    Width = 141
-    Height = 25
-    ThemeManager = AppTheme
-    OnChange = sliderHorzChange
-  end
-  object sliderDisabled: TUSlider
-    Left = 560
-    Top = 340
-    Width = 141
-    Height = 25
-    ThemeManager = AppTheme
-    ControlState = csDisabled
-    Value = 50
-    Enabled = False
-  end
   object drawerNavigation: TUPanel
     Left = 0
     Top = 92
@@ -1408,37 +1437,6 @@ object formDemo: TformDemo
       TabStop = True
     end
   end
-  object sliderVert: TUSlider
-    Left = 680
-    Top = 420
-    Width = 25
-    Height = 71
-    ThemeManager = AppTheme
-    Orientation = oVertical
-    Min = 1
-    Max = 5
-    Value = 1
-  end
-  object check3State: TUCheckBox
-    Left = 390
-    Top = 368
-    Width = 134
-    Height = 30
-    ThemeManager = AppTheme
-    IconFont.Charset = DEFAULT_CHARSET
-    IconFont.Color = clWindowText
-    IconFont.Height = -20
-    IconFont.Name = 'Segoe MDL2 Assets'
-    IconFont.Style = []
-    Text = '3-state checkbox'
-    AllowGrayed = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
   object boxSmoothScrolling: TUScrollBox
     Left = 750
     Top = 92
@@ -1454,7 +1452,7 @@ object formDemo: TformDemo
     Padding.Bottom = 15
     ParentColor = False
     ParentDoubleBuffered = False
-    TabOrder = 32
+    TabOrder = 27
     ThemeManager = AppTheme
     WaitEventTime = 70
     MaxScrollCount = 10
@@ -1826,6 +1824,95 @@ object formDemo: TformDemo
       URL = 'https://example.com/'
       ExplicitWidth = 124
     end
+    object checkColorBorder: TUCheckBox
+      Left = 15
+      Top = 200
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Color on window border'
+      Align = alTop
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkAutoSync: TUCheckBox
+      AlignWithMargins = True
+      Left = 15
+      Top = 373
+      Width = 203
+      Height = 30
+      Margins.Left = 0
+      Margins.Top = 5
+      Margins.Right = 0
+      Margins.Bottom = 0
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      Text = 'Auto sync your data'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkKeepEmailPrivate: TUCheckBox
+      Left = 15
+      Top = 433
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Keep my email in private'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkSendEmail: TUCheckBox
+      Left = 15
+      Top = 403
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Send me email'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
     object radioDefaultTheme: TURadioButton
       Left = 15
       Top = 65
@@ -1922,95 +2009,6 @@ object formDemo: TformDemo
       TabOrder = 3
       OnClick = panelSelectAccentColorClick
     end
-    object checkColorBorder: TUCheckBox
-      Left = 15
-      Top = 200
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Color on window border'
-      Align = alTop
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkAutoSync: TUCheckBox
-      AlignWithMargins = True
-      Left = 15
-      Top = 373
-      Width = 203
-      Height = 30
-      Margins.Left = 0
-      Margins.Top = 5
-      Margins.Right = 0
-      Margins.Bottom = 0
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      Text = 'Auto sync your data'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkKeepEmailPrivate: TUCheckBox
-      Left = 15
-      Top = 433
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Keep my email in private'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkSendEmail: TUCheckBox
-      Left = 15
-      Top = 403
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Send me email'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
     object buttonDeleteAccount: TUButton
       Tag = 2
       AlignWithMargins = True
@@ -2042,7 +2040,7 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 8
+      TabOrder = 7
       TabStop = True
     end
     object radioFreeAccount: TURadioButton
@@ -2194,7 +2192,7 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 14
+      TabOrder = 8
       TabStop = True
     end
     object USeparator1: TUSeparator
@@ -2216,8 +2214,8 @@ object formDemo: TformDemo
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 193
-      Edit.Height = 21
+      Edit.Width = 194
+      Edit.Height = 20
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
       Edit.Font.Charset = DEFAULT_CHARSET
@@ -2235,17 +2233,13 @@ object formDemo: TformDemo
       UseDockManager = False
       Padding.Left = 5
       Padding.Top = 5
-      Padding.Right = 5
-      Padding.Bottom = 3
+      Padding.Right = 4
+      Padding.Bottom = 4
       ParentFont = False
-      TabOrder = 16
+      TabOrder = 9
     end
   end
   object AppTheme: TUThemeManager
-    AutoTheme = False
-    Theme = utLight
-    AutoAccentColor = False
-    AccentColor = 14120960
     OnUpdate = AppThemeUpdate
     Left = 680
     Top = 40

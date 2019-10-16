@@ -150,7 +150,6 @@ var
 implementation
 
 uses
-  UxTheme, DWMAPI,
   Form.LoginDialog;
 
 {$R *.dfm}
@@ -286,8 +285,18 @@ end;
 
 procedure TformDemo.FormCreate(Sender: TObject);
 begin
+  //  EnableBlur(Handle, 3);
+
   ThemeManager := AppTheme;
   CaptionBar := captionbarNewStyle;
+
+  //  PUT ALL CUSTOM THEME HERE
+  //  Default system settings will automatic load at app startup
+  //  Don't change directly TUThemeManager component with Custom Properties
+  //  Such as CustomTheme, CustomAccentColor
+  //  Put them here
+  //  Example:
+  //  AppTheme.CustomTheme := utDark;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
@@ -300,7 +309,7 @@ begin
       NewColor := dialogSelectColor.Color;
 
       //  Change accent color
-      AppTheme.AccentColor := NewColor;
+      AppTheme.CustomAccentColor := NewColor;
       panelSelectAccentColor.CustomBackColor := NewColor;
     end;
 end;
@@ -321,17 +330,17 @@ end;
 
 procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
 begin
-  AppTheme.AutoTheme := true;
+  AppTheme.UseSystemTheme := true;
 end;
 
 procedure TformDemo.radioLightThemeClick(Sender: TObject);
 begin
-  AppTheme.Theme := utLight;
+  AppTheme.CustomTheme := utLight;
 end;
 
 procedure TformDemo.radioDarkThemeClick(Sender: TObject);
 begin
-  AppTheme.Theme := utDark;
+  AppTheme.CustomTheme := utDark;
 end;
 
 { CONTROLS }

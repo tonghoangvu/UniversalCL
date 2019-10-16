@@ -210,7 +210,7 @@ end;
 procedure TUCustomItemButton.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomItemButton.UpdateChange;
