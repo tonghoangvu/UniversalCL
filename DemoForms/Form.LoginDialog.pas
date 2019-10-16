@@ -58,9 +58,9 @@ implementation
 procedure TformLoginDialog.buttonAppThemeClick(Sender: TObject);
 begin
   if ThemeManager.Theme = utLight then
-    ThemeManager.Theme := utDark
+    ThemeManager.CustomTheme := utDark
   else
-    ThemeManager.Theme := utLight;
+    ThemeManager.CustomTheme := utLight;
 end;
 
 procedure TformLoginDialog.buttonCancelClick(Sender: TObject);

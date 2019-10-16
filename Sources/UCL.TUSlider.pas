@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
 type
-  TUCustomSlider = class(TCustomControl, IUThemeComponent)
+  TUCustomSlider = class(TGraphicControl, IUThemeComponent)
     const
       DefActiveColor: TDefColor = (
         ($D77800, $D77800, $D77800, $CCCCCC, $D77800),
@@ -144,7 +144,7 @@ end;
 procedure TUCustomSlider.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomSlider.UpdateChange;
@@ -261,8 +261,13 @@ begin
   inherited;
 
   //  Clear old cursor background
-  ParentColor := true;
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
+//  if ControlStyle then
+//    Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 0)
+//  else
+    //begin
+      ParentColor := true;
+      Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 0);
+   // end;
   Canvas.FillRect(CurRect);
 
   //  Calc rect
@@ -302,7 +307,6 @@ begin
     end;
 
   //  Paint active part
-  //Canvas.Brush.Color := ActiveColor;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(ActiveColor, 255);
   Canvas.FillRect(ActiveRect);
 
@@ -312,6 +316,7 @@ begin
 
   //  Paint cursor
   Canvas.Pen.Color := CurColor;
+  SetBkMode(Canvas.Handle, TRANSPARENT);
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(CurColor, 255);
   Canvas.RoundRect(CurRect, CurCorner, CurCorner);
   Canvas.FloodFill(ActiveRect.Right, Height div 2, CurColor, fsSurface);
@@ -361,7 +366,7 @@ var
 begin
   if not (Enabled and HitTest) then exit;
 
-  SetFocus;
+  //SetFocus;
   FControlState := csPress;
   FIsSliding := true;
 

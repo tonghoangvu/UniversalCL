@@ -166,7 +166,7 @@ end;
 procedure TUCustomButton.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomButton.UpdateChange;

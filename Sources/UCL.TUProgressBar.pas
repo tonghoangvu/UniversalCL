@@ -111,7 +111,7 @@ end;
 procedure TUCustomProgressBar.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomProgressBar.UpdateChange;

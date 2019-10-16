@@ -5,7 +5,7 @@ interface
 uses
   UCL.Classes, UCL.SystemSettings,
   System.Classes, System.SysUtils, System.TypInfo,
-  VCL.Graphics, VCL.Controls,
+  VCL.Controls, VCL.Graphics,
   Generics.Collections;
 
 type
@@ -14,57 +14,65 @@ type
     procedure UpdateTheme;
   end;
 
-  IUComponent = interface
-    procedure UpdateTheme;
-  end;
-
   TUThemeManager = class(TComponent)
     private
-      FAutoUpdateControls: Boolean;    
-      FAutoTheme: Boolean;
-      FTheme: TUTheme;
-      FAutoAccentColor: Boolean;
-      FAccentColor: TColor;
-      FAutoColorOnBorder: Boolean;
-      FColorOnBorder: Boolean;
+      FAutoUpdateControls: Boolean;
+      FCompList: TList<TComponent>;
 
-      FComponentList: TList<TComponent>;
+      //  Events
       FOnUpdate: TNotifyEvent;
 
-      procedure SetAutoTheme(const Value: Boolean);
-      procedure SetTheme(const Value: TUTheme);
+      //  Internal
+      FTheme: TUTheme;
+      FAccentColor: TColor;
+      FColorOnBorder: Boolean;
 
-      procedure SetAutoAccentColor(const Value: Boolean);
-      procedure SetAccentColor(const Value: TColor);
+      //  System
+      FUseSystemTheme: Boolean;
+      FUseSystemAccentColor: Boolean;
 
-      procedure SetAutoColorOnBorder(const Value: Boolean);
+      //  Custom
+      FCustomTheme: TUTheme;
+      FCustomAccentColor: TColor;
 
-    public 
+      //  Setters
+      procedure SetUseSystemTheme(const Value: Boolean);
+      procedure SetUseSystemAccentColor(const Value: Boolean);
+
+      procedure SetCustomTheme(const Value: TUTheme);
+      procedure SetCustomAccentColor(const Value: TColor);
+
+    public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure Loaded; override;
-      procedure Assign(Source: TPersistent); override;
 
-      procedure UpdateThemeForControls;
+      //  Utils
       procedure ReloadAutoSettings;
+      procedure UpdateThemeForControls;
 
-      class function IsThemeAvailable(const aComponent: TComponent): Boolean;
+      //  Components connecting
+      class function IsThemeAvailable(const Comp: TComponent): Boolean;
       function ConnectedComponentCount: Integer;
-      procedure Connect(const aComponent: TComponent);
-      procedure Disconnect(const aComponent: TComponent);
+      procedure Connect(const Comp: TComponent);
+      procedure Disconnect(const Comp: TComponent);
 
     published
       property AutoUpdateControls: Boolean read FAutoUpdateControls write FAutoUpdateControls default true;
 
-      property AutoTheme: Boolean read FAutoTheme write SetAutoTheme default true;
-      property Theme: TUTheme read FTheme write SetTheme;
+      //  System
+      property UseSystemTheme: Boolean read FUseSystemTheme write SetUseSystemTheme default true;
+      property UseSystemAccentColor: Boolean read FUseSystemAccentColor write SetUseSystemAccentColor default true;
 
-      property AutoAccentColor: Boolean read FAutoAccentColor write SetAutoAccentColor default true;
-      property AccentColor: TColor read FAccentColor write SetAccentColor;
+      //  Custom
+      property CustomTheme: TUTheme read FCustomTheme write SetCustomTheme stored false default utLight;
+      property CustomAccentColor: TColor read FCustomAccentColor write SetCustomAccentColor stored false default $D77800;
 
-      property AutoColorOnBorder: Boolean read FAutoColorOnBorder write SetAutoColorOnBorder default true;
-      property ColorOnBorder: Boolean read FColorOnBorder stored false;
+      property Theme: TUTheme read FTheme;
+      property AccentColor: TColor read FAccentColor;
+      property ColorOnBorder: Boolean read FColorOnBorder;
 
+      //  Events
       property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
   end;
 
@@ -74,71 +82,66 @@ implementation
 
 //  SETTERS
 
-procedure TUThemeManager.SetAutoTheme(const Value: Boolean);
+procedure TUThemeManager.SetUseSystemTheme(const Value: Boolean);
 begin
-  if Value <> FAutoTheme then
+  if Value <> FUseSystemTheme then
     begin
-      FAutoTheme := Value;
-      if FAutoTheme then
+      FUseSystemTheme := Value;
+
+      if not Value then
+        FTheme := FCustomTheme
+      else
         begin
           if IsAppsUseDarkTheme then
             FTheme := utDark
           else
             FTheme := utLight;
-
-          if AutoUpdateControls then
-            UpdateThemeForControls;
         end;
+
+      if AutoUpdateControls then
+        UpdateThemeForControls;
     end;
 end;
 
-procedure TUThemeManager.SetTheme(const Value: TUTheme);
+procedure TUThemeManager.SetUseSystemAccentColor(const Value: Boolean);
 begin
-  FAutoTheme := false;
-  if Value <> FTheme then
+  if Value <> FUseSystemAccentColor then
     begin
+      FUseSystemAccentColor := Value;
+
+      if not Value then
+        FAccentColor := FCustomAccentColor
+      else
+        FAccentColor := GetAccentColor;
+
+      if AutoUpdateControls then
+        UpdateThemeForControls;
+    end;
+end;
+
+procedure TUThemeManager.SetCustomTheme(const Value: TUTheme);
+begin
+  if Value <> FCustomTheme then
+    begin
+      FUseSystemTheme := false;
+      FCustomTheme := Value;
       FTheme := Value;
+
       if AutoUpdateControls then
         UpdateThemeForControls;
     end;
 end;
 
-procedure TUThemeManager.SetAutoAccentColor(const Value: Boolean);
+procedure TUThemeManager.SetCustomAccentColor(const Value: TColor);
 begin
-  if Value <> FAutoAccentColor then
+  if Value <> FCustomAccentColor then
     begin
-      FAutoAccentColor := Value;
-      if FAutoAccentColor then
-        begin
-          FAccentColor := GetAccentColor;
-          if AutoUpdateControls then
-            UpdateThemeForControls;
-        end;
-    end;
-end;
-
-procedure TUThemeManager.SetAccentColor(const Value: TColor);
-begin
-  FAutoAccentColor := false;
-  if Value <> FAccentColor then
-    begin
+      FUseSystemAccentColor := false;
+      FCustomAccentColor := Value;
       FAccentColor := Value;
+
       if AutoUpdateControls then
         UpdateThemeForControls;
-    end;
-end;
-
-procedure TUThemeManager.SetAutoColorOnBorder(const Value: Boolean);
-begin
-  if Value <> FAutoColorOnBorder then
-    begin
-      FAutoColorOnBorder := Value;
-      if FAutoColorOnBorder then
-        begin
-          FColorOnBorder := IsColorOnBorderEnabled;
-          if AutoUpdateControls then
-            UpdateThemeForControls;
-        end;
     end;
 end;
 
@@ -147,19 +150,23 @@ end;
 constructor TUThemeManager.Create(aOwner: TComponent);
 begin
   inherited;
-  FComponentList := TList<TComponent>.Create;
+
+  //  Objects
+  FCompList := TList<TComponent>.Create;
+
+  //  Default properties
   FAutoUpdateControls := true;
 
-  FAutoTheme := true;
-  FAutoAccentColor := true;
-  FAutoColorOnBorder := true;
+  FUseSystemTheme := true;
+  FUseSystemAccentColor := true;
 
-  ReloadAutoSettings;
+  FCustomTheme := utLight;
+  FCustomAccentColor := $D77800;
 end;
 
 destructor TUThemeManager.Destroy;
 begin
-  FComponentList.Free;
+  FCompList.Free;
   inherited;
 end;
 
@@ -168,98 +175,87 @@ begin
   inherited;
   if Assigned(FOnUpdate) then
     FOnUpdate(Self);
+
+  ReloadAutoSettings;
 end;
 
-procedure TUThemeManager.Assign(Source: TPersistent);
+//  UTILS
+
+procedure TUThemeManager.ReloadAutoSettings;
 begin
-  if (Source is TUThemeManager) and (Source <> nil) then
-    begin
-      FTheme := (Source as TUThemeManager).Theme;
-      FAccentColor := (Source as TUThemeManager).AccentColor;
-      FColorOnBorder := (Source as TUThemeManager).ColorOnBorder;
-
-      FAutoUpdateControls := (Source as TUThemeManager).AutoUpdateControls;
-      FAutoTheme := (Source as TUThemeManager).AutoTheme;
-      FAutoAccentColor := (Source as TUThemeManager).AutoAccentColor;
-      FAutoColorOnBorder := (Source as TUThemeManager).AutoColorOnBorder;
-
-      if AutoUpdateControls then
-        UpdateThemeForControls;
-    end
+  //  Theme
+  if not UseSystemTheme then
+    FTheme := CustomTheme
   else
-    inherited;
-end;
-
-//  METHODS
-
-class function TUThemeManager.IsThemeAvailable(
-  const aComponent: TComponent): Boolean;
-var
-  GUID: TGUID;
-begin
-  GUID := StringToGUID('{C9D5D479-2F52-4BB9-8023-6EA00B5084F0}');
-  Result :=
-    IsPublishedProp(aComponent, 'ThemeManager')
-    and Supports(aComponent, GUID);
-end;
-
-function TUThemeManager.ConnectedComponentCount: Integer;
-begin
-  if FComponentList = nil then
-    Result := -1
-  else
-    Result := FComponentList.Count;
-end;
-
-procedure TUThemeManager.Connect(const aComponent: TComponent);
-var
-  IsConnectedBefore: Boolean;
-begin
-  if IsThemeAvailable(aComponent) then
     begin
-      IsConnectedBefore := FComponentList.IndexOf(aComponent) <> -1;
-      if not IsConnectedBefore then
-        FComponentList.Add(aComponent);
+      if IsAppsUseDarkTheme then
+        FTheme := utDark
+      else
+        FTheme := utLight;
     end;
-end;
 
-procedure TUThemeManager.Disconnect(const aComponent: TComponent);
-var
-  ID: Integer;
-begin
-  ID := FComponentList.IndexOf(aComponent);
-  if ID <> -1 then
-    FComponentList.Delete(ID);
+  //  Accent color
+  if not UseSystemAccentColor then
+    FAccentColor := CustomAccentColor
+  else
+    FAccentColor := GetAccentColor;
+
+  //  Color on border
+  FColorOnBorder := IsColorOnBorderEnabled;
+
+  //  Update for controls
+  if AutoUpdateControls then
+    UpdateThemeForControls;
 end;
 
 procedure TUThemeManager.UpdateThemeForControls;
 var
-  TempComponent: TComponent;
+  Comp: TComponent;
 begin
   if Assigned(FOnUpdate) then
     FOnUpdate(Self);
 
-  for TempComponent in FComponentList do
-    if TempComponent <> nil then
-      (TempComponent as IUThemeComponent).UpdateTheme;
+  for Comp in FCompList do
+    if Comp <> nil then
+      (Comp as IUThemeComponent).UpdateTheme;
 end;
 
-procedure TUThemeManager.ReloadAutoSettings;
+//  COMPONENTS CONNECTING
+
+class function TUThemeManager.IsThemeAvailable(const Comp: TComponent): Boolean;
 begin
-  if AutoTheme then
-    if IsAppsUseDarkTheme then
-      FTheme := utDark
-    else
-      FTheme := utLight;
+  Result :=
+    IsPublishedProp(Comp, 'ThemeManager') and
+    Supports(Comp, IUThemeComponent);
+end;
 
-  if AutoAccentColor then
-    FAccentColor := GetAccentColor;
+function TUThemeManager.ConnectedComponentCount: Integer;
+begin
+  if FCompList = nil then
+    Result := -1
+  else
+    Result := FCompList.Count;
+end;
 
-  if AutoColorOnBorder then
-    FColorOnBorder := IsColorOnBorderEnabled;
+procedure TUThemeManager.Connect(const Comp: TComponent);
+var
+  ConnectedYet: Boolean;
+begin
+  if IsThemeAvailable(Comp) then
+    begin
+      ConnectedYet := FCompList.IndexOf(Comp) <> -1;
+      if not ConnectedYet then
+        FCompList.Add(Comp);
+    end;
+end;
 
-  if AutoUpdateControls then
-    UpdateThemeForControls;
+procedure TUThemeManager.Disconnect(const Comp: TComponent);
+var
+  Index: Integer;
+begin
+  Index := FCompList.IndexOf(Comp);
+  if Index <> -1 then
+    FCompList.Delete(Index);
 end;
 
 end.

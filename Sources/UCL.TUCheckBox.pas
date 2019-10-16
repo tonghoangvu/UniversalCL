@@ -43,7 +43,6 @@ type
       //  Messages
       procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
-
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
@@ -131,7 +130,7 @@ end;
 procedure TUCustomCheckBox.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomCheckBox.UpdateChange;
@@ -333,7 +332,6 @@ end;
 
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  inherited;
   if Enabled and HitTest then
     //  Unchecked > Checked > Grayed > ...
     case State of
@@ -347,6 +345,8 @@ begin
       cbsGrayed:
         State := cbsUnchecked;
     end;
+
+  inherited;
 end;
 
 procedure TUCustomCheckBox.CM_EnabledChanged(var Msg: TMessage);

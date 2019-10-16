@@ -170,7 +170,7 @@ end;
 procedure TUCustomSymbolButton.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomSymbolButton.UpdateChange;
