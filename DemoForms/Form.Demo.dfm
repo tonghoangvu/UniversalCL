@@ -184,46 +184,6 @@ object formDemo: TformDemo
     Orientation = oVertical
     Max = 4
   end
-  object check2State: TUCheckBox
-    Left = 390
-    Top = 340
-    Width = 134
-    Height = 30
-    ThemeManager = AppTheme
-    IconFont.Charset = DEFAULT_CHARSET
-    IconFont.Color = clWindowText
-    IconFont.Height = -20
-    IconFont.Name = 'Segoe MDL2 Assets'
-    IconFont.Style = []
-    Text = '2-state checkbox'
-    State = cbsChecked
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
-  object check3State: TUCheckBox
-    Left = 390
-    Top = 368
-    Width = 134
-    Height = 30
-    ThemeManager = AppTheme
-    IconFont.Charset = DEFAULT_CHARSET
-    IconFont.Color = clWindowText
-    IconFont.Height = -20
-    IconFont.Name = 'Segoe MDL2 Assets'
-    IconFont.Style = []
-    Text = '3-state checkbox'
-    AllowGrayed = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
-  end
   object radioA1: TURadioButton
     Left = 390
     Top = 240
@@ -352,6 +312,46 @@ object formDemo: TformDemo
     Font.Style = []
     ParentFont = False
   end
+  object check2State: TUCheckBox
+    Left = 390
+    Top = 340
+    Width = 134
+    Height = 30
+    ThemeManager = AppTheme
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Text = '2-state checkbox'
+    State = cbsChecked
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
+  object check3State: TUCheckBox
+    Left = 390
+    Top = 368
+    Width = 134
+    Height = 30
+    ThemeManager = AppTheme
+    IconFont.Charset = DEFAULT_CHARSET
+    IconFont.Color = clWindowText
+    IconFont.Height = -20
+    IconFont.Name = 'Segoe MDL2 Assets'
+    IconFont.Style = []
+    Text = '3-state checkbox'
+    AllowGrayed = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+  end
   object progressVert: TUProgressBar
     Left = 660
     Top = 420
@@ -406,7 +406,7 @@ object formDemo: TformDemo
     ParentBackground = False
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 28
+    TabOrder = 24
     object buttonAppBack: TUQuickButton
       Left = 0
       Top = 0
@@ -1452,7 +1452,7 @@ object formDemo: TformDemo
     Padding.Bottom = 15
     ParentColor = False
     ParentDoubleBuffered = False
-    TabOrder = 27
+    TabOrder = 25
     ThemeManager = AppTheme
     WaitEventTime = 70
     MaxScrollCount = 10
@@ -1506,7 +1506,7 @@ object formDemo: TformDemo
     object entryUserProfile: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 240
+      Top = 270
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1527,7 +1527,7 @@ object formDemo: TformDemo
     end
     object imgAvatar: TImage
       Left = 15
-      Top = 267
+      Top = 297
       Width = 203
       Height = 72
       Hint = 'Click to change avatar'
@@ -1618,7 +1618,7 @@ object formDemo: TformDemo
     object entryAccountType: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 473
+      Top = 503
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1640,7 +1640,7 @@ object formDemo: TformDemo
     object desAccountHint: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 672
+      Top = 702
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -1663,7 +1663,7 @@ object formDemo: TformDemo
     object entryStorage: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 645
+      Top = 675
       Width = 203
       Height = 17
       Margins.Left = 0
@@ -1685,7 +1685,7 @@ object formDemo: TformDemo
     object desStorageHint: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 767
+      Top = 797
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -1708,7 +1708,7 @@ object formDemo: TformDemo
     object headingAbout: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 827
+      Top = 857
       Width = 203
       Height = 28
       Margins.Left = 0
@@ -1730,7 +1730,7 @@ object formDemo: TformDemo
     object desAppVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 905
+      Top = 935
       Width = 203
       Height = 15
       Margins.Left = 0
@@ -1753,7 +1753,7 @@ object formDemo: TformDemo
     object desFlashVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 925
+      Top = 955
       Width = 203
       Height = 15
       Margins.Left = 0
@@ -1776,7 +1776,7 @@ object formDemo: TformDemo
     object desChromiumVersion: TUText
       AlignWithMargins = True
       Left = 15
-      Top = 945
+      Top = 975
       Width = 203
       Height = 15
       Margins.Left = 0
@@ -1799,7 +1799,7 @@ object formDemo: TformDemo
     object linkEmbarcadero: TUHyperLink
       AlignWithMargins = True
       Left = 15
-      Top = 965
+      Top = 995
       Width = 203
       Height = 17
       Cursor = crHandPoint
@@ -1823,95 +1823,6 @@ object formDemo: TformDemo
       CustomTextColors.Focused = 14120960
       URL = 'https://example.com/'
       ExplicitWidth = 124
-    end
-    object checkColorBorder: TUCheckBox
-      Left = 15
-      Top = 200
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Color on window border'
-      Align = alTop
-      Enabled = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkAutoSync: TUCheckBox
-      AlignWithMargins = True
-      Left = 15
-      Top = 373
-      Width = 203
-      Height = 30
-      Margins.Left = 0
-      Margins.Top = 5
-      Margins.Right = 0
-      Margins.Bottom = 0
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      Text = 'Auto sync your data'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkKeepEmailPrivate: TUCheckBox
-      Left = 15
-      Top = 433
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Keep my email in private'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object checkSendEmail: TUCheckBox
-      Left = 15
-      Top = 403
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      AutoSize = False
-      Text = 'Send me email'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object radioDefaultTheme: TURadioButton
       Left = 15
@@ -1983,6 +1894,162 @@ object formDemo: TformDemo
       ParentFont = False
       OnClick = radioDarkThemeClick
     end
+    object radioFreeAccount: TURadioButton
+      Left = 15
+      Top = 530
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      IsChecked = True
+      Group = 'AccountType'
+      CustomActiveColor = 14120960
+      Text = 'Free user'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object radioProAccount: TURadioButton
+      Left = 15
+      Top = 560
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      Group = 'AccountType'
+      CustomActiveColor = 14120960
+      Text = 'Professional user'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object radioDevAccount: TURadioButton
+      Left = 15
+      Top = 590
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      Group = 'AccountType'
+      CustomActiveColor = 14120960
+      Text = 'Developer'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkColorBorder: TUCheckBox
+      Left = 15
+      Top = 230
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Color on window border'
+      Align = alTop
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkAutoSync: TUCheckBox
+      AlignWithMargins = True
+      Left = 15
+      Top = 403
+      Width = 203
+      Height = 30
+      Margins.Left = 0
+      Margins.Top = 5
+      Margins.Right = 0
+      Margins.Bottom = 0
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      Text = 'Auto sync your data'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkKeepEmailPrivate: TUCheckBox
+      Left = 15
+      Top = 463
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Keep my email in private'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
+    object checkSendEmail: TUCheckBox
+      Left = 15
+      Top = 433
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Send me email'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
     object panelSelectAccentColor: TUPanel
       AlignWithMargins = True
       Left = 15
@@ -2013,7 +2080,7 @@ object formDemo: TformDemo
       Tag = 2
       AlignWithMargins = True
       Left = 15
-      Top = 595
+      Top = 625
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2043,78 +2110,11 @@ object formDemo: TformDemo
       TabOrder = 7
       TabStop = True
     end
-    object radioFreeAccount: TURadioButton
-      Left = 15
-      Top = 500
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      IsChecked = True
-      Group = 'AccountType'
-      CustomActiveColor = 14120960
-      Text = 'Free user'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object radioProAccount: TURadioButton
-      Left = 15
-      Top = 530
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      Group = 'AccountType'
-      CustomActiveColor = 14120960
-      Text = 'Professional user'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
-    object radioDevAccount: TURadioButton
-      Left = 15
-      Top = 560
-      Width = 203
-      Height = 30
-      ThemeManager = AppTheme
-      IconFont.Charset = DEFAULT_CHARSET
-      IconFont.Color = clWindowText
-      IconFont.Height = -20
-      IconFont.Name = 'Segoe MDL2 Assets'
-      IconFont.Style = []
-      Group = 'AccountType'
-      CustomActiveColor = 14120960
-      Text = 'Developer'
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
-    end
     object buttonUpgradeAccount: TUButton
       Tag = 2
       AlignWithMargins = True
       Left = 15
-      Top = 712
+      Top = 742
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2141,13 +2141,13 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 12
+      TabOrder = 5
       TabStop = True
     end
     object progressStorageUsed: TUProgressBar
       AlignWithMargins = True
       Left = 15
-      Top = 752
+      Top = 782
       Width = 203
       Height = 5
       Margins.Left = 0
@@ -2165,7 +2165,7 @@ object formDemo: TformDemo
       Tag = 2
       AlignWithMargins = True
       Left = 15
-      Top = 865
+      Top = 895
       Width = 203
       Height = 30
       Margins.Left = 0
@@ -2197,7 +2197,7 @@ object formDemo: TformDemo
     end
     object USeparator1: TUSeparator
       Left = 15
-      Top = 992
+      Top = 1022
       Width = 203
       Height = 10
       ThemeManager = AppTheme
@@ -2208,7 +2208,7 @@ object formDemo: TformDemo
     end
     object editAccountName: TUEdit
       Left = 15
-      Top = 339
+      Top = 369
       Width = 203
       Height = 29
       ThemeManager = AppTheme
@@ -2237,6 +2237,28 @@ object formDemo: TformDemo
       Padding.Bottom = 4
       ParentFont = False
       TabOrder = 9
+    end
+    object checkTransparency: TUCheckBox
+      Left = 15
+      Top = 200
+      Width = 203
+      Height = 30
+      ThemeManager = AppTheme
+      IconFont.Charset = DEFAULT_CHARSET
+      IconFont.Color = clWindowText
+      IconFont.Height = -20
+      IconFont.Name = 'Segoe MDL2 Assets'
+      IconFont.Style = []
+      AutoSize = False
+      Text = 'Enable transparency'
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      OnClick = checkTransparencyClick
     end
   end
   object AppTheme: TUThemeManager

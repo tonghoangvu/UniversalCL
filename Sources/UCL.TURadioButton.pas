@@ -251,7 +251,6 @@ begin
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   Canvas.FillRect(Rect(0, 0, Width, Height));
-  Canvas.Brush.Style := bsClear;
 
   //  Paint text
   Canvas.Font := Font;
@@ -312,8 +311,6 @@ procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 var 
   i: Integer;
 begin
-  inherited;
-
   //  Only unchecked can change
   if Enabled and HitTest then
     begin
@@ -331,6 +328,8 @@ begin
                 (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
         end;
     end;
+
+  inherited;
 end;
 
 procedure TUCustomRadioButton.CM_EnabledChanged(var Msg: TMessage);

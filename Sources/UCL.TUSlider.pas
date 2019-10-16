@@ -260,15 +260,7 @@ procedure TUCustomSlider.Paint;
 begin
   inherited;
 
-  //  Clear old cursor background
-//  if ControlStyle then
-//    Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 0)
-//  else
-    //begin
-      ParentColor := true;
-      Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 0);
-   // end;
-  Canvas.FillRect(CurRect);
+  // TGraphicControl needn't paint background
 
   //  Calc rect
   if Orientation = oHorizontal then

@@ -119,6 +119,7 @@ type
     popupHorz: TUPopupMenu;
     editAccountName: TUEdit;
     comboAppBorderStyle: TComboBox;
+    checkTransparency: TUCheckBox;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -137,6 +138,7 @@ type
     procedure buttonPrintDocClick(Sender: TObject);
     procedure comboAppBorderStyleChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure checkTransparencyClick(Sender: TObject);
 
   private
 
@@ -254,6 +256,11 @@ end;
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
   AppTheme.ReloadAutoSettings;
+end;
+
+procedure TformDemo.checkTransparencyClick(Sender: TObject);
+begin
+  GlassFrame.Enabled := checkTransparency.State = cbsChecked;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
