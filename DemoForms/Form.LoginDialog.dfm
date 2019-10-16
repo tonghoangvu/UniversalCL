@@ -7,16 +7,17 @@ object formLoginDialog: TformLoginDialog
   ClientHeight = 560
   ClientWidth = 410
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
   OnShow = FormShow
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 15
   object boxMain: TUScrollBox
     Left = 0
     Top = 32
@@ -233,27 +234,29 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 320
-      Edit.Height = 21
+      Edit.Width = 321
+      Edit.Height = 20
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
+      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentColor = True
       Edit.ParentFont = False
       Edit.PopupMenu = popupEditAction
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your email here'
+      Edit.ExplicitWidth = 320
+      Edit.ExplicitHeight = 21
       Align = alTop
       BevelOuter = bvNone
       UseDockManager = False
       Padding.Left = 5
       Padding.Top = 5
-      Padding.Right = 5
-      Padding.Bottom = 3
+      Padding.Right = 4
+      Padding.Bottom = 4
       ParentFont = False
       TabOrder = 1
     end
@@ -270,28 +273,30 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 320
-      Edit.Height = 21
+      Edit.Width = 321
+      Edit.Height = 20
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
+      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentColor = True
       Edit.ParentFont = False
       Edit.PasswordChar = '*'
       Edit.PopupMenu = popupEditAction
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your password here'
+      Edit.ExplicitWidth = 320
+      Edit.ExplicitHeight = 21
       Align = alTop
       BevelOuter = bvNone
       UseDockManager = False
       Padding.Left = 5
       Padding.Top = 5
-      Padding.Right = 5
-      Padding.Bottom = 3
+      Padding.Right = 4
+      Padding.Bottom = 4
       ParentFont = False
       TabOrder = 2
     end
@@ -308,8 +313,8 @@ object formLoginDialog: TformLoginDialog
       ThemeManager = AppTheme
       Edit.Left = 5
       Edit.Top = 5
-      Edit.Width = 320
-      Edit.Height = 21
+      Edit.Width = 321
+      Edit.Height = 20
       Edit.Align = alClient
       Edit.BorderStyle = bsNone
       Edit.Font.Charset = DEFAULT_CHARSET
@@ -322,14 +327,16 @@ object formLoginDialog: TformLoginDialog
       Edit.PopupMenu = popupEditAction
       Edit.TabOrder = 0
       Edit.TextHint = 'Talk about yourself'
+      Edit.ExplicitWidth = 320
+      Edit.ExplicitHeight = 21
       Transparent = True
       Align = alTop
       BevelOuter = bvNone
       UseDockManager = False
       Padding.Left = 5
       Padding.Top = 5
-      Padding.Right = 5
-      Padding.Bottom = 3
+      Padding.Right = 4
+      Padding.Bottom = 4
       ParentFont = False
       TabOrder = 3
     end
@@ -519,10 +526,6 @@ object formLoginDialog: TformLoginDialog
     end
   end
   object AppTheme: TUThemeManager
-    AutoTheme = False
-    Theme = utLight
-    AutoAccentColor = False
-    AccentColor = 14120960
     Left = 270
     Top = 42
   end

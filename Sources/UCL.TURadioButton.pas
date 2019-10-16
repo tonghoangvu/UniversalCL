@@ -129,7 +129,7 @@ end;
 procedure TUCustomRadioButton.UpdateTheme;
 begin
   UpdateChange;
-  Paint;
+  Repaint;
 end;
 
 procedure TUCustomRadioButton.UpdateChange;

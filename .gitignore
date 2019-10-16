@@ -1,0 +1,8 @@
+Bin/
+Win32/
+Win64/
+*.local
+*.tvsconfig
+*.identcache
+Bin/Demo.exe
+*.exe

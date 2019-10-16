@@ -6,6 +6,7 @@ interface
 
 uses
   System.Classes,
+  Winapi.Windows,
   VCL.Graphics, Vcl.Controls, VCL.ExtCtrls;
 
 type
@@ -18,78 +19,6 @@ type
   TUImageKind = (ikFontIcon, ikImage);
 
   TDefColor = array [TUTheme, TUControlState] of TColor;
-
-  TUControl = class(TCustomControl)
-    public
-      property DockManager;
-
-    published
-      property Align;
-      property Anchors;
-      property AutoSize;
-      property BevelEdges;
-      property BevelInner;
-      property BevelKind;
-      property BevelOuter;
-      property BevelWidth;
-      property BiDiMode;
-      property BorderWidth;
-      property Caption;
-      property Color;
-      property Constraints;
-      property Ctl3D;
-      property UseDockManager default True;
-      property DockSite;
-      property DoubleBuffered;
-      property DragCursor;
-      property DragKind;
-      property DragMode;
-      property Enabled;
-      property Font;
-      property Padding;
-      property ParentBiDiMode;
-      property ParentBackground;
-      property ParentColor;
-      property ParentCtl3D;
-      property ParentDoubleBuffered;
-      property ParentFont;
-      property ParentShowHint;
-      property PopupMenu;
-      property ShowHint;
-      property TabOrder;
-      property TabStop;
-      property Touch;
-      property Visible;
-      property StyleElements;
-
-      property OnAlignInsertBefore;
-      property OnAlignPosition;
-      property OnCanResize;
-      property OnClick;
-      property OnConstrainedResize;
-      property OnContextPopup;
-      property OnDockDrop;
-      property OnDockOver;
-      property OnDblClick;
-      property OnDragDrop;
-      property OnDragOver;
-      property OnEndDock;
-      property OnEndDrag;
-      property OnEnter;
-      property OnExit;
-      property OnGesture;
-      property OnGetSiteInfo;
-      property OnMouseActivate;
-      property OnMouseDown;
-      property OnMouseEnter;
-      property OnMouseLeave;
-      property OnMouseMove;
-      property OnMouseUp;
-      property OnResize;
-      property OnStartDock;
-      property OnStartDrag;
-      property OnUnDock;
-  end;
 
   TControlStateColors = class(TPersistent)
     private
@@ -120,7 +49,55 @@ type
       property OnChange: TNotifyEvent read FOnChange write FOnChange;
   end;
 
+  //  Windows 10
+
+  AccentPolicy = packed record
+    AccentState: Integer;
+    AccentFlags: Integer;
+    GradientColor: Integer;
+    AnimationId: Integer;
+  end;
+
+  WindowCompositionAttributeData = packed record
+    Attribute: Cardinal;
+    Data: Pointer;
+    SizeOfData: Integer;
+  end;
+
+function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
+
 implementation
+
+{ WINDOWS 10 }
+
+function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
+const
+  WCA_ACCENT_POLICY = 19;
+var
+  apiHandle: THandle;
+  Accent: AccentPolicy;
+  Data: WindowCompositionAttributeData;
+  SetWindowCompositionAttribute: function (hWnd: HWND; var data: WindowCompositionAttributeData):integer; stdcall;
+begin
+  apiHandle := LoadLibrary('user32.dll');
+  try
+    @SetWindowCompositionAttribute := GetProcAddress(apiHandle, 'SetWindowCompositionAttribute');
+    if @SetWindowCompositionAttribute = nil then
+      Result := -1
+    else
+      begin
+        Accent.AccentState := AccentState;
+
+        Data.Attribute := WCA_ACCENT_POLICY;
+        Data.SizeOfData := SizeOf(Accent);
+        Data.Data := @Accent;
+
+        Result := SetWindowCompositionAttribute(FormHandle, Data);
+      end;
+  finally
+    FreeLibrary(apiHandle);
+  end;
+end;
 
 { TCONTROLSTATECOLORS }
 

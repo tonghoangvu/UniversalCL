@@ -99,7 +99,7 @@ end;
 
 procedure TUCustomSeparator.UpdateTheme;
 begin
-  Paint;
+  Repaint;
 end;
 
 //  SETTERS
