@@ -4,10 +4,12 @@ interface
 
 uses
   Winapi.Windows,
-  VCL.Graphics, VCL.GraphUtil;
+  VCL.Graphics, VCL.GraphUtil,
+  VCL.Themes;
 
 function CreatePreMultipliedRGBQuad(Color: TColor; Alpha: Byte = $FF): TRGBQuad;
 function CreateSolidBrushWithAlpha(Color: TColor; Alpha: Byte = $FF): HBRUSH;
+procedure DrawGlassText(const Canvas: TCanvas; Text: string; Rect: TRect; Enabled: Boolean; Flags: Cardinal);
 
 //  Color
 function BrightenColor(aColor: TColor; Delta: Integer): TColor;
@@ -41,6 +43,24 @@ begin
     end;
   Info.bmiColors[0] := CreatePreMultipliedRGBQuad(Color, Alpha);
   Result := CreateDIBPatternBrushPt(@Info, 0);
+end;
+
+procedure DrawGlassText(const Canvas: TCanvas; Text: string; Rect: TRect; Enabled: Boolean; Flags: Cardinal);
+const
+  CStates: array[Boolean] of TThemedTextLabel = (ttlTextLabelDisabled, ttlTextLabelNormal);
+var
+  LFormat: TTextFormat;
+  LOptions: TStyleTextOptions;
+begin
+  LFormat := TTextFormatFlags(DT_EXPANDTABS or DT_SINGLELINE or DT_CENTER or DT_VCENTER);
+  Include(LFormat, tfComposited);
+
+  LOptions.Flags := [stfTextColor, stfGlowSize];
+  LOptions.TextColor := Canvas.Font.Color;
+  LOptions.GlowSize := 3;
+
+  StyleServices.DrawText(Canvas.Handle,
+    StyleServices.GetElementDetails(CStates[Enabled]), Text, Rect, LFormat, LOptions);
 end;
 
 { COLOR }

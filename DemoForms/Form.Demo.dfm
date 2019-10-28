@@ -154,6 +154,7 @@ object formDemo: TformDemo
     ParentFont = False
     ParentShowHint = False
     ShowHint = False
+    Transparent = True
     ThemeManager = AppTheme
     TextKind = tkTitle
   end
@@ -2252,6 +2253,7 @@ object formDemo: TformDemo
       IconFont.Style = []
       AutoSize = False
       Text = 'Enable transparency'
+      State = cbsChecked
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

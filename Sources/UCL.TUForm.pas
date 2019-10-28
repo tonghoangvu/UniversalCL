@@ -266,6 +266,9 @@ begin
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
   FPPI := CurrentScreen.PixelsPerInch;
+
+  Font.Name := 'Segoe UI';
+  Font.Size := 10;
 end;
 
 //  CUSTOM METHODS
