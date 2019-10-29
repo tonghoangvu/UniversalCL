@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  System.Classes,
   Winapi.Messages,
   VCL.Controls, VCL.Graphics;
 
@@ -158,7 +158,7 @@ begin
   //  Paint background
   ParentColor := true;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  Canvas.FillRect(GetClientRect);
 
   if OnlySpace = true then
     exit;

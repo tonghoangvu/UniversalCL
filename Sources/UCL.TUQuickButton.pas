@@ -11,7 +11,7 @@ uses
 type
   TUQuickButtonStyle = (qbsNone, qbsQuit, qbsMax, qbsMin, qbsSysButton, qbsHighlight);
 
-  TUCustomQuickButton = class(TCustomPanel, IUThemeComponent)
+  TUQuickButton = class(TPanel, IUThemeComponent)
     private
       var BackColor: TColor;
       var TextColor: TColor;
@@ -54,90 +54,13 @@ type
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
   end;
 
-  TUQuickButton = class(TUCustomQuickButton)
-    public
-      property DockManager;
-    published
-      property Align;
-      property Alignment;
-      property Anchors;
-      property AutoSize;
-      property BevelEdges;
-      property BevelInner;
-      property BevelKind;
-      property BevelOuter;
-      property BevelWidth;
-      property BiDiMode;
-      property BorderWidth;
-      property BorderStyle;
-      property Caption;
-      property Color;
-      property Constraints;
-      property Ctl3D;
-      property UseDockManager default True;
-      property DockSite;
-      property DoubleBuffered;
-      property DragCursor;
-      property DragKind;
-      property DragMode;
-      property Enabled;
-      property FullRepaint;
-      property Font;
-      property Locked;
-      property Padding;
-      property ParentBiDiMode;
-      property ParentBackground;
-      property ParentColor;
-      property ParentCtl3D;
-      property ParentDoubleBuffered;
-      property ParentFont;
-      property ParentShowHint;
-      property PopupMenu;
-      property ShowCaption;
-      property ShowHint;
-      property TabOrder;
-      property TabStop;
-      property Touch;
-      property VerticalAlignment;
-      property Visible;
-      property StyleElements;
-
-      property OnAlignInsertBefore;
-      property OnAlignPosition;
-      property OnCanResize;
-      property OnClick;
-      property OnConstrainedResize;
-      property OnContextPopup;
-      property OnDockDrop;
-      property OnDockOver;
-      property OnDblClick;
-      property OnDragDrop;
-      property OnDragOver;
-      property OnEndDock;
-      property OnEndDrag;
-      property OnEnter;
-      property OnExit;
-      property OnGesture;
-      property OnGetSiteInfo;
-      property OnMouseActivate;
-      property OnMouseDown;
-      property OnMouseEnter;
-      property OnMouseLeave;
-      property OnMouseMove;
-      property OnMouseUp;
-      property OnResize;
-      property OnStartDock;
-      property OnStartDrag;
-      property OnUnDock;
-  end;
-
 implementation
 
-{ TUCustomQuickButton }
+{ TUQuickButton }
 
 //  THEME
 
-procedure TUCustomQuickButton.SetThemeManager(const Value: TUThemeManager);
+procedure TUQuickButton.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -152,7 +75,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.UpdateTheme;
+procedure TUQuickButton.UpdateTheme;
 begin
   UpdateChange;
 
@@ -161,7 +84,7 @@ begin
   Invalidate;
 end;
 
-procedure TUCustomQuickButton.UpdateChange;
+procedure TUQuickButton.UpdateChange;
 begin
   if ButtonStyle = qbsHighlight then
     begin
@@ -221,7 +144,7 @@ end;
 
 //  SETTERS
 
-procedure TUCustomQuickButton.SetButtonState(const Value: TUControlState);
+procedure TUQuickButton.SetButtonState(const Value: TUControlState);
 begin
   if Value <> FButtonState then
     begin
@@ -230,7 +153,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.SetButtonStyle(const Value: TUQuickButtonStyle);
+procedure TUQuickButton.SetButtonStyle(const Value: TUQuickButtonStyle);
 begin
   if Value <> FButtonStyle then
     begin
@@ -280,7 +203,7 @@ end;
 
 //  MAIN CLASS
 
-constructor TUCustomQuickButton.Create(aOwner: TComponent);
+constructor TUQuickButton.Create(aOwner: TComponent);
 begin
   inherited;
 
@@ -304,7 +227,7 @@ end;
 
 //  MESSAGES
 
-procedure TUCustomQuickButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
+procedure TUQuickButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
   if Enabled then
     begin
@@ -313,7 +236,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.WM_LButtonDown(var Msg: TWMLButtonDown);
+procedure TUQuickButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if Enabled then
     begin
@@ -322,7 +245,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.WM_LButtonUp(var Msg: TWMLButtonUp);
+procedure TUQuickButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 var
   ParentForm: TCustomForm;
 begin
@@ -349,7 +272,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.CM_MouseEnter(var Msg: TMessage);
+procedure TUQuickButton.CM_MouseEnter(var Msg: TMessage);
 begin
   if Enabled then
     begin
@@ -358,7 +281,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.CM_MouseLeave(var Msg: TMessage);
+procedure TUQuickButton.CM_MouseLeave(var Msg: TMessage);
 begin
   if Enabled then
     begin
@@ -367,7 +290,7 @@ begin
     end;
 end;
 
-procedure TUCustomQuickButton.CM_ColorChanged(var Msg: TMessage);
+procedure TUQuickButton.CM_ColorChanged(var Msg: TMessage);
 begin
   UpdateTheme;
 end;

@@ -119,7 +119,6 @@ type
     popupHorz: TUPopupMenu;
     editAccountName: TUEdit;
     comboAppBorderStyle: TComboBox;
-    checkTransparency: TUCheckBox;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -138,7 +137,6 @@ type
     procedure buttonPrintDocClick(Sender: TObject);
     procedure comboAppBorderStyleChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure checkTransparencyClick(Sender: TObject);
 
   private
 
@@ -152,6 +150,7 @@ var
 implementation
 
 uses
+  DWMAPI, UxTheme,
   Form.LoginDialog;
 
 {$R *.dfm}
@@ -217,7 +216,7 @@ begin
   else
     AniDelta := - boxSmoothScrolling.Width;
 
-  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 20, 200, akOut, afkQuartic,
+  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
 end;
 
@@ -231,7 +230,7 @@ begin
   if drawerNavigation.Width <> Round(45 * DPI) then
     AniWidth := - AniWidth;
 
-  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 20, 200, akOut, afkQuartic, nil);
+  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 30, 200, akOut, afkQuartic, nil);
 end;
 
 procedure TformDemo.buttonPrintDocClick(Sender: TObject);
@@ -256,11 +255,6 @@ end;
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
   AppTheme.ReloadAutoSettings;
-end;
-
-procedure TformDemo.checkTransparencyClick(Sender: TObject);
-begin
-  GlassFrame.Enabled := checkTransparency.State = cbsChecked;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
@@ -292,10 +286,9 @@ end;
 
 procedure TformDemo.FormCreate(Sender: TObject);
 begin
-  //  EnableBlur(Handle, 3);
+//  EnableBlur(Handle, 3);
 
   ThemeManager := AppTheme;
-  CaptionBar := captionbarNewStyle;
 
   //  PUT ALL CUSTOM THEME HERE
   //  Default system settings will automatic load at app startup

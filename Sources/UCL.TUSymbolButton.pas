@@ -3,10 +3,10 @@
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils,
+  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
   Winapi.Messages, Winapi.Windows,
-  System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
+  System.Classes,
+  VCL.Controls, VCL.Graphics, VCL.ImgList;
 
 type
   TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
@@ -119,6 +119,7 @@ type
       property DragKind;
       property DragMode;
       property Enabled;
+      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
@@ -397,92 +398,71 @@ end;
 
 procedure TUCustomSymbolButton.Paint;
 var
-  ImgW, ImgH, ImgX, ImgY: Integer;
-  IconX, IconY, IconW, IconH: Integer;
-  TextX, TextY, TextW, TextH: Integer;
-  DetailX, DetailY, DetailW, DetailH: Integer;
+  IconRect, TextRect, DetailRect: TRect;
+  TempW, TempH: Integer;
 begin
   inherited;
+
+  //  Calc rects
+  if ShowIcon then
+    begin
+      if Orientation = oHorizontal then
+        IconRect := Rect(0, 0, TextOffset, Height)
+      else
+        IconRect := Rect(0, 0, Width, TextOffset);
+    end
+  else
+    IconRect := TRect.Empty;
+
+  if ShowDetail then
+    begin
+      Canvas.Font := DetailFont;
+      TempW := Canvas.TextWidth(Detail);
+      TempH := Canvas.TextHeight(Detail);
+      if Orientation = oHorizontal then
+        DetailRect := Rect(Width - TempW - DetailRightOffset, 0, Width - DetailRightOffset, Height)
+      else
+        DetailRect := Rect(0, Height - TempH - DetailRightOffset, Width, Height - DetailRightOffset);
+    end
+  else
+    DetailRect := TRect.Empty;
+
+  if Orientation = oHorizontal then
+    TextRect := Rect(IconRect.Width, 0, Width - DetailRect.Width, Height)
+  else
+    TextRect := Rect(0, IconRect.Height, Width, Height - DetailRect.Height);
 
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  Canvas.FillRect(GetClientRect);
 
   //  Paint icon
-  Canvas.Brush.Style := bsClear;
   if ShowIcon then
-    if ImageKind = ikFontIcon then
-      begin
-        Canvas.Font := SymbolFont;
-        Canvas.Font.Color := TextColor;
-        IconW := Canvas.TextWidth(SymbolChar);
-        IconH := Canvas.TextHeight(SymbolChar);
-        if Orientation = oHorizontal then
-          begin
-            IconX := (TextOffset - IconW) div 2;
-            IconY := (Height - IconH) div 2;
-          end
-        else
-          begin
-            IconX := (Width - IconW) div 2;
-            IconY := (TextOffset - IconH) div 2;
-          end;
-        Canvas.TextOut(IconX, IconY, SymbolChar);
-      end
-    else if (Images <> nil) and (ImageIndex >= 0) then
-      begin
-        ImgW := Images.Width;
-        ImgH := Images.Height;
-        if Orientation = oHorizontal then
-          begin
-            ImgX := (TextOffset - ImgW) div 2;
-            ImgY := (Height - ImgH) div 2;
-          end
-        else
-          begin
-            ImgX := (Width - ImgW) div 2;
-            ImgY := (TextOffset - ImgH) div 2;
-          end;
-        Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
-      end;
-
-  //  Paint text
-  Canvas.Font := TextFont;
-  Canvas.Font.Color := TextColor;
-  TextW := Canvas.TextWidth(Text);
-  TextH := Canvas.TextHeight(Text);
-  if Orientation = oHorizontal then
     begin
-      TextX := TextOffset;
-      TextY := (Height - TextH) div 2;
-    end
-  else
-    begin
-      TextX := (Width - TextW) div 2;
-      TextY := TextOffset;
+      Canvas.Font := SymbolFont;
+      Canvas.Font.Color := TextColor;
+      DrawTextRect(Canvas, taCenter, taVerticalCenter, IconRect, SymbolChar, false)
     end;
-  Canvas.TextOut(TextX, TextY, Text);
 
   //  Paint detail
   if ShowDetail then
     begin
       Canvas.Font := DetailFont;
       Canvas.Font.Color := DetailColor;
-      DetailW := Canvas.TextWidth(Detail);
-      DetailH := Canvas.TextHeight(Detail);
       if Orientation = oHorizontal then
-        begin
-          DetailX := Width - DetailRightOffset - DetailW;
-          DetailY := (Height - DetailH) div 2;
-        end
+        DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, DetailRect, Detail, false)
       else
-        begin
-          DetailX := (Width - DetailW) div 2;
-          DetailY := Height - DetailRightOffset - DetailH;
-        end;
-      Canvas.TextOut(DetailX, DetailY, Detail);
+        DrawTextRect(Canvas, taCenter, taAlignTop, DetailRect, Detail, false);
     end;
+
+  //  Paint text
+  Canvas.Font := TextFont;
+  Canvas.Font.Color := TextColor;
+  if Orientation = oHorizontal then
+    DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false)
+  else
+    DrawTextRect(Canvas, taCenter, taAlignTop, TextRect, Text, false);
 end;
 
 //  MESSAGES

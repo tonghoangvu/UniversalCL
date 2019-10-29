@@ -9,7 +9,7 @@ uses
   VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
 
 type
-  TUCustomPanel = class(TCustomPanel, IUThemeComponent)
+  TUPanel = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -34,88 +34,13 @@ type
       property CustomBackColor: TColor read FCustomBackColor write SetCustomBackColor;
   end;
 
-  TUPanel = class(TUCustomPanel)
-    public
-      property DockManager;
-    published
-      property Align;
-      property Alignment;
-      property Anchors;
-      property AutoSize;
-      property BevelEdges;
-      property BevelInner;
-      property BevelKind;
-      property BevelOuter;
-      property BevelWidth;
-      property BiDiMode;
-      property BorderWidth;
-      property BorderStyle;
-      property Caption;
-      property Constraints;
-      property Ctl3D;
-      property UseDockManager default True;
-      property DockSite;
-      property DoubleBuffered;
-      property DragCursor;
-      property DragKind;
-      property DragMode;
-      property Enabled;
-      property FullRepaint;
-      property Font;
-      property Locked;
-      property Padding;
-      property ParentBiDiMode;
-      property ParentBackground;
-      property ParentCtl3D;
-      property ParentDoubleBuffered;
-      property ParentFont;
-      property ParentShowHint;
-      property PopupMenu;
-      property ShowCaption;
-      property ShowHint;
-      property TabOrder;
-      property TabStop;
-      property Touch;
-      property VerticalAlignment;
-      property Visible;
-      property StyleElements;
-
-      property OnAlignInsertBefore;
-      property OnAlignPosition;
-      property OnCanResize;
-      property OnClick;
-      property OnConstrainedResize;
-      property OnContextPopup;
-      property OnDockDrop;
-      property OnDockOver;
-      property OnDblClick;
-      property OnDragDrop;
-      property OnDragOver;
-      property OnEndDock;
-      property OnEndDrag;
-      property OnEnter;
-      property OnExit;
-      property OnGesture;
-      property OnGetSiteInfo;
-      property OnMouseActivate;
-      property OnMouseDown;
-      property OnMouseEnter;
-      property OnMouseLeave;
-      property OnMouseMove;
-      property OnMouseUp;
-      property OnResize;
-      property OnStartDock;
-      property OnStartDrag;
-      property OnUnDock;
-  end;
-
 implementation
 
-{ TUCustomPanel }
+{ TUPanel }
 
 //  THEME
 
-procedure TUCustomPanel.SetThemeManager(const Value: TUThemeManager);
+procedure TUPanel.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -130,7 +55,7 @@ begin
     end;
 end;
 
-procedure TUCustomPanel.UpdateTheme;
+procedure TUPanel.UpdateTheme;
 begin
   if ThemeManager = nil then
     begin
@@ -151,7 +76,7 @@ end;
 
 //  SETTERS
 
-procedure TUCustomPanel.SetCustomBackColor(const Value: TColor);
+procedure TUPanel.SetCustomBackColor(const Value: TColor);
 begin
   if FCustomBackColor <> Value then
     begin
@@ -160,7 +85,7 @@ begin
     end;
 end;
 
-procedure TUCustomPanel.SetCustomTextColor(const Value: TColor);
+procedure TUPanel.SetCustomTextColor(const Value: TColor);
 begin
   if FCustomTextColor <> Value then
     begin
@@ -171,7 +96,7 @@ end;
 
 //  MAIN CLASS
 
-constructor TUCustomPanel.Create(aOwner: TComponent);
+constructor TUPanel.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 

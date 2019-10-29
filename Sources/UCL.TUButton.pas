@@ -3,10 +3,10 @@ unit UCL.TUButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
   Winapi.Windows, Winapi.Messages,
   System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList, VCL.Themes;
+  VCL.Controls, VCL.Graphics, VCL.ImgList;
 
 type
   TUCustomButton = class(TCustomControl, IUThemeComponent)
@@ -35,7 +35,6 @@ type
 
       //  Fields
       FButtonState: TUControlState;
-      FText: string;
       FAlignment: TAlignment;
       FImageIndex: Integer;
       FImages: TCustomImageList;
@@ -49,7 +48,6 @@ type
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
-      procedure SetText(const Value: string);
       procedure SetAlignment(const Value: TAlignment);
       procedure SetImageIndex(const Value: Integer);
       procedure SetHighlight(const Value: Boolean);
@@ -90,7 +88,6 @@ type
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property Text: string read FText write SetText;
       property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
@@ -107,6 +104,7 @@ type
       //  Common properties
       property Align;
       property Anchors;
+      property Caption;
       property Constraints;
       property DoubleBuffered;
       property DragCursor;
@@ -222,15 +220,6 @@ begin
     end;
 end;
 
-procedure TUCustomButton.SetText(const Value: string);
-begin
-  if Value <> FText then
-    begin
-      FText := Value;
-      UpdateTheme;
-    end;
-end;
-
 procedure TUCustomButton.SetAlignment(const Value: TAlignment);
 begin
   if Value <> FAlignment then
@@ -285,7 +274,6 @@ begin
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
   FButtonState := csNone;
-  FText := 'Button';
   FAlignment := taCenter;
   FImageIndex := -1;
   FHitTest := true;
@@ -323,17 +311,14 @@ begin
 end;
 
 procedure TUCustomButton.Paint;
-const
-  IMG_SPACE = 10;
 var
-  TextX, TextY, TextW, TextH, TextSpace: Integer;
-  ImgX, ImgY, ImgW, ImgH: Integer;
+  HasImg: Boolean;
   ImgRect, TextRect: TRect;
+  ImgX, ImgY: Integer;
 begin
   inherited;
 
   //  Paint border
-  Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
   Canvas.FillRect(GetClientRect);
 
@@ -341,49 +326,28 @@ begin
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 
-  //  Paint images
-  if (Images <> nil) and (ImageIndex >= 0) then
-    begin
-      ImgRect := Rect(0, 0, Height, Height);  //  Square image
-      ImgW := Images.Width;
-      ImgH := Images.Height;
-      ImgX := (ImgRect.Width - ImgW) div 2;
-      ImgY := (ImgRect.Height - ImgH) div 2;
-      Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+  HasImg := (Images <> nil) and (ImageIndex >= 0);
 
+  //  Calc rects
+  if HasImg then
+    begin
+      ImgRect := Rect(0, 0, Height, Height);  //  Square left align
       TextRect := Rect(Height, 0, Width, Height);
     end
   else
-    TextRect := Rect(0, 0, Width, Height);
+    TextRect := GetClientRect;
+
+  //  Paint image
+  if HasImg then
+    begin
+      GetCenterPos(Images.Width, Images.Height, ImgRect, ImgX, ImgY);
+      Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+    end;
 
   //  Paint text
   Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
-  TextW := Canvas.TextWidth(Text);
-  TextH := Canvas.TextHeight(Text);
-  case Alignment of
-    taLeftJustify:
-      begin
-        TextSpace := (TextRect.Height - TextH) div 2;
-        TextX := TextRect.Left + TextSpace;
-        TextY := TextSpace;
-      end;
-    taRightJustify:
-      begin
-        TextSpace := (TextRect.Height - TextH) div 2;
-        TextX := TextRect.Right - TextW - TextSpace;
-        TextY := TextSpace;
-      end;
-    //taCenter:
-    else  //  Default is center
-      begin
-        TextX := TextRect.Left + (TextRect.Width - TextW) div 2;
-        TextY := TextRect.Top + (TextRect.Height - TextH) div 2;
-      end;
-  end;
-
-  Canvas.Brush.Style := bsClear;
-  Canvas.TextOut(TextX, TextY, Text);
+  DrawTextRect(Canvas, Alignment, taVerticalCenter, TextRect, Caption, false);
 end;
 
 //  MESSAGES

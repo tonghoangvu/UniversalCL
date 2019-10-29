@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.Forms;
 
@@ -19,7 +19,7 @@ type
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
   end;
 
-  TUCustomEdit = class(TCustomPanel, IUThemeComponent)
+  TUEdit = class(TPanel, IUThemeComponent)
     const
       DefBorderColor: TDefColor = (
         ($999999, $666666, $D77800, $CCCCCC, $D77800),
@@ -74,69 +74,6 @@ type
       property Transparent: Boolean read FTransparent write SetTransparent default false;
   end;
 
-  TUEdit = class(TUCustomEdit)
-    published
-      //  Common properties
-      property Align;
-      property Anchors;
-      property BevelEdges;
-      property BevelInner;
-      property BevelKind;
-      property BevelOuter;
-      property BevelWidth;
-      property BiDiMode;
-      property BorderWidth;
-      property Constraints;
-      property UseDockManager default True;
-      property DockSite;
-      property DoubleBuffered;
-      property DragCursor;
-      property DragKind;
-      property DragMode;
-      property Enabled;
-      property Padding;
-      property ParentBiDiMode;
-      property ParentDoubleBuffered;
-      property ParentFont;
-      property ParentShowHint;
-      property PopupMenu;
-      property ShowHint;
-      property TabOrder;
-      property TabStop;
-      property Touch;
-      property Visible;
-      property StyleElements;
-
-      //  Common events
-      property OnAlignInsertBefore;
-      property OnAlignPosition;
-      property OnCanResize;
-      property OnClick;
-      property OnConstrainedResize;
-      property OnContextPopup;
-      property OnDockDrop;
-      property OnDockOver;
-      property OnDblClick;
-      property OnDragDrop;
-      property OnDragOver;
-      property OnEndDock;
-      property OnEndDrag;
-      property OnEnter;
-      property OnExit;
-      property OnGesture;
-      property OnGetSiteInfo;
-      property OnMouseActivate;
-      property OnMouseDown;
-      property OnMouseEnter;
-      property OnMouseLeave;
-      property OnMouseMove;
-      property OnMouseUp;
-      property OnResize;
-      property OnStartDock;
-      property OnStartDrag;
-      property OnUnDock;
-  end;
-
 implementation
 
 { TUSubEdit }
@@ -159,7 +96,7 @@ end;
 
 //  THEME
 
-procedure TUCustomEdit.SetThemeManager(const Value: TUThemeManager);
+procedure TUEdit.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -174,13 +111,13 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.UpdateTheme;
+procedure TUEdit.UpdateTheme;
 begin
   UpdateChange;
   Repaint;
 end;
 
-procedure TUCustomEdit.UpdateChange;
+procedure TUEdit.UpdateChange;
 begin
   //  Border & background color
   if ThemeManager = nil then
@@ -224,7 +161,7 @@ end;
 
 //  SETTERS
 
-procedure TUCustomEdit.SetControlState(const Value: TUControlState);
+procedure TUEdit.SetControlState(const Value: TUControlState);
 begin
   if Value <> FControlState then
     begin
@@ -233,7 +170,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.SetTransparent(const Value: Boolean);
+procedure TUEdit.SetTransparent(const Value: Boolean);
 begin
   if Value <> FTransparent then
     begin
@@ -244,7 +181,7 @@ end;
 
 //  MAIN CLASS
 
-constructor TUCustomEdit.Create(aOwner: TComponent);
+constructor TUEdit.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
@@ -285,13 +222,13 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
   BorderThickness := MulDiv(BorderThickness, M, D);
 end;
 
-procedure TUCustomEdit.Paint;
+procedure TUEdit.Paint;
 var
   Space: Integer;
 begin
@@ -319,7 +256,7 @@ end;
 
 //  MESSAGES
 
-procedure TUCustomEdit.WM_LButtonDown(var Msg: TWMLButtonDown);
+procedure TUEdit.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   if Enabled and HitTest then
     begin
@@ -329,7 +266,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.WM_LButtonUp(var Msg: TWMLButtonUp);
+procedure TUEdit.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if Enabled and HitTest then
     begin
@@ -341,7 +278,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.WM_SetFocus(var Msg: TWMSetFocus);
+procedure TUEdit.WM_SetFocus(var Msg: TWMSetFocus);
 begin
   if Enabled and HitTest then
     begin
@@ -350,7 +287,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.WM_KillFocus(var Msg: TWMKillFocus);
+procedure TUEdit.WM_KillFocus(var Msg: TWMKillFocus);
 begin
   if Enabled and HitTest then
     begin
@@ -359,19 +296,19 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.UM_SubEditSetFocus(var Msg: TMessage);
+procedure TUEdit.UM_SubEditSetFocus(var Msg: TMessage);
 begin
   if Enabled and HitTest then
     ControlState := csFocused;
 end;
 
-procedure TUCustomEdit.UM_SubEditKillFocus(var Msg: TMessage);
+procedure TUEdit.UM_SubEditKillFocus(var Msg: TMessage);
 begin
   if Enabled and HitTest then
     ControlState := csNone;
 end;
 
-procedure TUCustomEdit.CM_MouseEnter(var Msg: TMessage);
+procedure TUEdit.CM_MouseEnter(var Msg: TMessage);
 begin
   if Enabled and HitTest then
     begin
@@ -383,7 +320,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.CM_MouseLeave(var Msg: TMessage);
+procedure TUEdit.CM_MouseLeave(var Msg: TMessage);
 begin
   if Enabled and HitTest then
     begin
@@ -396,7 +333,7 @@ begin
     end;
 end;
 
-procedure TUCustomEdit.CM_EnabledChanged(var Msg: TMessage);
+procedure TUEdit.CM_EnabledChanged(var Msg: TMessage);
 begin
   inherited;
   if not Enabled then

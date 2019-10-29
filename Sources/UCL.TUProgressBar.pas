@@ -3,12 +3,10 @@ unit UCL.TUProgressBar;
 interface
 
 uses
-  UCL.Classes,
-  UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils,
-  System.SysUtils, System.Classes, System.Types,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.IntAnimation,
+  System.Classes, System.Types,
   Winapi.Messages,
-  VCL.Controls, VCL.ExtCtrls, VCL.Graphics,
-  UCL.IntAnimation;
+  VCL.Controls, VCL.Graphics;
 
 type
   TUCustomProgressBar = class(TCustomControl, IUThemeComponent)

@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.Graphics;
 
@@ -120,7 +120,7 @@ begin
   { PAINT }
 
   Canvas.Brush.Style := bsSolid;
-  Canvas.FillRect(Rect(0, 0, Width, Height)); //  Clear background
+  Canvas.FillRect(GetClientRect); //  Clear background
   Canvas.Brush.Style := bsClear;
   Canvas.TextOut(TextX, TextY, Caption);
 end;

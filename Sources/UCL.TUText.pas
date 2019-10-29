@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes, System.SysUtils,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.StdCtrls;
 

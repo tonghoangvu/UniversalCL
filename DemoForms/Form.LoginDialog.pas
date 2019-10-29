@@ -8,9 +8,8 @@ uses
   UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton,
 
   Winapi.Windows, Winapi.Messages,
-  System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Menus,
-  Vcl.StdCtrls, Vcl.Imaging.pngimage;
+  System.SysUtils, System.Classes,
+  Vcl.Forms, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Menus, Vcl.ExtCtrls, Vcl.Controls;
 
 type
   TformLoginDialog = class(TUForm)
@@ -77,12 +76,6 @@ procedure TformLoginDialog.FormShow(Sender: TObject);
 begin
   //  Setup UForm properties
   ThemeManager := AppTheme;
-  CaptionBar := captionbarMain;
-
-  //  Splash screen
-  SplashImage := GetCurrentDir + '\SplashScreen.png';
-  SplashScreenDelay := 1000;
-  StartSplashScreen;
 end;
 
 procedure TformLoginDialog.popupEditActionItemClick(Sender: TObject;

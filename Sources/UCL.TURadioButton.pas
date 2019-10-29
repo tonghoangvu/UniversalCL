@@ -3,13 +3,13 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
+  System.Classes,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomRadioButton = class(TCustomControl, IUThemeComponent)
+  TUCustomRadioButton = class(TGraphicControl, IUThemeComponent)
     const
       ICON_CIRCLE_BORDER = '';
       ICON_CIRCLE_INSIDE = '';
@@ -26,20 +26,16 @@ type
       FIsChecked: Boolean;
       FGroup: string;
       FCustomActiveColor: TColor;
-      FText: string;
-      FTextPosition: Integer;
+      FTextOnGlass: Boolean;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetAutoSize(const Value: Boolean); reintroduce;
       procedure SetIsChecked(const Value: Boolean);
-      procedure SetText(const Value: string);
-      procedure SetTextPosition(const Value: Integer);
+      procedure SetTextOnGlass(const Value: Boolean);
 
       //  Messages
-      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
-
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
@@ -57,13 +53,12 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property IconFont: TFont read FIconFont write FIconFont;
 
-      property AutoSize: Boolean read FAutoSize write SetAutoSize default true;
+      property AutoSize: Boolean read FAutoSize write SetAutoSize default false;
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
-      property Text: string read FText write SetText;
-      property TextPosition: Integer read FTextPosition write SetTextPosition default 30;
+      property TextOnGlass: Boolean read FTextOnGlass write SetTextOnGlass default false;
   end;
 
   TURadioButton = class(TUCustomRadioButton)
@@ -72,6 +67,7 @@ type
       property Align;
       property Anchors;
       property Color;
+      property Caption;
       property Constraints;
       property DragCursor;
       property DragKind;
@@ -179,20 +175,12 @@ begin
     end;
 end;
 
-procedure TUCustomRadioButton.SetText(const Value: string);
-begin
-  if Value <> FText then
-    begin
-      FText := Value;
-      UpdateTheme;
-    end;
-end;
 
-procedure TUCustomRadioButton.SetTextPosition(const Value: Integer);
+procedure TUCustomRadioButton.SetTextOnGlass(const Value: Boolean);
 begin
-  if Value <> FTextPosition then
+  if Value <> FTextOnGlass then
     begin
-      FTextPosition := Value;
+      FTextOnGlass := Value;
       UpdateTheme;
     end;
 end;
@@ -204,12 +192,11 @@ begin
   inherited Create(aOwner);
 
   //  New props
-  FAutoSize := true;
+  FAutoSize := false;
   FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
-  FText := 'URadioButton';
-  FTextPosition := 30;
+  FTextOnGlass := false;
 
   FIconFont := TFont.Create;
   FIconFont.Name := 'Segoe MDL2 Assets';
@@ -218,6 +205,9 @@ begin
   ParentColor := true;
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+
+  Height := 30;
+  Width := 180;
 
   UpdateChange;
 end;
@@ -234,7 +224,6 @@ procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: B
 begin
   inherited;
 
-  FTextPosition := MulDiv(FTextPosition, M, D);
   IconFont.Height := MulDiv(IconFont.Height, M, D);
 
   Resize;
@@ -242,43 +231,42 @@ end;
 
 procedure TUCustomRadioButton.Paint;
 var
-  TextH: Integer;
-  IconH: Integer;
+  IconRect, TextRect: TRect;
 begin
   inherited;
 
   //  Paint background
-  Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  if not TextOnGlass then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
+      Canvas.FillRect(GetClientRect);
+    end;
+
+  //  Calc rects
+  IconRect := Rect(0, 0, Height, Height);
+  TextRect := Rect(Height, 0, Width, Height);
 
   //  Paint text
+  Canvas.Brush.Style := bsClear;
   Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
-  TextH := Canvas.TextHeight(Text);
-  Canvas.Brush.Style := bsClear;
-  Canvas.TextOut(TextPosition, (Height - TextH) div 2, Text);
+  DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Caption, TextOnGlass);
 
-  //  Paint radio
+  //  Paint icon
   Canvas.Font := IconFont;
   if not IsChecked then
     begin
-      //  Paint circle border
       Canvas.Font.Color := TextColor;
-      IconH := Canvas.TextHeight(ICON_CIRCLE_BORDER);
-      Canvas.TextOut(0, (Height - IconH) div 2, ICON_CIRCLE_BORDER);
+      DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_CIRCLE_BORDER, TextOnGlass);
     end
   else
     begin
-      //  Paint circle border (colored)
       Canvas.Font.Color := ActiveColor;
-      IconH := Canvas.TextHeight(ICON_CIRCLE_BORDER);
-      Canvas.TextOut(0, (Height - IconH) div 2, ICON_CIRCLE_BORDER);
+      DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_CIRCLE_BORDER, TextOnGlass);
 
-      //  Paint small circle inside
       Canvas.Font.Color := TextColor;
-      IconH := Canvas.TextHeight(ICON_CIRCLE_INSIDE);
-      Canvas.TextOut(0, (Height - IconH) div 2, ICON_CIRCLE_INSIDE);
+      DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_CIRCLE_INSIDE, TextOnGlass);
     end;
 end;
 
@@ -292,20 +280,13 @@ begin
       Canvas.Font := IconFont;
       Height := 2 * Space + Canvas.TextHeight(ICON_CIRCLE_BORDER);
       Canvas.Font := Font;
-      Width := TextPosition + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
+      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
     end
   else
     inherited;
 end;
 
 //  MESSAGES
-
-procedure TUCustomRadioButton.WM_LButtonDown(var Msg: TWMLButtonDown);
-begin
-  inherited;
-  if Enabled and HitTest then
-    SetFocus;
-end;
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 var 

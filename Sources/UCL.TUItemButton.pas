@@ -3,16 +3,19 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls, VCL.StdCtrls, VCL.ImgList;
+  VCL.Controls, VCL.Graphics, VCL.ImgList;
 
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
 
   TUCustomItemButton = class(TCustomControl, IUThemeComponent)
     const
+      ICON_CHECKED = '';
+      ICON_UNCHECKED = '';
+
       DefBackColor: TDefColor = (
         ($00E6E6E6, $00CFCFCF, $00B8B8B8, $00CCCCCC, $00CFCFCF),
         ($001F1F1F, $00353535, $004C4C4C, $00333333, $00353535));
@@ -22,6 +25,7 @@ type
 
     private
       var BackColor, TextColor, DetailColor, ActiveColor: TColor;
+      var CheckBoxRect, LeftIconRect, RightIconRect, DetailRect, TextRect: TRect;
 
       FThemeManager: TUThemeManager;
 
@@ -527,115 +531,110 @@ begin
 end;
 
 procedure TUCustomItemButton.Paint;
-const
-  ICON_CHECKED = '';
-  ICON_UNCHECKED = '';
 var
   LPos, RPos: Integer;
-  ObjectH, ObjectW: Integer;
-  ImgW, ImgH, ImgX, ImgY: Integer;
+  TempWidth: Integer;
+  ImgX, ImgY: Integer;
 begin
   inherited;
 
   LPos := 0;
   RPos := Width;
 
+  //  Calc rect
+  if ShowCheckBox then
+    CheckBoxRect := Rect(0, 0, CheckBoxWidth, Height)
+  else
+    CheckBoxRect := TRect.Empty;
+  inc(LPos, CheckBoxRect.Width);
+
+  if ShowLeftIcon then
+    LeftIconRect := Rect(LPos, 0, LPos + LeftIconWidth, Height)
+  else
+    LeftIconRect := TRect.Empty;
+  inc(LPos, LeftIconRect.Width);
+
+  if ShowRightIcon then
+    RightIconRect := Rect(RPos - RightIconWidth, 0, RPos, Height)
+  else
+    RightIconRect := TRect.Empty;
+  dec(RPos, RightIconRect.Width);
+
+  if ShowDetail then
+    begin
+      Canvas.Font := DetailFont;
+      TempWidth := Canvas.TextWidth(Detail);
+      DetailRect := Rect(RPos - AlignSpace - TempWidth, 0, RPos, Height);
+    end
+  else
+    DetailRect := TRect.Empty;
+  dec(RPos, DetailRect.Width);
+
+  if ShowText then
+    begin
+      Canvas.Font := Font;
+      TempWidth := Canvas.TextWidth(Text);
+      TextRect := Rect(LPos + AlignSpace, 0, LPos + AlignSpace + TempWidth, Height);
+    end
+  else
+    TextRect := TRect.Empty;
+
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
+  Canvas.FillRect(GetClientRect);
 
   Canvas.Font := IconFont;
-  Canvas.Brush.Style := bsClear;
+
   //  Paint checkbox
   if ShowCheckBox then
-    begin
-      if IsChecked then
-        begin
-          //  Paint only check icon
-          Canvas.Font.Color := ActiveColor;
-          ObjectH := Canvas.TextHeight(ICON_CHECKED);
-          ObjectW := Canvas.TextWidth(ICON_CHECKED);
-          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, ICON_CHECKED);
-        end
-      else
-        begin
-          Canvas.Font.Color := TextColor;
-          ObjectH := Canvas.TextHeight(ICON_UNCHECKED);
-          ObjectW := Canvas.TextWidth(ICON_UNCHECKED);
-          Canvas.TextOut(LPos + (CheckBoxWidth - ObjectW) div 2, (Height - ObjectH) div 2, ICON_UNCHECKED);
-        end;
-
-      inc(LPos, CheckBoxWidth);
-    end;
+    if IsChecked then
+      begin
+        Canvas.Font.Color := ActiveColor;
+        DrawTextRect(Canvas, taCenter, taVerticalCenter, CheckBoxRect, ICON_CHECKED, false);
+      end
+    else
+      begin
+        Canvas.Font.Color := TextColor;
+        DrawTextRect(Canvas, taCenter, taVerticalCenter, CheckBoxRect, ICON_UNCHECKED, false);
+      end;
 
   Canvas.Font.Color := TextColor;
-
-  inc(LPos, AlignSpace);
 
   //  Paint left icon
   if ShowLeftIcon then
     if LeftIconKind = ikFontIcon then
+      DrawTextRect(Canvas, taCenter, taVerticalCenter, LeftIconRect, LeftIcon, false)
+    else
       begin
-        ObjectH := Canvas.TextHeight(LeftIcon);
-        ObjectW := Canvas.TextWidth(LeftIcon);
-        Canvas.TextOut(LPos + (LeftIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, LeftIcon);
-
-        inc(LPos, LeftIconWidth);
-      end
-    else if (Images <> nil) and (ImageLeftIndex >= 0) then
-      begin
-        ImgW := Images.Width;
-        ImgH := Images.Height;
-        ImgX := LPos + (LeftIconWidth - ImgW) div 2;
-        ImgY := (Height - ImgH) div 2;
-
+        GetCenterPos(Images.Width, Images.Height, LeftIconRect, ImgX, ImgY);
         Images.Draw(Canvas, ImgX, ImgY, ImageLeftIndex, Enabled);
-        inc(LPos, LeftIconWidth);
       end;
-
-  Dec(RPos, AlignSpace);
 
   //  Paint right icon
   if ShowRightIcon then
     if RightIconKind = ikFontIcon then
+      DrawTextRect(Canvas, taCenter, taVerticalCenter, RightIconRect, RightIcon, false)
+    else
       begin
-        ObjectH := Canvas.TextHeight(RightIcon);
-        ObjectW := Canvas.TextWidth(RightIcon);
-        Canvas.TextOut(RPos - RightIconWidth + (RightIconWidth - ObjectW) div 2, (Height - ObjectH) div 2, RightIcon);
-
-        dec(RPos, RightIconWidth);
-      end
-    else if (Images <> nil) and (ImageRightIndex >= 0) then
-      begin
-        ImgW := Images.Width;
-        ImgH := Images.Height;
-        ImgX := RPos - RightIconWidth + (RightIconWidth - ImgW) div 2;
-        ImgY := (Height - ImgH) div 2;
-
+        GetCenterPos(Images.Width, Images.Height, RightIconRect, ImgX, ImgY);
         Images.Draw(Canvas, ImgX, ImgY, ImageRightIndex, Enabled);
-        dec(RPos, RightIconWidth);
       end;
-
-  // Paint text
-  if ShowText then
-    begin
-      Canvas.Font := Font;
-      Canvas.Font.Color := TextColor;
-
-      ObjectH := Canvas.TextHeight(Text);
-      Canvas.TextOut(LPos + AlignSpace, (Height - ObjectH) div 2, Text);
-    end;
 
   //  Paint detail
   if ShowDetail then
     begin
       Canvas.Font := DetailFont;
       Canvas.Font.Color := DetailColor;
+      DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, DetailRect, Detail, false);
+    end;
 
-      ObjectH := Canvas.TextHeight(Detail);
-      ObjectW := Canvas.TextWidth(Detail);
-      Canvas.TextOut(RPos - ObjectW - AlignSpace, (Height - ObjectH) div 2, Detail);
+  //  Paint text
+  if ShowText then
+    begin
+      Canvas.Font := Font;
+      Canvas.Font.Color := TextColor;
+      DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false);
     end;
 end;
 
@@ -663,16 +662,29 @@ procedure TUCustomItemButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
   if Enabled and HitTest then
     begin
-      if Msg.XPos < CheckBoxWidth then
+//      if Msg.XPos < CheckBoxWidth then
+//        FObjectSelected := iokCheckBox
+//      else if Msg.XPos < CheckBoxWidth + LeftIconWidth then
+//        FObjectSelected := iokLeftIcon
+//      else if Msg.XPos > Width - RightIconWidth then
+//        FObjectSelected := iokRightIcon
+//      else if Msg.XPos > Width - RightIconWidth - Canvas.TextWidth(Detail) - AlignSpace then
+//        FObjectSelected := iokDetail
+//      else
+//        FObjectSelected := iokText;
+
+      if PointInRect(Msg.Pos, CheckBoxRect) then
         FObjectSelected := iokCheckBox
-      else if Msg.XPos < CheckBoxWidth + LeftIconWidth then
+      else if PointInRect(Msg.Pos, LeftIconRect) then
         FObjectSelected := iokLeftIcon
-      else if Msg.XPos > Width - RightIconWidth then
+      else if PointInRect(Msg.Pos, RightIconRect) then
         FObjectSelected := iokRightIcon
-      else if Msg.XPos > Width - RightIconWidth - Canvas.TextWidth(Detail) - AlignSpace then
+      else if PointInRect(Msg.Pos, DetailRect) then
         FObjectSelected := iokDetail
+      else if PointInRect(Msg.Pos, TextRect) then
+        FObjectSelected := iokText
       else
-        FObjectSelected := iokText;
+        FObjectSelected := iokNone;
 
       case FObjectSelected of
         iokNone: ;

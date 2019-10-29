@@ -3,10 +3,9 @@ unit UCL.TUScrollBox;
 interface
 
 uses
-  FlatSB,
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils,
-  System.Classes, System.SysUtils, System.TypInfo,
-  Winapi.Messages, Winapi.Windows,
+  System.Classes, System.TypInfo,
+  Winapi.Windows, Winapi.Messages, Winapi.FlatSB,
   VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
 
 type

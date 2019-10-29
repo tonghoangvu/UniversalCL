@@ -3,10 +3,10 @@ unit UCL.TUSlider;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,UCL.Utils,
-  System.Classes, System.SysUtils, System.Types,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
+  VCL.Controls, VCL.Graphics;
 
 type
   TUCustomSlider = class(TGraphicControl, IUThemeComponent)

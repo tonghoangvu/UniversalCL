@@ -5,11 +5,11 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   Winapi.Windows, Winapi.Messages,
-  System.Classes, System.SysUtils,
+  System.Classes,
   VCL.Controls, VCL.ExtCtrls, VCL.Forms, VCL.Graphics;
 
 type
-  TUCustomCaptionBar = class(TCustomPanel, IUThemeComponent)
+  TUCaptionBar = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
 
@@ -38,90 +38,13 @@ type
       property CustomColor: TColor read FCustomColor write FCustomColor default $D77800;
   end;
 
-  TUCaptionBar = class(TUCustomCaptionBar)
-    public
-      property DockManager;
-    published
-      property Align;
-      property Alignment;
-      property Anchors;
-      property AutoSize;
-      property BevelEdges;
-      property BevelInner;
-      property BevelKind;
-      property BevelOuter;
-      property BevelWidth;
-      property BiDiMode;
-      property BorderWidth;
-      property BorderStyle;
-      property Caption;
-      property Color;
-      property Constraints;
-      property Ctl3D;
-      property UseDockManager default True;
-      property DockSite;
-      property DoubleBuffered;
-      property DragCursor;
-      property DragKind;
-      property DragMode;
-      property Enabled;
-      property FullRepaint;
-      property Font;
-      property Locked;
-      property Padding;
-      property ParentBiDiMode;
-      property ParentBackground;
-      property ParentColor;
-      property ParentCtl3D;
-      property ParentDoubleBuffered;
-      property ParentFont;
-      property ParentShowHint;
-      property PopupMenu;
-      property ShowCaption;
-      property ShowHint;
-      property TabOrder;
-      property TabStop;
-      property Touch;
-      property VerticalAlignment;
-      property Visible;
-      property StyleElements;
-
-      property OnAlignInsertBefore;
-      property OnAlignPosition;
-      property OnCanResize;
-      property OnClick;
-      property OnConstrainedResize;
-      property OnContextPopup;
-      property OnDockDrop;
-      property OnDockOver;
-      property OnDblClick;
-      property OnDragDrop;
-      property OnDragOver;
-      property OnEndDock;
-      property OnEndDrag;
-      property OnEnter;
-      property OnExit;
-      property OnGesture;
-      property OnGetSiteInfo;
-      property OnMouseActivate;
-      property OnMouseDown;
-      property OnMouseEnter;
-      property OnMouseLeave;
-      property OnMouseMove;
-      property OnMouseUp;
-      property OnResize;
-      property OnStartDock;
-      property OnStartDrag;
-      property OnUnDock;
-  end;
-
 implementation
 
 { TUCustomCaptionBar }
 
 //  THEME
 
-procedure TUCustomCaptionBar.SetThemeManager(const Value: TUThemeManager);
+procedure TUCaptionBar.SetThemeManager(const Value: TUThemeManager);
 begin
   if Value <> FThemeManager then
     begin
@@ -136,7 +59,7 @@ begin
     end;
 end;
 
-procedure TUCustomCaptionBar.UpdateTheme;
+procedure TUCaptionBar.UpdateTheme;
 begin
   //  Background color
   if ThemeManager = nil then
@@ -152,7 +75,7 @@ end;
 
 // MAIN CLASS
 
-constructor TUCustomCaptionBar.Create(aOwner: TComponent);
+constructor TUCaptionBar.Create(aOwner: TComponent);
 begin
   inherited;
   FDragMovement := true;
@@ -173,7 +96,7 @@ end;
 
 // MESSAGES
 
-procedure TUCustomCaptionBar.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
+procedure TUCaptionBar.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 var
   ParentForm: TCustomForm;
 begin
@@ -190,7 +113,7 @@ begin
       end;
 end;
 
-procedure TUCustomCaptionBar.WM_LButtonDown(var Msg: TWMLButtonDown);
+procedure TUCaptionBar.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
   inherited;
   if DragMovement then
@@ -200,7 +123,7 @@ begin
     end;
 end;
 
-procedure TUCustomCaptionBar.WM_RButtonUp(var Msg: TMessage);
+procedure TUCaptionBar.WM_RButtonUp(var Msg: TMessage);
 const
   WM_SYSMENU = 787;
 var
@@ -218,7 +141,7 @@ begin
     end;
 end;
 
-procedure TUCustomCaptionBar.WM_NCHitTest(var Msg: TWMNCHitTest);
+procedure TUCaptionBar.WM_NCHitTest(var Msg: TWMNCHitTest);
 var
   P: TPoint;
   ParentForm: TCustomForm;

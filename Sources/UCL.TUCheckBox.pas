@@ -3,15 +3,15 @@
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes, System.Types, System.Math,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
+  System.Classes,
   Winapi.Messages, Winapi.Windows,
   VCL.Controls, VCL.Graphics;
 
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
 
-  TUCustomCheckBox = class(TCustomControl, IUThemeComponent)
+  TUCustomCheckBox = class(TGraphicControl, IUThemeComponent)
     const
       ICON_CHECKED = '';
       ICON_UNCHECKED = '';
@@ -25,23 +25,21 @@ type
       FIconFont: TFont;
 
       FAutoSize: Boolean;
-      FHitTest: Boolean;
-      FText: string;
-      FTextPosition: Integer;
       FAllowGrayed: Boolean;
+      FHitTest: Boolean;
+      FTextOnGlass: Boolean;
+
       FState: TUCheckBoxState;
       FCustomActiveColor: TColor;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetAutoSize(const Value: Boolean); reintroduce;
-      procedure SetText(const Value: string);
-      procedure SetTextPosition(const Value: Integer);
+      procedure SetTextOnGlass(const Value: Boolean);
       procedure SetAllowGrayed(const Value: Boolean);
       procedure SetState(const Value: TUCheckBoxState);
 
       //  Messages
-      procedure WM_LButtonDown(var Msg: TWMLButtonDown); message WM_LBUTTONDOWN;
       procedure WM_LButtonUp(var Msg: TWMLButtonUp); message WM_LBUTTONUP;
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
@@ -60,11 +58,11 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property IconFont: TFont read FIconFont write FIconFont;
 
-      property AutoSize: Boolean read FAutoSize write SetAutoSize default true;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
-      property Text: string read FText write SetText;
-      property TextPosition: Integer read FTextPosition write SetTextPosition default 30;
+      property AutoSize: Boolean read FAutoSize write SetAutoSize default false;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
+      property HitTest: Boolean read FHitTest write FHitTest default true;
+      property TextOnGlass: Boolean read FTextOnGlass write SetTextOnGlass default false;
+
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor default $D77800;
   end;
@@ -74,6 +72,7 @@ type
       property Align;
       property Anchors;
       property Color;
+      property Caption;
       property Constraints;
       property DragCursor;
       property DragKind;
@@ -192,20 +191,11 @@ begin
     end;
 end;
 
-procedure TUCustomCheckBox.SetText(const Value: string);
+procedure TUCustomCheckBox.SetTextOnGlass(const Value: Boolean);
 begin
-  if Value <> FText then
+  if Value <> FTextOnGlass then
     begin
-      FText := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomCheckBox.SetTextPosition(const Value: Integer);
-begin
-  if Value <> FTextPosition then
-    begin
-      FTextPosition := Value;
+      FTextOnGlass := Value;
       UpdateTheme;
     end;
 end;
@@ -220,17 +210,19 @@ begin
   FIconFont.Name := 'Segoe MDL2 Assets';
   FIconFont.Size := 15;
 
-  FAutoSize := true;
-  FHitTest := true;
-  FText := 'CheckBox';
-  FTextPosition := 30;
+  FAutoSize := false;
   FAllowGrayed := false;
+  FHitTest := true;
+  FTextOnGlass := false;
   FState := cbsUnchecked;
   FCustomActiveColor := $D77800;  //  Default blue
 
   ParentColor := true;
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+
+  Height := 30;
+  Width := 180;
 
   UpdateChange;
 end;
@@ -247,7 +239,6 @@ procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Bool
 begin
   inherited;
 
-  FTextPosition := MulDiv(FTextPosition, M, D);
   IconFont.Height := MulDiv(IconFont.Height, M, D);
 
   Resize;
@@ -255,52 +246,50 @@ end;
 
 procedure TUCustomCheckBox.Paint;
 var
-  TextH: Integer;
-  IconH: Integer;
+  IconRect, TextRect: TRect;
 begin
   inherited;
 
   //  Paint background
-  Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
-  Canvas.Brush.Style := bsClear;
+  if not TextOnGlass then
+    begin
+      Canvas.Brush.Style := bsSolid;
+      Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
+      Canvas.FillRect(GetClientRect);
+    end;
+
+  //  Calc rects
+  IconRect := Rect(0, 0, Height, Height);
+  TextRect := Rect(Height, 0, Width, Height);
 
   //  Paint text
+  Canvas.Brush.Style := bsClear;
   Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
-  TextH := Canvas.TextHeight(Text);
-  Canvas.Brush.Style := bsClear;
-  Canvas.TextOut(TextPosition, (Height - TextH) div 2, Text);
+  DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Caption, TextOnGlass);
 
-  //  Paint check icon
+  //  Paint icon
   Canvas.Font := IconFont;
   case State of
     cbsChecked:
       begin
         Canvas.Font.Color := ActiveColor;
-        IconH := Canvas.TextHeight(ICON_CHECKED);
-        Canvas.TextOut(0, (Height - IconH) div 2, ICON_CHECKED);
+        DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_CHECKED, TextOnGlass);
       end;
 
     cbsUnchecked:
       begin
         Canvas.Font.Color := TextColor;
-        IconH := Canvas.TextHeight(ICON_UNCHECKED);
-        Canvas.TextOut(0, (Height - IconH) div 2, ICON_UNCHECKED);
+        DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_UNCHECKED, TextOnGlass);
       end;
 
     cbsGrayed:
       begin
-        //  Paint outside box
         Canvas.Font.Color := ActiveColor;
-        IconH := Canvas.TextHeight(ICON_UNCHECKED);
-        Canvas.TextOut(0, (Height - IconH) div 2, ICON_UNCHECKED);
+        DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_UNCHECKED, TextOnGlass);
 
-        //  Paint inside small square
         Canvas.Font.Color := TextColor;
-        IconH := Canvas.TextHeight(ICON_GRAYED);
-        Canvas.TextOut(0, (Height - IconH) div 2, ICON_GRAYED);
+        DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, IconRect, ICON_GRAYED, TextOnGlass);
       end;
   end;
 end;
@@ -315,20 +304,13 @@ begin
       Canvas.Font := IconFont;
       Height := 2 * Space + Canvas.TextHeight(ICON_UNCHECKED);
       Canvas.Font := Font;
-      Width := TextPosition + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
+      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
     end
   else
     inherited;
 end;
 
 //  MESSAGES
-
-procedure TUCustomCheckBox.WM_LButtonDown(var Msg: TWMLButtonDown);
-begin
-  inherited;
-  if Enabled and HitTest then
-    SetFocus;
-end;
 
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin

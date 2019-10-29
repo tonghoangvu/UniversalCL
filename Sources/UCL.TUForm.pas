@@ -3,10 +3,10 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.TUTooltip, UCL.TUCaptionBar, UCL.Utils,
-  System.Classes, System.SysUtils, System.Threading,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils,
+  System.Classes,
   Winapi.Windows, Winapi.Messages,
-  VCL.Forms, VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
+  VCL.Forms, VCL.Controls, VCL.Graphics;
 
 type
   TUForm = class(TForm, IUThemeComponent)
@@ -20,15 +20,10 @@ type
       var BorderColor: TColor;
 
       FThemeManager: TUThemeManager;
-      FIsActive: Boolean;
+
       FPPI: Integer;
-      FSplashScreenDelay: Integer;
+      FIsActive: Boolean;
       FFitDesktopForPopup: Boolean;
-
-      FSplashImage: string;
-      FCaptionBar: TUCaptionBar;
-
-      FOnEndSplashScreen: TNotifyEvent;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -40,9 +35,10 @@ type
       procedure WM_NCCalcSize(var Msg: TWMNCCalcSize); message WM_NCCALCSIZE;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
-      //  Utils
+      //  Internal
       function GetBorderSpace: Integer;
       function IsBorderless: Boolean;
+      procedure UpdateBorderColor;
 
     protected
       procedure Paint; override;
@@ -51,30 +47,20 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-      procedure UpdateBorderColor;
-      procedure StartSplashScreen;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property IsActive: Boolean read FIsActive default true;
+
       property PPI: Integer read FPPI write FPPI default 96;
-      property SplashScreenDelay: Integer read FSplashScreenDelay write FSplashScreenDelay default 1500;
+      property IsActive: Boolean read FIsActive default true;
       property FitDesktopForPopup: Boolean read FFitDesktopForPopup write FFitDesktopForPopup default false;
-
-      property SplashImage: string read FSplashImage write FSplashImage;
-      property CaptionBar: TUCaptionBar read FCaptionBar write FCaptionBar;
-
-      property OnEndSplashScreen: TNotifyEvent read FOnEndSplashScreen write FOnEndSplashScreen;
   end;
 
 implementation
 
-uses
-  VCL.Imaging.PNGImage;
-
 { TUForm }
 
-//  UTILS
+//  INTERNAL
 
 function TUForm.GetBorderSpace: Integer;
 begin
@@ -91,6 +77,7 @@ begin
       Result :=
         GetSystemMetrics(SM_CYSIZEFRAME) +
         GetSystemMetrics(SM_CXPADDEDBORDER);
+
     else
       Result := 0;
   end;
@@ -126,88 +113,6 @@ begin
       else
         BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
     end;
-end;
-
-procedure TUForm.StartSplashScreen;
-var
-  i: Integer;
-  AccentColor, OldBackColor: TColor;
-  OldCaptionTM: TUThemeManager;
-  TempImg: TImage;
-begin
-  if not FileExists(SplashImage) then exit;
-
-  //  Save info
-  OldBackColor := Color;
-  if CaptionBar <> nil then
-    OldCaptionTM := CaptionBar.ThemeManager;
-
-  //  Hide main controls
-  for i := 0 to ControlCount - 1 do
-    if
-      (Controls[i] = CaptionBar)
-      or (Controls[i].Align = alNone)
-    then
-    else
-      Controls[i].Visible := false;
-
-  //  Get accent color
-  if ThemeManager = nil then
-    AccentColor := $D77800  //  Default
-  else
-    AccentColor := ThemeManager.AccentColor;
-
-  Color := AccentColor;
-  if CaptionBar <> nil then
-    begin
-      CaptionBar.CustomColor := AccentColor;
-      CaptionBar.ThemeManager := nil;
-    end;
-
-  //  Create image
-  TempImg := TImage.Create(nil);
-  TempImg.Parent := Self;
-  TempImg.Picture.LoadFromFile(SplashImage);
-  TempImg.Center := true;
-  TempImg.Align := alClient;
-  TempImg.Visible := true;
-  TempImg.BringToFront;
-
-  //  Sleep in thread
-  TThread.CreateAnonymousThread(procedure
-  begin
-    Sleep(SplashScreenDelay);
-    TThread.Synchronize(TThread.CurrentThread, procedure
-    var
-      j: Integer;
-    begin
-      //  Post event
-      if Assigned(FOnEndSplashScreen) then
-        FOnEndSplashScreen(Self);
-
-      Color := OldBackColor;
-      if CaptionBar <> nil then
-        CaptionBar.ThemeManager := OldCaptionTM;
-
-      if TempImg <> nil then
-        begin
-          //  Hide splash image
-          TempImg.Visible := false;
-          TempImg.Align := alNone;
-        end;
-
-      for j := 0 to ControlCount - 1 do
-        if
-          (Controls[j] = CaptionBar)
-          or (Controls[j] = TempImg)
-          or (Controls[j].Align = alNone)
-        then
-        else
-          Controls[j].Visible := true;
-
-      TempImg.Free;
-    end);
-  end).Start;
 end;
 
 //  THEME
@@ -257,18 +162,21 @@ var
   CurrentScreen: TMonitor;
 begin
   inherited;
-  FIsActive := true;
-  FSplashScreenDelay := 1500;
-  FFitDesktopForPopup := false;
 
-  Padding.SetBounds(0, 1, 0, 0);  //  Top space
+  //  New props
+  FIsActive := true;
+  FFitDesktopForPopup := false;
 
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
   FPPI := CurrentScreen.PixelsPerInch;
 
+  //  Common props
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+
+  if Padding.Top = 0 then
+    Padding.Top := 1;
 end;
 
 //  CUSTOM METHODS
