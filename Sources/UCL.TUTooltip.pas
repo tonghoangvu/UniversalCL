@@ -120,7 +120,7 @@ begin
   { PAINT }
 
   Canvas.Brush.Style := bsSolid;
-  Canvas.FillRect(GetClientRect); //  Clear background
+  Canvas.FillRect(Rect(0, 0, Width, Height)); //  Clear background
   Canvas.Brush.Style := bsClear;
   Canvas.TextOut(TextX, TextY, Caption);
 end;

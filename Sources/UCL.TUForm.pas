@@ -174,9 +174,6 @@ begin
   //  Common props
   Font.Name := 'Segoe UI';
   Font.Size := 10;
-
-  if Padding.Top = 0 then
-    Padding.Top := 1;
 end;
 
 //  CUSTOM METHODS
@@ -201,9 +198,9 @@ begin
   inherited;
 
   if (WindowState = wsNormal) and (not IsBorderless) then
-    Padding.SetBounds(0, 1, 0, 0)
+    Padding.Top := 1
   else
-    Padding.SetBounds(0, 0, 0, 0);
+    Padding.Top := 0;
 
   //  Fit window to desktop - for WS_POPUP window style
   //  If not, if not, window fill full screen when maximized

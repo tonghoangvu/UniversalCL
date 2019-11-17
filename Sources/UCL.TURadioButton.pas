@@ -15,8 +15,8 @@ type
       ICON_CIRCLE_INSIDE = '';
 
     private
-      var ActiveColor: TColor;
-      var TextColor: TColor;
+      var ActiveColor, TextColor: TColor;
+      var IconRect, TextRect: TRect;
 
       FThemeManager: TUThemeManager;
       FIconFont: TFont;
@@ -27,6 +27,10 @@ type
       FGroup: string;
       FCustomActiveColor: TColor;
       FTextOnGlass: Boolean;
+
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -47,7 +51,6 @@ type
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -124,11 +127,14 @@ end;
 
 procedure TUCustomRadioButton.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomRadioButton.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomRadioButton.UpdateColors;
 begin
   //  Active & text color
   if ThemeManager = nil then
@@ -155,6 +161,12 @@ begin
     end;
 end;
 
+procedure TUCustomRadioButton.UpdateRects;
+begin
+  IconRect := Rect(0, 0, Height, Height);
+  TextRect := Rect(Height, 0, Width, Height);
+end;
+
 //  SETTERS
 
 procedure TUCustomRadioButton.SetAutoSize(const Value: Boolean);
@@ -171,7 +183,7 @@ begin
   if Value <> FIsChecked then
     begin
       FIsChecked := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -181,7 +193,7 @@ begin
   if Value <> FTextOnGlass then
     begin
       FTextOnGlass := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -209,7 +221,8 @@ begin
   Height := 30;
   Width := 180;
 
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
 end;
 
 destructor TUCustomRadioButton.Destroy;
@@ -230,8 +243,6 @@ begin
 end;
 
 procedure TUCustomRadioButton.Paint;
-var
-  IconRect, TextRect: TRect;
 begin
   inherited;
 
@@ -240,12 +251,8 @@ begin
     begin
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-      Canvas.FillRect(GetClientRect);
+      Canvas.FillRect(Rect(0, 0, Width, Height));
     end;
-
-  //  Calc rects
-  IconRect := Rect(0, 0, Height, Height);
-  TextRect := Rect(Height, 0, Width, Height);
 
   //  Paint text
   Canvas.Brush.Style := bsClear;
@@ -284,6 +291,7 @@ begin
     end
   else
     inherited;
+  UpdateRects;
 end;
 
 //  MESSAGES
@@ -315,7 +323,8 @@ end;
 
 procedure TUCustomRadioButton.CM_EnabledChanged(var Msg: TMessage);
 begin
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 end.

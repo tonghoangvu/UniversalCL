@@ -43,7 +43,7 @@ type
       procedure SetStateColor(const Index: Integer; const Value: TColor);
 
     protected 
-      procedure Change; virtual;
+      procedure Changed;
 
     public
       constructor Create(aNone, aHover, aPress, aDisabled, aFocused: TColor); overload;
@@ -63,7 +63,7 @@ implementation
 
 { TCONTROLSTATECOLORS }
 
-procedure TControlStateColors.Change;
+procedure TControlStateColors.Changed;
 begin
   if Assigned(FOnChange) then
     FOnChange(Self);
@@ -105,31 +105,31 @@ begin
       if Value <> FNone then
         begin
           FNone := Value;
-          Change;
+          Changed;
         end;    
     1:
       if Value <> FHover then
         begin
           FHover := Value;
-          Change;
+          Changed;
         end;
     2:
       if Value <> FPress then
         begin
           FPress := Value;
-          Change;
+          Changed;
         end;
     3:
       if Value <> FDisabled then
         begin
           FDisabled := Value;
-          Change;
+          Changed;
         end;
     4:
       if Value <> FFocused then
         begin
           FFocused := Value;
-          Change;
+          Changed;
         end;
   end;
 end;

@@ -111,6 +111,10 @@
             <Form>formLoginDialog</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="DemoForms\Form.ImageBackground.pas">
+            <Form>formImageBackground</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -137,7 +141,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\Demo.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="Bin\Demo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Demo.exe</RemoteName>
                         <Overwrite>true</Overwrite>

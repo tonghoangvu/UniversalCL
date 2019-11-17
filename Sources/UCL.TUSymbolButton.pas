@@ -5,7 +5,7 @@ interface
 uses
   UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
   Winapi.Messages, Winapi.Windows,
-  System.Classes,
+  System.Classes, System.Types,
   VCL.Controls, VCL.Graphics, VCL.ImgList;
 
 type
@@ -20,6 +20,7 @@ type
 
     private
       var BackColor, TextColor, DetailColor: TColor;
+      var IconRect, TextRect, DetailRect: TRect;
 
       FThemeManager: TUThemeManager;
 
@@ -45,6 +46,10 @@ type
       FTransparent: Boolean;
       FIsToggleButton: Boolean;
       FIsToggled: Boolean;
+
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -73,14 +78,15 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
+      procedure CreateWindowHandle(const Params: TCreateParams); override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -170,11 +176,14 @@ end;
 
 procedure TUCustomSymbolButton.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomSymbolButton.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomSymbolButton.UpdateColors;
 var
   TempTheme: TUTheme;
 begin
@@ -213,6 +222,42 @@ begin
     end;
 end;
 
+procedure TUCustomSymbolButton.UpdateRects;
+var
+  TempW, TempH: Integer;
+begin
+  if not HandleAllocated then exit;
+
+  //  Calc rects
+  if ShowIcon then
+    begin
+      if Orientation = oHorizontal then
+        IconRect := Rect(0, 0, TextOffset, Height)
+      else
+        IconRect := Rect(0, 0, Width, TextOffset);
+    end
+  else
+    IconRect := TRect.Empty;
+
+  if ShowDetail then
+    begin
+      Canvas.Font := DetailFont;
+      TempW := Canvas.TextWidth(Detail);
+      TempH := Canvas.TextHeight(Detail);
+      if Orientation = oHorizontal then
+        DetailRect := Rect(Width - TempW - DetailRightOffset, 0, Width - DetailRightOffset, Height)
+      else
+        DetailRect := Rect(0, Height - TempH - DetailRightOffset, Width, Height - DetailRightOffset);
+    end
+  else
+    DetailRect := TRect.Empty;
+
+  if Orientation = oHorizontal then
+    TextRect := Rect(IconRect.Width, 0, Width - DetailRect.Width, Height)
+  else
+    TextRect := Rect(0, IconRect.Height, Width, Height - DetailRect.Height);
+end;
+
 //  SETTERS
 
 procedure TUCustomSymbolButton.SetButtonState(const Value: TUControlState);
@@ -220,7 +265,8 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -229,7 +275,8 @@ begin
   if Value <> FOrientation then
     begin
       FOrientation := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -238,7 +285,7 @@ begin
   if Value <> FSymbolChar then
     begin
       FSymbolChar := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -247,7 +294,8 @@ begin
   if Value <> FText then
     begin
       FText := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -256,7 +304,8 @@ begin
   if Value <> FTextOffset then
     begin
       FTextOffset := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -265,7 +314,8 @@ begin
   if Value <> FDetail then
     begin
       FDetail := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -274,7 +324,8 @@ begin
   if Value <> FDetailRightOffset then
     begin
       FDetailRightOffset := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -283,7 +334,8 @@ begin
   if Value <> FShowIcon then
     begin
       FShowIcon := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -292,7 +344,8 @@ begin
   if Value <> FShowDetail then
     begin
       FShowDetail := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -301,7 +354,8 @@ begin
   if Value <> FTransparent then
     begin
       FTransparent := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -310,7 +364,8 @@ begin
   if Value <> FIsToggled then
     begin
       FIsToggled := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -319,7 +374,7 @@ begin
   if Value <> FImageIndex then
     begin
       FImageIndex := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -328,7 +383,7 @@ begin
   if Value <> FImageKind then
     begin
       FImageKind := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -370,8 +425,6 @@ begin
   Width := 250;
   Height := 40;
   TabStop := true;
-
-  UpdateChange;
 end;
 
 destructor TUCustomSymbolButton.Destroy;
@@ -384,65 +437,32 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomSymbolButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
-begin
-  inherited;
-
-  TextOffset := MulDiv(TextOffset, M, D);
-  DetailRightOffset := MulDiv(DetailRightOffset, M, D);
-
-  SymbolFont.Height := MulDiv(SymbolFont.Height, M, D);
-  TextFont.Height := MulDiv(TextFont.Height, M, D);
-  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
-end;
-
 procedure TUCustomSymbolButton.Paint;
 var
-  IconRect, TextRect, DetailRect: TRect;
-  TempW, TempH: Integer;
+  ImgX, ImgY: Integer;
 begin
-  inherited;
-
-  //  Calc rects
-  if ShowIcon then
-    begin
-      if Orientation = oHorizontal then
-        IconRect := Rect(0, 0, TextOffset, Height)
-      else
-        IconRect := Rect(0, 0, Width, TextOffset);
-    end
-  else
-    IconRect := TRect.Empty;
-
-  if ShowDetail then
-    begin
-      Canvas.Font := DetailFont;
-      TempW := Canvas.TextWidth(Detail);
-      TempH := Canvas.TextHeight(Detail);
-      if Orientation = oHorizontal then
-        DetailRect := Rect(Width - TempW - DetailRightOffset, 0, Width - DetailRightOffset, Height)
-      else
-        DetailRect := Rect(0, Height - TempH - DetailRightOffset, Width, Height - DetailRightOffset);
-    end
-  else
-    DetailRect := TRect.Empty;
-
-  if Orientation = oHorizontal then
-    TextRect := Rect(IconRect.Width, 0, Width - DetailRect.Width, Height)
-  else
-    TextRect := Rect(0, IconRect.Height, Width, Height - DetailRect.Height);
-
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(GetClientRect);
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint icon
-  if ShowIcon then
+  if ImageKind = ikFontIcon then
     begin
-      Canvas.Font := SymbolFont;
-      Canvas.Font.Color := TextColor;
-      DrawTextRect(Canvas, taCenter, taVerticalCenter, IconRect, SymbolChar, false)
+      if ShowIcon then
+        begin
+          Canvas.Font := SymbolFont;
+          Canvas.Font.Color := TextColor;
+          DrawTextRect(Canvas, taCenter, taVerticalCenter, IconRect, SymbolChar, false)
+        end;
+    end
+  else
+    begin
+      if Images <> nil then
+        begin
+          GetCenterPos(Images.Width, Images.Height, IconRect, ImgX, ImgY);
+          Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
+        end;
     end;
 
   //  Paint detail
@@ -463,6 +483,31 @@ begin
     DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false)
   else
     DrawTextRect(Canvas, taCenter, taAlignTop, TextRect, Text, false);
+end;
+
+procedure TUCustomSymbolButton.Resize;
+begin
+  inherited;
+  UpdateRects;
+end;
+
+procedure TUCustomSymbolButton.CreateWindowHandle(const Params: TCreateParams);
+begin
+  inherited;
+  UpdateColors;
+  UpdateRects;
+end;
+
+procedure TUCustomSymbolButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+
+  TextOffset := MulDiv(TextOffset, M, D);
+  DetailRightOffset := MulDiv(DetailRightOffset, M, D);
+
+  SymbolFont.Height := MulDiv(SymbolFont.Height, M, D);
+  TextFont.Height := MulDiv(TextFont.Height, M, D);
+  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
 end;
 
 //  MESSAGES
@@ -516,7 +561,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_FontChanged(var Msg: TMessage);
 begin
-  UpdateTheme;
+  Repaint;
 end;
 
 procedure TUCustomSymbolButton.CM_EnabledChanged(var Msg: TMessage);
@@ -526,7 +571,8 @@ begin
     FButtonState := csDisabled
   else
     FButtonState := csNone;
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 end.

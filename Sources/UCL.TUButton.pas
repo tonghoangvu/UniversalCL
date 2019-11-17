@@ -23,9 +23,8 @@ type
 
     private
       var BorderThickness: Integer;
-      var BorderColor: TColor;
-      var BackColor: TColor;
-      var TextColor: TColor;
+      var BorderColor, BackColor, TextColor: TColor;
+      var ImgRect, TextRect: TRect;
 
       //  Theme
       FThemeManager: TUThemeManager;
@@ -44,6 +43,10 @@ type
       FIsToggleButton: Boolean;
       FIsToggled: Boolean;
       FTransparent: Boolean;
+
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -72,14 +75,15 @@ type
       procedure DoCustomTextColorsChange(Sender: TObject);
 
     protected
-      procedure ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
+      procedure CreateWindowHandle(const Params: TCreateParams); override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -163,11 +167,14 @@ end;
 
 procedure TUCustomButton.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomButton.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomButton.UpdateColors;
 begin
   //  Not connect ThemeManager, use custom colors
   if ThemeManager = nil then
@@ -209,6 +216,18 @@ begin
     end;
 end;
 
+procedure TUCustomButton.UpdateRects;
+begin
+  //  Calc rects
+  if (Images <> nil) and (ImageIndex >= 0) then
+    begin
+      ImgRect := Rect(0, 0, Height, Height);  //  Square left align
+      TextRect := Rect(Height, 0, Width, Height);
+    end
+  else
+    TextRect := Rect(0, 0, Width, Height);
+end;
+
 //  SETTERS
 
 procedure TUCustomButton.SetButtonState(const Value: TUControlState);
@@ -216,7 +235,8 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -225,7 +245,7 @@ begin
   if Value <> FAlignment then
     begin
       FAlignment := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -234,7 +254,8 @@ begin
   if Value <> FImageIndex then
     begin
       FImageIndex := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -243,7 +264,8 @@ begin
   if Value <> FHighlight then
     begin
       FHighlight := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -252,7 +274,7 @@ begin
   if Value <> FTransparent then
     begin
       FTransparent := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -289,8 +311,6 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
   TabStop := true;
-
-  UpdateChange;
 end;
 
 destructor TUCustomButton.Destroy;
@@ -304,16 +324,8 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
-begin
-  inherited;
-  BorderThickness := MulDiv(BorderThickness, M, D);
-end;
-
 procedure TUCustomButton.Paint;
 var
-  HasImg: Boolean;
-  ImgRect, TextRect: TRect;
   ImgX, ImgY: Integer;
 begin
   inherited;
@@ -326,19 +338,8 @@ begin
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
   Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
 
-  HasImg := (Images <> nil) and (ImageIndex >= 0);
-
-  //  Calc rects
-  if HasImg then
-    begin
-      ImgRect := Rect(0, 0, Height, Height);  //  Square left align
-      TextRect := Rect(Height, 0, Width, Height);
-    end
-  else
-    TextRect := GetClientRect;
-
   //  Paint image
-  if HasImg then
+  if (Images <> nil) and (ImageIndex >= 0) then
     begin
       GetCenterPos(Images.Width, Images.Height, ImgRect, ImgX, ImgY);
       Images.Draw(Canvas, ImgX, ImgY, ImageIndex, Enabled);
@@ -348,6 +349,25 @@ begin
   Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
   DrawTextRect(Canvas, Alignment, taVerticalCenter, TextRect, Caption, false);
+end;
+
+procedure TUCustomButton.Resize;
+begin
+  inherited;
+  UpdateRects;
+end;
+
+procedure TUCustomButton.CreateWindowHandle(const Params: TCreateParams);
+begin
+  inherited;
+  UpdateColors;
+  UpdateRects;
+end;
+
+procedure TUCustomButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+  BorderThickness := MulDiv(BorderThickness, M, D);
 end;
 
 //  MESSAGES
@@ -436,7 +456,8 @@ begin
     FButtonState := csDisabled
   else
     FButtonState := csNone;
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 procedure TUCustomButton.CM_DialogKey(var Msg: TWMKey);
@@ -454,17 +475,20 @@ end;
 
 procedure TUCustomButton.DoCustomBorderColorsChange(Sender: TObject);
 begin
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 procedure TUCustomButton.DoCustomBackColorsChange(Sender: TObject);
 begin
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 procedure TUCustomButton.DoCustomTextColorsChange(Sender: TObject);
 begin
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 end.

@@ -9,20 +9,28 @@ uses
   VCL.Controls, VCL.Graphics;
 
 type
-  TUCustomSeparator = class(TCustomControl, IUThemeComponent)
+  TUCustomSeparator = class(TGraphicControl, IUThemeComponent)
     private
+      var LineColor: TColor;
+
       FThemeManager: TUThemeManager;
 
       FCustomColor: TColor;
       FOrientation: TUOrientation;
       FAlignSpace: Integer;
-      FOnlySpace: Boolean;
+      FLineBetween: Boolean;
+      FUseAccentColor: Boolean;
+
+      //  Internal
+      procedure UpdateColors;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
-      procedure SetAlignSpace(const Value: Integer);
       procedure SetCustomColor(const Value: TColor);
       procedure SetOrientation(const Value: TUOrientation);
+      procedure SetAlignSpace(const Value: Integer);
+      procedure SetLineBetween(const Value: Boolean);
+      procedure SetUseAccentColor(const Value: Boolean);
 
     protected
       procedure Paint; override;
@@ -37,28 +45,37 @@ type
       property CustomColor: TColor read FCustomColor write SetCustomColor default $999999;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oVertical;
       property AlignSpace: Integer read FAlignSpace write SetAlignSpace default 10;
-      property OnlySpace: Boolean read FOnlySpace write FOnlySpace default false;
+      property LineBetween: Boolean read FLineBetween write SetLineBetween default true;
+      property UseAccentColor: Boolean read FUseAccentColor write SetUseAccentColor default false;
   end;
 
   TUSeparator = class(TUCustomSeparator)
     published
-      // Common properties
       property Align;
-      property AlignWithMargins;
       property Anchors;
+      property AutoSize;
+      property BiDiMode;
+      property Caption;
+      property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Enabled;
+      property Font;
+      property ParentBiDiMode;
+      property ParentColor;
+      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
       property Touch;
       property Visible;
+      property StyleElements;
 
-      //  Common events
+      property OnCanResize;
       property OnClick;
+      property OnConstrainedResize;
       property OnContextPopup;
       property OnDblClick;
       property OnDragDrop;
@@ -72,6 +89,7 @@ type
       property OnMouseLeave;
       property OnMouseMove;
       property OnMouseUp;
+      property OnResize;
       property OnStartDock;
       property OnStartDrag;
   end;
@@ -99,7 +117,22 @@ end;
 
 procedure TUCustomSeparator.UpdateTheme;
 begin
+  UpdateColors;
   Repaint;
+end;
+
+//  INTERNAL
+
+procedure TUCustomSeparator.UpdateColors;
+begin
+  if ThemeManager = nil then
+    LineColor := CustomColor
+  else if UseAccentColor then
+    LineColor := ThemeManager.AccentColor
+  else if ThemeManager.Theme = utLight then
+    LineColor := $999999
+  else
+    LineColor := $666666;
 end;
 
 //  SETTERS
@@ -109,7 +142,8 @@ begin
   if Value <> FAlignSpace then
     begin
       FAlignSpace := Value;
-      UpdateTheme;
+      //
+      Repaint;
     end;
 end;
 
@@ -118,7 +152,18 @@ begin
   if Value <> FCustomColor then
     begin
       FCustomColor := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSeparator.SetLineBetween(const Value: Boolean);
+begin
+  if Value <> FLineBetween then
+    begin
+      FLineBetween := Value;
+      //
+      Repaint;
     end;
 end;
 
@@ -127,7 +172,18 @@ begin
   if Value <> FOrientation then
     begin
       FOrientation := Value;
-      UpdateTheme;
+      //
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSeparator.SetUseAccentColor(const Value: Boolean);
+begin
+  if Value <> FUseAccentColor then
+    begin
+      FUseAccentColor := Value;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -137,40 +193,28 @@ constructor TUCustomSeparator.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
-  FCustomColor := $999999;
+  FCustomColor := $000000;
   FOrientation := oVertical;
   FAlignSpace := 10;
-  FOnlySpace := false;
+  FLineBetween := true;
+  FUseAccentColor := false;
 
-  ParentColor := true;
   Width := 20;
   Height := 50;
+
+  UpdateColors;
 end;
 
 //  CUSTOM METHODS
 
 procedure TUCustomSeparator.Paint;
-var
-  LineColor: TColor;
 begin
   inherited;
 
-  //  Paint background
-  ParentColor := true;
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-  Canvas.FillRect(GetClientRect);
+  if not LineBetween then exit;
 
-  if OnlySpace = true then
-    exit;
-  
-  if ThemeManager = nil then
-    LineColor := CustomColor
-  else if ThemeManager.Theme = utLight then
-    LineColor := $999999
-  else
-    LineColor := $666666;
-
-  //  Paint line
+  //  Draw line
+  Canvas.Brush.Style := bsClear;
   Canvas.Pen.Color := LineColor;
   if Orientation = oVertical then
     begin

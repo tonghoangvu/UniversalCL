@@ -18,8 +18,8 @@ type
       ICON_GRAYED = '';
 
     private
-      var ActiveColor: TColor;
-      var TextColor: TColor;
+      var ActiveColor, TextColor: TColor;
+      var IconRect, TextRect: TRect;
 
       FThemeManager: TUThemeManager;
       FIconFont: TFont;
@@ -31,6 +31,10 @@ type
 
       FState: TUCheckBoxState;
       FCustomActiveColor: TColor;
+
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -44,15 +48,14 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
       procedure Resize; override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -128,11 +131,14 @@ end;
 
 procedure TUCustomCheckBox.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomCheckBox.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomCheckBox.UpdateColors;
 begin
   if ThemeManager = nil then
     begin
@@ -158,6 +164,12 @@ begin
     end;
 end;
 
+procedure TUCustomCheckBox.UpdateRects;
+begin
+  IconRect := Rect(0, 0, Height, Height);
+  TextRect := Rect(Height, 0, Width, Height);
+end;
+
 //  SETTERS
 
 procedure TUCustomCheckBox.SetState(const Value: TUCheckBoxState);
@@ -167,7 +179,7 @@ begin
     else
       begin
         FState := Value;
-        UpdateTheme;
+        Repaint;
       end;
 end;
 
@@ -178,7 +190,7 @@ begin
       FAllowGrayed := Value;
       if (not FAllowGrayed) and (FState = cbsGrayed) then
         FState := cbsUnchecked;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -196,7 +208,7 @@ begin
   if Value <> FTextOnGlass then
     begin
       FTextOnGlass := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -224,7 +236,8 @@ begin
   Height := 30;
   Width := 180;
 
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
 end;
 
 destructor TUCustomCheckBox.Destroy;
@@ -235,18 +248,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
-begin
-  inherited;
-
-  IconFont.Height := MulDiv(IconFont.Height, M, D);
-
-  Resize;
-end;
-
 procedure TUCustomCheckBox.Paint;
-var
-  IconRect, TextRect: TRect;
 begin
   inherited;
 
@@ -257,10 +259,6 @@ begin
       Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
       Canvas.FillRect(GetClientRect);
     end;
-
-  //  Calc rects
-  IconRect := Rect(0, 0, Height, Height);
-  TextRect := Rect(Height, 0, Width, Height);
 
   //  Paint text
   Canvas.Brush.Style := bsClear;
@@ -308,6 +306,14 @@ begin
     end
   else
     inherited;
+  UpdateRects;
+end;
+
+procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+  IconFont.Height := MulDiv(IconFont.Height, M, D);
+  Resize;   //  Autosize
 end;
 
 //  MESSAGES
@@ -339,7 +345,8 @@ end;
 
 procedure TUCustomCheckBox.CM_EnabledChanged(var Msg: TMessage);
 begin
-  UpdateTheme;
+  UpdateColors;
+  Repaint;
 end;
 
 end.

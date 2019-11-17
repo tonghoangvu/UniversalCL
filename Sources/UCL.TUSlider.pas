@@ -42,6 +42,10 @@ type
       //  Events
       FOnChange: TNotifyEvent;
 
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
+
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetControlState(const Value: TUControlState);
@@ -61,12 +65,12 @@ type
 
     protected
       procedure Paint; override;
+      procedure Resize; override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -143,13 +147,15 @@ end;
 
 procedure TUCustomSlider.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomSlider.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomSlider.UpdateColors;
 begin
-  //  Update colors
   if ThemeManager = nil then
     begin
       ActiveColor := DefActiveColor[utLight, ControlState];
@@ -170,99 +176,8 @@ begin
     end;
 end;
 
-//  SETTERS
-
-procedure TUCustomSlider.SetControlState(const Value: TUControlState);
+procedure TUCustomSlider.UpdateRects;
 begin
-  if Value <> FControlState then
-    begin
-      FControlState := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomSlider.SetOrientation(const Value: TUOrientation);
-var
-  TempSize: Integer;
-begin
-  if Value <> FOrientation then
-    begin
-      FOrientation := Value;
-
-      //  Switch CurWidth and CurHeight
-      TempSize := CurWidth;
-      CurWidth := CurHeight;
-      CurHeight := TempSize;
-
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomSlider.SetMin(const Value: Integer);
-begin
-  if Value <> FMin then
-    begin
-      FMin := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomSlider.SetMax(const Value: Integer);
-begin
-  if Value <> FMax then
-    begin
-      FMax := Value;
-      UpdateTheme;
-    end;
-end;
-
-procedure TUCustomSlider.SetValue(const Value: Integer);
-begin
-  if Value <> FValue then
-    begin
-      FValue := Value;
-      if Assigned(FOnChange) then
-        FOnChange(Self);
-      UpdateTheme;
-    end;
-end;
-
-//  MAIN CLASS
-
-constructor TUCustomSlider.Create(aOwner: TComponent);
-begin
-  inherited Create(aOwner);
-
-  //  New properties
-  CurWidth := 8;
-  CurHeight := 23;
-  CurCorner := 5;
-  BarHeight := 2;
-
-  FIsSliding := false;
-
-  FControlState := csNone;
-  FOrientation := oHorizontal;
-
-  FHitTest := true;
-  FMin := 0;
-  FMax := 100;
-  FValue := 0;
-
-  //  Common properties
-  Height := 25;
-  Width := 100;
-
-  UpdateChange;
-end;
-
-procedure TUCustomSlider.Paint;
-begin
-  inherited;
-
-  // TGraphicControl needn't paint background
-
-  //  Calc rect
   if Orientation = oHorizontal then
     begin
       ActiveRect.Left := 0;
@@ -297,6 +212,103 @@ begin
       CurRect.Right := CurRect.Left + CurWidth;
       CurRect.Bottom := CurRect.Top + CurHeight;
     end;
+end;
+
+//  SETTERS
+
+procedure TUCustomSlider.SetControlState(const Value: TUControlState);
+begin
+  if Value <> FControlState then
+    begin
+      FControlState := Value;
+      UpdateColors;
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSlider.SetOrientation(const Value: TUOrientation);
+var
+  TempSize: Integer;
+begin
+  if Value <> FOrientation then
+    begin
+      FOrientation := Value;
+
+      //  Switch CurWidth and CurHeight
+      TempSize := CurWidth;
+      CurWidth := CurHeight;
+      CurHeight := TempSize;
+
+      UpdateRects;
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSlider.SetMin(const Value: Integer);
+begin
+  if Value <> FMin then
+    begin
+      FMin := Value;
+      UpdateRects;
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSlider.SetMax(const Value: Integer);
+begin
+  if Value <> FMax then
+    begin
+      FMax := Value;
+      UpdateRects;
+      Repaint;
+    end;
+end;
+
+procedure TUCustomSlider.SetValue(const Value: Integer);
+begin
+  if Value <> FValue then
+    begin
+      FValue := Value;
+      if Assigned(FOnChange) then
+        FOnChange(Self);
+      UpdateRects;
+      Repaint;
+    end;
+end;
+
+//  MAIN CLASS
+
+constructor TUCustomSlider.Create(aOwner: TComponent);
+begin
+  inherited Create(aOwner);
+
+  //  New properties
+  CurWidth := 8;
+  CurHeight := 23;
+  CurCorner := 5;
+  BarHeight := 2;
+
+  FIsSliding := false;
+
+  FControlState := csNone;
+  FOrientation := oHorizontal;
+
+  FHitTest := true;
+  FMin := 0;
+  FMax := 100;
+  FValue := 0;
+
+  //  Common properties
+  Height := 25;
+  Width := 100;
+
+  UpdateColors;
+  UpdateRects;
+end;
+
+procedure TUCustomSlider.Paint;
+begin
+  inherited;
 
   //  Paint active part
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(ActiveColor, 255);
@@ -312,6 +324,12 @@ begin
   Canvas.RoundRect(CurRect, CurCorner, CurCorner);
   Canvas.FloodFill(CurRect.Left + CurRect.Width div 2, CurRect.Top + CurRect.Height div 2,
     CurColor, fsSurface);
+end;
+
+procedure TUCustomSlider.Resize;
+begin
+  inherited;
+  UpdateRects;
 end;
 
 procedure TUCustomSlider.ChangeScale(M, D: Integer; isDpiChange: Boolean);
@@ -358,8 +376,8 @@ var
 begin
   if not (Enabled and HitTest) then exit;
 
-  //SetFocus;
   FControlState := csPress;
+  UpdateColors;
   FIsSliding := true;
 
   //  If press in cursor
@@ -382,7 +400,9 @@ begin
       else if TempValue > Max then
         TempValue := Max;
 
-      Value := TempValue;
+      FValue := TempValue;
+      UpdateRects;
+      Repaint;
     end;
 
   inherited;

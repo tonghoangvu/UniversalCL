@@ -15,6 +15,7 @@ object formLoginDialog: TformLoginDialog
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 15
@@ -381,24 +382,21 @@ object formLoginDialog: TformLoginDialog
       Width = 45
       Height = 32
       Hint = 'Close'
+      ThemeManager = AppTheme
+      ButtonStyle = sbsQuit
+      LightColor = 2298344
+      DarkColor = 2298344
+      PressBrightnessDelta = 32
       Align = alRight
-      BevelOuter = bvNone
       Caption = #57606
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -12
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
-      ParentColor = True
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 0
-      ThemeManager = AppTheme
-      ButtonStyle = qbsQuit
-      LightColor = 2298344
-      DarkColor = 2298344
-      PressBrightnessDelta = 32
     end
     object buttonAppMinimized: TUQuickButton
       Left = 320
@@ -406,24 +404,21 @@ object formLoginDialog: TformLoginDialog
       Width = 45
       Height = 32
       Hint = 'Minimize'
+      ThemeManager = AppTheme
+      ButtonStyle = sbsMin
+      LightColor = 13619151
+      DarkColor = 3947580
+      PressBrightnessDelta = -32
       Align = alRight
-      BevelOuter = bvNone
       Caption = #59192
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -15
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
-      ParentColor = True
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 1
-      ThemeManager = AppTheme
-      ButtonStyle = qbsMin
-      LightColor = 13619151
-      DarkColor = 3947580
-      PressBrightnessDelta = -32
     end
     object buttonAppTheme: TUQuickButton
       Left = 275
@@ -431,25 +426,22 @@ object formLoginDialog: TformLoginDialog
       Width = 45
       Height = 32
       Hint = 'Switch theme'
+      ThemeManager = AppTheme
+      ButtonStyle = sbsSysButton
+      LightColor = 13619151
+      DarkColor = 3947580
+      PressBrightnessDelta = -32
       Align = alRight
-      BevelOuter = bvNone
       Caption = #59144
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -15
       Font.Name = 'Segoe MDL2 Assets'
       Font.Style = []
-      ParentColor = True
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 2
       OnClick = buttonAppThemeClick
-      ThemeManager = AppTheme
-      ButtonStyle = qbsSysButton
-      LightColor = 13619151
-      DarkColor = 3947580
-      PressBrightnessDelta = -32
     end
   end
   object panelAction: TUPanel

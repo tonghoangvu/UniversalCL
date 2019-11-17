@@ -41,6 +41,7 @@ type
     procedure buttonOkClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure popupEditActionItemClick(Sender: TObject; Index: Integer);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -70,6 +71,11 @@ end;
 procedure TformLoginDialog.buttonOkClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TformLoginDialog.FormCreate(Sender: TObject);
+begin
+//  EnableBlur(Handle, 3);
 end;
 
 procedure TformLoginDialog.FormShow(Sender: TObject);

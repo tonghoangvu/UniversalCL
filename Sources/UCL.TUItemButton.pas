@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  System.Classes,
+  System.Classes, System.Types,
   Winapi.Windows, Winapi.Messages,
   VCL.Controls, VCL.Graphics, VCL.ImgList;
 
@@ -65,6 +65,10 @@ type
       FIsToggleButton: Boolean;
       FIsToggled: Boolean;
 
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
+
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetButtonState(const Value: TUControlState);
@@ -97,14 +101,15 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure Resize; override;
+      procedure CreateWindowHandle(const Params: TCreateParams); override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
       property ObjectSelected: TUItemObjectKind read FObjectSelected default iokNone;
 
@@ -213,11 +218,14 @@ end;
 
 procedure TUCustomItemButton.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomItemButton.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomItemButton.UpdateColors;
 var
   TempTheme: TUTheme;
 begin
@@ -262,6 +270,50 @@ begin
     ActiveColor := ThemeManager.AccentColor;
 end;
 
+procedure TUCustomItemButton.UpdateRects;
+var
+  LPos, RPos: Integer;
+  TempWidth: Integer;
+begin
+  if not HandleAllocated then exit;
+
+  LPos := 0;
+  RPos := Width;
+
+  if ShowCheckBox then
+    CheckBoxRect := Rect(0, 0, CheckBoxWidth, Height)
+  else
+    CheckBoxRect := TRect.Empty;
+  inc(LPos, CheckBoxRect.Width);
+
+  if ShowLeftIcon then
+    LeftIconRect := Rect(LPos, 0, LPos + LeftIconWidth, Height)
+  else
+    LeftIconRect := TRect.Empty;
+  inc(LPos, LeftIconRect.Width);
+
+  if ShowRightIcon then
+    RightIconRect := Rect(RPos - RightIconWidth, 0, RPos, Height)
+  else
+    RightIconRect := TRect.Empty;
+  dec(RPos, RightIconRect.Width);
+
+  if ShowDetail then
+    begin
+      Canvas.Font := DetailFont;
+      TempWidth := Canvas.TextWidth(Detail);
+      DetailRect := Rect(RPos - AlignSpace - TempWidth, 0, RPos, Height);
+    end
+  else
+    DetailRect := TRect.Empty;
+  dec(RPos, DetailRect.Width);
+
+  if ShowText then
+    TextRect := Rect(LPos + AlignSpace, 0, RPos - AlignSpace, Height)
+  else
+    TextRect := TRect.Empty;
+end;
+
 //  SETTERS
 
 procedure TUCustomItemButton.SetButtonState(const Value: TUControlState);
@@ -269,7 +321,8 @@ begin
   if Value <> FButtonState then
     begin
       FButtonState := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -278,7 +331,7 @@ begin
   if Value <> FImageLeftIndex then
     begin
       FImageLeftIndex := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -287,7 +340,7 @@ begin
   if Value <> FImageRightIndex then
     begin
       FImageRightIndex := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -298,31 +351,36 @@ begin
       if Value <> FShowCheckBox then
         begin
           FShowCheckBox := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     1:
       if Value <> FShowLeftIcon then
         begin
           FShowLeftIcon := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     2:
       if Value <> FShowText then
         begin
           FShowText := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     3:
       if Value <> FShowDetail then
         begin
           FShowDetail := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     4:
       if Value <> FShowRightIcon then
         begin
           FShowRightIcon := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
   end;
 end;
@@ -334,19 +392,22 @@ begin
       if Value <> FCheckBoxWidth then
         begin
           FCheckBoxWidth := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     1:
       if Value <> FLeftIconWidth then
         begin
           FLeftIconWidth := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
     2:
       if Value <> FRightIconWidth then
         begin
           FRightIconWidth := Value;
-          UpdateTheme;
+          UpdateRects;
+          Repaint;
         end;
   end;
 end;
@@ -356,7 +417,7 @@ begin
   if Value <> FIsChecked then
     begin
       FIsChecked := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -365,7 +426,7 @@ begin
   if Value <> FLeftIcon then
     begin
       FLeftIcon := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -374,7 +435,7 @@ begin
   if Value <> FText then
     begin
       FText := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -383,7 +444,7 @@ begin
   if Value <> FDetail then
     begin
       FDetail := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -392,7 +453,7 @@ begin
   if Value <> FRightIcon then
     begin
       FRightIcon := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -401,7 +462,8 @@ begin
   if Value <> FAlignSpace then
     begin
       FAlignSpace := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -410,7 +472,8 @@ begin
   if Value <> FCustomActiveColor then
     begin
       FCustomActiveColor := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -419,7 +482,8 @@ begin
   if Value <> FTransparent then
     begin
       FTransparent := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -428,7 +492,7 @@ begin
   if Value <> FLeftIconKind then
     begin
       FLeftIconKind := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -437,7 +501,7 @@ begin
   if Value <> FRightIconKind then
     begin
       FRightIconKind := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -446,7 +510,8 @@ begin
   if Value <> FIsToggled then
     begin
       FIsToggled := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -504,8 +569,6 @@ begin
 
   //  Common properties
   TabStop := true;
-
-  UpdateChange;
 end;
 
 destructor TUCustomItemButton.Destroy;
@@ -517,72 +580,14 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
-begin
-  inherited;
-
-  IconFont.Height := MulDiv(IconFont.Height, M, D);
-  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
-
-  CheckBoxWidth := MulDiv(CheckBoxWidth, M, D);
-  LeftIconWidth := MulDiv(LeftIconWidth, M, D);
-  RightIconWidth := MulDiv(RightIconWidth, M, D);
-  AlignSpace := MulDiv(AlignSpace, M, D);
-end;
-
 procedure TUCustomItemButton.Paint;
 var
-  LPos, RPos: Integer;
-  TempWidth: Integer;
   ImgX, ImgY: Integer;
 begin
-  inherited;
-
-  LPos := 0;
-  RPos := Width;
-
-  //  Calc rect
-  if ShowCheckBox then
-    CheckBoxRect := Rect(0, 0, CheckBoxWidth, Height)
-  else
-    CheckBoxRect := TRect.Empty;
-  inc(LPos, CheckBoxRect.Width);
-
-  if ShowLeftIcon then
-    LeftIconRect := Rect(LPos, 0, LPos + LeftIconWidth, Height)
-  else
-    LeftIconRect := TRect.Empty;
-  inc(LPos, LeftIconRect.Width);
-
-  if ShowRightIcon then
-    RightIconRect := Rect(RPos - RightIconWidth, 0, RPos, Height)
-  else
-    RightIconRect := TRect.Empty;
-  dec(RPos, RightIconRect.Width);
-
-  if ShowDetail then
-    begin
-      Canvas.Font := DetailFont;
-      TempWidth := Canvas.TextWidth(Detail);
-      DetailRect := Rect(RPos - AlignSpace - TempWidth, 0, RPos, Height);
-    end
-  else
-    DetailRect := TRect.Empty;
-  dec(RPos, DetailRect.Width);
-
-  if ShowText then
-    begin
-      Canvas.Font := Font;
-      TempWidth := Canvas.TextWidth(Text);
-      TextRect := Rect(LPos + AlignSpace, 0, LPos + AlignSpace + TempWidth, Height);
-    end
-  else
-    TextRect := TRect.Empty;
-
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(GetClientRect);
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   Canvas.Font := IconFont;
 
@@ -605,7 +610,7 @@ begin
   if ShowLeftIcon then
     if LeftIconKind = ikFontIcon then
       DrawTextRect(Canvas, taCenter, taVerticalCenter, LeftIconRect, LeftIcon, false)
-    else
+    else if Images <> nil then
       begin
         GetCenterPos(Images.Width, Images.Height, LeftIconRect, ImgX, ImgY);
         Images.Draw(Canvas, ImgX, ImgY, ImageLeftIndex, Enabled);
@@ -615,7 +620,7 @@ begin
   if ShowRightIcon then
     if RightIconKind = ikFontIcon then
       DrawTextRect(Canvas, taCenter, taVerticalCenter, RightIconRect, RightIcon, false)
-    else
+    else if Images <> nil then
       begin
         GetCenterPos(Images.Width, Images.Height, RightIconRect, ImgX, ImgY);
         Images.Draw(Canvas, ImgX, ImgY, ImageRightIndex, Enabled);
@@ -636,6 +641,31 @@ begin
       Canvas.Font.Color := TextColor;
       DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false);
     end;
+end;
+
+procedure TUCustomItemButton.Resize;
+begin
+  inherited;
+  UpdateRects;
+end;
+
+procedure TUCustomItemButton.CreateWindowHandle(const Params: TCreateParams);
+begin
+  inherited;
+  UpdateColors;
+end;
+
+procedure TUCustomItemButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+
+  IconFont.Height := MulDiv(IconFont.Height, M, D);
+  DetailFont.Height := MulDiv(DetailFont.Height, M, D);
+
+  CheckBoxWidth := MulDiv(CheckBoxWidth, M, D);
+  LeftIconWidth := MulDiv(LeftIconWidth, M, D);
+  RightIconWidth := MulDiv(RightIconWidth, M, D);
+  AlignSpace := MulDiv(AlignSpace, M, D);
 end;
 
 //  MESSAGES

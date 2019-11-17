@@ -51,7 +51,6 @@ contains
   UCL.TUPanel in 'Sources\UCL.TUPanel.pas',
   UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
   UCL.TUProgressBar in 'Sources\UCL.TUProgressBar.pas',
-  UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
   UCL.TURadioButton in 'Sources\UCL.TURadioButton.pas',
   UCL.TUScrollBox in 'Sources\UCL.TUScrollBox.pas',
   UCL.TUSeparator in 'Sources\UCL.TUSeparator.pas',
@@ -61,7 +60,10 @@ contains
   UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
   UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
   UCL.Utils in 'Sources\UCL.Utils.pas',
-  UCL.Graphics in 'Sources\UCL.Graphics.pas';
+  UCL.Graphics in 'Sources\UCL.Graphics.pas',
+  UCL.TUContextMenu in 'Sources\UCL.TUContextMenu.pas',
+  UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
+  UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas';
 
 end.
 

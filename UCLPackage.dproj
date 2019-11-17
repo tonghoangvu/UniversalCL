@@ -141,10 +141,10 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.33;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.35;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Build>33</VerInfo_Build>
+        <VerInfo_Build>35</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -183,7 +183,6 @@
         <DCCReference Include="Sources\UCL.TUPanel.pas"/>
         <DCCReference Include="Sources\UCL.TUPopupMenu.pas"/>
         <DCCReference Include="Sources\UCL.TUProgressBar.pas"/>
-        <DCCReference Include="Sources\UCL.TUQuickButton.pas"/>
         <DCCReference Include="Sources\UCL.TURadioButton.pas"/>
         <DCCReference Include="Sources\UCL.TUScrollBox.pas"/>
         <DCCReference Include="Sources\UCL.TUSeparator.pas"/>
@@ -194,6 +193,9 @@
         <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <DCCReference Include="Sources\UCL.Utils.pas"/>
         <DCCReference Include="Sources\UCL.Graphics.pas"/>
+        <DCCReference Include="Sources\UCL.TUContextMenu.pas"/>
+        <DCCReference Include="Sources\UCL.TUQuickButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUTitleBar.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

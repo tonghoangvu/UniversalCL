@@ -38,6 +38,9 @@ type
       FHitTest: Boolean;
       FTransparent: Boolean;
 
+      //  Internal
+      procedure UpdateColors;
+
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetControlState(const Value: TUControlState);
@@ -57,13 +60,13 @@ type
       procedure UM_SubEditKillFocus(var Msg: TMessage); message UM_SUBEDIT_KILLFOCUS;
 
     protected
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
+      procedure CreateWindowHandle(const Params: TCreateParams); override;
+      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -113,11 +116,13 @@ end;
 
 procedure TUEdit.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
   Repaint;
 end;
 
-procedure TUEdit.UpdateChange;
+//  INTERNAL
+
+procedure TUEdit.UpdateColors;
 begin
   //  Border & background color
   if ThemeManager = nil then
@@ -166,7 +171,8 @@ begin
   if Value <> FControlState then
     begin
       FControlState := Value;
-      UpdateTheme;
+      UpdateColors;
+      Repaint;
     end;
 end;
 
@@ -175,7 +181,7 @@ begin
   if Value <> FTransparent then
     begin
       FTransparent := Value;
-      UpdateTheme;
+      Repaint;
     end;
 end;
 
@@ -193,7 +199,7 @@ begin
 
   Alignment := taLeftJustify;
   ShowCaption := false;
-  Height := 30;
+  Height := 29;
   BevelOuter := bvNone;
   Caption := '';
   Font.Name := 'Segoe UI';
@@ -216,17 +222,9 @@ begin
 
   FEdit.Align := alClient;
   FEdit.SetSubComponent(true);
-
-  UpdateChange;
 end;
 
 //  CUSTOM METHODS
-
-procedure TUEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
-begin
-  inherited;
-  BorderThickness := MulDiv(BorderThickness, M, D);
-end;
 
 procedure TUEdit.Paint;
 var
@@ -236,7 +234,7 @@ begin
 
   //  Paint border
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
-  Canvas.FillRect(GetClientRect);
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
@@ -252,6 +250,18 @@ begin
   //  Subedit color
   FEdit.Color := BackColor;
   FEdit.Font.Color := TextColor;
+end;
+
+procedure TUEdit.CreateWindowHandle(const Params: TCreateParams);
+begin
+  inherited;
+  UpdateColors;
+end;
+
+procedure TUEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+begin
+  inherited;
+  BorderThickness := MulDiv(BorderThickness, M, D);
 end;
 
 //  MESSAGES

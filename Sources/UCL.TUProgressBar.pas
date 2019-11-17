@@ -3,7 +3,8 @@ unit UCL.TUProgressBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.IntAnimation,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
+  UCL.IntAnimation,
   System.Classes, System.Types,
   Winapi.Messages,
   VCL.Controls, VCL.Graphics;
@@ -23,6 +24,10 @@ type
       FCustomFillColor: TColor;
       FCustomBackColor: TColor;
 
+      //  Internal
+      procedure UpdateColors;
+      procedure UpdateRects;
+
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetValue(const Value: Integer);
@@ -30,12 +35,12 @@ type
 
     protected
       procedure Paint; override;
+      procedure Resize; override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOnwer: TComponent); override;
       procedure UpdateTheme;
-      procedure UpdateChange;
 
       procedure GoToValue(Value: Integer);
 
@@ -50,24 +55,31 @@ type
 
   TUProgressBar = class(TUCustomProgressBar)
     published
-      // Common properties
       property Align;
-      property AlignWithMargins;
       property Anchors;
+      property AutoSize;
+      property BiDiMode;
+      property Caption;
       property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Enabled;
+      property Font;
+      property ParentBiDiMode;
+      property ParentColor;
+      property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
       property Touch;
       property Visible;
+      property StyleElements;
 
-      //  Common events
+      property OnCanResize;
       property OnClick;
+      property OnConstrainedResize;
       property OnContextPopup;
       property OnDblClick;
       property OnDragDrop;
@@ -81,6 +93,7 @@ type
       property OnMouseLeave;
       property OnMouseMove;
       property OnMouseUp;
+      property OnResize;
       property OnStartDock;
       property OnStartDrag;
   end;
@@ -108,11 +121,14 @@ end;
 
 procedure TUCustomProgressBar.UpdateTheme;
 begin
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
   Repaint;
 end;
 
-procedure TUCustomProgressBar.UpdateChange;
+//  INTERNAL
+
+procedure TUCustomProgressBar.UpdateColors;
 begin
   //  Background & fill color
   if ThemeManager = nil then
@@ -130,7 +146,10 @@ begin
       BackColor := $333333;
       FillColor := ThemeManager.AccentColor;
     end;
+end;
 
+procedure TUCustomProgressBar.UpdateRects;
+begin
   //  Background & fill area
   if Orientation = oHorizontal then
     begin
@@ -151,7 +170,8 @@ begin
   if FValue <> Value then
     begin
       FValue := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -160,7 +180,8 @@ begin
   if FOrientation <> Value then
     begin
       FOrientation := Value;
-      UpdateTheme;
+      UpdateRects;
+      Repaint;
     end;
 end;
 
@@ -170,7 +191,6 @@ constructor TUCustomProgressBar.Create(aOnwer: TComponent);
 begin
   inherited Create(aOnwer);
 
-  //  Fields
   FValue := 0;
   FCustomFillColor := $25B006;
   FCustomBackColor := $E6E6E6;
@@ -178,7 +198,8 @@ begin
   Height := 5;
   Width := 100;
 
-  UpdateChange;
+  UpdateColors;
+  UpdateRects;
 end;
 
 procedure TUCustomProgressBar.GoToValue(Value: Integer);
@@ -212,10 +233,16 @@ begin
   Canvas.FillRect(FillRect);
 end;
 
+procedure TUCustomProgressBar.Resize;
+begin
+  inherited;
+  UpdateRects;
+end;
+
 procedure TUCustomProgressBar.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
-  UpdateChange;
+  UpdateRects;
 end;
 
 end.

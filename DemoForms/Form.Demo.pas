@@ -5,11 +5,12 @@ interface
 uses
   //  UCL units
   UCL.TUThemeManager,
-  UCL.Utils, UCL.Classes, UCL.SystemSettings, UCL.IntAnimation, UCL.IntAnimation.Helpers,
+  UCL.IntAnimation, UCL.IntAnimation.Helpers,
+  UCL.Utils, UCL.Classes, UCL.SystemSettings,
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
-  UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar, UCL.TURadioButton,
+  UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu,
+  UCL.TUPopupMenu, UCL.TUContextMenu, UCL.TURadioButton,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -19,7 +20,7 @@ uses
 
   //  VCL units
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage;
+  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg;
 
 type
   TformDemo = class(TUForm)
@@ -39,7 +40,7 @@ type
     buttonGoHome: TUSymbolButton;
     buttonNewDoc: TUSymbolButton;
     buttonOpenDoc: TUSymbolButton;
-    buttonPrintDoc: TUSymbolButton;
+    buttonLoginForm: TUSymbolButton;
     buttonSaveDoc: TUSymbolButton;
     separator2: TUSeparator;
     linkConnected: TUHyperLink;
@@ -81,9 +82,9 @@ type
     sliderDisabled: TUSlider;
     sliderVert: TUSlider;
     buttonAppBack: TUQuickButton;
-    buttonAppQuit: TUQuickButton;
-    buttonAppMaximized: TUQuickButton;
-    buttonAppMinimized: TUQuickButton;
+    buttonWinClose: TUQuickButton;
+    buttonWinMax: TUQuickButton;
+    buttonWinMin: TUQuickButton;
     comboAppDPI: TComboBox;
     boxSmoothScrolling: TUScrollBox;
     headingSettings: TUText;
@@ -119,6 +120,13 @@ type
     popupHorz: TUPopupMenu;
     editAccountName: TUEdit;
     comboAppBorderStyle: TComboBox;
+    popupEdit: TUContextMenu;
+    Cut1: TMenuItem;
+    Copy1: TMenuItem;
+    Paste1: TMenuItem;
+    dsds: TMenuItem;
+    SelectAll1: TMenuItem;
+    buttonImageForm: TUSymbolButton;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -134,9 +142,12 @@ type
     procedure AppThemeUpdate(Sender: TObject);
     procedure comboAppDPIChange(Sender: TObject);
     procedure itembuttonImageClick(Sender: TObject);
-    procedure buttonPrintDocClick(Sender: TObject);
+    procedure buttonLoginFormClick(Sender: TObject);
     procedure comboAppBorderStyleChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure popupEditItemClick(Sender: TObject; Index: Integer);
+    procedure buttonImageFormClick(Sender: TObject);
+    procedure buttonToggleClick(Sender: TObject);
 
   private
 
@@ -151,7 +162,7 @@ implementation
 
 uses
   DWMAPI, UxTheme,
-  Form.LoginDialog;
+  Form.LoginDialog, Form.ImageBackground;
 
 {$R *.dfm}
 
@@ -191,6 +202,11 @@ begin
     procedure begin buttonRunning.SetFocus end);
 end;
 
+procedure TformDemo.buttonImageFormClick(Sender: TObject);
+begin
+  formImageBackground.Show;
+end;
+
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
 var
   AniLength: Integer;
@@ -227,13 +243,13 @@ var
 begin
   DPI := PPI / 96;
   AniWidth := Round((225 - 45 ) * DPI);
-  if drawerNavigation.Width <> Round(45 * DPI) then
+  if drawerNavigation.Width <> Trunc(45 * DPI) then
     AniWidth := - AniWidth;
 
   drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 30, 200, akOut, afkQuartic, nil);
 end;
 
-procedure TformDemo.buttonPrintDocClick(Sender: TObject);
+procedure TformDemo.buttonLoginFormClick(Sender: TObject);
 begin
   formLoginDialog.ShowModal;
 end;
@@ -255,6 +271,12 @@ end;
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
   AppTheme.ReloadAutoSettings;
+end;
+
+procedure TformDemo.buttonToggleClick(Sender: TObject);
+begin
+  var f := TForm.CreateNew(self);
+  f.show;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
@@ -349,6 +371,12 @@ procedure TformDemo.sliderHorzChange(Sender: TObject);
 begin
   //  Change progress bar value
   progressConnected.Value := sliderHorz.Value;
+end;
+
+procedure TformDemo.popupEditItemClick(Sender: TObject;
+  Index: Integer);
+begin
+  SetFocus;
 end;
 
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
