@@ -19,10 +19,22 @@ object formImageBackground: TformImageBackground
     400)
   PixelsPerInch = 96
   TextHeight = 15
-  object imgBackground: TImage
+  object shadowMenu: TUShadow
     Left = 0
     Top = 0
-    Width = 600
+    Width = 180
+    Height = 342
+    Color = 15132390
+    Direction = dRight
+    Align = alLeft
+    Caption = 'shadowMenu'
+    ExplicitLeft = 20
+    ExplicitTop = -30
+  end
+  object imgBackground: TImage
+    Left = 180
+    Top = 0
+    Width = 420
     Height = 342
     Align = alClient
     Picture.Data = {
@@ -14478,6 +14490,7 @@ object formImageBackground: TformImageBackground
     Transparent = True
     ExplicitLeft = -10
     ExplicitTop = -50
+    ExplicitWidth = 600
     ExplicitHeight = 340
   end
   object titlebarMain: TUTitleBar
@@ -14503,9 +14516,9 @@ object formImageBackground: TformImageBackground
     ThemeManager = AppTheme
   end
   object URadioButton1: TURadioButton
-    Left = 50
-    Top = 90
-    Width = 180
+    Left = 20
+    Top = 60
+    Width = 123
     Height = 30
     ThemeManager = AppTheme
     IconFont.Charset = DEFAULT_CHARSET
@@ -14513,6 +14526,7 @@ object formImageBackground: TformImageBackground
     IconFont.Height = -20
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
+    AutoSize = True
     CustomActiveColor = 14120960
     TextOnGlass = True
     Caption = 'URadioButton1'
@@ -14524,8 +14538,8 @@ object formImageBackground: TformImageBackground
     ParentFont = False
   end
   object URadioButton2: TURadioButton
-    Left = 50
-    Top = 120
+    Left = 20
+    Top = 90
     Width = 123
     Height = 30
     ThemeManager = AppTheme
@@ -14546,9 +14560,9 @@ object formImageBackground: TformImageBackground
     ParentFont = False
   end
   object URadioButton3: TURadioButton
-    Left = 50
-    Top = 60
-    Width = 180
+    Left = 20
+    Top = 120
+    Width = 123
     Height = 30
     ThemeManager = AppTheme
     IconFont.Charset = DEFAULT_CHARSET
@@ -14556,6 +14570,7 @@ object formImageBackground: TformImageBackground
     IconFont.Height = -20
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
+    AutoSize = True
     CustomActiveColor = 14120960
     TextOnGlass = True
     Caption = 'URadioButton1'
@@ -14567,15 +14582,16 @@ object formImageBackground: TformImageBackground
     ParentFont = False
   end
   object UCheckBox1: TUCheckBox
-    Left = 50
-    Top = 160
-    Width = 180
+    Left = 20
+    Top = 30
+    Width = 107
     Height = 30
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
     IconFont.Height = -20
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
+    AutoSize = True
     TextOnGlass = True
     Caption = 'UCheckBox1'
     Font.Charset = DEFAULT_CHARSET
@@ -14754,9 +14770,6 @@ object formImageBackground: TformImageBackground
       ParentFont = False
       TabOrder = 0
       TabStop = True
-      ExplicitLeft = 459
-      ExplicitTop = 10
-      ExplicitHeight = 40
     end
     object UButton1: TUButton
       Left = 324
@@ -14785,9 +14798,6 @@ object formImageBackground: TformImageBackground
       ParentFont = False
       TabOrder = 1
       TabStop = True
-      ExplicitLeft = 328
-      ExplicitTop = 10
-      ExplicitHeight = 40
     end
     object UEdit1: TUEdit
       Left = 14
@@ -14825,13 +14835,6 @@ object formImageBackground: TformImageBackground
       Edit.ParentFont = False
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your email'
-      Edit.ExplicitLeft = 4
-      Edit.ExplicitTop = 4
-      Edit.ExplicitWidth = 285
-      ExplicitLeft = 16
-      ExplicitTop = 16
-      ExplicitWidth = 292
-      ExplicitHeight = 28
     end
   end
   object AppTheme: TUThemeManager

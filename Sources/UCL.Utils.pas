@@ -3,11 +3,13 @@ unit UCL.Utils;
 interface
 
 uses
+  UCL.Classes,
+  System.Types,
   Winapi.Windows,
   VCL.Graphics, VCL.GraphUtil,
   VCL.Themes;
 
-//  FORM
+//  Form
 function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
 
 //  Glass support
@@ -19,10 +21,14 @@ function BrightenColor(aColor: TColor; Delta: Integer): TColor;
 function GetTextColorFromBackground(BackColor: TColor): TColor;
 function MulColor(aColor: TColor; Base: Single): TColor;
 
-implementation
+//  Blend support
+function CreateBlendFunc(Alpha: Byte; Gradient: Boolean): BLENDFUNCTION;
+procedure AssignBlendBitmap(const Bmp: TBitmap; Color: TColor);
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect;
+  const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
 
-uses
-  UCL.Classes;
+implementation
 
 //  FORM
 
@@ -84,7 +90,7 @@ begin
   Result := CreateDIBPatternBrushPt(@Info, 0);
 end;
 
-{ COLOR }
+//  COLOR
 
 function BrightenColor(aColor: TColor; Delta: Integer): TColor;
 var
@@ -120,6 +126,81 @@ begin
   G := Round(GetGValue(C) * Base);
   B := Round(GetBValue(C) * Base);
   Result := RGB(R, G, B);
+end;
+
+//  BLEND SUPPORT
+
+function CreateBlendFunc(Alpha: Byte; Gradient: Boolean): BLENDFUNCTION;
+begin
+  Result.BlendOp := AC_SRC_OVER;
+  Result.BlendFlags := 0;
+  Result.SourceConstantAlpha := Alpha;
+
+  if Gradient then
+    Result.AlphaFormat := AC_SRC_ALPHA
+  else
+    Result.AlphaFormat := 0;
+end;
+
+procedure AssignBlendBitmap(const Bmp: TBitmap; Color: TColor);
+begin
+  if Bmp <> nil then
+    begin
+      Bmp.PixelFormat := pf32Bit;
+      Bmp.Width := 1;
+      Bmp.Height := 1;
+      Bmp.Canvas.Brush.Color := Color;
+      Bmp.Canvas.FillRect(Rect(0, 0, 1, 1));
+    end;
+end;
+
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+var
+  Alpha: Single;
+  R, G, B, A: Byte;
+  X, Y: Integer;
+  Pixel: PQuadColor;
+begin
+  if Bmp = nil then exit;
+  Bmp.PixelFormat := pf32Bit;
+
+  R := GetRValue(Color);
+  G := GetGValue(Color);
+  B := GetBValue(Color);
+
+  for Y := 0 to Bmp.Height - 1 do
+    begin
+      Pixel := Bmp.ScanLine[Y];
+      for X := 0 to Bmp.Width - 1 do
+        begin
+          case Direction of
+            dTop:
+              Alpha := 1 - Y / Bmp.Height;
+            dLeft:
+              Alpha := 1 - X / Bmp.Width;
+            dRight:
+              Alpha := X / Bmp.Width;
+            dBottom:
+              Alpha := Y / Bmp.Height;
+          end;
+
+          A := Trunc(Alpha * 255);
+          Pixel.Alpha := A;
+          Pixel.Red := Trunc(R * Alpha);
+          Pixel.Green := Trunc(G * Alpha);
+          Pixel.Blue := Trunc(B * Alpha);
+          inc(Pixel);
+        end;
+    end;
+end;
+
+procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect;
+  const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
+begin
+  AlphaBlend(Canvas.Handle,
+    DestRect.Left, DestRect.Top, DestRect.Width, DestRect.Height,
+    BlendBitmap.Canvas.Handle, 0, 0, BlendBitmap.Width, BlendBitmap.Height,
+    BlendFunc);
 end;
 
 end.

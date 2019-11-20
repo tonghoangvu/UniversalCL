@@ -11,6 +11,8 @@ type
 
   TUOrientation = (oHorizontal, oVertical);
 
+  TUDirection = (dLeft, dTop, dRight, dBottom);
+
   TUControlState = (csNone, csHover, csPress, csDisabled, csFocused);
 
   TUImageKind = (ikFontIcon, ikImage);
@@ -29,6 +31,15 @@ type
     Data: Pointer;
     SizeOfData: Integer;
   end;
+
+  TQuadColor = packed record
+    case Boolean of
+      True : (Blue, Green, Red, Alpha : Byte);
+      False : (Quad : Cardinal);
+  end;
+
+  PQuadColor = ^TQuadColor;
+  PPQuadColor = ^PQuadColor;
 
   TControlStateColors = class(TPersistent)
     private
@@ -61,7 +72,7 @@ type
 
 implementation
 
-{ TCONTROLSTATECOLORS }
+{ TControlStateColors }
 
 procedure TControlStateColors.Changed;
 begin

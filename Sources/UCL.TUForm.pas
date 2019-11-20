@@ -181,6 +181,7 @@ end;
 procedure TUForm.Paint;
 begin
   inherited;
+
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   if (WindowState = wsNormal) and (not IsBorderless) then  //  No border on maximized
     begin

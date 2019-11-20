@@ -9,7 +9,7 @@ uses
   UCL.TUQuickButton, UCL.TUCaptionBar, UCL.TUTitleBar, UCL.TUSlider,
   UCL.TUButton, UCL.TUCheckBox, UCL.TURadioButton, UCL.TUSeparator,
   UCL.TUProgressBar, Vcl.StdCtrls, UCL.TUText, UCL.TUEdit,
-  UCL.TUSymbolButton, UCL.TUItemButton, UCL.TUPanel;
+  UCL.TUSymbolButton, UCL.TUItemButton, UCL.TUPanel, UCL.TUShadow;
 
 type
   TformImageBackground = class(TUForm)
@@ -31,6 +31,7 @@ type
     buttonWinMax: TUQuickButton;
     buttonWinMin: TUQuickButton;
     UButton1: TUButton;
+    shadowMenu: TUShadow;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

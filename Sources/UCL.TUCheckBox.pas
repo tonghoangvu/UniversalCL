@@ -243,7 +243,7 @@ end;
 destructor TUCustomCheckBox.Destroy;
 begin
   FIconFont.Free;
-  inherited Destroy;
+  inherited;
 end;
 
 //  CUSTOM METHODS

@@ -20,7 +20,8 @@ uses
 
   //  VCL units
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg;
+  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg,
+  UCL.TUShadow;
 
 type
   TformDemo = class(TUForm)

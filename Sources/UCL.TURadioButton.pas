@@ -228,7 +228,7 @@ end;
 destructor TUCustomRadioButton.Destroy;
 begin
   FIconFont.Free;
-  inherited Destroy;
+  inherited;
 end;
 
 //  CUSTOM METHODS

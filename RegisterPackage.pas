@@ -16,7 +16,7 @@ uses
   UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUHyperLink, UCL.TUPanel,
   UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUScrollBox, UCL.TURadioButton,
   UCL.TUItemButton, UCL.TUSeparator, UCL.TUEdit, UCL.TUSlider, UCL.TUPopupMenu,
-  UCL.TUQuickButton, UCL.TUContextMenu, UCL.TUTitleBar
+  UCL.TUQuickButton, UCL.TUContextMenu, UCL.TUTitleBar, UCL.TUShadow
   ;
 
 procedure Register;
@@ -27,7 +27,7 @@ begin
     TUCaptionBar, TUSymbolButton, TUButton, TUText, TUHyperLink, TUPanel,
     TUCheckBox, TUProgressBar, TUScrollBox, TURadioButton, TUItemButton,
     TUSeparator, TUEdit, TUSlider, TUPopupMenu, TUContextMenu,
-    TUTitleBar, TUQuickButton
+    TUTitleBar, TUQuickButton, TUShadow
     ]);
 end;
 

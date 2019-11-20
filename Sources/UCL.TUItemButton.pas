@@ -575,7 +575,7 @@ destructor TUCustomItemButton.Destroy;
 begin
   FIconFont.Free;
   FDetailFont.Free;
-  inherited Destroy;
+  inherited;
 end;
 
 //  CUSTOM METHODS
@@ -584,6 +584,8 @@ procedure TUCustomItemButton.Paint;
 var
   ImgX, ImgY: Integer;
 begin
+  inherited;
+
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);

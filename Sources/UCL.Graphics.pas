@@ -9,12 +9,11 @@ uses
 
 function PointInRect(const X, Y: Integer; const Rect: TRect): Boolean; overload;
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean; overload;
+procedure GetCenterPos(Width, Height: Integer; Rect: TRect; out X, Y: Integer);
 procedure DrawTextRect(const Canvas: TCanvas;
   HAlign: TAlignment; VAlign: TVerticalAlignment;
   Rect: TRect;
   Text: string; TextOnGlass: Boolean);
-procedure GetCenterPos(Width, Height: Integer; Rect: TRect;
-  out X, Y: Integer);
 
 var
   DEFAULT_GLASSTEXT_GLOWSIZE: Byte;
@@ -36,6 +35,12 @@ end;
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean;
 begin
   Result := PointInRect(p.X, p.Y, Rect);
+end;
+
+procedure GetCenterPos(Width, Height: Integer; Rect: TRect; out X, Y: Integer);
+begin
+  X := Rect.Left + (Rect.Width - Width) div 2;
+  Y := Rect.Top + (Rect.Height - Height) div 2;
 end;
 
 procedure DrawTextRect(const Canvas: TCanvas;
@@ -63,13 +68,6 @@ begin
       StyleServices.DrawText(Canvas.Handle, StyleServices.GetElementDetails(ttlTextLabelNormal),
         Text, Rect, LFormat, LOptions);
     end;
-end;
-
-procedure GetCenterPos(Width, Height: Integer; Rect: TRect;
-  out X, Y: Integer);
-begin
-  X := Rect.Left + (Rect.Width - Width) div 2;
-  Y := Rect.Top + (Rect.Height - Height) div 2;
 end;
 
 initialization

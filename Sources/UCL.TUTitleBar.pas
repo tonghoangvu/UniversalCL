@@ -107,6 +107,8 @@ procedure TUCustomTitleBar.Paint;
 var
   TextRect: TRect;
 begin
+  inherited;
+
   //  Do not paint background
   Canvas.Brush.Style := bsClear;
   Canvas.Font := Font;

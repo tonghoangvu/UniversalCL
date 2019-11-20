@@ -284,6 +284,8 @@ procedure TUCustomQuickButton.Paint;
 var
   TextRect: TRect;
 begin
+  inherited;
+
   if (not Transparent) or (ButtonState <> csNone) then //  Paint background
     begin
       Canvas.Brush.Style := bsSolid;

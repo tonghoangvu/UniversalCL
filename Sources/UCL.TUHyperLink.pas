@@ -150,7 +150,7 @@ destructor TUHyperLink.Destroy;
 begin
   FCustomTextColors.Free;
 
-  inherited Destroy;
+  inherited;
 end;
 
 //  MESSAGES

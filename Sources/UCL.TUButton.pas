@@ -319,7 +319,7 @@ begin
   FCustomBackColors.Free;
   FCustomTextColors.Free;
 
-  inherited Destroy;
+  inherited;
 end;
 
 //  CUSTOM METHODS
