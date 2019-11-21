@@ -105,28 +105,31 @@ type
 
   TUButton = class(TUCustomButton)
     published
-      //  Common properties
       property Align;
       property Anchors;
+      property AutoSize;
+      property BiDiMode;
       property Caption;
+      property Color;
       property Constraints;
-      property DoubleBuffered;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Enabled;
       property Font;
+      property ParentBiDiMode;
+      property ParentColor;
       property ParentFont;
       property ParentShowHint;
       property PopupMenu;
       property ShowHint;
       property Touch;
-      property TabOrder;
-      property TabStop;
       property Visible;
+      property StyleElements;
 
-      //  Common events
+      property OnCanResize;
       property OnClick;
+      property OnConstrainedResize;
       property OnContextPopup;
       property OnDblClick;
       property OnDragDrop;
@@ -140,6 +143,7 @@ type
       property OnMouseLeave;
       property OnMouseMove;
       property OnMouseUp;
+      property OnResize;
       property OnStartDock;
       property OnStartDrag;
   end;

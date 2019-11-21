@@ -494,8 +494,6 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
-      TabStop = True
       OnClick = buttonOkClick
     end
     object buttonCancel: TUButton
@@ -528,8 +526,6 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
-      TabStop = True
       OnClick = buttonCancelClick
     end
   end

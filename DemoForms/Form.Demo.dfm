@@ -618,8 +618,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 0
-      TabStop = True
     end
     object buttonGoHome: TUSymbolButton
       Left = 60
@@ -650,8 +648,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 1
-      TabStop = True
     end
     object buttonNewDoc: TUSymbolButton
       Left = 140
@@ -682,8 +678,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 2
-      TabStop = True
     end
     object buttonOpenDoc: TUSymbolButton
       Left = 200
@@ -714,8 +708,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 3
-      TabStop = True
     end
     object buttonLoginForm: TUSymbolButton
       Left = 340
@@ -746,8 +738,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 4
-      TabStop = True
       OnClick = buttonLoginFormClick
     end
     object buttonSaveDoc: TUSymbolButton
@@ -779,8 +769,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 5
-      TabStop = True
     end
     object buttonImageForm: TUSymbolButton
       Left = 420
@@ -811,8 +799,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Transparent = True
       Align = alLeft
-      TabOrder = 6
-      TabStop = True
       OnClick = buttonImageFormClick
     end
   end
@@ -842,8 +828,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
-    TabStop = True
   end
   object buttonCanFocus: TUButton
     Tag = 9
@@ -871,8 +855,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 5
-    TabStop = True
   end
   object buttonCustomColor: TUButton
     Tag = 17
@@ -901,8 +883,6 @@ object formDemo: TformDemo
     Font.Name = 'Times New Roman'
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
-    TabStop = True
   end
   object buttonReloadSettings: TUSymbolButton
     Left = 220
@@ -929,8 +909,6 @@ object formDemo: TformDemo
     Text = 'Reload settings'
     Detail = 'Detail'
     ShowDetail = False
-    TabOrder = 7
-    TabStop = True
     OnClick = buttonReloadSettingsClick
   end
   object buttonHighlight: TUButton
@@ -960,8 +938,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 8
-    TabStop = True
   end
   object buttonDisabled: TUButton
     Tag = 7
@@ -990,8 +966,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 9
-    TabStop = True
   end
   object buttonToggle: TUButton
     Tag = 5
@@ -1019,9 +993,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 10
-    TabStop = True
-    OnClick = buttonToggleClick
   end
   object itembuttonImage: TUItemButton
     Left = 60
@@ -1056,8 +1027,6 @@ object formDemo: TformDemo
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 11
-    TabStop = True
     OnClick = itembuttonImageClick
   end
   object itembuttonFontIcon: TUItemButton
@@ -1092,8 +1061,6 @@ object formDemo: TformDemo
     Font.Style = []
     ParentFont = False
     PopupMenu = popupVert
-    TabOrder = 12
-    TabStop = True
   end
   object symbolButtonOpenDisabled: TUSymbolButton
     Left = 130
@@ -1121,8 +1088,6 @@ object formDemo: TformDemo
     Text = 'Open file (disabled)'
     Detail = 'Ctrl+O'
     Enabled = False
-    TabOrder = 13
-    TabStop = True
   end
   object symbolbuttonSaveHorz: TUSymbolButton
     Left = 130
@@ -1149,8 +1114,6 @@ object formDemo: TformDemo
     Text = 'Save file (toggle button)'
     Detail = 'Ctrl+S'
     IsToggleButton = True
-    TabOrder = 14
-    TabStop = True
   end
   object symbolbuttonSaveVert: TUSymbolButton
     Left = 60
@@ -1178,8 +1141,6 @@ object formDemo: TformDemo
     Text = 'New'
     Detail = 'Ctrl+N'
     IsToggleButton = True
-    TabOrder = 15
-    TabStop = True
   end
   object buttonRandomProgress: TUButton
     Tag = 5
@@ -1209,8 +1170,6 @@ object formDemo: TformDemo
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    TabOrder = 16
-    TabStop = True
     OnClick = buttonRandomProgressClick
   end
   object buttonRunning: TButton
@@ -1220,7 +1179,7 @@ object formDemo: TformDemo
     Height = 25
     Hint = 'ABC'
     Caption = 'Here we go'
-    TabOrder = 17
+    TabOrder = 14
   end
   object buttonAniStart: TButton
     Left = 60
@@ -1228,7 +1187,7 @@ object formDemo: TformDemo
     Width = 151
     Height = 31
     Caption = 'Start animation'
-    TabOrder = 18
+    TabOrder = 15
     OnClick = buttonAniStartClick
   end
   object buttonAniInverse: TButton
@@ -1238,7 +1197,7 @@ object formDemo: TformDemo
     Height = 31
     Caption = 'Reserve animation'
     ImageIndex = 0
-    TabOrder = 19
+    TabOrder = 16
     OnClick = buttonAniInverseClick
   end
   object buttonWithImage: TUButton
@@ -1266,8 +1225,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    TabOrder = 20
-    TabStop = True
   end
   object drawerNavigation: TUPanel
     Left = 0
@@ -1319,8 +1276,6 @@ object formDemo: TformDemo
       ShowDetail = False
       Align = alTop
       Constraints.MaxWidth = 45
-      TabOrder = 0
-      TabStop = True
       OnClick = buttonOpenMenuClick
     end
     object buttonMenuSettings: TUSymbolButton
@@ -1350,8 +1305,6 @@ object formDemo: TformDemo
       Detail = 'Detail'
       ShowDetail = False
       Align = alTop
-      TabOrder = 1
-      TabStop = True
       OnClick = buttonMenuSettingsClick
     end
     object buttonMenuProfile: TUSymbolButton
@@ -1381,8 +1334,6 @@ object formDemo: TformDemo
       Detail = 'Detail'
       ShowDetail = False
       Align = alTop
-      TabOrder = 2
-      TabStop = True
     end
     object buttonMenuSave: TUSymbolButton
       Left = 0
@@ -1411,8 +1362,6 @@ object formDemo: TformDemo
       Detail = 'Detail'
       ShowDetail = False
       Align = alTop
-      TabOrder = 3
-      TabStop = True
     end
     object buttonMenuOpen: TUSymbolButton
       Left = 0
@@ -1441,8 +1390,6 @@ object formDemo: TformDemo
       Detail = 'Detail'
       ShowDetail = False
       Align = alTop
-      TabOrder = 4
-      TabStop = True
     end
     object buttonMenuRate: TUSymbolButton
       Left = 0
@@ -1471,8 +1418,6 @@ object formDemo: TformDemo
       Detail = 'Detail'
       ShowDetail = False
       Align = alTop
-      TabOrder = 5
-      TabStop = True
     end
   end
   object boxSmoothScrolling: TUScrollBox
@@ -2161,8 +2106,6 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
-      TabStop = True
     end
     object buttonUpgradeAccount: TUButton
       Tag = 2
@@ -2195,8 +2138,6 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 5
-      TabStop = True
     end
     object progressStorageUsed: TUProgressBar
       AlignWithMargins = True
@@ -2246,8 +2187,6 @@ object formDemo: TformDemo
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
-      TabStop = True
     end
     object editAccountName: TUEdit
       Left = 15
@@ -2285,7 +2224,7 @@ object formDemo: TformDemo
       Edit.Font.Style = []
       Edit.ParentColor = True
       Edit.ParentFont = False
-      Edit.PopupMenu = popupVert
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Right click to open context menu'
       Transparent = True

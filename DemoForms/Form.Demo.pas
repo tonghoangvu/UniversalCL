@@ -148,7 +148,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure popupEditItemClick(Sender: TObject; Index: Integer);
     procedure buttonImageFormClick(Sender: TObject);
-    procedure buttonToggleClick(Sender: TObject);
 
   private
 
@@ -272,12 +271,6 @@ end;
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
   AppTheme.ReloadAutoSettings;
-end;
-
-procedure TformDemo.buttonToggleClick(Sender: TObject);
-begin
-  var f := TForm.CreateNew(self);
-  f.show;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);

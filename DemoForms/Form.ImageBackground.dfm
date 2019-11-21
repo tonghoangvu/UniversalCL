@@ -27,7 +27,6 @@ object formImageBackground: TformImageBackground
     Color = 15132390
     Direction = dRight
     Align = alLeft
-    Caption = 'shadowMenu'
     ExplicitLeft = 20
     ExplicitTop = -30
   end
@@ -14702,8 +14701,6 @@ object formImageBackground: TformImageBackground
     Detail = 'F1'
     IsToggleButton = True
     Anchors = [akTop, akRight]
-    TabOrder = 1
-    TabStop = True
   end
   object panelBottom: TUPanel
     Left = 0
@@ -14768,8 +14765,6 @@ object formImageBackground: TformImageBackground
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 0
-      TabStop = True
     end
     object UButton1: TUButton
       Left = 324
@@ -14796,8 +14791,6 @@ object formImageBackground: TformImageBackground
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
-      TabStop = True
     end
     object UEdit1: TUEdit
       Left = 14

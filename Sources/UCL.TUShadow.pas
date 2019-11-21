@@ -39,7 +39,7 @@ type
       property Anchors;
       property AutoSize;
       property BiDiMode;
-      property Caption;
+      //property Caption;
       property Color;
       property Constraints;
       property DragCursor;

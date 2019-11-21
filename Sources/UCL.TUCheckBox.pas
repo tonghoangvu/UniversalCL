@@ -74,14 +74,17 @@ type
     published
       property Align;
       property Anchors;
-      property Color;
+      property AutoSize;
+      property BiDiMode;
       property Caption;
+      property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
       property DragMode;
       property Enabled;
       property Font;
+      property ParentBiDiMode;
       property ParentColor;
       property ParentFont;
       property ParentShowHint;
@@ -89,8 +92,11 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+      property StyleElements;
 
+      property OnCanResize;
       property OnClick;
+      property OnConstrainedResize;
       property OnContextPopup;
       property OnDblClick;
       property OnDragDrop;
@@ -104,6 +110,7 @@ type
       property OnMouseLeave;
       property OnMouseMove;
       property OnMouseUp;
+      property OnResize;
       property OnStartDock;
       property OnStartDrag;
   end;
