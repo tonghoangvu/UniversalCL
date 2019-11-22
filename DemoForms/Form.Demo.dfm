@@ -1179,7 +1179,7 @@ object formDemo: TformDemo
     Height = 25
     Hint = 'ABC'
     Caption = 'Here we go'
-    TabOrder = 14
+    TabOrder = 12
   end
   object buttonAniStart: TButton
     Left = 60
@@ -1187,7 +1187,7 @@ object formDemo: TformDemo
     Width = 151
     Height = 31
     Caption = 'Start animation'
-    TabOrder = 15
+    TabOrder = 13
     OnClick = buttonAniStartClick
   end
   object buttonAniInverse: TButton
@@ -1197,7 +1197,7 @@ object formDemo: TformDemo
     Height = 31
     Caption = 'Reserve animation'
     ImageIndex = 0
-    TabOrder = 16
+    TabOrder = 14
     OnClick = buttonAniInverseClick
   end
   object buttonWithImage: TUButton

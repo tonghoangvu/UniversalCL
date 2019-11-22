@@ -225,7 +225,7 @@ begin
   DPI := Self.PPI / 96;
 
   boxSmoothScrolling.DisableAlign;
-  boxSmoothScrolling.SetOldScrollBarVisible(false);
+  boxSmoothScrolling.SetOldSBVisible(false);
 
   if boxSmoothScrolling.Width = 0 then
     AniDelta := Round(DPI * 250)

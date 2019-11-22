@@ -53,9 +53,9 @@ type
       procedure UpdateTheme;
       procedure Loaded; override;
 
-      procedure PaintMiniScrollBar;
-      procedure ClearMiniScrollBar;
-      procedure SetOldScrollBarVisible(IsVisible: Boolean);
+      procedure PaintMiniSB;
+      procedure ClearMiniSB;
+      procedure SetOldSBVisible(IsVisible: Boolean);
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
@@ -117,15 +117,13 @@ begin
   if not (csDesigning in ComponentState) then
     DisableAlign;
 
-  Mouse.Capture := Handle;
-
   Ani := TIntAni.Create(true, akOut, afkQuartic, Start, Stop - Start, nil);
   if ScrollBarStyle = sbsMini then
     Ani.OnSync := procedure (V: Integer)
       begin
-        ClearMiniScrollBar;
+        ClearMiniSB;
         SB.Position := V;
-        PaintMiniScrollBar;
+        PaintMiniSB;
       end
   else
     Ani.OnSync := procedure (V: Integer)
@@ -138,10 +136,9 @@ begin
       ScrollCount := 0;
       FIsScrolling := false;
       if ScrollBarStyle <> sbsFull then
-        SetOldScrollBarVisible(false);
+        SetOldSBVisible(false);
       if not (csDesigning in ComponentState) then
         EnableAlign;
-      Mouse.Capture := 0;
     end;
 
   Ani.Duration := Round(TimePerStep * Sqrt(ScrollCount));
@@ -149,7 +146,7 @@ begin
   Ani.Start;
 end;
 
-procedure TUScrollBox.PaintMiniScrollBar;
+procedure TUScrollBox.PaintMiniSB;
 var
   SB: TControlScrollBar;
   ControlSize: Integer;
@@ -177,14 +174,14 @@ begin
   //  Calc mini scroll bar rect
   if ScrollOrientation = oVertical then
     begin
-      MiniSBRect.Left := Width - MINI_SCROLLBAR_THICKNESS - MINI_SCROLLBAR_MARGIN;
+      MiniSBRect.Left := Width - MINI_SCROLLBAR_MARGIN - MINI_SCROLLBAR_THICKNESS ;
       MiniSBRect.Right := Width - MINI_SCROLLBAR_MARGIN;
       MiniSBRect.Top := ThumbPos;
       MiniSBRect.Bottom := ThumbPos + ThumbSize;
     end
   else
     begin
-      MiniSBRect.Top := Height - MINI_SCROLLBAR_THICKNESS - MINI_SCROLLBAR_MARGIN;
+      MiniSBRect.Top := Height - MINI_SCROLLBAR_MARGIN - MINI_SCROLLBAR_THICKNESS ;
       MiniSBRect.Bottom := Height - MINI_SCROLLBAR_MARGIN;
       MiniSBRect.Left := ThumbPos;
       MiniSBRect.Right := ThumbPos + ThumbSize;
@@ -195,13 +192,13 @@ begin
   FCanvas.FillRect(MiniSBRect);
 end;
 
-procedure TUScrollBox.ClearMiniScrollBar;
+procedure TUScrollBox.ClearMiniSB;
 begin
   FCanvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
   FCanvas.FillRect(MiniSBRect);
 end;
 
-procedure TUScrollBox.SetOldScrollBarVisible(IsVisible: Boolean);
+procedure TUScrollBox.SetOldSBVisible(IsVisible: Boolean);
 begin
   if not (csDesigning in ComponentState) then
     FlatSB_ShowScrollBar(Handle, SB_BOTH, IsVisible);
@@ -316,20 +313,20 @@ procedure TUScrollBox.WM_Size(var Msg: TWMSize);
 begin
   inherited;
   if ScrollBarStyle <> sbsFull then
-    SetOldScrollBarVisible(false);
+    SetOldSBVisible(false);
 end;
 
 procedure TUScrollBox.CM_MouseEnter(var Msg: TMessage);
 begin
   inherited;
   if ScrollBarStyle = sbsMini then
-    PaintMiniScrollBar;
+    PaintMiniSB;
 end;
 
 procedure TUScrollBox.CM_MouseLeave(var Msg: TMessage);
 begin
   if ScrollBarStyle = sbsMini then
-    ClearMiniScrollBar;
+    ClearMiniSB;
 end;
 
 end.
