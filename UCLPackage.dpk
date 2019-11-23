@@ -59,13 +59,13 @@ contains
   UCL.TUSymbolButton in 'Sources\UCL.TUSymbolButton.pas',
   UCL.TUText in 'Sources\UCL.TUText.pas',
   UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
-  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
   UCL.Utils in 'Sources\UCL.Utils.pas',
   UCL.Graphics in 'Sources\UCL.Graphics.pas',
   UCL.TUContextMenu in 'Sources\UCL.TUContextMenu.pas',
   UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
   UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
-  UCL.TUShadow in 'Sources\UCL.TUShadow.pas';
+  UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
+  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas';
 
 end.
 

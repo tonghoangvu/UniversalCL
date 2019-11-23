@@ -6,7 +6,8 @@ uses
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton,
   System.Classes, System.Types,
-  VCL.Forms, VCL.Controls, VCL.Menus, VCL.Graphics;
+  Winapi.Windows,
+  VCL.Forms, VCL.Controls, VCL.Menus, VCL.Graphics, VCL.Dialogs;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;
@@ -26,7 +27,7 @@ type
 
       procedure SetThemeManager(const Value: TUThemeManager);
 
-      procedure PopupForm_OnDeactive(Sender: TObject);
+      procedure PopupForm_OnDeactivate(Sender: TObject);
       procedure PopupItem_OnClick(Sender: TObject);
 
     public
@@ -54,7 +55,7 @@ implementation
 
 { Other }
 
-procedure TUContextMenu.PopupForm_OnDeactive(Sender: TObject);
+procedure TUContextMenu.PopupForm_OnDeactivate(Sender: TObject);
 var
   Form: TUForm;
   Ani: TIntAni;
@@ -78,7 +79,7 @@ begin
   Ani.OnDone :=
     procedure
     begin
-      Form.Free;
+      Form.Close;
     end;
 
   Ani.Step := 20;
@@ -184,7 +185,7 @@ begin
   //  Create popup form
   Form := TUForm.CreateNew(Self);
 
-  Form.OnDeactivate := PopupForm_OnDeactive;
+  Form.OnDeactivate := PopupForm_OnDeactivate;
 
   Form.DoubleBuffered := true;
   Form.BorderStyle := bsToolWindow;

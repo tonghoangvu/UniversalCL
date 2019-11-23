@@ -156,10 +156,10 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.41;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.1.1.42;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.1.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Build>41</VerInfo_Build>
+        <VerInfo_Build>42</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -205,13 +205,13 @@
         <DCCReference Include="Sources\UCL.TUSymbolButton.pas"/>
         <DCCReference Include="Sources\UCL.TUText.pas"/>
         <DCCReference Include="Sources\UCL.TUThemeManager.pas"/>
-        <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <DCCReference Include="Sources\UCL.Utils.pas"/>
         <DCCReference Include="Sources\UCL.Graphics.pas"/>
         <DCCReference Include="Sources\UCL.TUContextMenu.pas"/>
         <DCCReference Include="Sources\UCL.TUQuickButton.pas"/>
         <DCCReference Include="Sources\UCL.TUTitleBar.pas"/>
         <DCCReference Include="Sources\UCL.TUShadow.pas"/>
+        <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <RcItem Include="Resources\TUText.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>TUText</ResourceId>

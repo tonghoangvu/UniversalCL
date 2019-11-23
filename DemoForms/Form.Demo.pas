@@ -10,7 +10,7 @@ uses
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu, UCL.TUContextMenu, UCL.TURadioButton,
+  UCL.TUPopupMenu, UCL.TUContextMenu, UCL.TURadioButton, UCL.TUShadow,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -20,8 +20,7 @@ uses
 
   //  VCL units
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg,
-  UCL.TUShadow;
+  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg;
 
 type
   TformDemo = class(TUForm)
