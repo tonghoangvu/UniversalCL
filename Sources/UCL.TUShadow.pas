@@ -3,22 +3,26 @@ unit UCL.TUShadow;
 interface
 
 uses
-  UCL.Classes, UCL.Utils, UCL.Graphics,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager,
   System.Classes, System.Types,
   Winapi.Windows,
   VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
 
 type
-  TUCustomShadow = class(TGraphicControl)
+  TUCustomShadow = class(TGraphicControl, IUThemeComponent)
     private
+      var Color: TColor;
       var BlendFunc: BLENDFUNCTION;
       var BlendBmp: TBitmap;
 
-      FColor: TColor;
+      FThemeManager: TUThemeManager;
+
+      FLightColor: TColor;
+      FDarkColor: TColor;
       FDirection: TUDirection;
 
       //  Setters
-      procedure SetColor(const Value: TColor);
+      procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetDirection(const Value: TUDirection);
 
     protected
@@ -27,9 +31,13 @@ type
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
+      procedure UpdateTheme;
 
     published
-      property Color: TColor read FColor write SetColor default $D77800;
+      property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+
+      property LightColor: TColor read FLightColor write FLightColor default $F2F2F2;
+      property DarkColor: TColor read FDarkColor write FDarkColor default $2B2B2B;
       property Direction: TUDirection read FDirection write SetDirection default dLeft;
   end;
 
@@ -40,7 +48,7 @@ type
       property AutoSize;
       property BiDiMode;
       //property Caption;
-      property Color;
+      //property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
@@ -82,17 +90,41 @@ implementation
 
 { TUCustomShadow }
 
-//  SETTERS
+//  THEME
 
-procedure TUCustomShadow.SetColor(const Value: TColor);
+procedure TUCustomShadow.SetThemeManager(const Value: TUThemeManager);
 begin
-  if Value <> FColor then
+  if Value <> FThemeManager then
     begin
-      FColor := Value;
+      if FThemeManager <> nil then
+        FThemeManager.Disconnect(Self);
 
-      Repaint;
+      if Value <> nil then
+        Value.Connect(Self);
+
+      FThemeManager := Value;
+      UpdateTheme;
     end;
 end;
+
+procedure TUCustomShadow.UpdateTheme;
+var
+  IsLightTheme: Boolean;
+begin
+  if ThemeManager = nil then
+    IsLightTheme := true
+  else
+    IsLightTheme := ThemeManager.Theme = utLight;
+
+  if IsLightTheme then
+    Color := LightColor
+  else
+    Color := DarkColor;
+
+  Repaint;
+end;
+
+//  SETTERS
 
 procedure TUCustomShadow.SetDirection(const Value: TUDirection);
 begin
@@ -109,9 +141,11 @@ constructor TUCustomShadow.Create(aOwner: TComponent);
 begin
   inherited;
 
-  FColor := $D77800;
+  FLightColor := $F2F2F2;
+  FDarkColor := $2B2B2B;
   FDirection := dLeft;
 
+  Color := $D77800;
   BlendFunc := CreateBlendFunc(255, true);
   BlendBmp := TBitmap.Create;
 end;

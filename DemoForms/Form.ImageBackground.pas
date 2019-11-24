@@ -16,23 +16,24 @@ type
     imgBackground: TImage;
     AppTheme: TUThemeManager;
     titlebarMain: TUTitleBar;
-    USlider1: TUSlider;
+    sliderMain: TUSlider;
     buttonOk: TUButton;
-    URadioButton1: TURadioButton;
-    URadioButton2: TURadioButton;
-    UProgressBar1: TUProgressBar;
-    USeparator1: TUSeparator;
-    URadioButton3: TURadioButton;
-    UCheckBox1: TUCheckBox;
+    radioSystemTheme: TURadioButton;
+    radioLightTheme: TURadioButton;
+    progressMain: TUProgressBar;
+    radioDarkTheme: TURadioButton;
     buttonSide: TUSymbolButton;
     panelBottom: TUPanel;
-    UEdit1: TUEdit;
+    editEmail: TUEdit;
     buttonWinClose: TUQuickButton;
-    buttonWinMax: TUQuickButton;
     buttonWinMin: TUQuickButton;
-    UButton1: TUButton;
+    buttonCancel: TUButton;
     shadowMenu: TUShadow;
+    entryChooseTheme: TUText;
     procedure FormCreate(Sender: TObject);
+    procedure radioSystemThemeClick(Sender: TObject);
+    procedure radioLightThemeClick(Sender: TObject);
+    procedure radioDarkThemeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +52,26 @@ begin
 //  EnableBlur(Handle, 3);
 
   ThemeManager := AppTheme;
+end;
+
+procedure TformImageBackground.radioSystemThemeClick(Sender: TObject);
+begin
+  AppTheme.UseSystemTheme := true;
+  AppTheme.Reload;
+end;
+
+procedure TformImageBackground.radioLightThemeClick(Sender: TObject);
+begin
+  AppTheme.CustomTheme := utLight;
+  AppTheme.UseSystemTheme := false;
+  AppTheme.Reload;
+end;
+
+procedure TformImageBackground.radioDarkThemeClick(Sender: TObject);
+begin
+  AppTheme.CustomTheme := utDark;
+  AppTheme.UseSystemTheme := false;
+  AppTheme.Reload;
 end;
 
 end.

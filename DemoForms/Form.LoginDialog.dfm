@@ -16,7 +16,6 @@ object formLoginDialog: TformLoginDialog
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 15
   object boxMain: TUScrollBox
@@ -261,7 +260,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
       Edit.ParentFont = False
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your email here'
     end
@@ -306,7 +305,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Style = []
       Edit.ParentFont = False
       Edit.PasswordChar = '*'
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your password here'
     end
@@ -351,7 +350,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Style = []
       Edit.ParentColor = True
       Edit.ParentFont = False
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Talk about yourself'
       Transparent = True
@@ -530,18 +529,25 @@ object formLoginDialog: TformLoginDialog
     end
   end
   object AppTheme: TUThemeManager
-    Left = 270
-    Top = 42
+    Left = 110
+    Top = 32
   end
-  object popupEditAction: TUPopupMenu
+  object popupEdit: TUPopupMenu
     ThemeManager = AppTheme
-    ItemsData.Strings = (
-      ' |Cut|Ctrl+X'
-      ' |Copy|Ctrl+C'
-      ' |Paste|Ctrl+V')
-    SeparatorChar = '|'
-    OnItemClick = popupEditActionItemClick
-    Left = 190
-    Top = 42
+    OnItemClick = popupEditItemClick
+    Left = 40
+    Top = 102
+    object CutCtrlX1: TMenuItem
+      Caption = #57707'Cut|Ctrl+X'
+      Hint = 'Remove the selected content and put it on the clipboard'
+    end
+    object CopyCtrlC1: TMenuItem
+      Caption = #57711'Copy|Ctrl+C'
+      Hint = 'Copy the selected content to the clipboard'
+    end
+    object PasteCtrlV1: TMenuItem
+      Caption = #57709'Paste|Ctrl+V'
+      Hint = 'Insert the contents of the clipboard at the current location'
+    end
   end
 end

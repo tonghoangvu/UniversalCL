@@ -32,15 +32,17 @@ type
     buttonAppTheme: TUQuickButton;
     editEmail: TUEdit;
     editPassword: TUEdit;
-    popupEditAction: TUPopupMenu;
     entryDescription: TUText;
     editDescription: TUEdit;
+    popupEdit: TUPopupMenu;
+    CutCtrlX1: TMenuItem;
+    CopyCtrlC1: TMenuItem;
+    PasteCtrlV1: TMenuItem;
     procedure buttonCancelClick(Sender: TObject);
     procedure textShowMoreOptionsClick(Sender: TObject);
     procedure buttonAppThemeClick(Sender: TObject);
     procedure buttonOkClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure popupEditActionItemClick(Sender: TObject; Index: Integer);
+    procedure popupEditItemClick(Sender: TObject; Index: Integer);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -57,10 +59,12 @@ implementation
 
 procedure TformLoginDialog.buttonAppThemeClick(Sender: TObject);
 begin
-  if ThemeManager.Theme = utLight then
-    ThemeManager.CustomTheme := utDark
+  if AppTheme.Theme = utLight then
+    AppTheme.CustomTheme := utDark
   else
-    ThemeManager.CustomTheme := utLight;
+    AppTheme.CustomTheme := utLight;
+  AppTheme.UseSystemTheme := false;
+  AppTheme.Reload;
 end;
 
 procedure TformLoginDialog.buttonCancelClick(Sender: TObject);
@@ -76,23 +80,18 @@ end;
 procedure TformLoginDialog.FormCreate(Sender: TObject);
 begin
 //  EnableBlur(Handle, 3);
-end;
 
-procedure TformLoginDialog.FormShow(Sender: TObject);
-begin
-  //  Setup UForm properties
   ThemeManager := AppTheme;
 end;
 
-procedure TformLoginDialog.popupEditActionItemClick(Sender: TObject;
-  Index: Integer);
+procedure TformLoginDialog.popupEditItemClick(Sender: TObject; Index: Integer);
 var
   Edit: TCustomEdit;
 begin
   Self.SetFocus;  //  Close popup
-  if popupEditAction.PopupComponent is TCustomEdit then
+  if popupEdit.PopupComponent is TCustomEdit then
     begin
-      Edit := popupEditAction.PopupComponent as TCustomEdit;
+      Edit := popupEdit.PopupComponent as TCustomEdit;
       case Index of
         0:  //  Cut
           Edit.CutToClipboard;

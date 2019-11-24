@@ -247,7 +247,7 @@ end;
 procedure TUForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
 begin
   if ThemeManager <> nil then
-    ThemeManager.ReloadAutoSettings;
+    ThemeManager.Reload;
   inherited;
 end;
 

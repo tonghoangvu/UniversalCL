@@ -9,12 +9,17 @@ uses
   VCL.Controls, VCL.Graphics, VCL.Forms;
 
 type
-  TUCustomTitleBar = class(TGraphicControl)
+  TUCustomTitleBar = class(TGraphicControl, IUThemeComponent)
     private
+      FThemeManager: TUThemeManager;
+
       FTextPosition: Integer;
       FAlignment: TAlignment;
       FDragMovement: Boolean;
       FEnableSystemMenu: Boolean;
+
+      //  Setters
+      procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Mesages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -27,8 +32,11 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      procedure UpdateTheme;
 
     published
+      property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+
       property TextPosition: Integer read FTextPosition write FTextPosition default 12;
       property  Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
@@ -83,6 +91,38 @@ type
 implementation
 
 { TUCustomTitleBar }
+
+//  THEME
+
+procedure TUCustomTitleBar.SetThemeManager(const Value: TUThemeManager);
+begin
+  if Value <> FThemeManager then
+    begin
+      if FThemeManager <> nil then
+        FThemeManager.Disconnect(Self);
+
+      if Value <> nil then
+        Value.Connect(Self);
+
+      FThemeManager := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomTitleBar.UpdateTheme;
+var
+  IsLightTheme: Boolean;
+begin
+  if ThemeManager = nil then
+    IsLightTheme := true
+  else
+    IsLightTheme := ThemeManager.Theme = utLight;
+
+  if IsLightTheme then
+    Font.Color := $000000
+  else
+    Font.Color := $FFFFFF;
+end;
 
 //  MAIN CLASS
 

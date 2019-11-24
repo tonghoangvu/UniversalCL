@@ -10,7 +10,7 @@ uses
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu, UCL.TUContextMenu, UCL.TURadioButton, UCL.TUShadow,
+  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow,
 
   //  Winapi units
   Winapi.Windows, Winapi.Messages,
@@ -116,17 +116,13 @@ type
     desChromiumVersion: TUText;
     linkEmbarcadero: TUHyperLink;
     USeparator1: TUSeparator;
-    popupVert: TUPopupMenu;
-    popupHorz: TUPopupMenu;
     editAccountName: TUEdit;
     comboAppBorderStyle: TComboBox;
-    popupEdit: TUContextMenu;
-    Cut1: TMenuItem;
-    Copy1: TMenuItem;
-    Paste1: TMenuItem;
-    dsds: TMenuItem;
-    SelectAll1: TMenuItem;
     buttonImageForm: TUSymbolButton;
+    popupEdit: TUPopupMenu;
+    CutCtrlX1: TMenuItem;
+    CopyCtrlC1: TMenuItem;
+    PasteCtrlV1: TMenuItem;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -138,7 +134,6 @@ type
     procedure panelSelectAccentColorClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
     procedure sliderHorzChange(Sender: TObject);
-    procedure popupHorzItemClick(Sender: TObject; Index: Integer);
     procedure AppThemeUpdate(Sender: TObject);
     procedure comboAppDPIChange(Sender: TObject);
     procedure itembuttonImageClick(Sender: TObject);
@@ -269,7 +264,7 @@ end;
 
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
-  AppTheme.ReloadAutoSettings;
+  AppTheme.Reload;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
@@ -304,14 +299,6 @@ begin
 //  EnableBlur(Handle, 3);
 
   ThemeManager := AppTheme;
-
-  //  PUT ALL CUSTOM THEME HERE
-  //  Default system settings will automatic load at app startup
-  //  Don't change directly TUThemeManager component with Custom Properties
-  //  Such as CustomTheme, CustomAccentColor
-  //  Put them here
-  //  Example:
-  //  AppTheme.CustomTheme := utDark;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
@@ -319,26 +306,36 @@ var
   NewColor: TColor;
 begin
   //  Open dialog
-  if dialogSelectColor.Execute = true then
+  if dialogSelectColor.Execute then
     begin
       NewColor := dialogSelectColor.Color;
 
       //  Change accent color
+      AppTheme.UseSystemAccentColor := false;
       AppTheme.CustomAccentColor := NewColor;
-      panelSelectAccentColor.CustomBackColor := NewColor;
+      AppTheme.Reload;
     end;
 end;
 
 { POPUP MENU }
 
-procedure TformDemo.popupHorzItemClick(Sender: TObject; Index: Integer);
+procedure TformDemo.popupEditItemClick(Sender: TObject; Index: Integer);
+var
+  Edit: TCustomEdit;
 begin
-  Self.SetFocus;
-  case Index of
-    0:  ShowMessage('Cut');
-    1:  ShowMessage('Copy');
-    2:  ShowMessage('Paste');
-  end;
+  Self.SetFocus;  //  Close popup
+  if popupEdit.PopupComponent is TCustomEdit then
+    begin
+      Edit := popupEdit.PopupComponent as TCustomEdit;
+      case Index of
+        0:  //  Cut
+          Edit.CutToClipboard;
+        1:  //  Copy
+          Edit.CopyToClipboard;
+        2:  //  Paste
+          Edit.PasteFromClipboard;
+      end;
+    end;
 end;
 
 { APP THEME SETTINGS }
@@ -346,16 +343,21 @@ end;
 procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
 begin
   AppTheme.UseSystemTheme := true;
+  AppTheme.Reload;
 end;
 
 procedure TformDemo.radioLightThemeClick(Sender: TObject);
 begin
   AppTheme.CustomTheme := utLight;
+  AppTheme.UseSystemTheme := false;
+  AppTheme.Reload;
 end;
 
 procedure TformDemo.radioDarkThemeClick(Sender: TObject);
 begin
   AppTheme.CustomTheme := utDark;
+  AppTheme.UseSystemTheme := false;
+  AppTheme.Reload;
 end;
 
 { CONTROLS }
@@ -364,12 +366,6 @@ procedure TformDemo.sliderHorzChange(Sender: TObject);
 begin
   //  Change progress bar value
   progressConnected.Value := sliderHorz.Value;
-end;
-
-procedure TformDemo.popupEditItemClick(Sender: TObject;
-  Index: Integer);
-begin
-  SetFocus;
 end;
 
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);

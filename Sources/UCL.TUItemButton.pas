@@ -11,6 +11,8 @@ uses
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
 
+  TUItemButtonObjects = set of TUItemObjectKind;
+
   TUCustomItemButton = class(TCustomControl, IUThemeComponent)
     const
       ICON_CHECKED = '';
@@ -42,11 +44,7 @@ type
       FIconFont: TFont;
       FDetailFont: TFont;
 
-      FShowCheckBox: Boolean;
-      FShowLeftIcon: Boolean;
-      FShowText: Boolean;
-      FShowDetail: Boolean;
-      FShowRightIcon: Boolean;
+      FObjectsVisible: TUItemButtonObjects;
 
       FIsChecked: Boolean;
       FLeftIcon: string;
@@ -75,7 +73,7 @@ type
       procedure SetImageLeftIndex(const Value: Integer);
       procedure SetImageRightIndex(const Value: Integer);
 
-      procedure SetObjectVisible(const Index: Integer; const Value: Boolean);
+      procedure SetObjectsVisible(const Value: TUItemButtonObjects);
       procedure SetObjectWidth(const Index: Integer; const Value: Integer);
 
       procedure SetIsChecked(const Value: Boolean);
@@ -128,11 +126,8 @@ type
       property DetailFont: TFont read FDetailFont write FDetailFont;
 
       //  Object visible
-      property ShowCheckBox: Boolean index 0 read FShowCheckBox write SetObjectVisible default false;
-      property ShowLeftIcon: Boolean index 1 read FShowLeftIcon write SetObjectVisible default true;
-      property ShowText: Boolean index 2 read FShowText write SetObjectVisible default true;
-      property ShowDetail: Boolean index 3 read FShowDetail write SetObjectVisible default true;
-      property ShowRightIcon: Boolean index 4 read FShowRightIcon write SetObjectVisible default false;
+      property ObjectsVisible: TUItemButtonObjects read FObjectsVisible write SetObjectsVisible
+        default [iokNone, iokLeftIcon, iokText, iokDetail];
 
       //  Objects property
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
@@ -286,25 +281,25 @@ begin
   LPos := 0;
   RPos := Width;
 
-  if ShowCheckBox then
+  if iokCheckBox in ObjectsVisible then
     CheckBoxRect := Rect(0, 0, CheckBoxWidth, Height)
   else
     CheckBoxRect := TRect.Empty;
   inc(LPos, CheckBoxRect.Width);
 
-  if ShowLeftIcon then
+  if iokLeftIcon in ObjectsVisible then
     LeftIconRect := Rect(LPos, 0, LPos + LeftIconWidth, Height)
   else
     LeftIconRect := TRect.Empty;
   inc(LPos, LeftIconRect.Width);
 
-  if ShowRightIcon then
+  if iokRightIcon in ObjectsVisible then
     RightIconRect := Rect(RPos - RightIconWidth, 0, RPos, Height)
   else
     RightIconRect := TRect.Empty;
   dec(RPos, RightIconRect.Width);
 
-  if ShowDetail then
+  if iokDetail in ObjectsVisible then
     begin
       Canvas.Font := DetailFont;
       TempWidth := Canvas.TextWidth(Detail);
@@ -314,7 +309,7 @@ begin
     DetailRect := TRect.Empty;
   dec(RPos, DetailRect.Width);
 
-  if ShowText then
+  if iokText in ObjectsVisible then
     TextRect := Rect(LPos + AlignSpace, 0, RPos - AlignSpace, Height)
   else
     TextRect := TRect.Empty;
@@ -350,45 +345,14 @@ begin
     end;
 end;
 
-procedure TUCustomItemButton.SetObjectVisible(const Index: Integer; const Value: Boolean);
+procedure TUCustomItemButton.SetObjectsVisible(const Value: TUItemButtonObjects);
 begin
-  case Index of
-    0:
-      if Value <> FShowCheckBox then
-        begin
-          FShowCheckBox := Value;
-          UpdateRects;
-          Repaint;
-        end;
-    1:
-      if Value <> FShowLeftIcon then
-        begin
-          FShowLeftIcon := Value;
-          UpdateRects;
-          Repaint;
-        end;
-    2:
-      if Value <> FShowText then
-        begin
-          FShowText := Value;
-          UpdateRects;
-          Repaint;
-        end;
-    3:
-      if Value <> FShowDetail then
-        begin
-          FShowDetail := Value;
-          UpdateRects;
-          Repaint;
-        end;
-    4:
-      if Value <> FShowRightIcon then
-        begin
-          FShowRightIcon := Value;
-          UpdateRects;
-          Repaint;
-        end;
-  end;
+  if Value <> FObjectsVisible then
+    begin
+      FObjectsVisible := Value;
+      UpdateRects;
+      Repaint;
+    end;
 end;
 
 procedure TUCustomItemButton.SetObjectWidth(const Index: Integer; const Value: Integer);
@@ -549,11 +513,7 @@ begin
   FDetailFont.Name := 'Segoe UI';
   FDetailFont.Size := 10;
 
-  FShowCheckBox := false;
-  FShowLeftIcon := true;
-  FShowText := true;
-  FShowDetail := true;
-  FShowRightIcon := false;
+  FObjectsVisible := [iokNone, iokLeftIcon, iokText, iokDetail];
 
   FIsChecked := false;
   FLeftIcon := '';
@@ -600,7 +560,7 @@ begin
   Canvas.Font := IconFont;
 
   //  Paint checkbox
-  if ShowCheckBox then
+  if iokCheckBox in ObjectsVisible then
     if IsChecked then
       begin
         Canvas.Font.Color := ActiveColor;
@@ -615,7 +575,7 @@ begin
   Canvas.Font.Color := TextColor;
 
   //  Paint left icon
-  if ShowLeftIcon then
+  if iokLeftIcon in ObjectsVisible then
     if LeftIconKind = ikFontIcon then
       DrawTextRect(Canvas, taCenter, taVerticalCenter, LeftIconRect, LeftIcon, false)
     else if Images <> nil then
@@ -625,7 +585,7 @@ begin
       end;
 
   //  Paint right icon
-  if ShowRightIcon then
+  if iokRightIcon in ObjectsVisible then
     if RightIconKind = ikFontIcon then
       DrawTextRect(Canvas, taCenter, taVerticalCenter, RightIconRect, RightIcon, false)
     else if Images <> nil then
@@ -635,7 +595,7 @@ begin
       end;
 
   //  Paint detail
-  if ShowDetail then
+  if iokDetail in ObjectsVisible then
     begin
       Canvas.Font := DetailFont;
       Canvas.Font.Color := DetailColor;
@@ -643,7 +603,7 @@ begin
     end;
 
   //  Paint text
-  if ShowText then
+  if iokText in ObjectsVisible then
     begin
       Canvas.Font := Font;
       Canvas.Font.Color := TextColor;

@@ -18,17 +18,16 @@ object formDemo: TformDemo
   object linkConnected: TUHyperLink
     Left = 540
     Top = 170
-    Width = 190
+    Width = 125
     Height = 17
     Cursor = crHandPoint
-    Caption = 'Right click to open context menu'
+    Caption = 'TUHyperLink (default)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 14120960
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    PopupMenu = popupHorz
     ThemeManager = AppTheme
     CustomTextColors.None = 14120960
     CustomTextColors.Hover = clGray
@@ -1011,8 +1010,7 @@ object formDemo: TformDemo
     DetailFont.Height = -13
     DetailFont.Name = 'Segoe UI'
     DetailFont.Style = []
-    ShowCheckBox = True
-    ShowRightIcon = True
+    ObjectsVisible = [iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon]
     LeftIcon = #58031
     Text = 'You clicked on'
     Detail = 'Nothing'
@@ -1047,10 +1045,9 @@ object formDemo: TformDemo
     DetailFont.Height = -13
     DetailFont.Name = 'Segoe UI'
     DetailFont.Style = []
-    ShowRightIcon = True
     LeftIcon = #58031
     Text = 'Don'#39't combine'
-    Detail = 'CheckBox & Toggled'
+    Detail = 'CheckBox and Toggled'
     RightIcon = #57345
     CustomActiveColor = 14120960
     IsToggleButton = True
@@ -1060,7 +1057,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    PopupMenu = popupVert
   end
   object symbolButtonOpenDisabled: TUSymbolButton
     Left = 130
@@ -1437,9 +1433,10 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = AppTheme
-    WaitEventTime = 70
-    MaxScrollCount = 10
-    LengthPerStep = 70
+    WaitEventTime = 80
+    MaxScrollCount = 12
+    LengthPerStep = 60
+    TimePerStep = 130
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -2231,6 +2228,7 @@ object formDemo: TformDemo
     end
   end
   object AppTheme: TUThemeManager
+    CustomAccentColor = 8951296
     OnUpdate = AppThemeUpdate
     Left = 680
     Top = 40
@@ -2240,55 +2238,22 @@ object formDemo: TformDemo
     Left = 760
     Top = 40
   end
-  object popupVert: TUPopupMenu
-    ThemeManager = AppTheme
-    ItemsData.Strings = (
-      ' |Google Drive|Open link'
-      ' |Gmail|Open link'
-      ' |TeamViewer|Open link')
-    SeparatorChar = '|'
-    ItemWidth = 250
-    Left = 840
-    Top = 40
-  end
-  object popupHorz: TUPopupMenu
-    ThemeManager = AppTheme
-    ItemsData.Strings = (
-      #57707'|Cut|'
-      #57711'|Copy|'
-      #57709'|Paste|')
-    SeparatorChar = '|'
-    Orientation = oHorizontal
-    ItemWidth = 80
-    OnItemClick = popupHorzItemClick
-    Left = 910
-    Top = 40
-  end
-  object popupEdit: TUContextMenu
+  object popupEdit: TUPopupMenu
     ThemeManager = AppTheme
     OnItemClick = popupEditItemClick
-    CloseAnimation = True
     Left = 600
-    Top = 40
-    object Cut1: TMenuItem
+    Top = 42
+    object CutCtrlX1: TMenuItem
       Caption = #57707'Cut|Ctrl+X'
       Hint = 'Remove the selected content and put it on the clipboard'
     end
-    object Copy1: TMenuItem
+    object CopyCtrlC1: TMenuItem
       Caption = #57711'Copy|Ctrl+C'
       Hint = 'Copy the selected content to the clipboard'
     end
-    object Paste1: TMenuItem
+    object PasteCtrlV1: TMenuItem
       Caption = #57709'Paste|Ctrl+V'
       Hint = 'Insert the contents of the clipboard at the current location'
-    end
-    object dsds: TMenuItem
-      Caption = #57614'Undo|Ctrl+Z'
-      Hint = 'Reverse the most recent action'
-    end
-    object SelectAll1: TMenuItem
-      Caption = ' Select All|Ctrl+A'
-      Hint = 'Select all content'
     end
   end
 end
