@@ -846,7 +846,6 @@ object formDemo: TformDemo
     CustomBackColors.Disabled = 15921906
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
-    AllowFocus = True
     Caption = 'Button can focus'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -928,7 +927,6 @@ object formDemo: TformDemo
     CustomBackColors.Disabled = 15921906
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
-    AllowFocus = True
     Highlight = True
     Caption = 'Highlight button'
     Font.Charset = DEFAULT_CHARSET
@@ -1433,10 +1431,7 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = AppTheme
-    WaitEventTime = 80
-    MaxScrollCount = 12
-    LengthPerStep = 60
-    TimePerStep = 130
+    MaxScrollCount = 6
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15

@@ -15,7 +15,6 @@ type
   TformLoginDialog = class(TUForm)
     boxMain: TUScrollBox;
     captionbarMain: TUCaptionBar;
-    AppTheme: TUThemeManager;
     buttonOk: TUButton;
     buttonCancel: TUButton;
     titleSignin: TUText;
@@ -55,16 +54,19 @@ var
 
 implementation
 
+uses
+  DataModule.Main;
+
 {$R *.dfm}
 
 procedure TformLoginDialog.buttonAppThemeClick(Sender: TObject);
 begin
-  if AppTheme.Theme = utLight then
-    AppTheme.CustomTheme := utDark
+  if ThemeManager.Theme = utLight then
+    ThemeManager.CustomTheme := utDark
   else
-    AppTheme.CustomTheme := utLight;
-  AppTheme.UseSystemTheme := false;
-  AppTheme.Reload;
+    ThemeManager.CustomTheme := utLight;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 procedure TformLoginDialog.buttonCancelClick(Sender: TObject);
@@ -81,7 +83,7 @@ procedure TformLoginDialog.FormCreate(Sender: TObject);
 begin
 //  EnableBlur(Handle, 3);
 
-  ThemeManager := AppTheme;
+  ThemeManager := dmMain.AppTheme;
 end;
 
 procedure TformLoginDialog.popupEditItemClick(Sender: TObject; Index: Integer);

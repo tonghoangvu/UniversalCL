@@ -156,7 +156,7 @@ implementation
 
 uses
   DWMAPI, UxTheme,
-  Form.LoginDialog, Form.ImageBackground;
+  Form.LoginDialog, Form.ImageBackground, DataModule.Main;
 
 {$R *.dfm}
 
@@ -253,10 +253,10 @@ end;
 procedure TformDemo.AppThemeUpdate(Sender: TObject);
 begin
   //  Active color changed
-  panelSelectAccentColor.CustomBackColor := AppTheme.AccentColor;
+  panelSelectAccentColor.CustomBackColor := ThemeManager.AccentColor;
 
   //  Color on border setting changed
-  if AppTheme.ColorOnBorder = true then
+  if ThemeManager.ColorOnBorder = true then
     checkColorBorder.State := cbsChecked
   else
     checkColorBorder.State := cbsUnchecked;
@@ -298,7 +298,7 @@ procedure TformDemo.FormCreate(Sender: TObject);
 begin
 //  EnableBlur(Handle, 3);
 
-  ThemeManager := AppTheme;
+  ThemeManager := dmMain.AppTheme;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
@@ -311,9 +311,9 @@ begin
       NewColor := dialogSelectColor.Color;
 
       //  Change accent color
-      AppTheme.UseSystemAccentColor := false;
-      AppTheme.CustomAccentColor := NewColor;
-      AppTheme.Reload;
+      ThemeManager.UseSystemAccentColor := false;
+      ThemeManager.CustomAccentColor := NewColor;
+      ThemeManager.Reload;
     end;
 end;
 
@@ -342,22 +342,22 @@ end;
 
 procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
 begin
-  AppTheme.UseSystemTheme := true;
-  AppTheme.Reload;
+  ThemeManager.UseSystemTheme := true;
+  ThemeManager.Reload;
 end;
 
 procedure TformDemo.radioLightThemeClick(Sender: TObject);
 begin
-  AppTheme.CustomTheme := utLight;
-  AppTheme.UseSystemTheme := false;
-  AppTheme.Reload;
+  ThemeManager.CustomTheme := utLight;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 procedure TformDemo.radioDarkThemeClick(Sender: TObject);
 begin
-  AppTheme.CustomTheme := utDark;
-  AppTheme.UseSystemTheme := false;
-  AppTheme.Reload;
+  ThemeManager.CustomTheme := utDark;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 { CONTROLS }

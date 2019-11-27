@@ -26,7 +26,7 @@ object formImageBackground: TformImageBackground
     Top = 0
     Width = 200
     Height = 352
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     Direction = dRight
     Align = alLeft
     ParentColor = False
@@ -14498,7 +14498,7 @@ object formImageBackground: TformImageBackground
     Top = 0
     Width = 475
     Height = 32
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Transparent caption bar form'
     Font.Charset = DEFAULT_CHARSET
@@ -14514,7 +14514,7 @@ object formImageBackground: TformImageBackground
     Top = 60
     Width = 181
     Height = 41
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     Value = 45
   end
   object radioSystemTheme: TURadioButton
@@ -14522,7 +14522,7 @@ object formImageBackground: TformImageBackground
     Top = 60
     Width = 151
     Height = 30
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
     IconFont.Height = -20
@@ -14546,7 +14546,7 @@ object formImageBackground: TformImageBackground
     Top = 90
     Width = 64
     Height = 30
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
     IconFont.Height = -20
@@ -14569,7 +14569,7 @@ object formImageBackground: TformImageBackground
     Top = 120
     Width = 63
     Height = 30
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
     IconFont.Height = -20
@@ -14592,7 +14592,7 @@ object formImageBackground: TformImageBackground
     Top = 1
     Width = 45
     Height = 32
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     ButtonStyle = sbsQuit
     LightColor = 2298344
     DarkColor = 2298344
@@ -14613,7 +14613,7 @@ object formImageBackground: TformImageBackground
     Top = 1
     Width = 45
     Height = 32
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     ButtonStyle = sbsMin
     LightColor = 13619151
     DarkColor = 3947580
@@ -14640,7 +14640,7 @@ object formImageBackground: TformImageBackground
     Font.Name = 'Segoe UI Semibold'
     Font.Style = []
     ParentFont = False
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     TextKind = tkEntry
   end
   object progressMain: TUProgressBar
@@ -14648,7 +14648,7 @@ object formImageBackground: TformImageBackground
     Top = 110
     Width = 181
     Height = 11
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     Value = 45
     Orientation = oHorizontal
     CustomFillColor = 2469894
@@ -14659,7 +14659,7 @@ object formImageBackground: TformImageBackground
     Top = 60
     Width = 81
     Height = 90
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     SymbolFont.Charset = DEFAULT_CHARSET
     SymbolFont.Color = clWindowText
     SymbolFont.Height = -16
@@ -14704,7 +14704,6 @@ object formImageBackground: TformImageBackground
     ParentFont = False
     ShowCaption = False
     TabOrder = 2
-    ThemeManager = AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
     object buttonOk: TUButton
@@ -14712,7 +14711,7 @@ object formImageBackground: TformImageBackground
       Top = 14
       Width = 131
       Height = 30
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       CustomBorderColors.None = 15921906
       CustomBorderColors.Hover = 15132390
       CustomBorderColors.Press = 13421772
@@ -14744,7 +14743,7 @@ object formImageBackground: TformImageBackground
       Margins.Top = 0
       Margins.Right = 14
       Margins.Bottom = 0
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       CustomBorderColors.None = 15921906
       CustomBorderColors.Hover = 15132390
       CustomBorderColors.Press = 13421772
@@ -14786,7 +14785,7 @@ object formImageBackground: TformImageBackground
       ParentFont = False
       ShowCaption = False
       TabOrder = 2
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 283
@@ -14803,9 +14802,5 @@ object formImageBackground: TformImageBackground
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your email'
     end
-  end
-  object AppTheme: TUThemeManager
-    Left = 60
-    Top = 280
   end
 end

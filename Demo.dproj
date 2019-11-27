@@ -115,6 +115,11 @@
             <Form>formImageBackground</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="DemoForms\DataModule.Main.pas">
+            <Form>dmMain</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

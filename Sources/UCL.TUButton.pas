@@ -96,7 +96,7 @@ type
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
       property HitTest: Boolean read FHitTest write FHitTest default true;
-      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
+      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write FIsToggled default false;
@@ -303,7 +303,7 @@ begin
   FAlignment := taCenter;
   FImageIndex := -1;
   FHitTest := true;
-  FAllowFocus := false;
+  FAllowFocus := true;
   FHighlight := false;
   FIsToggleButton := false;
   FIsToggled := false;

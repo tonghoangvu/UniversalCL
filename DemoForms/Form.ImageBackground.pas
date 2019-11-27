@@ -14,7 +14,6 @@ uses
 type
   TformImageBackground = class(TUForm)
     imgBackground: TImage;
-    AppTheme: TUThemeManager;
     titlebarMain: TUTitleBar;
     sliderMain: TUSlider;
     buttonOk: TUButton;
@@ -45,33 +44,36 @@ var
 
 implementation
 
+uses
+  DataModule.Main;
+
 {$R *.dfm}
 
 procedure TformImageBackground.FormCreate(Sender: TObject);
 begin
 //  EnableBlur(Handle, 3);
 
-  ThemeManager := AppTheme;
+  ThemeManager := dmMain.AppTheme;
 end;
 
 procedure TformImageBackground.radioSystemThemeClick(Sender: TObject);
 begin
-  AppTheme.UseSystemTheme := true;
-  AppTheme.Reload;
+  ThemeManager.UseSystemTheme := true;
+  ThemeManager.Reload;
 end;
 
 procedure TformImageBackground.radioLightThemeClick(Sender: TObject);
 begin
-  AppTheme.CustomTheme := utLight;
-  AppTheme.UseSystemTheme := false;
-  AppTheme.Reload;
+  ThemeManager.CustomTheme := utLight;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 procedure TformImageBackground.radioDarkThemeClick(Sender: TObject);
 begin
-  AppTheme.CustomTheme := utDark;
-  AppTheme.UseSystemTheme := false;
-  AppTheme.Reload;
+  ThemeManager.CustomTheme := utDark;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 end.

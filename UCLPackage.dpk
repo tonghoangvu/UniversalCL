@@ -36,7 +36,7 @@ requires
   vclwinx;
 
 contains
-  RegisterPackage in 'RegisterPackage.pas',
+  RegisterPackage_UCL in 'RegisterPackage_UCL.pas',
   UCL.Classes in 'Sources\UCL.Classes.pas',
   UCL.IntAnimation.Collection in 'Sources\UCL.IntAnimation.Collection.pas',
   UCL.IntAnimation.Helpers in 'Sources\UCL.IntAnimation.Helpers.pas',

@@ -182,7 +182,7 @@
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="vclimg.dcp"/>
         <DCCReference Include="vclwinx.dcp"/>
-        <DCCReference Include="RegisterPackage.pas"/>
+        <DCCReference Include="RegisterPackage_UCL.pas"/>
         <DCCReference Include="Sources\UCL.Classes.pas"/>
         <DCCReference Include="Sources\UCL.IntAnimation.Collection.pas"/>
         <DCCReference Include="Sources\UCL.IntAnimation.Helpers.pas"/>
