@@ -4,12 +4,15 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.TUForm, UCL.Utils,
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.jpeg,
+
   UCL.TUQuickButton, UCL.TUCaptionBar, UCL.TUTitleBar, UCL.TUSlider,
   UCL.TUButton, UCL.TUCheckBox, UCL.TURadioButton, UCL.TUSeparator,
   UCL.TUProgressBar, Vcl.StdCtrls, UCL.TUText, UCL.TUEdit,
-  UCL.TUSymbolButton, UCL.TUItemButton, UCL.TUPanel, UCL.TUShadow;
+  UCL.TUSymbolButton, UCL.TUItemButton, UCL.TUPanel, UCL.TUShadow,
+
+  System.SysUtils, System.Variants, System.Classes,
+  Winapi.Windows, Winapi.Messages,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.jpeg;
 
 type
   TformImageBackground = class(TUForm)

@@ -43,6 +43,7 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
       procedure Resize; override;
@@ -123,7 +124,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -135,6 +139,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomRadioButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -241,10 +252,9 @@ end;
 procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
 begin
   inherited;
-
   IconFont.Height := MulDiv(IconFont.Height, M, D);
-
-  Resize;
+  Resize;   //  Autosize
+  //UpdateRects;  //  Do not update rects, resize already do that
 end;
 
 procedure TUCustomRadioButton.Paint;

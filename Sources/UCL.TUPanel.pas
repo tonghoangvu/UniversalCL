@@ -22,6 +22,9 @@ type
       procedure SetCustomBackColor(const Value: TColor);
       procedure SetCustomTextColor(const Value: TColor);
 
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
@@ -48,7 +51,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -72,6 +78,13 @@ begin
       Color := $001F1F1F;
       Font.Color := GetTextColorFromBackground(Color);
     end;
+end;
+
+procedure TUPanel.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  SETTERS

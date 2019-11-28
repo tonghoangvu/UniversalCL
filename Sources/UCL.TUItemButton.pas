@@ -99,6 +99,7 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
@@ -210,7 +211,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -222,6 +226,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomItemButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -634,6 +645,8 @@ begin
   LeftIconWidth := MulDiv(LeftIconWidth, M, D);
   RightIconWidth := MulDiv(RightIconWidth, M, D);
   AlignSpace := MulDiv(AlignSpace, M, D);
+
+  UpdateRects;
 end;
 
 //  MESSAGES

@@ -14530,6 +14530,7 @@ object formImageBackground: TformImageBackground
     IconFont.Style = []
     AutoSize = True
     IsChecked = True
+    Group = 'Theme'
     CustomActiveColor = 14120960
     TextOnGlass = True
     Caption = 'Use system settings'
@@ -14553,6 +14554,7 @@ object formImageBackground: TformImageBackground
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
     AutoSize = True
+    Group = 'Theme'
     CustomActiveColor = 14120960
     TextOnGlass = True
     Caption = 'Light'
@@ -14576,6 +14578,7 @@ object formImageBackground: TformImageBackground
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
     AutoSize = True
+    Group = 'Theme'
     CustomActiveColor = 14120960
     TextOnGlass = True
     Caption = 'Dark'
@@ -14704,6 +14707,7 @@ object formImageBackground: TformImageBackground
     ParentFont = False
     ShowCaption = False
     TabOrder = 2
+    ThemeManager = dmMain.AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
     object buttonOk: TUButton

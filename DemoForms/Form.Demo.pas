@@ -24,7 +24,6 @@ uses
 
 type
   TformDemo = class(TUForm)
-    AppTheme: TUThemeManager;
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -89,7 +88,7 @@ type
     boxSmoothScrolling: TUScrollBox;
     headingSettings: TUText;
     entryAppTheme: TUText;
-    radioDefaultTheme: TURadioButton;
+    radioSystemTheme: TURadioButton;
     radioLightTheme: TURadioButton;
     radioDarkTheme: TURadioButton;
     panelSelectAccentColor: TUPanel;
@@ -115,7 +114,7 @@ type
     desFlashVersion: TUText;
     desChromiumVersion: TUText;
     linkEmbarcadero: TUHyperLink;
-    USeparator1: TUSeparator;
+    separatorLastBox: TUSeparator;
     editAccountName: TUEdit;
     comboAppBorderStyle: TComboBox;
     buttonImageForm: TUSymbolButton;
@@ -128,13 +127,12 @@ type
     procedure buttonRandomProgressClick(Sender: TObject);
     procedure buttonAniInverseClick(Sender: TObject);
     procedure buttonOpenMenuClick(Sender: TObject);
-    procedure radioDefaultThemeClick(Sender: TObject);
+    procedure radioSystemThemeClick(Sender: TObject);
     procedure radioLightThemeClick(Sender: TObject);
     procedure radioDarkThemeClick(Sender: TObject);
     procedure panelSelectAccentColorClick(Sender: TObject);
     procedure buttonMenuSettingsClick(Sender: TObject);
     procedure sliderHorzChange(Sender: TObject);
-    procedure AppThemeUpdate(Sender: TObject);
     procedure comboAppDPIChange(Sender: TObject);
     procedure itembuttonImageClick(Sender: TObject);
     procedure buttonLoginFormClick(Sender: TObject);
@@ -142,6 +140,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure popupEditItemClick(Sender: TObject; Index: Integer);
     procedure buttonImageFormClick(Sender: TObject);
+    procedure buttonHighlightClick(Sender: TObject);
 
   private
 
@@ -155,8 +154,8 @@ var
 implementation
 
 uses
-  DWMAPI, UxTheme,
-  Form.LoginDialog, Form.ImageBackground, DataModule.Main;
+  DataModule.Main,
+  Form.LoginDialog, Form.ImageBackground;
 
 {$R *.dfm}
 
@@ -196,8 +195,15 @@ begin
     procedure begin buttonRunning.SetFocus end);
 end;
 
+procedure TformDemo.buttonHighlightClick(Sender: TObject);
+begin
+  ThemeManager.Disconnect(buttonNoFocus);
+end;
+
 procedure TformDemo.buttonImageFormClick(Sender: TObject);
 begin
+  if formImageBackground = nil then
+    Application.CreateForm(TformImageBackground, formImageBackground);
   formImageBackground.Show;
 end;
 
@@ -245,26 +251,16 @@ end;
 
 procedure TformDemo.buttonLoginFormClick(Sender: TObject);
 begin
-  formLoginDialog.ShowModal;
+  if formLoginDialog = nil then
+    Application.CreateForm(TformLoginDialog, formLoginDialog);
+  formLoginDialog.Show;
 end;
 
 { THEME }
 
-procedure TformDemo.AppThemeUpdate(Sender: TObject);
-begin
-  //  Active color changed
-  panelSelectAccentColor.CustomBackColor := ThemeManager.AccentColor;
-
-  //  Color on border setting changed
-  if ThemeManager.ColorOnBorder = true then
-    checkColorBorder.State := cbsChecked
-  else
-    checkColorBorder.State := cbsUnchecked;
-end;
-
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
-  AppTheme.Reload;
+  ThemeManager.Reload;
 end;
 
 procedure TformDemo.comboAppBorderStyleChange(Sender: TObject);
@@ -340,7 +336,7 @@ end;
 
 { APP THEME SETTINGS }
 
-procedure TformDemo.radioDefaultThemeClick(Sender: TObject);
+procedure TformDemo.radioSystemThemeClick(Sender: TObject);
 begin
   ThemeManager.UseSystemTheme := true;
   ThemeManager.Reload;

@@ -41,6 +41,7 @@ type
       procedure UpdateBorderColor;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
 
@@ -125,7 +126,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -153,6 +157,13 @@ begin
 
   UpdateBorderColor;
   Invalidate;
+end;
+
+procedure TUForm.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS

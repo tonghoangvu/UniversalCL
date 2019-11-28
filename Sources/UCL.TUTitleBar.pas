@@ -28,6 +28,7 @@ type
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
 
     public
@@ -38,7 +39,7 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property TextPosition: Integer read FTextPosition write FTextPosition default 12;
-      property  Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
+      property Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property EnableSystemMenu: Boolean read FEnableSystemMenu write FEnableSystemMenu default true;
   end;
@@ -102,7 +103,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -122,6 +126,13 @@ begin
     Font.Color := $000000
   else
     Font.Color := $FFFFFF;
+end;
+
+procedure TUCustomTitleBar.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS

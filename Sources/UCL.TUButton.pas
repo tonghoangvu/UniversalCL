@@ -75,6 +75,7 @@ type
       procedure DoCustomTextColorsChange(Sender: TObject);
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
@@ -162,7 +163,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -174,6 +178,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -372,6 +383,7 @@ procedure TUCustomButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
   BorderThickness := MulDiv(BorderThickness, M, D);
+  UpdateRects;
 end;
 
 //  MESSAGES

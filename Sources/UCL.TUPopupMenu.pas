@@ -30,6 +30,9 @@ type
       procedure PopupForm_OnDeactivate(Sender: TObject);
       procedure PopupItem_OnClick(Sender: TObject);
 
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
@@ -106,7 +109,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -121,6 +127,13 @@ begin
     BackColor := $E6E6E6
   else
     BackColor := $1F1F1F;
+end;
+
+procedure TUPopupMenu.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS

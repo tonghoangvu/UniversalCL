@@ -21,6 +21,9 @@ type
       procedure SetTextKind(const Value: TUTextKind);
       procedure SetUseAccentColor(const Value: Boolean);
 
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
@@ -45,7 +48,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -68,6 +74,13 @@ begin
       else
         Font.Color := $FFFFFF;
     end;
+end;
+
+procedure TUText.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  SETTERS

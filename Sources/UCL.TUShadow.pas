@@ -26,6 +26,7 @@ type
       procedure SetDirection(const Value: TUDirection);
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
 
     public
@@ -100,7 +101,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -122,6 +126,13 @@ begin
     Color := DarkColor;
 
   Repaint;
+end;
+
+procedure TUCustomShadow.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  SETTERS
