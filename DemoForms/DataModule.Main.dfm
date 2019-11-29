@@ -3,7 +3,8 @@ object dmMain: TdmMain
   Height = 224
   Width = 303
   object AppTheme: TUThemeManager
-    OnUpdate = AppThemeUpdate
+    OnBeforeUpdate = AppThemeBeforeUpdate
+    OnAfterUpdate = AppThemeAfterUpdate
     Left = 160
     Top = 100
   end

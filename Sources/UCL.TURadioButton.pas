@@ -195,10 +195,23 @@ begin
 end;
 
 procedure TUCustomRadioButton.SetIsChecked(const Value: Boolean);
+var
+  i: Integer;
 begin
   if Value <> FIsChecked then
     begin
       FIsChecked := Value;
+
+      //  Uncheck all items with the same group
+      if Value then
+        for i := 0 to Parent.ControlCount - 1 do
+          if
+            (Parent.Controls[i] <> Self)
+            and (Parent.Controls[i] is TUCustomRadioButton)
+            and ((Parent.Controls[i] as TUCustomRadioButton).Group = Group)
+          then
+            (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
+
       Repaint;
     end;
 end;
@@ -312,26 +325,9 @@ end;
 //  MESSAGES
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
-var 
-  i: Integer;
 begin
-  //  Only unchecked can change
   if Enabled and HitTest then
-    begin
-      if not IsChecked then
-        begin
-          IsChecked := true;  //  Check it
-
-          //  Uncheck other TUCustomRadioButton with the same parent and group name
-          for i := 0 to Parent.ControlCount - 1 do
-            if Parent.Controls[i] is TUCustomRadioButton then
-              if
-                ((Parent.Controls[i] as TUCustomRadioButton).Group = Group)
-                and (Parent.Controls[i] <> Self)
-              then
-                (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
-        end;
-    end;
+    IsChecked := true;
 
   inherited;
 end;

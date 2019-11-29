@@ -523,7 +523,13 @@ object formDemo: TformDemo
       Margins.Bottom = 4
       Align = alRight
       Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ItemIndex = 0
+      ParentFont = False
       TabOrder = 0
       Text = '100%'
       OnChange = comboAppDPIChange
@@ -545,7 +551,13 @@ object formDemo: TformDemo
       Margins.Bottom = 4
       Align = alRight
       Style = csDropDownList
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ItemIndex = 2
+      ParentFont = False
       TabOrder = 1
       Text = 'bsSizeable'
       OnChange = comboAppBorderStyleChange

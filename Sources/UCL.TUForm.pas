@@ -3,7 +3,7 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
   System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Forms, VCL.Controls, VCL.Graphics;
@@ -99,7 +99,7 @@ begin
   else if IsActive then
     begin
       if ThemeManager.ColorOnBorder then
-        BorderColor := ThemeManager.AccentColor
+        BorderColor := GetAccentColor
       else if ThemeManager.Theme = utLight then
         BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
       else

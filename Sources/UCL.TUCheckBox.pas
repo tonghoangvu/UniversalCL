@@ -193,12 +193,13 @@ end;
 procedure TUCustomCheckBox.SetState(const Value: TUCheckBoxState);
 begin
   if Value <> FState then
-    if (not AllowGrayed) and (Value = cbsGrayed) then
-    else
-      begin
+    begin
+      if (not AllowGrayed) and (Value = cbsGrayed) then
+        FState := cbsUnchecked
+      else
         FState := Value;
-        Repaint;
-      end;
+      Repaint;
+    end;
 end;
 
 procedure TUCustomCheckBox.SetAllowGrayed(const Value: Boolean);

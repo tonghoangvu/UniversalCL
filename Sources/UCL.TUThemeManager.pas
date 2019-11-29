@@ -20,7 +20,8 @@ type
       FCompList: TList<TComponent>;
 
       //  Events
-      FOnUpdate: TNotifyEvent;
+      FOnBeforeUpdate: TNotifyEvent;
+      FOnAfterUpdate: TNotifyEvent;
 
       //  Internal
       FTheme: TUTheme;
@@ -66,7 +67,8 @@ type
       property ColorOnBorder: Boolean read FColorOnBorder stored false;
 
       //  Events
-      property OnUpdate: TNotifyEvent read FOnUpdate write FOnUpdate;
+      property OnBeforeUpdate: TNotifyEvent read FOnBeforeUpdate write FOnBeforeUpdate;
+      property OnAfterUpdate: TNotifyEvent read FOnAfterUpdate write FOnAfterUpdate;
   end;
 
 implementation
@@ -106,9 +108,6 @@ end;
 procedure TUThemeManager.Loaded;
 begin
   inherited;
-  if Assigned(FOnUpdate) then
-    FOnUpdate(Self);
-
   Reload;
 end;
 
@@ -148,12 +147,15 @@ procedure TUThemeManager.UpdateTheme;
 var
   Comp: TComponent;
 begin
-  if Assigned(FOnUpdate) then
-    FOnUpdate(Self);
+  if Assigned(FOnBeforeUpdate) then
+    FOnBeforeUpdate(Self);
 
   for Comp in FCompList do
     if Comp <> nil then
       (Comp as IUThemeComponent).UpdateTheme;
+
+  if Assigned(FOnAfterUpdate) then
+    FOnAfterUpdate(Self);
 end;
 
 //  COMPONENTS CONNECTING
