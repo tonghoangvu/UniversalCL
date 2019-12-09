@@ -64,7 +64,8 @@ contains
   UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
   UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
   UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
-  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas';
+  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
+  UCL.TUSmoothBox in 'Sources\UCL.TUSmoothBox.pas';
 
 end.
 

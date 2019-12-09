@@ -276,7 +276,7 @@ begin
     begin
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-      Canvas.FillRect(GetClientRect);
+      Canvas.FillRect(Rect(0, 0, Width, Height));
     end;
 
   //  Paint text

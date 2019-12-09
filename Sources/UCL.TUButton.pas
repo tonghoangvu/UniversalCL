@@ -347,7 +347,7 @@ begin
 
   //  Paint border
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
-  Canvas.FillRect(GetClientRect);
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);

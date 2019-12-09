@@ -122,6 +122,7 @@ type
     CutCtrlX1: TMenuItem;
     CopyCtrlC1: TMenuItem;
     PasteCtrlV1: TMenuItem;
+    buttonAppListForm: TUSymbolButton;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniStartClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -141,6 +142,7 @@ type
     procedure popupEditItemClick(Sender: TObject; Index: Integer);
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
+    procedure buttonAppListFormClick(Sender: TObject);
 
   private
 
@@ -155,11 +157,74 @@ implementation
 
 uses
   DataModule.Main,
-  Form.LoginDialog, Form.ImageBackground;
+  Form.LoginDialog, Form.ImageBackground, Form.AppList;
 
 {$R *.dfm}
 
-{ MAIN FORM }
+//  MAIN FORM
+
+procedure TformDemo.FormCreate(Sender: TObject);
+begin
+//  EnableBlur(Handle, 3);
+
+  ThemeManager := dmMain.AppTheme;
+end;
+
+//  ANIMATION TESTING
+
+procedure TformDemo.buttonAniStartClick(Sender: TObject);
+var
+  AniLength: Integer;
+begin
+  AniLength := 210;
+  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
+  buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
+end;
+
+procedure TformDemo.buttonAniInverseClick(Sender: TObject);
+var
+  AniLength: Integer;
+begin
+  AniLength := 210;
+  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
+  buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
+end;
+
+procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
+var
+  DPI: Single;
+  AniWidth: Integer;
+begin
+  DPI := PPI / 96;
+  AniWidth := Round((225 - 45 ) * DPI);
+  if drawerNavigation.Width <> Trunc(45 * DPI) then
+    AniWidth := - AniWidth;
+
+  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 30, 200, akOut, afkQuartic, nil);
+end;
+
+procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
+var
+  DPI: Single;
+  AniDelta: Integer;
+begin
+  DPI := Self.PPI / 96;
+
+  boxSmoothScrolling.DisableAlign;
+  boxSmoothScrolling.SetOldSBVisible(false);
+
+  if boxSmoothScrolling.Width = 0 then
+    AniDelta := Round(DPI * 250)
+  else
+    AniDelta := - boxSmoothScrolling.Width;
+
+  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
+    procedure begin boxSmoothScrolling.EnableAlign end);
+end;
+
+//  CONTROLS EVENTS
 
 procedure TformDemo.itembuttonImageClick(Sender: TObject);
 var
@@ -183,21 +248,32 @@ begin
   itembuttonImage.Detail := ObjName;
 end;
 
-{ ANIMATION BUTTON }
-
-procedure TformDemo.buttonAniStartClick(Sender: TObject);
-var
-  AniLength: Integer;
-begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
-end;
-
 procedure TformDemo.buttonHighlightClick(Sender: TObject);
 begin
   ThemeManager.Disconnect(buttonNoFocus);
+end;
+
+procedure TformDemo.sliderHorzChange(Sender: TObject);
+begin
+  //  Change progress bar value
+  progressConnected.Value := sliderHorz.Value;
+end;
+
+procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
+begin
+  Randomize;
+  progressCustomColor.GoToValue(Random(101));
+  progressConnected.GoToValue(Random(101));
+  progressVert.GoToValue(Random(101));
+end;
+
+//  OPEN FORM
+
+procedure TformDemo.buttonLoginFormClick(Sender: TObject);
+begin
+  if formLoginDialog = nil then
+    Application.CreateForm(TformLoginDialog, formLoginDialog);
+  formLoginDialog.Show;
 end;
 
 procedure TformDemo.buttonImageFormClick(Sender: TObject);
@@ -207,56 +283,14 @@ begin
   formImageBackground.Show;
 end;
 
-procedure TformDemo.buttonAniInverseClick(Sender: TObject);
-var
-  AniLength: Integer;
+procedure TformDemo.buttonAppListFormClick(Sender: TObject);
 begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+  if formAppList = nil then
+    Application.CreateForm(TformAppList, formAppList);
+  formAppList.Show;
 end;
 
-procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
-var
-  DPI: Single;
-  AniDelta: Integer;
-begin
-  DPI := Self.PPI / 96;
-
-  boxSmoothScrolling.DisableAlign;
-  boxSmoothScrolling.SetOldSBVisible(false);
-
-  if boxSmoothScrolling.Width = 0 then
-    AniDelta := Round(DPI * 250)
-  else
-    AniDelta := - boxSmoothScrolling.Width;
-
-  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
-    procedure begin boxSmoothScrolling.EnableAlign end);
-end;
-
-procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
-var
-  DPI: Single;
-  AniWidth: Integer;
-begin
-  DPI := PPI / 96;
-  AniWidth := Round((225 - 45 ) * DPI);
-  if drawerNavigation.Width <> Trunc(45 * DPI) then
-    AniWidth := - AniWidth;
-
-  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 30, 200, akOut, afkQuartic, nil);
-end;
-
-procedure TformDemo.buttonLoginFormClick(Sender: TObject);
-begin
-  if formLoginDialog = nil then
-    Application.CreateForm(TformLoginDialog, formLoginDialog);
-  formLoginDialog.Show;
-end;
-
-{ THEME }
+//  THEME
 
 procedure TformDemo.buttonReloadSettingsClick(Sender: TObject);
 begin
@@ -290,13 +324,6 @@ begin
   ScaleForPPI(NewPPI);
 end;
 
-procedure TformDemo.FormCreate(Sender: TObject);
-begin
-//  EnableBlur(Handle, 3);
-
-  ThemeManager := dmMain.AppTheme;
-end;
-
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);
 var
   NewColor: TColor;
@@ -312,29 +339,6 @@ begin
       ThemeManager.Reload;
     end;
 end;
-
-{ POPUP MENU }
-
-procedure TformDemo.popupEditItemClick(Sender: TObject; Index: Integer);
-var
-  Edit: TCustomEdit;
-begin
-  Self.SetFocus;  //  Close popup
-  if popupEdit.PopupComponent is TCustomEdit then
-    begin
-      Edit := popupEdit.PopupComponent as TCustomEdit;
-      case Index of
-        0:  //  Cut
-          Edit.CutToClipboard;
-        1:  //  Copy
-          Edit.CopyToClipboard;
-        2:  //  Paste
-          Edit.PasteFromClipboard;
-      end;
-    end;
-end;
-
-{ APP THEME SETTINGS }
 
 procedure TformDemo.radioSystemThemeClick(Sender: TObject);
 begin
@@ -356,20 +360,25 @@ begin
   ThemeManager.Reload;
 end;
 
-{ CONTROLS }
+//  POPUP MENU
 
-procedure TformDemo.sliderHorzChange(Sender: TObject);
+procedure TformDemo.popupEditItemClick(Sender: TObject; Index: Integer);
+var
+  Edit: TCustomEdit;
 begin
-  //  Change progress bar value
-  progressConnected.Value := sliderHorz.Value;
-end;
-
-procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
-begin
-  Randomize;
-  progressCustomColor.GoToValue(Random(101));
-  progressConnected.GoToValue(Random(101));
-  progressVert.GoToValue(Random(101));
+  Self.SetFocus;  //  Close popup
+  if popupEdit.PopupComponent is TCustomEdit then
+    begin
+      Edit := popupEdit.PopupComponent as TCustomEdit;
+      case Index of
+        0:  //  Cut
+          Edit.CutToClipboard;
+        1:  //  Copy
+          Edit.CopyToClipboard;
+        2:  //  Paste
+          Edit.PasteFromClipboard;
+      end;
+    end;
 end;
 
 end.

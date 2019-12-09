@@ -175,7 +175,7 @@ begin
   BlendBmp.Height := Height;
 
   AssignGradientBlendBitmap(BlendBmp, Color, Direction);
-  PaintBlendBitmap(Canvas, GetClientRect, BlendBmp, BlendFunc);
+  PaintBlendBitmap(Canvas, Rect(0, 0, Width, Height), BlendBmp, BlendFunc);
 end;
 
 end.

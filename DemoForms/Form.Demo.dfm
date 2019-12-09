@@ -814,6 +814,37 @@ object formDemo: TformDemo
       Align = alLeft
       OnClick = buttonImageFormClick
     end
+    object buttonAppListForm: TUSymbolButton
+      Left = 500
+      Top = 0
+      Width = 80
+      Height = 60
+      ThemeManager = dmMain.AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clBlack
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      Orientation = oVertical
+      SymbolChar = #57721
+      Text = 'App list'
+      TextOffset = 35
+      Detail = 'Detail'
+      ShowDetail = False
+      Transparent = True
+      Align = alLeft
+      OnClick = buttonAppListFormClick
+    end
   end
   object buttonNoFocus: TUButton
     Tag = 14
@@ -2056,6 +2087,7 @@ object formDemo: TformDemo
       AlignSpace = 5
       LineBetween = False
       Align = alTop
+      ExplicitTop = 488
     end
     object panelSelectAccentColor: TUPanel
       AlignWithMargins = True
@@ -2241,13 +2273,13 @@ object formDemo: TformDemo
   end
   object dialogSelectColor: TColorDialog
     Color = 14120960
-    Left = 690
+    Left = 720
     Top = 40
   end
   object popupEdit: TUPopupMenu
     ThemeManager = dmMain.AppTheme
     OnItemClick = popupEditItemClick
-    Left = 600
+    Left = 640
     Top = 42
     object CutCtrlX1: TMenuItem
       Caption = #57707'Cut|Ctrl+X'
