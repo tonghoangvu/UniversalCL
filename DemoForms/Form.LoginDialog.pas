@@ -3,19 +3,18 @@ unit Form.LoginDialog;
 interface
 
 uses
-  UCL.TUThemeManager, UCL.TUForm, UCL.TUScrollBox, UCL.Classes, UCL.Utils,
+  UCL.TUThemeManager, UCL.TUForm, UCL.Classes, UCL.Utils,
   UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
-  UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton,
+  UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox,
 
-  Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Classes,
+  Winapi.Windows, Winapi.Messages,
   Vcl.Forms, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Menus, Vcl.ExtCtrls, Vcl.Controls;
 
 type
   TformLoginDialog = class(TUForm)
     boxMain: TUScrollBox;
     captionbarMain: TUCaptionBar;
-    AppTheme: TUThemeManager;
     buttonOk: TUButton;
     buttonCancel: TUButton;
     titleSignin: TUText;
@@ -32,15 +31,17 @@ type
     buttonAppTheme: TUQuickButton;
     editEmail: TUEdit;
     editPassword: TUEdit;
-    popupEditAction: TUPopupMenu;
     entryDescription: TUText;
     editDescription: TUEdit;
+    popupEdit: TUPopupMenu;
+    CutCtrlX1: TMenuItem;
+    CopyCtrlC1: TMenuItem;
+    PasteCtrlV1: TMenuItem;
     procedure buttonCancelClick(Sender: TObject);
     procedure textShowMoreOptionsClick(Sender: TObject);
     procedure buttonAppThemeClick(Sender: TObject);
     procedure buttonOkClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure popupEditActionItemClick(Sender: TObject; Index: Integer);
+    procedure popupEditItemClick(Sender: TObject; Index: Integer);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
@@ -53,6 +54,9 @@ var
 
 implementation
 
+uses
+  DataModule.Main;
+
 {$R *.dfm}
 
 procedure TformLoginDialog.buttonAppThemeClick(Sender: TObject);
@@ -61,6 +65,8 @@ begin
     ThemeManager.CustomTheme := utDark
   else
     ThemeManager.CustomTheme := utLight;
+  ThemeManager.UseSystemTheme := false;
+  ThemeManager.Reload;
 end;
 
 procedure TformLoginDialog.buttonCancelClick(Sender: TObject);
@@ -76,23 +82,18 @@ end;
 procedure TformLoginDialog.FormCreate(Sender: TObject);
 begin
 //  EnableBlur(Handle, 3);
+
+  ThemeManager := dmMain.AppTheme;
 end;
 
-procedure TformLoginDialog.FormShow(Sender: TObject);
-begin
-  //  Setup UForm properties
-  ThemeManager := AppTheme;
-end;
-
-procedure TformLoginDialog.popupEditActionItemClick(Sender: TObject;
-  Index: Integer);
+procedure TformLoginDialog.popupEditItemClick(Sender: TObject; Index: Integer);
 var
   Edit: TCustomEdit;
 begin
   Self.SetFocus;  //  Close popup
-  if popupEditAction.PopupComponent is TCustomEdit then
+  if popupEdit.PopupComponent is TCustomEdit then
     begin
-      Edit := popupEditAction.PopupComponent as TCustomEdit;
+      Edit := popupEdit.PopupComponent as TCustomEdit;
       case Index of
         0:  //  Cut
           Edit.CutToClipboard;

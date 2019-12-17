@@ -41,6 +41,9 @@ type
       //  Group property change
       procedure DoCustomTextColorsChange(Sender: TObject);
 
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
@@ -71,7 +74,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -89,6 +95,13 @@ begin
       else
         Font.Color := DefTextColor[ThemeManager.Theme, ButtonState];
     end;
+end;
+
+procedure TUHyperLink.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  SETTERS

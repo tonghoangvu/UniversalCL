@@ -182,6 +182,8 @@ begin
               Alpha := X / Bmp.Width;
             dBottom:
               Alpha := Y / Bmp.Height;
+            else
+              continue;
           end;
 
           A := Trunc(Alpha * 255);

@@ -75,6 +75,7 @@ type
       procedure DoCustomTextColorsChange(Sender: TObject);
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
@@ -96,7 +97,7 @@ type
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
       property HitTest: Boolean read FHitTest write FHitTest default true;
-      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default false;
+      property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write FIsToggled default false;
@@ -162,7 +163,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -174,6 +178,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -303,7 +314,7 @@ begin
   FAlignment := taCenter;
   FImageIndex := -1;
   FHitTest := true;
-  FAllowFocus := false;
+  FAllowFocus := true;
   FHighlight := false;
   FIsToggleButton := false;
   FIsToggled := false;
@@ -336,7 +347,7 @@ begin
 
   //  Paint border
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
-  Canvas.FillRect(GetClientRect);
+  Canvas.FillRect(Rect(0, 0, Width, Height));
 
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
@@ -372,6 +383,7 @@ procedure TUCustomButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
 begin
   inherited;
   BorderThickness := MulDiv(BorderThickness, M, D);
+  UpdateRects;
 end;
 
 //  MESSAGES

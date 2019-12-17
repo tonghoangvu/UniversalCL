@@ -3,92 +3,101 @@ unit UCL.TUPopupMenu;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.IntAnimation.Helpers,
-  UCL.TUSymbolButton, UCL.TUForm,
-  System.Classes, System.SysUtils,
+  UCL.IntAnimation, UCL.IntAnimation.Helpers,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton,
+  System.Classes, System.Types,
   Winapi.Windows,
-  VCL.Controls, VCL.Menus, VCL.ImgList, VCL.Forms, VCL.Graphics;
+  VCL.Forms, VCL.Controls, VCL.Menus, VCL.Graphics, VCL.Dialogs;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;
 
   TUPopupMenu = class(TPopupMenu, IUThemeComponent)
     private
-      var PPI: Integer;
-      var BackColor, BorderColor: TColor;
+      var BackColor: TColor;
 
       FThemeManager: TUThemeManager;
-      FItemsData: TStrings;
-      FImages: TCustomImageList;
-
-      FSeparatorChar: Char;
-      FOrientation: TUOrientation;
-      FItemWidth: Integer;
-      FItemHeight: Integer;
-
       FOnItemClick: TIndexNotifyEvent;
 
-      //  Setters
-      procedure SetThemeManager(const Value: TUThemeManager);
-      procedure SetItemsData(const Value: TStrings);
+      FItemWidth: Integer;
+      FItemHeight: Integer;
+      FTopSpace: Integer;
+      FImageKind: TUImageKind;
+      FCloseAnimation: Boolean;
 
-      //  Custom events
-      procedure PopupForm_OnDeactive(Sender: TObject);
+      procedure SetThemeManager(const Value: TUThemeManager);
+
+      procedure PopupForm_OnDeactivate(Sender: TObject);
       procedure PopupItem_OnClick(Sender: TObject);
+
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
     public
       constructor Create(aOwner: TComponent); override;
-      destructor Destroy; override;
       procedure UpdateTheme;
 
       procedure Popup(X, Y: Integer); override;
       procedure PopupAtPoint(P: TPoint); overload;
       procedure PopupAtMouse; overload;
 
-
-      function PackItem(const ImageIndex: Integer; const Text, Detail: string): string;
-      procedure UnpackItem(const Str: string; out ImageIndex: Integer; out Text, Detail: string);
+      procedure ExtractPackedContent(Input: string; out Icon, Text, Detail: string);
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property ItemsData: TStrings read FItemsData write SetItemsData;
-      property Images: TCustomImageList read FImages write FImages;
-
-      property SeparatorChar: Char read FSeparatorChar write FSeparatorChar;
-      property Orientation: TUOrientation read FOrientation write FOrientation default oVertical;
-      property ItemWidth: Integer read FItemWidth write FItemWidth default 180;
-      property ItemHeight: Integer read FItemHeight write FItemHeight default 32;
-
       property OnItemClick: TIndexNotifyEvent read FOnItemClick write FOnItemClick;
+
+      property ItemWidth: Integer read FItemWidth write FItemWidth default 200;
+      property ItemHeight: Integer read FItemHeight write FItemHeight default 32;
+      property TopSpace: Integer read FTopSpace write FTopSpace default 5;
+      property ImageKind: TUImageKind read FImageKind write FImageKind default ikFontIcon;
+      property CloseAnimation: Boolean read FCloseAnimation write FCloseAnimation default false;
   end;
 
 implementation
 
-{ TUPopupMenu }
+{ Other }
 
-//  UTILS
-
-function TUPopupMenu.PackItem(const ImageIndex: Integer; const Text,
-  Detail: string): string;
-begin
-  Result :=
-    ImageIndex.ToString + SeparatorChar +
-    Text + SeparatorChar +
-    Detail;
-end;
-
-procedure TUPopupMenu.UnpackItem(const Str: string;
-  out ImageIndex: Integer; out Text, Detail: string);
+procedure TUPopupMenu.PopupForm_OnDeactivate(Sender: TObject);
 var
-  FirstPos, SecondPos: Integer;
+  Form: TUForm;
+  Ani: TIntAni;
 begin
-  FirstPos := Pos(SeparatorChar, Str);
-  SecondPos := Pos(SeparatorChar, Str, FirstPos + 1);
+  if not ((Sender is TForm) and (Sender <> nil)) then exit;
 
-  ImageIndex := StrToIntDef(Copy(Str, 1, FirstPos - 1), -1);
-  Text := Copy(Str, FirstPos + 1, SecondPos - FirstPos - 1);
-  Detail := Copy(Str, SecondPos + 1, Length(Str) - SecondPos);
+  Form := (Sender as TUForm);
+
+  if not CloseAnimation then
+    begin
+      Form.Free;
+      exit;
+    end;
+
+  Ani := TIntAni.Create(true, akIn, afkQuartic, Form.ClientHeight, -Form.ClientHeight,
+    procedure (Value: Integer)
+    begin
+      Form.Height := Value;
+    end);
+
+  Ani.OnDone :=
+    procedure
+    begin
+      Form.Close;
+    end;
+
+  Ani.Step := 20;
+  Ani.Duration := 120;
+  Ani.Start;
 end;
+
+procedure TUPopupMenu.PopupItem_OnClick(Sender: TObject);
+begin
+  if Sender is TUSymbolButton then
+    if Assigned(FOnItemClick) then
+      FOnItemClick(Self, (Sender as TUSymbolButton).Tag);
+end;
+
+{ TUPopupMenu }
 
 //  THEME
 
@@ -100,7 +109,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -110,30 +122,18 @@ end;
 procedure TUPopupMenu.UpdateTheme;
 begin
   if ThemeManager = nil then
-    begin
-      BackColor := $E6E6E6;
-      BorderColor := $C6C6C6;
-    end
+    BackColor := $E6E6E6
   else if ThemeManager.Theme = utLight then
-    begin
-      BackColor := $E6E6E6;
-      BorderColor := $C6C6C6;
-    end
+    BackColor := $E6E6E6
   else
-    begin
-      BackColor := $1F1F1F;
-      BorderColor := $141414;
-    end;
+    BackColor := $1F1F1F;
 end;
 
-//  SETTERS
-
-procedure TUPopupMenu.SetItemsData(const Value: TStrings);
+procedure TUPopupMenu.Notification(AComponent: TComponent; Operation: TOperation);
 begin
-  if FItemsData <> nil then
-    FItemsData.Assign(Value)
-  else
-    FItemsData := Value;
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS
@@ -142,147 +142,120 @@ constructor TUPopupMenu.Create(aOwner: TComponent);
 begin
   inherited;
 
-  PPI := 96;
   BackColor := $E6E6E6;
-  BorderColor := $C6C6C6;
 
-  FSeparatorChar := '|';
-  FOrientation := oVertical;
-  FItemWidth := 180;
+  FItemWidth := 200;
   FItemHeight := 32;
-
-  FItemsData := TStringList.Create;
+  FTopSpace := 5;
+  FImageKind := ikFontIcon;
+  FCloseAnimation := false;
 end;
 
-destructor TUPopupMenu.Destroy;
-begin
-  FItemsData.Free;
-  inherited;
-end;
+//  UTILS
 
-//  CUSTOM METHODS
-
-procedure TUPopupMenu.Popup(X, Y: Integer);
+procedure TUPopupMenu.ExtractPackedContent(Input: string; out Icon, Text, Detail: string);
 var
-  Form: TForm;
-  BorderThickness, ThicknessPos: Integer;
-  Item: TUSymbolButton;
-
-  Ani: TIntAni;
-  AniLength: Integer;
-  TempImageIndex: Integer;
-  TempText, TempDetail: string;
-  i: Integer;
+  SeparatorPos: Integer;
 begin
-  inherited;
-  DoPopup(Self);
-
-  if Owner is TUForm then
-    PPI := (Owner as TUForm).PPI
-  else
-    PPI := 96;
-
-  //  Init variables
-  BorderThickness := 1;
-
-  Application.CreateForm(TForm, Form);
-  Form.Scaled := false; //  Scale manually
-  Form.Visible := true;
-  Form.BorderStyle := bsNone;
-
-  Form.Left := X;
-  Form.Top := Y;
-  Form.Color := BackColor;
-  Form.Padding.SetBounds(BorderThickness, BorderThickness, BorderThickness, BorderThickness);
-
-  Form.OnDeactivate := PopupForm_OnDeactive;
-
-  //  Animation appearance
-  if Orientation = oVertical then
+  if Length(Input) = 0 then
     begin
-      Form.Width := Round(ItemWidth * PPI / 96);
-      Form.Height := 0;
-      AniLength := ItemsData.Count * Round(ItemHeight * PPI / 96) + 2 * BorderThickness;
-      Ani := TIntAni.Create(true, akOut, afkQuartic, 0, +AniLength,
-        procedure (V: Integer) begin Form.Height := V end);
+      Icon := '';
+      Text := '';
+      Detail := '';
     end
   else
     begin
-      Form.Height := Round(ItemHeight * PPI / 96);
-      Form.Width := 0;
-      AniLength := ItemsData.Count * Round(ItemWidth * PPI / 96) + 2 * BorderThickness;
-      Ani := TIntAni.Create(true, akOut, afkQuartic, 0, +AniLength,
-        procedure (V: Integer) begin Form.Width := V end);
-    end;
-
-  Ani.OnDone := procedure
-    begin
-      if BorderThickness mod 2 = 0 then
-        ThicknessPos := BorderThickness div 2 - 1
-      else
-        ThicknessPos := BorderThickness div 2;
-
-      Form.Canvas.Pen.Color := BorderColor;
-      Form.Canvas.Pen.Width := BorderThickness;
-      Form.Canvas.Rectangle(Rect(
-        BorderThickness div 2,
-        BorderThickness div 2,
-        Form.Width - ThicknessPos,
-        Form.Height - ThicknessPos));
-    end;
-
-  //  Add ItemsData
-  for i := 0 to ItemsData.Count - 1 do
-    begin
-      Item := TUSymbolButton.Create(Form);
-      Item.Parent := Form;
-      Item.Tag := i;
-      Item.Visible := true;
-      Item.ShowIcon := true;
-
-      Item.ThemeManager := ThemeManager;
-      Item.Images := Images;
-      Item.OnClick := PopupItem_OnClick;
-
-      UnpackItem(ItemsData[i], TempImageIndex, TempText, TempDetail);
-      Item.ImageIndex := TempImageIndex;
-      Item.Text := TempText;
-      Item.Detail := TempDetail;
-
-      Item.SymbolChar := ItemsData[i][1];
-      if Images = nil then
-        Item.ImageKind := ikFontIcon
-      else
-        Item.ImageKind := ikImage;
-      if TempDetail = '' then
-        Item.ShowDetail := false;
-
-      Item.Height := ItemHeight;
-      Item.Width := ItemWidth;
-      if Orientation = oVertical then
+      Icon := Input[1];
+      Input := Copy(Input, 2, Length(Input) - 1);
+      SeparatorPos := Pos('|', Input);
+      if SeparatorPos = 0 then
         begin
-          Item.Top := i * ItemHeight + 1;
-          Item.Align := alTop;
+          Text := Input;
+          Detail := '';
         end
       else
         begin
-          Item.Left := i * ItemWidth + 1;
-          Item.Align := alLeft;
+          Text := Copy(Input, 1, SeparatorPos - 1);
+          Detail := Copy(Input, SeparatorPos + 1, Length(Input) - SeparatorPos);
         end;
     end;
-
-  if PPI <> 96 then
-    Form.ScaleForPPI(PPI);
-
-  //  Begin animation
-  Ani.Duration := 200;
-  Ani.Step := 20;
-  Ani.Start;
 end;
 
-procedure TUPopupMenu.PopupAtMouse;
+procedure TUPopupMenu.Popup(X, Y: Integer);
+var
+  Form: TUForm;
+  i, ItemCount: Integer;
+  MenuItem: TMenuItem;
+  UItem: TUSymbolButton;
+  Icon, Text, Detail: string;
+  Ani: TIntAni;
 begin
-  Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  //  Getting something
+  ItemCount := Self.Items.Count;
+
+  if ItemCount = 0 then exit;
+
+  //  Create popup form
+  Form := TUForm.CreateNew(Self);
+
+  Form.OnDeactivate := PopupForm_OnDeactivate;
+
+  Form.DoubleBuffered := true;
+  Form.BorderStyle := bsToolWindow;
+  Form.Position := poDefaultPosOnly;
+  Form.Color := BackColor;
+  Form.ClientWidth := ItemWidth;
+  Form.ClientHeight := 0;
+
+    //  Build items
+  for i := ItemCount - 1 downto 0 do
+    begin
+      MenuItem := Self.Items[i];
+
+      UItem := TUSymbolButton.Create(Form);
+      UItem.Tag := i;
+      UItem.Parent := Form;
+      UItem.Enabled := MenuItem.Enabled;
+      UItem.ThemeManager := Self.ThemeManager;
+      UItem.OnClick := PopupItem_OnClick;
+
+      if i = 0 then
+        begin
+          UItem.Margins.SetBounds(0, TopSpace, 0, 0);
+          UItem.AlignWithMargins := true;
+        end;
+
+      UItem.Hint := MenuItem.Hint;
+      UItem.Images := Self.Images;
+      UItem.ImageIndex := MenuItem.ImageIndex;
+
+      ExtractPackedContent(MenuItem.Caption, Icon, Text, Detail);
+      UItem.SymbolChar := Icon;
+      UItem.Text := Text;
+      UItem.Detail := Detail;
+      UItem.ImageKind := Self.ImageKind;
+
+      UItem.Align := alTop;
+      UItem.Width := ItemWidth;
+      UItem.Height := ItemHeight;
+      UItem.ShowHint := true;
+    end;
+
+  Form.Show;
+
+  //  Position & size
+  Form.Left := X;
+  Form.Top := Y;
+
+  //  Animation
+  Ani := TIntAni.Create(true, akOut, afkQuartic, 0, 2 * TopSpace + ItemCount * ItemHeight,
+    procedure (Value: Integer)
+    begin
+      Form.ClientHeight := Value;
+    end);
+  Ani.Duration := 120;
+  Ani.Step := 20;
+  Ani.Start;
 end;
 
 procedure TUPopupMenu.PopupAtPoint(P: TPoint);
@@ -290,27 +263,9 @@ begin
   Popup(P.X, P.Y);
 end;
 
-procedure TUPopupMenu.PopupForm_OnDeactive(Sender: TObject);
-var
-  Form: TForm;
+procedure TUPopupMenu.PopupAtMouse;
 begin
-  if not ((Sender is TForm) and (Sender <> nil)) then exit;
-
-  Form := Sender as TForm;
-
-  if Orientation = oVertical then
-    Form.AnimationFromCurrent(apHeight, -Form.Height, 20, 120, akOut, afkQuartic,
-    procedure begin Form.Close end)
-  else
-    Form.AnimationFromCurrent(apWidth, -Form.Width, 20, 120, akOut, afkQuartic,
-    procedure begin Form.Close end);
-end;
-
-procedure TUPopupMenu.PopupItem_OnClick(Sender: TObject);
-begin
-  if Sender is TUSymbolButton then
-    if Assigned(FOnItemClick) then
-      FOnItemClick(Self, (Sender as TUSymbolButton).Tag);
+  Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
 end.

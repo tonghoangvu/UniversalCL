@@ -3,7 +3,7 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
   System.Classes,
   Winapi.Windows, Winapi.Messages,
   VCL.Forms, VCL.Controls, VCL.Graphics;
@@ -41,6 +41,7 @@ type
       procedure UpdateBorderColor;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
 
@@ -98,7 +99,7 @@ begin
   else if IsActive then
     begin
       if ThemeManager.ColorOnBorder then
-        BorderColor := ThemeManager.AccentColor
+        BorderColor := GetAccentColor
       else if ThemeManager.Theme = utLight then
         BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
       else
@@ -125,7 +126,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -153,6 +157,13 @@ begin
 
   UpdateBorderColor;
   Invalidate;
+end;
+
+procedure TUForm.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS
@@ -247,7 +258,7 @@ end;
 procedure TUForm.WM_DWMColorizationColorChanged(var Msg: TMessage);
 begin
   if ThemeManager <> nil then
-    ThemeManager.ReloadAutoSettings;
+    ThemeManager.Reload;
   inherited;
 end;
 

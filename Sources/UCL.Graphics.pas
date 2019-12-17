@@ -71,6 +71,6 @@ begin
 end;
 
 initialization
-  DEFAULT_GLASSTEXT_GLOWSIZE := 2;
+  DEFAULT_GLASSTEXT_GLOWSIZE := 0;
 
 end.

@@ -36,7 +36,7 @@ requires
   vclwinx;
 
 contains
-  RegisterPackage in 'RegisterPackage.pas',
+  RegisterPackage_UCL in 'RegisterPackage_UCL.pas',
   UCL.Classes in 'Sources\UCL.Classes.pas',
   UCL.IntAnimation.Collection in 'Sources\UCL.IntAnimation.Collection.pas',
   UCL.IntAnimation.Helpers in 'Sources\UCL.IntAnimation.Helpers.pas',
@@ -50,7 +50,6 @@ contains
   UCL.TUHyperLink in 'Sources\UCL.TUHyperLink.pas',
   UCL.TUItemButton in 'Sources\UCL.TUItemButton.pas',
   UCL.TUPanel in 'Sources\UCL.TUPanel.pas',
-  UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
   UCL.TUProgressBar in 'Sources\UCL.TUProgressBar.pas',
   UCL.TURadioButton in 'Sources\UCL.TURadioButton.pas',
   UCL.TUScrollBox in 'Sources\UCL.TUScrollBox.pas',
@@ -59,13 +58,14 @@ contains
   UCL.TUSymbolButton in 'Sources\UCL.TUSymbolButton.pas',
   UCL.TUText in 'Sources\UCL.TUText.pas',
   UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
-  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
   UCL.Utils in 'Sources\UCL.Utils.pas',
   UCL.Graphics in 'Sources\UCL.Graphics.pas',
-  UCL.TUContextMenu in 'Sources\UCL.TUContextMenu.pas',
+  UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
   UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
   UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
-  UCL.TUShadow in 'Sources\UCL.TUShadow.pas';
+  UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
+  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
+  UCL.TUSmoothBox in 'Sources\UCL.TUSmoothBox.pas';
 
 end.
 

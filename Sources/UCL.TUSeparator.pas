@@ -33,6 +33,7 @@ type
       procedure SetUseAccentColor(const Value: Boolean);
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
 
     public
@@ -108,7 +109,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -119,6 +123,13 @@ procedure TUCustomSeparator.UpdateTheme;
 begin
   UpdateColors;
   Repaint;
+end;
+
+procedure TUCustomSeparator.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL

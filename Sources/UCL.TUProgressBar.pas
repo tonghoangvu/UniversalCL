@@ -34,6 +34,7 @@ type
       procedure SetOrientation(const Value: TUOrientation);
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -112,7 +113,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -124,6 +128,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomProgressBar.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL

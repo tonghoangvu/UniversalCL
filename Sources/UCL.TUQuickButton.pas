@@ -42,6 +42,7 @@ type
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
 
     public
@@ -119,7 +120,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -130,6 +134,13 @@ procedure TUCustomQuickButton.UpdateTheme;
 begin
   UpdateColors;
   Repaint;
+end;
+
+procedure TUCustomQuickButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL

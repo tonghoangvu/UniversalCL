@@ -43,6 +43,7 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
       procedure Paint; override;
       procedure Resize; override;
@@ -123,7 +124,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -135,6 +139,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomRadioButton.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -184,10 +195,23 @@ begin
 end;
 
 procedure TUCustomRadioButton.SetIsChecked(const Value: Boolean);
+var
+  i: Integer;
 begin
   if Value <> FIsChecked then
     begin
       FIsChecked := Value;
+
+      //  Uncheck all items with the same group
+      if Value then
+        for i := 0 to Parent.ControlCount - 1 do
+          if
+            (Parent.Controls[i] <> Self)
+            and (Parent.Controls[i] is TUCustomRadioButton)
+            and ((Parent.Controls[i] as TUCustomRadioButton).Group = Group)
+          then
+            (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
+
       Repaint;
     end;
 end;
@@ -241,10 +265,9 @@ end;
 procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
 begin
   inherited;
-
   IconFont.Height := MulDiv(IconFont.Height, M, D);
-
-  Resize;
+  Resize;   //  Autosize
+  //UpdateRects;  //  Do not update rects, resize already do that
 end;
 
 procedure TUCustomRadioButton.Paint;
@@ -302,26 +325,9 @@ end;
 //  MESSAGES
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
-var 
-  i: Integer;
 begin
-  //  Only unchecked can change
   if Enabled and HitTest then
-    begin
-      if not IsChecked then
-        begin
-          IsChecked := true;  //  Check it
-
-          //  Uncheck other TUCustomRadioButton with the same parent and group name
-          for i := 0 to Parent.ControlCount - 1 do
-            if Parent.Controls[i] is TUCustomRadioButton then
-              if
-                ((Parent.Controls[i] as TUCustomRadioButton).Group = Group)
-                and (Parent.Controls[i] <> Self)
-              then
-                (Parent.Controls[i] as TUCustomRadioButton).IsChecked := false;
-        end;
-    end;
+    IsChecked := true;
 
   inherited;
 end;

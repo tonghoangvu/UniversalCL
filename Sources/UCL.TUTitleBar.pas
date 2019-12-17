@@ -9,12 +9,17 @@ uses
   VCL.Controls, VCL.Graphics, VCL.Forms;
 
 type
-  TUCustomTitleBar = class(TGraphicControl)
+  TUCustomTitleBar = class(TGraphicControl, IUThemeComponent)
     private
+      FThemeManager: TUThemeManager;
+
       FTextPosition: Integer;
       FAlignment: TAlignment;
       FDragMovement: Boolean;
       FEnableSystemMenu: Boolean;
+
+      //  Setters
+      procedure SetThemeManager(const Value: TUThemeManager);
 
       //  Mesages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -23,14 +28,18 @@ type
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
 
     public
       constructor Create(aOwner: TComponent); override;
+      procedure UpdateTheme;
 
     published
+      property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+
       property TextPosition: Integer read FTextPosition write FTextPosition default 12;
-      property  Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
+      property Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property EnableSystemMenu: Boolean read FEnableSystemMenu write FEnableSystemMenu default true;
   end;
@@ -83,6 +92,48 @@ type
 implementation
 
 { TUCustomTitleBar }
+
+//  THEME
+
+procedure TUCustomTitleBar.SetThemeManager(const Value: TUThemeManager);
+begin
+  if Value <> FThemeManager then
+    begin
+      if FThemeManager <> nil then
+        FThemeManager.Disconnect(Self);
+
+      if Value <> nil then
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
+
+      FThemeManager := Value;
+      UpdateTheme;
+    end;
+end;
+
+procedure TUCustomTitleBar.UpdateTheme;
+var
+  IsLightTheme: Boolean;
+begin
+  if ThemeManager = nil then
+    IsLightTheme := true
+  else
+    IsLightTheme := ThemeManager.Theme = utLight;
+
+  if IsLightTheme then
+    Font.Color := $000000
+  else
+    Font.Color := $FFFFFF;
+end;
+
+procedure TUCustomTitleBar.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
+end;
 
 //  MAIN CLASS
 

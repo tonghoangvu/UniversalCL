@@ -48,6 +48,7 @@ type
       procedure CM_EnabledChanged(var Msg: TMessage); message CM_ENABLEDCHANGED;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -129,7 +130,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -141,6 +145,13 @@ begin
   UpdateColors;
   UpdateRects;
   Repaint;
+end;
+
+procedure TUCustomCheckBox.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL
@@ -182,12 +193,13 @@ end;
 procedure TUCustomCheckBox.SetState(const Value: TUCheckBoxState);
 begin
   if Value <> FState then
-    if (not AllowGrayed) and (Value = cbsGrayed) then
-    else
-      begin
+    begin
+      if (not AllowGrayed) and (Value = cbsGrayed) then
+        FState := cbsUnchecked
+      else
         FState := Value;
-        Repaint;
-      end;
+      Repaint;
+    end;
 end;
 
 procedure TUCustomCheckBox.SetAllowGrayed(const Value: Boolean);
@@ -264,7 +276,7 @@ begin
     begin
       Canvas.Brush.Style := bsSolid;
       Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-      Canvas.FillRect(GetClientRect);
+      Canvas.FillRect(Rect(0, 0, Width, Height));
     end;
 
   //  Paint text
@@ -321,6 +333,7 @@ begin
   inherited;
   IconFont.Height := MulDiv(IconFont.Height, M, D);
   Resize;   //  Autosize
+  //UpdateRects;  //  Do not update rects, resize already do that
 end;
 
 //  MESSAGES

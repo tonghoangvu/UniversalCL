@@ -26,6 +26,9 @@ type
       procedure WM_RButtonUp(var Msg: TMessage); message WM_RBUTTONUP;
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
+    protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+
     public
       constructor Create(aOwner: TComponent); override;
       procedure UpdateTheme;
@@ -52,7 +55,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -71,6 +77,13 @@ begin
 
   //  Font color
   Font.Color := GetTextColorFromBackground(Color);
+end;
+
+procedure TUCaptionBar.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 // MAIN CLASS

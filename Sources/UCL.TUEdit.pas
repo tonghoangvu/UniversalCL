@@ -60,6 +60,7 @@ type
       procedure UM_SubEditKillFocus(var Msg: TMessage); message UM_SUBEDIT_KILLFOCUS;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
@@ -107,7 +108,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -118,6 +122,13 @@ procedure TUEdit.UpdateTheme;
 begin
   UpdateColors;
   Repaint;
+end;
+
+procedure TUEdit.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  INTERNAL

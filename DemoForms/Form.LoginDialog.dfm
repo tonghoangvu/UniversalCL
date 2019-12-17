@@ -16,7 +16,6 @@ object formLoginDialog: TformLoginDialog
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 15
   object boxMain: TUScrollBox
@@ -34,7 +33,7 @@ object formLoginDialog: TformLoginDialog
     ParentColor = False
     ParentDoubleBuffered = False
     TabOrder = 0
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     MaxScrollCount = 6
     object titleSignin: TUText
       AlignWithMargins = True
@@ -55,7 +54,7 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkTitle
       UseAccentColor = True
       ExplicitWidth = 137
@@ -79,7 +78,7 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkHeading
       ExplicitWidth = 197
     end
@@ -96,7 +95,7 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI Semibold'
       Font.Style = []
       ParentFont = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
       ExplicitWidth = 58
     end
@@ -113,7 +112,7 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI Semibold'
       Font.Style = []
       ParentFont = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
       ExplicitWidth = 32
     end
@@ -137,7 +136,7 @@ object formLoginDialog: TformLoginDialog
       Font.Style = []
       ParentFont = False
       OnClick = textShowMoreOptionsClick
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkDescription
       ExplicitWidth = 103
     end
@@ -154,7 +153,7 @@ object formLoginDialog: TformLoginDialog
       Font.Name = 'Segoe UI Semibold'
       Font.Style = []
       ParentFont = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
       ExplicitWidth = 130
     end
@@ -176,7 +175,7 @@ object formLoginDialog: TformLoginDialog
       ShowCaption = False
       TabOrder = 0
       Visible = False
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       CustomTextColor = clBlack
       CustomBackColor = 15132390
       object checkSendMeNews: TUCheckBox
@@ -184,7 +183,7 @@ object formLoginDialog: TformLoginDialog
         Top = 30
         Width = 330
         Height = 30
-        ThemeManager = AppTheme
+        ThemeManager = dmMain.AppTheme
         IconFont.Charset = DEFAULT_CHARSET
         IconFont.Color = clWindowText
         IconFont.Height = -20
@@ -204,7 +203,7 @@ object formLoginDialog: TformLoginDialog
         Top = 0
         Width = 330
         Height = 30
-        ThemeManager = AppTheme
+        ThemeManager = dmMain.AppTheme
         IconFont.Charset = DEFAULT_CHARSET
         IconFont.Color = clWindowText
         IconFont.Height = -20
@@ -247,7 +246,7 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ShowCaption = False
       TabOrder = 1
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 321
@@ -261,7 +260,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
       Edit.ParentFont = False
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your email here'
     end
@@ -291,7 +290,7 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ShowCaption = False
       TabOrder = 2
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 321
@@ -306,7 +305,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Style = []
       Edit.ParentFont = False
       Edit.PasswordChar = '*'
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Enter your password here'
     end
@@ -337,7 +336,7 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ShowCaption = False
       TabOrder = 3
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 321
@@ -351,7 +350,7 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Style = []
       Edit.ParentColor = True
       Edit.ParentFont = False
-      Edit.PopupMenu = popupEditAction
+      Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Talk about yourself'
       Transparent = True
@@ -375,14 +374,14 @@ object formLoginDialog: TformLoginDialog
     ParentBackground = False
     ParentFont = False
     TabOrder = 1
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     object buttonAppQuit: TUQuickButton
       Left = 365
       Top = 0
       Width = 45
       Height = 32
       Hint = 'Close'
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsQuit
       LightColor = 2298344
       DarkColor = 2298344
@@ -404,7 +403,7 @@ object formLoginDialog: TformLoginDialog
       Width = 45
       Height = 32
       Hint = 'Minimize'
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsMin
       LightColor = 13619151
       DarkColor = 3947580
@@ -426,7 +425,7 @@ object formLoginDialog: TformLoginDialog
       Width = 45
       Height = 32
       Hint = 'Switch theme'
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsSysButton
       LightColor = 13619151
       DarkColor = 3947580
@@ -465,7 +464,7 @@ object formLoginDialog: TformLoginDialog
     ParentFont = False
     ShowCaption = False
     TabOrder = 2
-    ThemeManager = AppTheme
+    ThemeManager = dmMain.AppTheme
     CustomTextColor = clBlack
     CustomBackColor = 15132390
     object buttonOk: TUButton
@@ -473,7 +472,7 @@ object formLoginDialog: TformLoginDialog
       Top = 10
       Width = 130
       Height = 32
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       CustomBorderColors.None = 15921906
       CustomBorderColors.Hover = 15132390
       CustomBorderColors.Press = 13421772
@@ -506,7 +505,7 @@ object formLoginDialog: TformLoginDialog
       Margins.Top = 0
       Margins.Right = 10
       Margins.Bottom = 0
-      ThemeManager = AppTheme
+      ThemeManager = dmMain.AppTheme
       CustomBorderColors.None = 15921906
       CustomBorderColors.Hover = 15132390
       CustomBorderColors.Press = 13421772
@@ -529,19 +528,22 @@ object formLoginDialog: TformLoginDialog
       OnClick = buttonCancelClick
     end
   end
-  object AppTheme: TUThemeManager
-    Left = 270
-    Top = 42
-  end
-  object popupEditAction: TUPopupMenu
-    ThemeManager = AppTheme
-    ItemsData.Strings = (
-      ' |Cut|Ctrl+X'
-      ' |Copy|Ctrl+C'
-      ' |Paste|Ctrl+V')
-    SeparatorChar = '|'
-    OnItemClick = popupEditActionItemClick
-    Left = 190
-    Top = 42
+  object popupEdit: TUPopupMenu
+    ThemeManager = dmMain.AppTheme
+    OnItemClick = popupEditItemClick
+    Left = 40
+    Top = 102
+    object CutCtrlX1: TMenuItem
+      Caption = #57707'Cut|Ctrl+X'
+      Hint = 'Remove the selected content and put it on the clipboard'
+    end
+    object CopyCtrlC1: TMenuItem
+      Caption = #57711'Copy|Ctrl+C'
+      Hint = 'Copy the selected content to the clipboard'
+    end
+    object PasteCtrlV1: TMenuItem
+      Caption = #57709'Paste|Ctrl+V'
+      Hint = 'Insert the contents of the clipboard at the current location'
+    end
   end
 end

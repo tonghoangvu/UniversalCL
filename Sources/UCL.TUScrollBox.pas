@@ -45,13 +45,15 @@ type
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
     protected
+      procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
 
     public
       constructor Create(aOwner: TComponent); override;
       destructor Destroy; override;
-      procedure UpdateTheme;
       procedure Loaded; override;
+
+      procedure UpdateTheme;
 
       procedure PaintMiniSB;
       procedure ClearMiniSB;
@@ -214,7 +216,10 @@ begin
         FThemeManager.Disconnect(Self);
 
       if Value <> nil then
-        Value.Connect(Self);
+        begin
+          Value.Connect(Self);
+          Value.FreeNotification(Self);
+        end;
 
       FThemeManager := Value;
       UpdateTheme;
@@ -230,6 +235,13 @@ begin
     Color := $E6E6E6
   else
     Color := $1F1F1F;
+end;
+
+procedure TUScrollBox.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited Notification(AComponent, Operation);
+  if (Operation = opRemove) and (AComponent = FThemeManager) then
+    FThemeManager := nil;
 end;
 
 //  MAIN CLASS
