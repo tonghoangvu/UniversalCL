@@ -84,8 +84,6 @@ procedure TUCustomTooltip.Paint;
 var
   TextW, TextH, TextX, TextY: Integer;
 begin
-  //inherited;
-
   //  Paint background
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := BackColor;

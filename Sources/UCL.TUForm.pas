@@ -9,6 +9,11 @@ uses
   VCL.Forms, VCL.Controls, VCL.Graphics;
 
 type
+  TUFocusForm = class(TForm)
+    protected
+      procedure Paint; override;
+  end;
+
   TUForm = class(TForm, IUThemeComponent)
     const
       DEFAULT_BORDERCOLOR_ACTIVE_LIGHT = $707070;
@@ -24,6 +29,7 @@ type
       FPPI: Integer;
       FIsActive: Boolean;
       FFitDesktopForPopup: Boolean;
+      FDrawTopBorder: Boolean;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -38,7 +44,9 @@ type
       //  Internal
       function GetBorderSpace: Integer;
       function IsBorderless: Boolean;
+      function CanDrawTopBorder: Boolean;
       procedure UpdateBorderColor;
+      procedure DoDrawTopBorder;
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -55,6 +63,9 @@ type
       property PPI: Integer read FPPI write FPPI default 96;
       property IsActive: Boolean read FIsActive default true;
       property FitDesktopForPopup: Boolean read FFitDesktopForPopup write FFitDesktopForPopup default false;
+      property DrawTopBorder: Boolean read FDrawTopBorder write FDrawTopBorder default true;
+
+      property Padding stored false;
   end;
 
 implementation
@@ -89,11 +100,18 @@ begin
   Result := BorderStyle in [bsNone, bsToolWindow, bsSizeToolWin];
 end;
 
+function TUForm.CanDrawTopBorder: Boolean;
+begin
+  Result :=
+    (DrawTopBorder) and
+    (WindowState = wsNormal) and
+    (not IsBorderless);
+end;
+
 procedure TUForm.UpdateBorderColor;
 begin
-  //  Not set theme manager
   if ThemeManager = nil then
-    BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT //  Not set ThemeManager
+    BorderColor := DEFAULT_BORDERCOLOR_ACTIVE_LIGHT
 
   //  Active window
   else if IsActive then
@@ -114,6 +132,14 @@ begin
       else
         BorderColor := DEFAULT_BORDERCOLOR_INACTIVE_DARK;
     end;
+end;
+
+procedure TUForm.DoDrawTopBorder;
+begin
+  UpdateBorderColor;
+  Canvas.Pen.Color := BorderColor;
+  Canvas.MoveTo(0, 0);
+  Canvas.LineTo(ClientWidth, 0);
 end;
 
 //  THEME
@@ -142,7 +168,7 @@ begin
   if ThemeManager = nil then
     begin
       Color := $FFFFFF;
-      HintWindowClass := THintWindow; //  Default hint style
+      HintWindowClass := THintWindow;   //  Default
     end
   else if ThemeManager.Theme = utLight then
     begin
@@ -177,6 +203,7 @@ begin
   //  New props
   FIsActive := true;
   FFitDesktopForPopup := false;
+  FDrawTopBorder := true;
 
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
@@ -193,13 +220,8 @@ procedure TUForm.Paint;
 begin
   inherited;
 
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(Color, 255);
-  if (WindowState = wsNormal) and (not IsBorderless) then  //  No border on maximized
-    begin
-      Canvas.Pen.Color := BorderColor;
-      Canvas.MoveTo(0, 0);
-      Canvas.LineTo(Width, 0);  //  Paint top border
-    end;
+  if CanDrawTopBorder then
+    DoDrawTopBorder;
 end;
 
 procedure TUForm.Resize;
@@ -209,7 +231,7 @@ var
 begin
   inherited;
 
-  if (WindowState = wsNormal) and (not IsBorderless) then
+  if CanDrawTopBorder then
     Padding.Top := 1
   else
     Padding.Top := 0;
@@ -238,15 +260,10 @@ procedure TUForm.WM_Activate(var Msg: TWMActivate);
 begin
   inherited;
   FIsActive := Msg.Active <> WA_INACTIVE;
-  UpdateBorderColor;
 
-  //  Repaint top border
-  if (WindowState = wsNormal) and (not IsBorderless) then
-    begin
-      Canvas.Pen.Color := BorderColor;
-      Canvas.MoveTo(0, 0);
-      Canvas.LineTo(Width, 0);
-    end;
+  //  Redraw top border
+  if CanDrawTopBorder then
+    DoDrawTopBorder;
 end;
 
 procedure TUForm.WM_DPIChanged(var Msg: TWMDpi);
@@ -298,6 +315,16 @@ begin
       else
         Msg.Result := HTTOP;
     end;
+end;
+
+{ TUFocusForm }
+
+procedure TUFocusForm.Paint;
+begin
+  inherited;
+  Canvas.Pen.Color := clblack;
+  Canvas.pen.Width := 2;
+  Canvas.Rectangle(1, 1, ClientWidth - 1, ClientHeight - 1);
 end;
 
 end.

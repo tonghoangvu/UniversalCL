@@ -5,7 +5,7 @@ interface
 uses
   UCL.IntAnimation,
   UCL.Classes, UCL.Utils, UCL.TUThemeManager,
-  System.Classes, System.Types,
+  System.Classes, System.Types, System.SysUtils,
   Winapi.Windows, Winapi.Messages, Winapi.FlatSB,
   VCL.Controls, VCL.StdCtrls, VCL.Forms, VCL.Dialogs, VCL.ExtCtrls, VCL.Graphics;
 
@@ -29,6 +29,7 @@ type
       var MINI_SB_THICKNESS: Byte;
       var MINI_SB_MARGIN: Byte;
       var MINI_SB_COLOR: TColor;
+      var MouseLeave: Boolean;
   
       FThemeManager: TUThemeManager;
 
@@ -37,6 +38,7 @@ type
       FScrollBarStyle: TUScrollBarStyle;
       FTimePerStep: Integer;
       FLengthPerStep: Integer;
+      FMaxScrollCount: Integer;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -67,6 +69,7 @@ type
       property ScrollBarStyle: TUScrollBarStyle read FScrollBarStyle write FScrollBarStyle default sbsMini;
       property TimePerStep: Integer read FTimePerStep write FTimePerStep default 120;
       property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 6;
+      property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 5;
   end;
 
 implementation
@@ -116,6 +119,8 @@ end;
 constructor TUSmoothBox.Create(aOwner: TComponent);
 begin
   inherited;
+
+  MouseLeave := true;
   
   BorderStyle := bsNone;
   VertScrollBar.Tracking := true;
@@ -126,6 +131,7 @@ begin
   FScrollBarStyle := sbsMini;
   FTimePerStep := 120;
   FLengthPerStep := 6;
+  FMaxScrollCount := 5;
   
   MINI_SB_THICKNESS := 2;
   MINI_SB_MARGIN := 3;
@@ -217,16 +223,33 @@ end;
 
 procedure TUSmoothBox.CM_MouseEnter(var Msg: TMessage);
 begin
-  if ScrollBarStyle <> sbsFull then
-    SetOldSBVisible(false);
-  if ScrollBarStyle = sbsMini then
-    SetMiniSBVisible(true);
+  if Win32MajorVersion <> 10 then
+    SetFocus;
+
+  if
+    (MouseLeave) and
+    (PtInRect(GetClientRect, ScreenToClient(Mouse.CursorPos)))
+  then
+    begin
+      if ScrollBarStyle <> sbsFull then
+        SetOldSBVisible(false);
+      if ScrollBarStyle = sbsMini then
+        SetMiniSBVisible(true);
+    end;
+
+  inherited;
 end;
 
 procedure TUSmoothBox.CM_MouseLeave(var Msg: TMessage);
 begin
   if ScrollBarStyle = sbsMini then
-    SetMiniSBVisible(false);
+    if not PtInRect(GetClientRect, ScreenToClient(Mouse.CursorPos)) then
+      begin
+        MouseLeave := true;
+        SetMiniSBVisible(false);
+      end;
+
+  inherited;
 end;
 
 procedure TUSmoothBox.CM_MouseWheel(var Msg: TCMMouseWheel);
@@ -236,7 +259,10 @@ var
   Sign: Integer;
 begin
   inherited;
-  
+
+  if not PtInRect(GetClientRect, ScreenToClient(Mouse.CursorPos)) then
+    exit;
+
   if ScrollOrientation = oVertical then
     SB := VertScrollBar
   else 
@@ -255,8 +281,11 @@ begin
   //  Scroll by mouse
   else
     begin
+      if FScrollCount = MaxScrollCount then exit;
+
       if FScrollCount = 0 then
         DisableAlign;
+
       inc(FScrollCount);
       Sign := Msg.WheelDelta div Abs(Msg.WheelDelta);
 
@@ -300,6 +329,7 @@ begin
   StyleElements :=[];
   BevelOuter := bvNone;
   FullRepaint := false;
+  DoubleBuffered := true;
 
   Visible := false;
 end;

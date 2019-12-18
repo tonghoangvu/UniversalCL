@@ -163,15 +163,17 @@ object formDemo: TformDemo
   object sliderHorz: TUSlider
     Left = 560
     Top = 370
-    Width = 141
+    Width = 140
     Height = 25
     ThemeManager = dmMain.AppTheme
     OnChange = sliderHorzChange
+    ParentShowHint = False
+    ShowHint = False
   end
   object sliderDisabled: TUSlider
     Left = 560
     Top = 340
-    Width = 141
+    Width = 140
     Height = 25
     ThemeManager = dmMain.AppTheme
     ControlState = csDisabled
@@ -182,7 +184,7 @@ object formDemo: TformDemo
     Left = 680
     Top = 420
     Width = 25
-    Height = 71
+    Height = 70
     ThemeManager = dmMain.AppTheme
     Orientation = oVertical
     Max = 4
@@ -569,11 +571,13 @@ object formDemo: TformDemo
         'bsSizeToolWin')
     end
   end
-  object panelRibbon: TUScrollBox
+  object panelRibbon: TUSmoothBox
     Left = 0
     Top = 32
     Width = 1000
     Height = 60
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Tracking = True
     Align = alTop
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -583,7 +587,6 @@ object formDemo: TformDemo
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
     ScrollOrientation = oHorizontal
-    MaxScrollCount = 6
     object separator1: TUSeparator
       Left = 120
       Top = 0
@@ -872,6 +875,7 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    OnClick = buttonNoFocusClick
   end
   object buttonCanFocus: TUButton
     Tag = 9
@@ -1461,11 +1465,13 @@ object formDemo: TformDemo
       Align = alTop
     end
   end
-  object boxSmoothScrolling: TUScrollBox
+  object boxSmoothScrolling: TUSmoothBox
     Left = 750
     Top = 92
     Width = 250
     Height = 498
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Tracking = True
     Align = alRight
     BorderStyle = bsNone
     DoubleBuffered = True
@@ -1478,7 +1484,6 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
-    MaxScrollCount = 6
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -1552,7 +1557,6 @@ object formDemo: TformDemo
       Top = 267
       Width = 203
       Height = 72
-      Hint = 'Click to change avatar'
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1631,8 +1635,7 @@ object formDemo: TformDemo
         A9EA542A2005A98014A40252900A48412A2005A98014A40252900A48412A2005
         A98014A40252900A48412A2005FD0ACC37D794B0EDAE810000000049454E44AE
         426082}
-      ShowHint = True
-      Transparent = True
+      ShowHint = False
       ExplicitLeft = 25
       ExplicitTop = 472
       ExplicitWidth = 220
@@ -2258,17 +2261,16 @@ object formDemo: TformDemo
       Edit.Align = alClient
       Edit.AutoSize = False
       Edit.BorderStyle = bsNone
+      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentColor = True
       Edit.ParentFont = False
       Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Right click to open context menu'
-      Transparent = True
     end
   end
   object dialogSelectColor: TColorDialog

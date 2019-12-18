@@ -40,7 +40,6 @@ type
       //  Messages
       procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
       procedure WM_MouseWheel(var Msg: TWMMouseWheel); message WM_MOUSEWHEEL;
-
       procedure CM_MouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
       procedure CM_MouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
 
@@ -302,11 +301,21 @@ end;
 
 //  MESSAGES
 
+procedure TUScrollBox.WM_Size(var Msg: TWMSize);
+begin
+  inherited;
+  if ScrollBarStyle <> sbsFull then
+    SetOldSBVisible(false);
+end;
+
 procedure TUScrollBox.WM_MouseWheel(var Msg: TWMMouseWheel);
 begin
   inherited;
-  WheelDelta := Msg.WheelDelta;
 
+  if not PtInRect(GetClientRect, ScreenToClient(Mouse.CursorPos)) then
+    exit;
+
+  WheelDelta := Msg.WheelDelta;
   if ScrollCount = 0 then
     //  Begin getting scroll
     begin
@@ -319,13 +328,6 @@ begin
   else
     //  Continue getting scroll messages
     Inc(ScrollCount);
-end;
-
-procedure TUScrollBox.WM_Size(var Msg: TWMSize);
-begin
-  inherited;
-  if ScrollBarStyle <> sbsFull then
-    SetOldSBVisible(false);
 end;
 
 procedure TUScrollBox.CM_MouseEnter(var Msg: TMessage);
