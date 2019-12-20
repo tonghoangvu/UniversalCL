@@ -9,6 +9,7 @@ uses
   Graphics,
   Themes;
 
+{$IF CompilerVersion <= 30}
 type
   // Note: tfComposited only supported by ThemeServices.DrawText
   TTextFormats = (tfBottom, tfCalcRect, tfCenter, tfEditControl, tfEndEllipsis,
@@ -22,6 +23,7 @@ const
   DT_NOFULLWIDTHCHARBREAK = $0080000;
   // MASK for tfComposited
   MASK_TF_COMPOSITED      = $00800000;
+{$IFEND}  
 
 function PointInRect(const X, Y: Integer; const Rect: TRect): Boolean; overload;
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean; overload;

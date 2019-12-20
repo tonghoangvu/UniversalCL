@@ -138,8 +138,10 @@ end;
 procedure TUForm.CreateParams(var Params: TCreateParams);
 begin
   inherited;
+{$IF CompilerVersion < 30}
   with Params do
     WindowClass.Style := WindowClass.Style or CS_DROPSHADOW;
+{$IFEND}
 end;
 
 function TUForm.GetBorderSpace: Integer;

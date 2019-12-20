@@ -7,3 +7,6 @@ Resources/
 *.identcache
 Bin/Demo.exe
 *.exe
+*.~*
+*.stat
+*.mes
