@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  System.Classes,
-  Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Graphics;
+  Classes,
+  Messages, Windows,
+  Controls, Graphics;
 
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
@@ -51,7 +51,7 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -93,7 +93,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -328,7 +330,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomCheckBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+procedure TUCustomCheckBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   IconFont.Height := MulDiv(IconFont.Height, M, D);

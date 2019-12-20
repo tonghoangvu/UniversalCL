@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Winapi.Windows, Winapi.Messages,
-  System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ImgList;
+  Windows, Messages,
+  Classes, Types,
+  Controls, Graphics, ImgList;
 
 type
   TUCustomButton = class(TCustomControl, IUThemeComponent)
@@ -79,7 +79,7 @@ type
       procedure Paint; override;
       procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -126,7 +126,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -379,7 +381,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUCustomButton.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   BorderThickness := MulDiv(BorderThickness, M, D);

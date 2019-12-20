@@ -3,11 +3,11 @@ unit Form.AppList;
 interface
 
 uses
-  UCL.TUForm, UCL.TUThemeManager,
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UCL.TUSmoothBox, Vcl.StdCtrls,
+  UCL.TUForm, UCL.TUThemeManager, UCL.Utils,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, UCL.TUSmoothBox, StdCtrls,
   UCL.TUItemButton, UCL.TUHyperLink, UCL.TUProgressBar, UCL.TUButton,
-  UCL.TUEdit, Vcl.Imaging.pngimage, Vcl.ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
+  UCL.TUEdit, pngimage, ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
   UCL.TURadioButton, UCL.TUText, UCL.TUSymbolButton, UCL.TUSeparator,
   UCL.TUCaptionBar, UCL.TUQuickButton;
 
@@ -73,6 +73,8 @@ uses DataModule.Main;
 
 procedure TformAppList.FormCreate(Sender: TObject);
 begin
+//  EnableBlur(Handle, 3);
+
   ThemeManager := dmMain.AppTheme;
 end;
 

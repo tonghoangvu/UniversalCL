@@ -1,0 +1,73 @@
+package UCLPackage;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$IMPLICITBUILD ON}
+{$DEFINE DEBUG}
+
+requires
+  rtl,
+  vcl,
+  VclSmp,
+  vclimg;
+
+contains
+  RegisterPackage_UCL in 'RegisterPackage_UCL.pas',
+  UCL.Classes in 'Sources\UCL.Classes.pas',
+  UCL.IntAnimation.Collection in 'Sources\UCL.IntAnimation.Collection.pas',
+  UCL.IntAnimation.Helpers in 'Sources\UCL.IntAnimation.Helpers.pas',
+  UCL.IntAnimation in 'Sources\UCL.IntAnimation.pas',
+  UCL.SystemSettings in 'Sources\UCL.SystemSettings.pas',
+  UCL.TUButton in 'Sources\UCL.TUButton.pas',
+  UCL.TUCaptionBar in 'Sources\UCL.TUCaptionBar.pas',
+  UCL.TUCheckBox in 'Sources\UCL.TUCheckBox.pas',
+  UCL.TUEdit in 'Sources\UCL.TUEdit.pas',
+  UCL.TUForm in 'Sources\UCL.TUForm.pas',
+  UCL.TUHyperLink in 'Sources\UCL.TUHyperLink.pas',
+  UCL.TUItemButton in 'Sources\UCL.TUItemButton.pas',
+  UCL.TUPanel in 'Sources\UCL.TUPanel.pas',
+  UCL.TUProgressBar in 'Sources\UCL.TUProgressBar.pas',
+  UCL.TURadioButton in 'Sources\UCL.TURadioButton.pas',
+  UCL.TUScrollBox in 'Sources\UCL.TUScrollBox.pas',
+  UCL.TUSeparator in 'Sources\UCL.TUSeparator.pas',
+  UCL.TUSlider in 'Sources\UCL.TUSlider.pas',
+  UCL.TUSymbolButton in 'Sources\UCL.TUSymbolButton.pas',
+  UCL.TUText in 'Sources\UCL.TUText.pas',
+  UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
+  UCL.Utils in 'Sources\UCL.Utils.pas',
+  UCL.Graphics in 'Sources\UCL.Graphics.pas',
+  UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
+  UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
+  UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
+  UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
+  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
+  UCL.TUSmoothBox in 'Sources\UCL.TUSmoothBox.pas',
+  UCL.Types in 'Sources\UCL.Types.pas',
+  UCL.ShellUIScaling in 'Sources\UCL.ShellUIScaling.pas';
+
+end.
+
+
+
+
+

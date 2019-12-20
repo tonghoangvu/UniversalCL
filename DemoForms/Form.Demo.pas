@@ -10,17 +10,20 @@ uses
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow,
+  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUSmoothBox,
 
   //  Winapi units
-  Winapi.Windows, Winapi.Messages,
+  Windows, Messages,
 
   //  System units
-  System.SysUtils, System.Variants, System.Classes, System.Types, System.ImageList,
+  SysUtils, Variants, Classes, Types,
+{$IF CompilerVersion > 29}
+  ImageList,
+{$IFEND}
 
   //  VCL units
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg;
+  Graphics, Controls, Forms, Dialogs, StdCtrls, ExtCtrls,
+  Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
   TformDemo = class(TUForm)
@@ -33,7 +36,7 @@ type
     buttonMenuRate: TUSymbolButton;
     captionbarNewStyle: TUCaptionBar;
     dialogSelectColor: TColorDialog;
-    panelRibbon: TUScrollBox;
+    panelRibbon: TUSmoothBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
     buttonGoHome: TUSymbolButton;
@@ -85,7 +88,7 @@ type
     buttonWinMax: TUQuickButton;
     buttonWinMin: TUQuickButton;
     comboAppDPI: TComboBox;
-    boxSmoothScrolling: TUScrollBox;
+    boxSmoothScrolling: TUSmoothBox;
     headingSettings: TUText;
     entryAppTheme: TUText;
     radioSystemTheme: TURadioButton;
@@ -143,10 +146,12 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
+    procedure buttonNoFocusClick(Sender: TObject);
 
   private
 
   public
+    procedure FocusControl(const Control: TControl);
 
   end;
 
@@ -179,7 +184,11 @@ begin
   AniLength := 210;
   AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end
+  );
 end;
 
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
@@ -189,12 +198,18 @@ begin
   AniLength := 210;
   AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end
+  );
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
   DPI: Single;
+  Ani: TIntAni;
+
   AniWidth: Integer;
 begin
   DPI := PPI / 96;
@@ -202,7 +217,14 @@ begin
   if drawerNavigation.Width <> Trunc(45 * DPI) then
     AniWidth := - AniWidth;
 
-  drawerNavigation.AnimationFromCurrent(apWidth, AniWidth, 30, 200, akOut, afkQuartic, nil);
+  Ani := TIntAni.Create(true, akOut, afkQuintic, drawerNavigation.Width, AniWidth,
+    procedure (V: Integer)
+    begin
+      drawerNavigation.Width := V;
+    end);
+  Ani.Step := 30;
+  Ani.Duration := 200;
+  Ani.Start;
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
@@ -222,6 +244,29 @@ begin
 
   boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
+end;
+
+procedure TformDemo.FocusControl(const Control: TControl);
+var
+  f: TForm;
+begin
+  f := TUFocusForm.CreateNew(Self);
+  f.Parent := Self;
+  f.BorderStyle := bsNone;
+  f.Color := clFuchsia;
+  f.TransparentColor := true;
+  f.TransparentColorValue := clFuchsia;
+
+  f.Width := 7 + Control.Width;
+  f.Height := 7 + Control.Height;
+  f.Show;
+  f.Top := Control.Top - 3;
+  f.Left := Control.Left - 3;
+end;
+
+procedure TformDemo.buttonNoFocusClick(Sender: TObject);
+begin
+  FocusControl(radioA1);
 end;
 
 //  CONTROLS EVENTS
@@ -321,7 +366,25 @@ begin
   end;
 
   Self.PPI := NewPPI;
-  ScaleForPPI(NewPPI);
+  Self.ScaleForPPI(NewPPI);
+
+  if formAppList <> nil then
+    begin
+      formAppList.PPI := NewPPI;
+      formAppList.ScaleForPPI(NewPPI);
+    end;
+
+  if formLoginDialog <> nil then
+    begin
+      formLoginDialog.PPI := NewPPI;
+      formLoginDialog.ScaleForPPI(NewPPI);
+    end;
+
+  if formImageBackground <> nil then
+    begin
+      formImageBackground.PPI := NewPPI;
+      formImageBackground.ScaleForPPI(NewPPI);
+    end;
 end;
 
 procedure TformDemo.panelSelectAccentColorClick(Sender: TObject);

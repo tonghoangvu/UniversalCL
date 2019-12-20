@@ -4,9 +4,14 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes, System.UITypes,
-  Winapi.Windows, Winapi.Messages, Winapi.Shellapi,
-  VCL.Controls, VCL.StdCtrls, VCL.Graphics;
+  Classes,
+{$IF CompilerVersion <= 30}
+  Dialogs,
+{$ELSE}
+  UITypes,
+{$IFEND}
+  Windows, Messages, Shellapi,
+  Controls, StdCtrls, Graphics;
 
 type
   TUHyperLink = class(TLabel, IUThemeComponent)

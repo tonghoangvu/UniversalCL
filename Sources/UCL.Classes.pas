@@ -3,8 +3,42 @@ unit UCL.Classes;
 interface
 
 uses
-  System.Classes,
-  VCL.Graphics;
+  Classes,
+  Windows,
+  Graphics,
+  Forms;
+
+{$IF CompilerVersion <= 30}
+const
+  {$EXTERNALSYM WM_DPICHANGED}
+  WM_DPICHANGED       = $02E0;
+
+type
+  TDWordFiller = record
+  {$IFDEF CPUX64}
+    Filler: array[1..4] of Byte; // Pad DWORD to make it 8 bytes (4+4) [x64 only]
+  {$ENDIF}
+  end;
+
+  PRect = ^TRect;
+
+  TWMDpi = record
+    Msg: Cardinal;
+    MsgFiller: TDWordFiller;
+    YDpi: Word;
+    XDpi: Word;
+    WParamFiller: TDWordFiller;
+    ScaledRect: PRECT;
+    Result: LRESULT;
+  end;
+
+  TMonitorHelper = class helper for TMonitor
+  private
+    function GetPixelsPerInch: Integer;
+  public
+    property PixelsPerInch: Integer read GetPixelsPerInch;
+  end;
+{$IFEND}
 
 type
   TUTheme = (utLight, utDark);
@@ -72,6 +106,31 @@ type
 
 implementation
 
+{$IF CompilerVersion <= 30}
+uses
+  SysUtils,
+  UCL.ShellUIScaling;
+
+function TMonitorHelper.GetPixelsPerInch: Integer;
+var
+  Ydpi: Cardinal;
+  Xdpi: Cardinal;
+  DC: HDC;
+begin
+  if CheckWin32Version(6, 3) then begin
+    if GetDpiForMonitor(Handle, TMonitorDpiType.MDT_EFFECTIVE_DPI, Ydpi, Xdpi) = S_OK then
+      Result := Ydpi
+    else
+      Result := 0;
+  end
+  else begin
+    DC := GetDC(0);
+    Result := GetDeviceCaps(DC, LOGPIXELSY);
+    ReleaseDC(0, DC);
+  end;
+end;
+{$IFEND}
+
 { TControlStateColors }
 
 procedure TControlStateColors.Changed;
@@ -94,16 +153,11 @@ end;
 function TControlStateColors.GetStateColor(const State: TUControlState): TColor;
 begin
   case State of
-    csNone:
-      Result := None;
-    csHover:
-      Result := Hover;
-    csPress:
-      Result := Press;
-    csDisabled:
-      Result := Disabled;
-    csFocused:
-      Result := Focused;
+    csNone    : Result := None;
+    csHover   : Result := Hover;
+    csPress   : Result := Press;
+    csDisabled: Result := Disabled;
+    csFocused : Result := Focused;
     else
       Result := None;
   end;
@@ -112,36 +166,26 @@ end;
 procedure TControlStateColors.SetStateColor(const Index: Integer; const Value: TColor);
 begin
   case Index of
-    0:  
-      if Value <> FNone then
-        begin
-          FNone := Value;
-          Changed;
-        end;    
-    1:
-      if Value <> FHover then
-        begin
-          FHover := Value;
-          Changed;
-        end;
-    2:
-      if Value <> FPress then
-        begin
-          FPress := Value;
-          Changed;
-        end;
-    3:
-      if Value <> FDisabled then
-        begin
-          FDisabled := Value;
-          Changed;
-        end;
-    4:
-      if Value <> FFocused then
-        begin
-          FFocused := Value;
-          Changed;
-        end;
+    0: if Value <> FNone then begin
+      FNone := Value;
+      Changed;
+    end;
+    1: if Value <> FHover then begin
+      FHover := Value;
+      Changed;
+    end;
+    2: if Value <> FPress then begin
+      FPress := Value;
+      Changed;
+    end;
+    3: if Value <> FDisabled then begin
+      FDisabled := Value;
+      Changed;
+    end;
+    4: if Value <> FFocused then begin
+      FFocused := Value;
+      Changed;
+    end;
   end;
 end;
 

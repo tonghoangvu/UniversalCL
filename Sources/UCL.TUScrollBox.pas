@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils,
-  System.Classes, System.TypInfo,
-  Winapi.Windows, Winapi.Messages, Winapi.FlatSB,
-  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
+  Classes, TypInfo,
+  Windows, Messages, FlatSB,
+  Controls, Forms, ExtCtrls, Graphics;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -46,7 +46,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -292,7 +292,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUScrollBox.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUScrollBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   MINI_SCROLLBAR_THICKNESS := MulDiv(MINI_SCROLLBAR_THICKNESS, M, D);
@@ -302,11 +302,21 @@ end;
 
 //  MESSAGES
 
+procedure TUScrollBox.WM_Size(var Msg: TWMSize);
+begin
+  inherited;
+  if ScrollBarStyle <> sbsFull then
+    SetOldSBVisible(false);
+end;
+
 procedure TUScrollBox.WM_MouseWheel(var Msg: TWMMouseWheel);
 begin
   inherited;
-  WheelDelta := Msg.WheelDelta;
 
+  if not PtInRect(GetClientRect, ScreenToClient(Mouse.CursorPos)) then
+    exit;
+
+  WheelDelta := Msg.WheelDelta;
   if ScrollCount = 0 then
     //  Begin getting scroll
     begin
@@ -319,13 +329,6 @@ begin
   else
     //  Continue getting scroll messages
     Inc(ScrollCount);
-end;
-
-procedure TUScrollBox.WM_Size(var Msg: TWMSize);
-begin
-  inherited;
-  if ScrollBarStyle <> sbsFull then
-    SetOldSBVisible(false);
 end;
 
 procedure TUScrollBox.CM_MouseEnter(var Msg: TMessage);

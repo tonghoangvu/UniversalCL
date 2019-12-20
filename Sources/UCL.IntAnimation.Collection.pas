@@ -56,7 +56,7 @@ type
 implementation
 
 uses
-  System.Math;
+  Math;
 
 { LINEAR }
 

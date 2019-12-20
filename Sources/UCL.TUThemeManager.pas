@@ -4,8 +4,8 @@ interface
 
 uses
   UCL.Classes, UCL.SystemSettings,
-  System.Classes, System.SysUtils, System.TypInfo,
-  VCL.Controls, VCL.Graphics,
+  Classes, SysUtils, TypInfo,
+  Controls, Graphics,
   Generics.Collections;
 
 type

@@ -3,7 +3,7 @@ unit RegisterPackage_UCL;
 interface
 
 uses
-  System.Classes;
+  Classes;
 
 procedure Register;
 
@@ -16,8 +16,7 @@ uses
   UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUHyperLink, UCL.TUPanel,
   UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUScrollBox, UCL.TURadioButton,
   UCL.TUItemButton, UCL.TUSeparator, UCL.TUEdit, UCL.TUSlider, UCL.TUPopupMenu,
-  UCL.TUQuickButton, UCL.TUTitleBar, UCL.TUShadow, UCL.TUSmoothBox
-  ;
+  UCL.TUQuickButton, UCL.TUTitleBar, UCL.TUShadow, UCL.TUSmoothBox;
 
 procedure Register;
 begin
@@ -28,7 +27,7 @@ begin
     TUCheckBox, TUProgressBar, TUScrollBox, TURadioButton, TUItemButton,
     TUSeparator, TUEdit, TUSlider, TUPopupMenu, TUTitleBar, TUQuickButton,
     TUShadow, TUSmoothBox
-    ]);
+  ]);
 end;
 
 end.

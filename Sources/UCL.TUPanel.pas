@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.Utils, UCL.SystemSettings, UCL.TUThemeManager,
-  Winapi.Windows, Winapi.Messages,
-  System.Classes, System.SysUtils,
-  VCL.Controls, VCL.ExtCtrls, VCL.Graphics;
+  Windows, Messages,
+  Classes, SysUtils,
+  Controls, ExtCtrls, Graphics;
 
 type
   TUPanel = class(TPanel, IUThemeComponent)

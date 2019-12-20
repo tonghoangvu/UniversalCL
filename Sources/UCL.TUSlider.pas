@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.Graphics;
+  Classes,
+  Windows, Messages,
+  Controls, Graphics;
 
 type
   TUCustomSlider = class(TGraphicControl, IUThemeComponent)
@@ -67,7 +67,7 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -110,7 +110,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -134,6 +136,9 @@ type
   end;
 
 implementation
+
+uses
+  UCL.Types;
 
 { TUCustomSlider }
 
@@ -341,8 +346,7 @@ begin
   Canvas.Pen.Color := CurColor;
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(CurColor, 255);
   Canvas.RoundRect(CurRect, CurCorner, CurCorner);
-  Canvas.FloodFill(CurRect.Left + CurRect.Width div 2, CurRect.Top + CurRect.Height div 2,
-    CurColor, fsSurface);
+  Canvas.FloodFill(CurRect.Left + CurRect.Width div 2, CurRect.Top + CurRect.Height div 2, CurColor, fsSurface);
 end;
 
 procedure TUCustomSlider.Resize;
@@ -351,7 +355,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomSlider.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUCustomSlider.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   CurWidth := MulDiv(CurWidth, M, D);

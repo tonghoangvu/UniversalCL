@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager,
-  System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.StdCtrls;
+  Classes,
+  Windows, Messages,
+  Controls, StdCtrls;
 
 type
   TUTextKind = (tkCustom, tkNormal, tkDescription, tkEntry, tkHeading, tkTitle);

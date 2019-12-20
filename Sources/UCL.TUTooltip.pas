@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.Utils,
-  System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.Graphics;
+  Classes,
+  Windows, Messages,
+  Controls, Graphics;
 
 type
   TUCustomTooltip = class(THintWindow)

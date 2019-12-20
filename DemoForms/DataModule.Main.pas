@@ -5,8 +5,8 @@ interface
 uses
   UCL.TUThemeManager, UCL.Classes, UCL.Utils,
   UCL.TUCheckBox,
-  System.SysUtils, System.Classes, VCL.Dialogs,
-  Winapi.Windows;
+  SysUtils, Classes, Dialogs,
+  Windows;
 
 type
   TdmMain = class(TDataModule)

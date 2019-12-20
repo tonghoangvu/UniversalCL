@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes,
-  Winapi.Messages,
-  VCL.Controls, VCL.Graphics;
+  Classes,
+  Messages,
+  Controls, Graphics;
 
 type
   TUCustomSeparator = class(TGraphicControl, IUThemeComponent)
@@ -72,7 +72,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;

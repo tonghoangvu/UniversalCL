@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Winapi.Messages, Winapi.Windows,
-  System.Classes, System.Types,
-  VCL.Controls, VCL.Graphics, VCL.ImgList;
+  Messages, Windows,
+  Classes, Types,
+  Controls, Graphics, ImgList;
 
 type
   TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
@@ -82,7 +82,7 @@ type
       procedure Paint; override;
       procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -137,7 +137,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -161,6 +163,9 @@ type
   end;
 
 implementation
+
+uses
+  UCL.Types;
 
 { TUCustomSymbolButton }
 
@@ -517,7 +522,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomSymbolButton.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUCustomSymbolButton.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
 
