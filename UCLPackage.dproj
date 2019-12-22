@@ -122,6 +122,7 @@
         <DCCReference Include="Sources\UCL.TUShadow.pas"/>
         <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <DCCReference Include="Sources\UCL.TUSmoothBox.pas"/>
+        <DCCReference Include="Sources\UCL.Types.pas"/>
         <RcItem Include="Resources\TUText.bmp">
             <ResourceType>Bitmap</ResourceType>
             <ResourceId>TUText</ResourceId>
@@ -250,7 +251,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\19.0\Bpl\UCLPackage.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>UCLPackage.bpl</RemoteName>
                         <Overwrite>true</Overwrite>

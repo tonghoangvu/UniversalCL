@@ -38,9 +38,11 @@ implementation
 
 {$IF CompilerVersion <= 30}
 uses
+  // delphi stuff first
   SysUtils,
   DwmApi,
   UxTheme,
+  // library stuff last
   UCL.Types;
 
 type
@@ -58,21 +60,20 @@ type
   end;
 
 const
-  COptions: array[TStyleTextFlag] of Cardinal = (DTT_TEXTCOLOR, DTT_BORDERCOLOR, DTT_BORDERSIZE, DTT_SHADOWCOLOR, DTT_SHADOWOFFSET, DTT_GLOWSIZE);
+  COptions: Array[TStyleTextFlag] of Cardinal = (DTT_TEXTCOLOR, DTT_BORDERCOLOR, DTT_BORDERSIZE, DTT_SHADOWCOLOR, DTT_SHADOWOFFSET, DTT_GLOWSIZE);
 {$IFEND}
 
 const
-  HAlignments: array[TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
-  VAlignments: array[TVerticalAlignment] of Longint = (DT_TOP, DT_BOTTOM, DT_VCENTER);
+  HAlignments: Array[TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
+  VAlignments: Array[TVerticalAlignment] of Longint = (DT_TOP, DT_BOTTOM, DT_VCENTER);
 {$IF CompilerVersion > 29}
-  CStates: array[Boolean] of TThemedTextLabel = (ttlTextLabelDisabled, ttlTextLabelNormal);
+  CStates: Array[Boolean] of TThemedTextLabel = (ttlTextLabelDisabled, ttlTextLabelNormal);
 {$IFEND}
 
 function PointInRect(const X, Y: Integer; const Rect: TRect): Boolean;
 begin
-  Result :=
-    (X >= Rect.Left) and (X <= Rect.Right) and
-    (Y >= Rect.Top) and (Y <= Rect.Bottom);
+  Result := (X >= Rect.Left) and (X <= Rect.Right) and
+            (Y >= Rect.Top ) and (Y <= Rect.Bottom);
 end;
 
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean;
@@ -152,9 +153,10 @@ begin
   FillChar(Result, SizeOf(TDTTOpts), 0);
   Result.dwSize := SizeOf(TDTTOpts);
   //
-  for LTextOption := Low(TStyleTextFlag) to High(TStyleTextFlag) do
+  for LTextOption := Low(TStyleTextFlag) to High(TStyleTextFlag) do begin
     if (LTextOption in Options.Flags) then
       Result.dwFlags := Result.dwFlags or COptions[LTextOption];
+  end;
   //
   Result.crText         := Graphics.ColorToRGB(Options.TextColor);
   Result.crBorder       := Graphics.ColorToRGB(Options.BorderColor);
