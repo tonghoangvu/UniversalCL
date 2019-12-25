@@ -94,7 +94,7 @@ end;
 
 constructor TUThemeManager.Create(aOwner: TComponent);
 begin
-  if CommonThemeManager <> Nil then
+  if not (csLoading in ComponentState) and (CommonThemeManager <> Nil) then
     raise Exception.Create('TUThemeManager allready used in application!');
   inherited;
 
