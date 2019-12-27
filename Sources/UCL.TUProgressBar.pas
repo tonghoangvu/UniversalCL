@@ -40,7 +40,7 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
-      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF}); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOnwer: TComponent); override;
@@ -83,7 +83,7 @@ type
       property Visible;
     {$IF CompilerVersion > 29}
       property StyleElements;
-    {$ENDIF}
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -268,7 +268,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomProgressBar.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF});
+procedure TUCustomProgressBar.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   UpdateRects;
