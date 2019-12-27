@@ -146,13 +146,9 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
-    procedure buttonNoFocusClick(Sender: TObject);
 
   private
-
   public
-    procedure FocusControl(const Control: TControl);
-
   end;
 
 var
@@ -244,29 +240,6 @@ begin
 
   boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
-end;
-
-procedure TformDemo.FocusControl(const Control: TControl);
-var
-  f: TForm;
-begin
-  f := TUFocusForm.CreateNew(Self);
-  f.Parent := Self;
-  f.BorderStyle := bsNone;
-  f.Color := clFuchsia;
-  f.TransparentColor := true;
-  f.TransparentColorValue := clFuchsia;
-
-  f.Width := 7 + Control.Width;
-  f.Height := 7 + Control.Height;
-  f.Show;
-  f.Top := Control.Top - 3;
-  f.Left := Control.Left - 3;
-end;
-
-procedure TformDemo.buttonNoFocusClick(Sender: TObject);
-begin
-  FocusControl(radioA1);
 end;
 
 //  CONTROLS EVENTS

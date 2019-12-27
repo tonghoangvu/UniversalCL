@@ -446,14 +446,4 @@ begin
   end;
 end;
 
-{ TUFocusForm }
-
-procedure TUFocusForm.Paint;
-begin
-  inherited;
-  Canvas.Pen.Color := clblack;
-  Canvas.pen.Width := 2;
-  Canvas.Rectangle(1, 1, ClientWidth - 1, ClientHeight - 1);
-end;
-
 end.
