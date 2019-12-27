@@ -3,14 +3,19 @@ unit UCL.TUThemeManager;
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings,
-  System.Classes, System.SysUtils, System.TypInfo,
-  VCL.Controls, VCL.Graphics,
-  Generics.Collections;
+  // delphi stuff first
+  SysUtils,
+  Classes,
+  TypInfo,
+  Controls,
+  Graphics,
+  Generics.Collections,
+  // library stuff last
+  UCL.Classes,
+  UCL.SystemSettings;
 
 type
-  IUThemeComponent = interface
-    ['{C9D5D479-2F52-4BB9-8023-6EA00B5084F0}']
+  IUThemeComponent = interface ['{C9D5D479-2F52-4BB9-8023-6EA00B5084F0}']
     procedure UpdateTheme;
   end;
 
@@ -71,7 +76,17 @@ type
       property OnAfterUpdate: TNotifyEvent read FOnAfterUpdate write FOnAfterUpdate;
   end;
 
+function GetCommonThemeManager: TUThemeManager;
+
 implementation
+
+var
+  CommonThemeManager: TUThemeManager;
+
+function GetCommonThemeManager: TUThemeManager;
+begin
+  Result := CommonThemeManager;
+end;
 
 { TUThemeManager }
 
@@ -79,23 +94,27 @@ implementation
 
 constructor TUThemeManager.Create(aOwner: TComponent);
 begin
+  if not (csLoading in ComponentState) and (CommonThemeManager <> Nil) then
+    raise Exception.Create('TUThemeManager allready used in application!');
   inherited;
+
+  CommonThemeManager := Self;
 
   //  Objects
   FCompList := TList<TComponent>.Create;
 
   //  Default properties
-  FAutoUpdateControls := true;
+  FAutoUpdateControls := True;
 
-  FUseSystemTheme := true;
-  FUseSystemAccentColor := true;
+  FUseSystemTheme := True;
+  FUseSystemAccentColor := True;
 
   FCustomTheme := utLight;
   FCustomAccentColor := $D77800;
 
   //  Default vars
   FTheme := utLight;
-  FColorOnBorder := false;
+  FColorOnBorder := False;
   FAccentColor := $D77800;
 end;
 
@@ -116,18 +135,17 @@ end;
 procedure TUThemeManager.Reload;
 begin
   if csDesigning in ComponentState then
-    exit;
+    Exit;
 
   //  Theme
   if not UseSystemTheme then
     FTheme := CustomTheme
-  else
-    begin
-      if IsAppsUseDarkTheme then
-        FTheme := utDark
-      else
-        FTheme := utLight;
-    end;
+  else begin
+    if IsAppsUseDarkTheme then
+      FTheme := utDark
+    else
+      FTheme := utLight;
+  end;
 
   //  Accent color
   if not UseSystemAccentColor then
@@ -150,9 +168,10 @@ begin
   if Assigned(FOnBeforeUpdate) then
     FOnBeforeUpdate(Self);
 
-  for Comp in FCompList do
-    if Comp <> nil then
+  for Comp in FCompList do begin
+    if Comp <> Nil then
       (Comp as IUThemeComponent).UpdateTheme;
+  end;
 
   if Assigned(FOnAfterUpdate) then
     FOnAfterUpdate(Self);
@@ -162,14 +181,12 @@ end;
 
 class function TUThemeManager.IsThemeAvailable(const Comp: TComponent): Boolean;
 begin
-  Result :=
-    IsPublishedProp(Comp, 'ThemeManager') and
-    Supports(Comp, IUThemeComponent);
+  Result := IsPublishedProp(Comp, 'ThemeManager') and Supports(Comp, IUThemeComponent);
 end;
 
 function TUThemeManager.ConnectedComponentCount: Integer;
 begin
-  if FCompList = nil then
+  if FCompList = Nil then
     Result := -1
   else
     Result := FCompList.Count;
@@ -179,12 +196,11 @@ procedure TUThemeManager.Connect(const Comp: TComponent);
 var
   ConnectedYet: Boolean;
 begin
-  if IsThemeAvailable(Comp) then
-    begin
-      ConnectedYet := FCompList.IndexOf(Comp) <> -1;
-      if not ConnectedYet then
-        FCompList.Add(Comp);
-    end;
+  if IsThemeAvailable(Comp) then begin
+    ConnectedYet := (FCompList.IndexOf(Comp) <> -1);
+    if not ConnectedYet then
+      FCompList.Add(Comp);
+  end;
 end;
 
 procedure TUThemeManager.Disconnect(const Comp: TComponent);
@@ -195,5 +211,12 @@ begin
   if Index <> -1 then
     FCompList.Delete(Index);
 end;
+
+initialization
+  CommonThemeManager := Nil;
+
+//finalization
+//  if CommonThemeManager <> Nil then
+//    CommonThemeManager.Free;
 
 end.

@@ -1,7 +1,7 @@
 program Demo;
 
 uses
-  Vcl.Forms,
+  Forms,
   Form.Demo in 'DemoForms\Form.Demo.pas' {formDemo},
   Form.LoginDialog in 'DemoForms\Form.LoginDialog.pas' {formLoginDialog},
   Form.ImageBackground in 'DemoForms\Form.ImageBackground.pas' {formImageBackground},

@@ -5,9 +5,9 @@ interface
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
   UCL.IntAnimation,
-  System.Classes, System.Types,
-  Winapi.Messages,
-  VCL.Controls, VCL.Graphics;
+  Classes, Types,
+  Messages,
+  Controls, Graphics;
 
 type
   TUCustomProgressBar = class(TCustomControl, IUThemeComponent)
@@ -37,7 +37,7 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOnwer: TComponent); override;
@@ -76,7 +76,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -250,7 +252,7 @@ begin
   UpdateRects;
 end;
 
-procedure TUCustomProgressBar.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUCustomProgressBar.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   UpdateRects;

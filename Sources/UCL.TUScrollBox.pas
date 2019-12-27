@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils,
-  System.Classes, System.TypInfo,
-  Winapi.Windows, Winapi.Messages, Winapi.FlatSB,
-  VCL.Controls, VCL.Forms, VCL.ExtCtrls, VCL.Graphics;
+  Classes, TypInfo,
+  Windows, Messages, FlatSB,
+  Controls, Forms, ExtCtrls, Graphics;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -45,7 +45,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -291,7 +291,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUScrollBox.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUScrollBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   MINI_SCROLLBAR_THICKNESS := MulDiv(MINI_SCROLLBAR_THICKNESS, M, D);

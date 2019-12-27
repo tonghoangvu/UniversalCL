@@ -5,9 +5,9 @@ interface
 uses
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton,
-  System.Classes, System.Types,
-  Winapi.Windows,
-  VCL.Forms, VCL.Controls, VCL.Menus, VCL.Graphics, VCL.Dialogs;
+  Classes, Types,
+  Windows,
+  Forms, Controls, Menus, Graphics, Dialogs;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;

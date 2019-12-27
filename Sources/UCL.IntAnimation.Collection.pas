@@ -56,7 +56,7 @@ type
 implementation
 
 uses
-  System.Math;
+  Math;
 
 { LINEAR }
 
@@ -171,17 +171,15 @@ var
 begin
   S := 1.70158;
   P := 2 * P;
-  if P / 2 < 0.5 then
-    begin
-      S := S * 1.525;
-      Result := 0.5 * P * P * (P * (S + 1) - S);
-    end
-  else
-    begin
-      P := P - 2;
-      S := S * 1.525;
-      Result := 1 + 0.5 * P * P * (P * (S + 1) + S);
-    end;
+  if P / 2 < 0.5 then begin
+    S := S * 1.525;
+    Result := 0.5 * P * P * (P * (S + 1) - S);
+  end
+  else begin
+    P := P - 2;
+    S := S * 1.525;
+    Result := 1 + 0.5 * P * P * (P * (S + 1) + S);
+  end;
 end;
 
 { BOUNCE }
@@ -196,21 +194,18 @@ class function TIntAniCollection.Bounce_Out(P: Single): Single;
 begin
   if P < 1 / 2.75 then
     Result := 7.5625 * P * P
-  else if P < 2 / 2.72 then
-    begin
-      P := P - (1.5 / 2.75);
-      Result := 0.75 + 7.5625 * P * P;
-    end
-  else if P < 2.5 / 2.75 then
-    begin
-      P := P - (2.25 / 2.75);
-      Result := 0.9375 + 7.5625 * P * P;
-    end
-  else
-    begin
-      P := P - (2.625 / 2.75);
-      Result := 0.984375 + 7.5625 * P * P;
-    end;
+  else if P < 2 / 2.72 then begin
+    P := P - (1.5 / 2.75);
+    Result := 0.75 + 7.5625 * P * P;
+  end
+  else if P < 2.5 / 2.75 then begin
+    P := P - (2.25 / 2.75);
+    Result := 0.9375 + 7.5625 * P * P;
+  end
+  else begin
+    P := P - (2.625 / 2.75);
+    Result := 0.984375 + 7.5625 * P * P;
+  end;
 end;
 
 class function TIntAniCollection.Bounce_InOut(P: Single): Single;
@@ -277,11 +272,10 @@ begin
   P := 2 * P;
   if P / 2 < 0.5 then
     Result := 0.5 * (1 - Sqrt(1 - P * P))
-  else
-    begin
-      P := P - 2;
-      Result := 0.5 * (1 + Sqrt(1 - P * P));
-    end;
+  else begin
+    P := P - 2;
+    Result := 0.5 * (1 + Sqrt(1 - P * P));
+  end;
 end;
 
 end.

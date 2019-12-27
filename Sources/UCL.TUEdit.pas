@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  VCL.Controls, VCL.StdCtrls, VCL.ExtCtrls, VCL.Graphics, VCL.Forms;
+  Classes,
+  Windows, Messages,
+  Controls, StdCtrls, ExtCtrls, Graphics, Forms;
 
 const
   UM_SUBEDIT_SETFOCUS = WM_USER + 1;
@@ -63,7 +63,7 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -269,7 +269,7 @@ begin
   UpdateColors;
 end;
 
-procedure TUEdit.ChangeScale(M, D: Integer; isDpiChange: Boolean);
+procedure TUEdit.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   BorderThickness := MulDiv(BorderThickness, M, D);

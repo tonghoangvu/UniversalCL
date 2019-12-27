@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  System.Classes,
-  Winapi.Messages, Winapi.Windows,
-  VCL.Controls, VCL.Graphics;
+  Classes,
+  Messages, Windows,
+  Controls, Graphics;
 
 type
   TUCustomRadioButton = class(TGraphicControl, IUThemeComponent)
@@ -44,7 +44,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
       procedure Paint; override;
       procedure Resize; override;
 
@@ -87,7 +87,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -262,7 +264,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUCustomRadioButton.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+procedure TUCustomRadioButton.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   IconFont.Height := MulDiv(IconFont.Height, M, D);

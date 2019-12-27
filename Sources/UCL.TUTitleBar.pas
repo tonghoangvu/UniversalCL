@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Winapi.Windows, Winapi.Messages,
-  System.Classes,
-  VCL.Controls, VCL.Graphics, VCL.Forms;
+  Windows, Messages,
+  Classes,
+  Controls, Graphics, Forms;
 
 type
   TUCustomTitleBar = class(TGraphicControl, IUThemeComponent)
@@ -66,7 +66,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;
@@ -224,7 +226,7 @@ begin
   ParentForm := GetParentForm(Self, true);
   if (ParentForm.WindowState = wsNormal) and (Align = alTop) then
     begin
-      P := Msg.Pos;
+      P := Point(Msg.Pos.x, Msg.Pos.y);
       P := ScreenToClient(P);
       if P.Y < 5 then
         Msg.Result := HTTRANSPARENT;  //  Send event to parent

@@ -7,9 +7,9 @@ uses
   UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
   UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox,
 
-  System.SysUtils, System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  Vcl.Forms, Vcl.StdCtrls, Vcl.Imaging.pngimage, Vcl.Menus, Vcl.ExtCtrls, Vcl.Controls;
+  SysUtils, Classes,
+  Windows, Messages,
+  Forms, StdCtrls, pngimage, Menus, ExtCtrls, Controls;
 
 type
   TformLoginDialog = class(TUForm)

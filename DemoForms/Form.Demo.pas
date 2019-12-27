@@ -13,14 +13,17 @@ uses
   UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUSmoothBox,
 
   //  Winapi units
-  Winapi.Windows, Winapi.Messages,
+  Windows, Messages,
 
   //  System units
-  System.SysUtils, System.Variants, System.Classes, System.Types, System.ImageList,
+  SysUtils, Variants, Classes, Types,
+{$IF CompilerVersion > 29}
+  ImageList,
+{$IFEND}
 
   //  VCL units
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Menus, Vcl.Buttons, Vcl.ImgList, Vcl.Imaging.pngimage, Vcl.Imaging.jpeg;
+  Graphics, Controls, Forms, Dialogs, StdCtrls, ExtCtrls,
+  Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
   TformDemo = class(TUForm)
@@ -181,7 +184,11 @@ begin
   AniLength := 210;
   AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end
+  );
 end;
 
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
@@ -191,7 +198,11 @@ begin
   AniLength := 210;
   AniLength := Round(AniLength * PPI / 96); //  Scale animation length
   buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end
+  );
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);

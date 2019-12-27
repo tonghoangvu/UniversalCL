@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager,
-  System.Classes, System.Types,
-  Winapi.Windows,
-  VCL.Controls, VCL.Graphics, VCL.ExtCtrls;
+  Classes, Types,
+  Windows,
+  Controls, Graphics, ExtCtrls;
 
 type
   TUCustomShadow = class(TGraphicControl, IUThemeComponent)
@@ -64,7 +64,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;

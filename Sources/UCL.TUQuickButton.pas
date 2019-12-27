@@ -4,9 +4,9 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  System.Classes, System.Types,
-  Winapi.Messages,
-  VCL.Controls, VCL.Graphics, VCL.Forms;
+  Classes, Types,
+  Messages,
+  Controls, Graphics, Forms;
 
 type
   TUQuickButtonStyle = (sbsNone, sbsQuit, sbsMax, sbsMin, sbsSysButton, sbsHighlight);
@@ -83,7 +83,9 @@ type
       property ShowHint;
       property Touch;
       property Visible;
+    {$IF CompilerVersion > 29}
       property StyleElements;
+    {$IFEND}
 
       property OnCanResize;
       property OnClick;

@@ -84,7 +84,7 @@ object formDemo: TformDemo
   object textDescription: TUText
     Left = 390
     Top = 210
-    Width = 94
+    Width = 95
     Height = 15
     Caption = 'This is description'
     Font.Charset = DEFAULT_CHARSET
@@ -113,7 +113,7 @@ object formDemo: TformDemo
   object textEntry: TUText
     Left = 390
     Top = 170
-    Width = 74
+    Width = 73
     Height = 17
     Caption = 'This is entry'
     Font.Charset = DEFAULT_CHARSET
@@ -192,8 +192,8 @@ object formDemo: TformDemo
   object check2State: TUCheckBox
     Left = 390
     Top = 340
-    Width = 134
-    Height = 30
+    Width = 139
+    Height = 33
     ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -214,8 +214,8 @@ object formDemo: TformDemo
   object check3State: TUCheckBox
     Left = 390
     Top = 368
-    Width = 134
-    Height = 30
+    Width = 139
+    Height = 33
     ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -237,8 +237,8 @@ object formDemo: TformDemo
   object radioA1: TURadioButton
     Left = 390
     Top = 240
-    Width = 89
-    Height = 30
+    Width = 94
+    Height = 33
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -264,8 +264,8 @@ object formDemo: TformDemo
   object radioA2: TURadioButton
     Left = 390
     Top = 270
-    Width = 89
-    Height = 30
+    Width = 94
+    Height = 33
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -292,8 +292,8 @@ object formDemo: TformDemo
   object radioA3: TURadioButton
     Left = 390
     Top = 300
-    Width = 89
-    Height = 30
+    Width = 94
+    Height = 33
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -320,8 +320,8 @@ object formDemo: TformDemo
   object radioB1: TURadioButton
     Left = 540
     Top = 240
-    Width = 88
-    Height = 30
+    Width = 93
+    Height = 33
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -347,8 +347,8 @@ object formDemo: TformDemo
   object radioB2: TURadioButton
     Left = 540
     Top = 270
-    Width = 88
-    Height = 30
+    Width = 93
+    Height = 33
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -1088,7 +1088,6 @@ object formDemo: TformDemo
     IconFont.Height = -20
     IconFont.Name = 'Segoe MDL2 Assets'
     IconFont.Style = []
-    IconFont.Quality = fqClearType
     DetailFont.Charset = DEFAULT_CHARSET
     DetailFont.Color = clWindowText
     DetailFont.Height = -13
@@ -1728,7 +1727,7 @@ object formDemo: TformDemo
       WordWrap = True
       ThemeManager = dmMain.AppTheme
       TextKind = tkDescription
-      ExplicitWidth = 186
+      ExplicitWidth = 187
     end
     object headingAbout: TUText
       AlignWithMargins = True

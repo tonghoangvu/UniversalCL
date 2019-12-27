@@ -4,10 +4,10 @@ interface
 
 uses
   UCL.TUForm, UCL.TUThemeManager, UCL.Utils,
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UCL.TUSmoothBox, Vcl.StdCtrls,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, Dialogs, UCL.TUSmoothBox, StdCtrls,
   UCL.TUItemButton, UCL.TUHyperLink, UCL.TUProgressBar, UCL.TUButton,
-  UCL.TUEdit, Vcl.Imaging.pngimage, Vcl.ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
+  UCL.TUEdit, pngimage, ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
   UCL.TURadioButton, UCL.TUText, UCL.TUSymbolButton, UCL.TUSeparator,
   UCL.TUCaptionBar, UCL.TUQuickButton;
 

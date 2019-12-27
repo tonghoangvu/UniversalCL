@@ -4,10 +4,11 @@ interface
 
 uses
   UCL.Classes,
-  System.Types,
-  Winapi.Windows,
-  VCL.Graphics, VCL.GraphUtil,
-  VCL.Themes;
+  Types,
+  Windows,
+  Graphics, GraphUtil,
+  Themes,
+  UCL.Types;
 
 //  Form
 function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
@@ -25,10 +26,15 @@ function MulColor(aColor: TColor; Base: Single): TColor;
 function CreateBlendFunc(Alpha: Byte; Gradient: Boolean): BLENDFUNCTION;
 procedure AssignBlendBitmap(const Bmp: TBitmap; Color: TColor);
 procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
-procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect;
-  const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
+procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect; const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
+
+// OS
+function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 
 implementation
+
+uses
+  SysUtils;
 
 //  FORM
 
@@ -196,13 +202,19 @@ begin
     end;
 end;
 
-procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect;
-  const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
+procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect; const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
 begin
   AlphaBlend(Canvas.Handle,
     DestRect.Left, DestRect.Top, DestRect.Width, DestRect.Height,
     BlendBitmap.Canvas.Handle, 0, 0, BlendBitmap.Width, BlendBitmap.Height,
     BlendFunc);
+end;
+
+function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
+begin
+  Result := (Win32MajorVersion <= AMajor) or
+            ((Win32MajorVersion = AMajor) and
+             (Win32MinorVersion <= AMinor));
 end;
 
 end.

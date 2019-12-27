@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.IntAnimation,
-  VCL.Controls;
+  Controls;
 
 type
   TAnimationProp = (

@@ -5,9 +5,9 @@ interface
 uses
   UCL.IntAnimation,
   UCL.Classes, UCL.Utils, UCL.TUThemeManager,
-  System.Classes, System.Types, System.SysUtils,
-  Winapi.Windows, Winapi.Messages, Winapi.FlatSB,
-  VCL.Controls, VCL.StdCtrls, VCL.Forms, VCL.Dialogs, VCL.ExtCtrls, VCL.Graphics;
+  Classes, Types,
+  Windows, Messages, FlatSB,
+  Controls, StdCtrls, Forms, Dialogs, ExtCtrls, Graphics;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -51,7 +51,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer; isDpiChange: Boolean); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -73,6 +73,9 @@ type
   end;
 
 implementation
+
+uses
+  SysUtils;
 
 { TUSmoothBox }
 
@@ -153,7 +156,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUSmoothBox.ChangeScale(M: Integer; D: Integer; isDpiChange: Boolean);
+procedure TUSmoothBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
 begin
   inherited;
   MINI_SB_THICKNESS := MulDiv(MINI_SB_THICKNESS, M, D);
@@ -326,7 +329,9 @@ constructor TUMiniScrollBar.Create(aOwner: TComponent);
 begin
   inherited;
 
+{$IF CompilerVersion > 29}
   StyleElements :=[];
+{$IFEND}
   BevelOuter := bvNone;
   FullRepaint := false;
   DoubleBuffered := true;

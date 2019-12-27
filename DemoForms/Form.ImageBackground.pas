@@ -7,12 +7,12 @@ uses
 
   UCL.TUQuickButton, UCL.TUCaptionBar, UCL.TUTitleBar, UCL.TUSlider,
   UCL.TUButton, UCL.TUCheckBox, UCL.TURadioButton, UCL.TUSeparator,
-  UCL.TUProgressBar, Vcl.StdCtrls, UCL.TUText, UCL.TUEdit,
+  UCL.TUProgressBar, StdCtrls, UCL.TUText, UCL.TUEdit,
   UCL.TUSymbolButton, UCL.TUItemButton, UCL.TUPanel, UCL.TUShadow,
 
-  System.SysUtils, System.Variants, System.Classes,
-  Winapi.Windows, Winapi.Messages,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.jpeg;
+  SysUtils, Variants, Classes,
+  Windows, Messages,
+  Graphics, Controls, Forms, Dialogs, ExtCtrls, jpeg;
 
 type
   TformImageBackground = class(TUForm)

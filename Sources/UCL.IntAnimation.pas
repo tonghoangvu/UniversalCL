@@ -3,7 +3,11 @@ unit UCL.IntAnimation;
 interface
 
 uses
-  System.Classes, System.Threading;
+  Classes
+{$IF CompilerVersion > 29}
+  , Threading
+{$IFEND}
+  ;
 
 type
   TAniSyncProc = reference to procedure (V: Integer);
@@ -67,7 +71,8 @@ type
 implementation
 
 uses
-  System.Math,
+  SysUtils,
+  Math,
   UCL.IntAnimation.Collection;
 
 { SPECIAL }
