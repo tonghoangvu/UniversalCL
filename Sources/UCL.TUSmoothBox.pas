@@ -12,7 +12,7 @@ uses
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
 
-  TUMiniScrollBar = class(TPanel)
+  TUMiniScrollBar = class(TCustomPanel)
     private
       procedure WM_NCHitTest(var Msg: TWMNCHitTest); message WM_NCHITTEST;
 
@@ -32,6 +32,7 @@ type
       var MouseLeave: Boolean;
   
       FThemeManager: TUThemeManager;
+      FAniSet: TIntAniSet;
 
       FScrollCount: Integer;
       FScrollOrientation: TUOrientation;      
@@ -51,7 +52,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -64,12 +65,14 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property AniSet: TIntAniSet read FAniSet write FAniSet;
+
       property ScrollCount: Integer read FScrollCount;
       property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
       property ScrollBarStyle: TUScrollBarStyle read FScrollBarStyle write FScrollBarStyle default sbsMini;
       property TimePerStep: Integer read FTimePerStep write FTimePerStep default 120;
       property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 6;
-      property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 5;
+      property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 8;
   end;
 
 implementation
@@ -123,40 +126,48 @@ constructor TUSmoothBox.Create(aOwner: TComponent);
 begin
   inherited;
 
+  //  Internal
   MouseLeave := true;
-  
+  MINI_SB_THICKNESS := 2;
+  MINI_SB_MARGIN := 3;
+  MINI_SB_COLOR := $7A7A7A;
+
+  //  Parent properties
   BorderStyle := bsNone;
   VertScrollBar.Tracking := true;
   HorzScrollBar.Tracking := true;
-  
+
+  //  Fields
   FScrollCount := 0;
   FScrollOrientation := oVertical;
   FScrollBarStyle := sbsMini;
   FTimePerStep := 120;
   FLengthPerStep := 6;
-  FMaxScrollCount := 5;
-  
-  MINI_SB_THICKNESS := 2;
-  MINI_SB_MARGIN := 3;
-  MINI_SB_COLOR := $7A7A7A;
+  FMaxScrollCount := 8;
 
+  //  Mini scrollbar
   MiniSB := TUMiniScrollBar.Create(Self);
   MiniSB.Color := MINI_SB_COLOR;
   MiniSB.Parent := Self;
   MiniSB.SetSubComponent(true);
   MiniSB.Visible := false;
   MiniSB.Width := 0;
+
+  //  Custom AniSet
+  FAniSet := TIntAniSet.Create;
+  FAniSet.QuickAssign(akOut, afkQuartic, 0, FTimePerStep, FLengthPerStep);
 end;
 
 destructor TUSmoothBox.Destroy;
 begin
   MiniSB.Free;
+  FAniSet.Free;
   inherited;
 end;
 
 //  CUSTOM METHODS
 
-procedure TUSmoothBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
+procedure TUSmoothBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF});
 begin
   inherited;
   MINI_SB_THICKNESS := MulDiv(MINI_SB_THICKNESS, M, D);
@@ -200,9 +211,9 @@ begin
   ThumbPos := Round(ControlSize * SB.Position / SB.Range);
 
   if ScrollOrientation = oVertical then
-    MiniSB.SetBounds(Width - MINI_SB_MARGIN - MINI_SB_THICKNESS, ThumbPos, MINI_SB_THICKNESS, ThumbSize)
+    (MiniSB as TControl).SetBounds(Width - MINI_SB_MARGIN - MINI_SB_THICKNESS, ThumbPos, MINI_SB_THICKNESS, ThumbSize)
   else 
-    MiniSB.SetBounds(ThumbPos, Height - MINI_SB_MARGIN - MINI_SB_THICKNESS, ThumbSize, MINI_SB_THICKNESS);
+    (MiniSB as TControl).SetBounds(ThumbPos, Height - MINI_SB_MARGIN - MINI_SB_THICKNESS, ThumbSize, MINI_SB_THICKNESS);
 end;
 
 procedure TUSmoothBox.SetMiniSBVisible(IsVisible: Boolean);
@@ -272,8 +283,11 @@ begin
     SB := HorzScrollBar;
   
   //  Scroll by touchpad
-  if Abs(Msg.WheelDelta) < 100 then
+  if (Abs(Msg.WheelDelta) < 100) or (csDesigning in ComponentState) then
     begin
+      if csDesigning in ComponentState then
+        Msg.WheelDelta := 10 * Msg.WheelDelta div Abs(Msg.WheelDelta);
+
       DisableAlign;
       SB.Position := SB.Position - Msg.WheelDelta;
       if ScrollBarStyle = sbsMini then
@@ -292,7 +306,9 @@ begin
       inc(FScrollCount);
       Sign := Msg.WheelDelta div Abs(Msg.WheelDelta);
 
-      Ani := TIntAni.Create(true, akOut, afkQuartic, 1, +LengthPerStep, nil);
+      Ani := TIntAni.Create(1, +LengthPerStep, nil, nil);
+      Ani.AniSet.Assign(Self.AniSet);
+
       if ScrollBarStyle = sbsMini then
         Ani.OnSync :=
           procedure (V: Integer)
@@ -316,9 +332,6 @@ begin
           if FScrollCount = 0 then
             EnableAlign;
         end;
-
-      Ani.Step := LengthPerStep;
-      Ani.Duration := TimePerStep;
       Ani.Start;
     end;
 end;
@@ -331,7 +344,7 @@ begin
 
 {$IF CompilerVersion > 29}
   StyleElements :=[];
-{$IFEND}
+{$ENDIF}
   BevelOuter := bvNone;
   FullRepaint := false;
   DoubleBuffered := true;

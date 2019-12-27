@@ -146,9 +146,13 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
+    procedure buttonNoFocusClick(Sender: TObject);
 
   private
+
   public
+    procedure FocusControl(const Control: TControl);
+
   end;
 
 var
@@ -205,7 +209,6 @@ procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
   DPI: Single;
   Ani: TIntAni;
-
   AniWidth: Integer;
 begin
   DPI := PPI / 96;
@@ -213,13 +216,12 @@ begin
   if drawerNavigation.Width <> Trunc(45 * DPI) then
     AniWidth := - AniWidth;
 
-  Ani := TIntAni.Create(true, akOut, afkQuintic, drawerNavigation.Width, AniWidth,
+  Ani := TIntAni.Create(drawerNavigation.Width, AniWidth,
     procedure (V: Integer)
     begin
       drawerNavigation.Width := V;
-    end);
-  Ani.Step := 30;
-  Ani.Duration := 200;
+    end, nil);
+  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 200, 30);
   Ani.Start;
 end;
 
@@ -240,6 +242,29 @@ begin
 
   boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
+end;
+
+procedure TformDemo.FocusControl(const Control: TControl);
+var
+  f: TForm;
+begin
+  f := TUFocusForm.CreateNew(Self);
+  f.Parent := Self;
+  f.BorderStyle := bsNone;
+  f.Color := clFuchsia;
+  f.TransparentColor := true;
+  f.TransparentColorValue := clFuchsia;
+
+  f.Width := 7 + Control.Width;
+  f.Height := 7 + Control.Height;
+  f.Show;
+  f.Top := Control.Top - 3;
+  f.Left := Control.Left - 3;
+end;
+
+procedure TformDemo.buttonNoFocusClick(Sender: TObject);
+begin
+  FocusControl(radioA1);
 end;
 
 //  CONTROLS EVENTS

@@ -378,6 +378,9 @@ object formDemo: TformDemo
     Width = 5
     Height = 71
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 250
+    AniSet.Step = 25
     Value = 45
     Orientation = oVertical
     CustomFillColor = 2469894
@@ -389,6 +392,9 @@ object formDemo: TformDemo
     Width = 251
     Height = 5
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 250
+    AniSet.Step = 25
     Value = 45
     Orientation = oHorizontal
     CustomFillColor = 2469894
@@ -402,6 +408,9 @@ object formDemo: TformDemo
     Width = 251
     Height = 5
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 250
+    AniSet.Step = 25
     Value = 0
     Orientation = oHorizontal
     CustomFillColor = 2469894
@@ -586,6 +595,9 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 120
+    AniSet.Step = 6
     ScrollOrientation = oHorizontal
     object separator1: TUSeparator
       Left = 120
@@ -875,6 +887,7 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    OnClick = buttonNoFocusClick
   end
   object buttonCanFocus: TUButton
     Tag = 9
@@ -1482,6 +1495,9 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 120
+    AniSet.Step = 6
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -2192,6 +2208,9 @@ object formDemo: TformDemo
       Margins.Right = 0
       Margins.Bottom = 10
       ThemeManager = dmMain.AppTheme
+      AniSet.AniFunctionKind = afkQuartic
+      AniSet.Duration = 250
+      AniSet.Step = 25
       Value = 64
       Orientation = oHorizontal
       CustomFillColor = 2469894
@@ -2278,6 +2297,8 @@ object formDemo: TformDemo
   end
   object popupEdit: TUPopupMenu
     ThemeManager = dmMain.AppTheme
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.Duration = 120
     OnItemClick = popupEditItemClick
     Left = 640
     Top = 42

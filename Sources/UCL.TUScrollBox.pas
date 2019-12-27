@@ -21,6 +21,7 @@ type
       var MiniSBRect: TRect;
 
       FThemeManager: TUThemeManager;
+      FAniSet: TIntAniSet;
       FTimer: TTimer;
       FCanvas: TCanvas;
 
@@ -45,7 +46,7 @@ type
 
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
+      procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
@@ -60,6 +61,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property AniSet: TIntAniSet read FAniSet write FAniSet;
       property IsScrolling: Boolean read FIsScrolling;
       property ScrollBarStyle: TUScrollBarStyle read FScrollBarStyle write FScrollBarStyle default sbsMini;
       property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
@@ -118,7 +120,7 @@ begin
   if not (csDesigning in ComponentState) then
     DisableAlign;
 
-  Ani := TIntAni.Create(true, akOut, afkQuartic, Start, Stop - Start, nil);
+  Ani := TIntAni.Create(Start, Stop - Start, nil, nil);
   if ScrollBarStyle = sbsMini then
     Ani.OnSync := procedure (V: Integer)
       begin
@@ -142,8 +144,8 @@ begin
         EnableAlign;
     end;
 
-  Ani.Duration := Round(TimePerStep * Sqrt(ScrollCount));
-  Ani.Step := Ani.Duration div 12;
+  Ani.AniSet.Duration := Round(TimePerStep * Sqrt(ScrollCount));
+  Ani.AniSet.Step := Ani.AniSet.Duration div 12;
   Ani.Start;
 end;
 
@@ -273,11 +275,15 @@ begin
 
   FCanvas := TCanvas.Create;
 
+  FAniSet := TIntAniSet.Create;
+  FAniSet.QuickAssign(akOut, afkQuartic, 0, 250, 25);
+
   UpdateTheme;
 end;
 
 destructor TUScrollBox.Destroy;
 begin
+  FAniSet.Free;
   FTimer.Free;
   FCanvas.Free;
   inherited;
@@ -291,7 +297,7 @@ end;
 
 //  CUSTOM METHODS
 
-procedure TUScrollBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND});
+procedure TUScrollBox.ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$ENDIF});
 begin
   inherited;
   MINI_SCROLLBAR_THICKNESS := MulDiv(MINI_SCROLLBAR_THICKNESS, M, D);

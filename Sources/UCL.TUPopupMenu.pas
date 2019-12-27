@@ -17,6 +17,7 @@ type
       var BackColor: TColor;
 
       FThemeManager: TUThemeManager;
+      FAniSet: TIntAniSet;
       FOnItemClick: TIndexNotifyEvent;
 
       FItemWidth: Integer;
@@ -35,6 +36,7 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
       procedure Popup(X, Y: Integer); override;
@@ -45,6 +47,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property AniSet: TIntAniSet read FAniSet write FAniSet;
       property OnItemClick: TIndexNotifyEvent read FOnItemClick write FOnItemClick;
 
       property ItemWidth: Integer read FItemWidth write FItemWidth default 200;
@@ -73,20 +76,16 @@ begin
       exit;
     end;
 
-  Ani := TIntAni.Create(true, akIn, afkQuartic, Form.ClientHeight, -Form.ClientHeight,
+  Ani := TIntAni.Create(Form.ClientHeight, -Form.ClientHeight,
     procedure (Value: Integer)
     begin
       Form.Height := Value;
-    end);
-
-  Ani.OnDone :=
+    end,
     procedure
     begin
       Form.Close;
-    end;
-
-  Ani.Step := 20;
-  Ani.Duration := 120;
+    end);
+  Ani.AniSet.Assign(Self.AniSet);
   Ani.Start;
 end;
 
@@ -149,6 +148,15 @@ begin
   FTopSpace := 5;
   FImageKind := ikFontIcon;
   FCloseAnimation := false;
+
+  FAniSet := TIntAniSet.Create;
+  FAniSet.QuickAssign(akOut, afkQuartic, 0, 120, 20);
+end;
+
+destructor TUPopupMenu.Destroy;
+begin
+  FAniSet.Free;
+  inherited;
 end;
 
 //  UTILS
@@ -248,13 +256,12 @@ begin
   Form.Top := Y;
 
   //  Animation
-  Ani := TIntAni.Create(true, akOut, afkQuartic, 0, 2 * TopSpace + ItemCount * ItemHeight,
+  Ani := TIntAni.Create(0, 2 * TopSpace + ItemCount * ItemHeight,
     procedure (Value: Integer)
     begin
       Form.ClientHeight := Value;
-    end);
-  Ani.Duration := 120;
-  Ani.Step := 20;
+    end, nil);
+  Ani.AniSet.Assign(Self.AniSet);
   Ani.Start;
 end;
 
