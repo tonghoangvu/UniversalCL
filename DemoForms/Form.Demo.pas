@@ -1,4 +1,6 @@
-﻿unit Form.Demo;
+﻿{$LEGACYIFEND ON}
+
+unit Form.Demo;
 
 interface
 
@@ -146,13 +148,9 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
-    procedure buttonNoFocusClick(Sender: TObject);
 
   private
-
   public
-    procedure FocusControl(const Control: TControl);
-
   end;
 
 var
@@ -179,92 +177,50 @@ end;
 
 procedure TformDemo.buttonAniStartClick(Sender: TObject);
 var
-  AniLength: Integer;
+  Delta: Integer;
 begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
-    procedure
-    begin
-      buttonRunning.SetFocus;
-    end
-  );
+  Delta := MulDiv(210, PPI, 96);
+  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
 var
-  AniLength: Integer;
+  Delta: Integer;
 begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
-    procedure
-    begin
-      buttonRunning.SetFocus;
-    end
-  );
+  Delta := -MulDiv(210, PPI, 96);
+  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
-  DPI: Single;
-  Ani: TIntAni;
-  AniWidth: Integer;
+  Opened: Boolean;
+  Delta: Integer;
 begin
-  DPI := PPI / 96;
-  AniWidth := Round((225 - 45 ) * DPI);
-  if drawerNavigation.Width <> Trunc(45 * DPI) then
-    AniWidth := - AniWidth;
+  Opened := drawerNavigation.Width <> buttonOpenMenu.Width;
 
-  Ani := TIntAni.Create(drawerNavigation.Width, AniWidth,
-    procedure (V: Integer)
-    begin
-      drawerNavigation.Width := V;
-    end, nil);
-  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 200, 30);
-  Ani.Start;
+  if not Opened then
+    Delta := MulDiv(180, PPI, 96)   //  Open
+  else
+    Delta := -MulDiv(180, PPI, 96); //  Close
+
+  drawerNavigation.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic, nil);
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
 var
-  DPI: Single;
-  AniDelta: Integer;
+  Delta: Integer;
 begin
-  DPI := Self.PPI / 96;
-
-  boxSmoothScrolling.DisableAlign;
-  boxSmoothScrolling.SetOldSBVisible(false);
+  boxSmoothScrolling.DisableAlign;  //  Pause align items for better performance
 
   if boxSmoothScrolling.Width = 0 then
-    AniDelta := Round(DPI * 250)
+    Delta := MulDiv(250, PPI, 96)   //  Open
   else
-    AniDelta := - boxSmoothScrolling.Width;
+    Delta := -boxSmoothScrolling.Width; //  Close
 
-  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
+  boxSmoothScrolling.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
-end;
-
-procedure TformDemo.FocusControl(const Control: TControl);
-var
-  f: TForm;
-begin
-  f := TUFocusForm.CreateNew(Self);
-  f.Parent := Self;
-  f.BorderStyle := bsNone;
-  f.Color := clFuchsia;
-  f.TransparentColor := true;
-  f.TransparentColorValue := clFuchsia;
-
-  f.Width := 7 + Control.Width;
-  f.Height := 7 + Control.Height;
-  f.Show;
-  f.Top := Control.Top - 3;
-  f.Left := Control.Left - 3;
-end;
-
-procedure TformDemo.buttonNoFocusClick(Sender: TObject);
-begin
-  FocusControl(radioA1);
 end;
 
 //  CONTROLS EVENTS

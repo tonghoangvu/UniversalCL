@@ -1,3 +1,5 @@
+{$LEGACYIFEND ON}
+
 unit UCL.IntAnimation;
 
 interface
@@ -6,7 +8,7 @@ uses
   Classes
   {$IF CompilerVersion > 29}
   , Threading
-  {$ENDIF}
+  {$IFEND}
   ;
 
 type

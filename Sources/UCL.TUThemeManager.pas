@@ -76,17 +76,7 @@ type
       property OnAfterUpdate: TNotifyEvent read FOnAfterUpdate write FOnAfterUpdate;
   end;
 
-function GetCommonThemeManager: TUThemeManager;
-
 implementation
-
-var
-  CommonThemeManager: TUThemeManager;
-
-function GetCommonThemeManager: TUThemeManager;
-begin
-  Result := CommonThemeManager;
-end;
 
 { TUThemeManager }
 
@@ -94,11 +84,7 @@ end;
 
 constructor TUThemeManager.Create(aOwner: TComponent);
 begin
-  if not (csLoading in ComponentState) and (CommonThemeManager <> Nil) then
-    raise Exception.Create('TUThemeManager allready used in application!');
   inherited;
-
-  CommonThemeManager := Self;
 
   //  Objects
   FCompList := TList<TComponent>.Create;
@@ -211,12 +197,5 @@ begin
   if Index <> -1 then
     FCompList.Delete(Index);
 end;
-
-initialization
-  CommonThemeManager := Nil;
-
-//finalization
-//  if CommonThemeManager <> Nil then
-//    CommonThemeManager.Free;
 
 end.

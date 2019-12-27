@@ -1,4 +1,6 @@
-﻿unit UCL.TUItemButton;
+﻿{$LEGACYIFEND ON}
+
+unit UCL.TUItemButton;
 
 interface
 

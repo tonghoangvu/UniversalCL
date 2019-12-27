@@ -9,11 +9,6 @@ uses
   Forms, Controls, Graphics;
 
 type
-  TUFocusForm = class(TForm)
-    protected
-      procedure Paint; override;
-  end;
-
   TUForm = class(TForm, IUThemeComponent)
     const
       DEFAULT_BORDERCOLOR_ACTIVE_LIGHT = $707070;
@@ -86,16 +81,6 @@ implementation
 uses
   SysUtils,
   UCL.Types;
-
-{ TUFocusForm }
-
-procedure TUFocusForm.Paint;
-begin
-  inherited;
-  Canvas.Pen.Color := clblack;
-  Canvas.pen.Width := 2;
-  Canvas.Rectangle(1, 1, ClientWidth - 1, ClientHeight - 1);
-end;
 
 { TUForm }
 

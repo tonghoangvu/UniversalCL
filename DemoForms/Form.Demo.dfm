@@ -11,6 +11,7 @@ object formDemo: TformDemo
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  GlassFrame.Enabled = True
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -887,7 +888,6 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    OnClick = buttonNoFocusClick
   end
   object buttonCanFocus: TUButton
     Tag = 9
@@ -1326,7 +1326,7 @@ object formDemo: TformDemo
       DetailFont.Name = 'Segoe UI'
       DetailFont.Style = []
       SymbolChar = #59136
-      Text = 'Menu'
+      Text = '-'
       TextOffset = 45
       Detail = 'Detail'
       ShowDetail = False

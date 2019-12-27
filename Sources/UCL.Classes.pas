@@ -1,3 +1,5 @@
+{$LEGACYIFEND ON}
+
 unit UCL.Classes;
 
 interface
@@ -17,7 +19,7 @@ type
   TDWordFiller = record
   {$IFDEF CPUX64}
     Filler: array[1..4] of Byte; // Pad DWORD to make it 8 bytes (4+4) [x64 only]
-  {$ENDIF}
+  {$IFEND}
   end;
 
   PRect = ^TRect;

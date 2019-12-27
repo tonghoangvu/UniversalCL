@@ -1,4 +1,6 @@
-﻿unit UCL.TUSymbolButton;
+﻿{$LEGACYIFEND ON}
+
+unit UCL.TUSymbolButton;
 
 interface
 

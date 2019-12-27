@@ -1,4 +1,6 @@
-﻿unit UCL.TURadioButton;
+﻿{$LEGACYIFEND ON}
+
+unit UCL.TURadioButton;
 
 interface
 
