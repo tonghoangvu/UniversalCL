@@ -37,11 +37,11 @@ type
       procedure QuickAssign(AniKind: TAniKind; AniFunctionKind: TAniFunctionKind;
         Delay, Duration, Step: Cardinal);
     published
-      property AniKind: TAniKind read FAniKind write FAniKind default akOut;
-      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write FAniFunctionKind default afkLinear;
-      property DelayStartTime: Cardinal read FDelayStartTime write FDelayStartTime default 0;
-      property Duration: Cardinal read FDuration write FDuration default 200;
-      property Step: Cardinal read FStep write FStep default 20;
+      property AniKind: TAniKind read FAniKind write FAniKind;
+      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write FAniFunctionKind;
+      property DelayStartTime: Cardinal read FDelayStartTime write FDelayStartTime;
+      property Duration: Cardinal read FDuration write FDuration;
+      property Step: Cardinal read FStep write FStep;
   end;
 
   TIntAni = class(TThread)
@@ -255,6 +255,16 @@ end;
 
 { TIntAniSet }
 
+constructor TIntAniSet.Create;
+begin
+  inherited Create;
+  FAniKind := akOut;
+  FAniFunctionKind := afkLinear;
+  FDelayStartTime := 0;
+  FDuration := 200;
+  FStep := 20;
+end;
+
 procedure TIntAniSet.Assign(Source: TPersistent);
 begin
   if Source is TIntAniSet then
@@ -267,16 +277,6 @@ begin
     end
   else
     inherited;
-end;
-
-constructor TIntAniSet.Create;
-begin
-  inherited Create;
-  FAniKind := akOut;
-  FAniFunctionKind := afkLinear;
-  FDelayStartTime := 0;
-  FDuration := 200;
-  FStep := 20;
 end;
 
 procedure TIntAniSet.QuickAssign(AniKind: TAniKind; AniFunctionKind: TAniFunctionKind;

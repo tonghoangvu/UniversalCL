@@ -379,7 +379,9 @@ object formDemo: TformDemo
     Width = 5
     Height = 71
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 250
     AniSet.Step = 25
     Value = 45
@@ -393,7 +395,9 @@ object formDemo: TformDemo
     Width = 251
     Height = 5
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 250
     AniSet.Step = 25
     Value = 45
@@ -409,7 +413,9 @@ object formDemo: TformDemo
     Width = 251
     Height = 5
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 250
     AniSet.Step = 25
     Value = 0
@@ -596,7 +602,9 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 6
     ScrollOrientation = oHorizontal
@@ -919,7 +927,7 @@ object formDemo: TformDemo
     Tag = 17
     Left = 60
     Top = 270
-    Width = 151
+    Width = 150
     Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15132390
@@ -947,7 +955,7 @@ object formDemo: TformDemo
   object buttonReloadSettings: TUSymbolButton
     Left = 220
     Top = 270
-    Width = 151
+    Width = 150
     Height = 31
     ThemeManager = dmMain.AppTheme
     SymbolFont.Charset = DEFAULT_CHARSET
@@ -1031,7 +1039,7 @@ object formDemo: TformDemo
     Tag = 5
     Left = 220
     Top = 310
-    Width = 151
+    Width = 150
     Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
@@ -1495,7 +1503,9 @@ object formDemo: TformDemo
     ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 10
     AniSet.Duration = 120
     AniSet.Step = 6
     object headingSettings: TUText
@@ -2208,7 +2218,9 @@ object formDemo: TformDemo
       Margins.Right = 0
       Margins.Bottom = 10
       ThemeManager = dmMain.AppTheme
+      AniSet.AniKind = akOut
       AniSet.AniFunctionKind = afkQuartic
+      AniSet.DelayStartTime = 0
       AniSet.Duration = 250
       AniSet.Step = 25
       Value = 64
@@ -2278,7 +2290,7 @@ object formDemo: TformDemo
       Edit.Align = alClient
       Edit.AutoSize = False
       Edit.BorderStyle = bsNone
-      Edit.Color = clWhite
+      Edit.Color = 15132390
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
@@ -2288,6 +2300,7 @@ object formDemo: TformDemo
       Edit.PopupMenu = popupEdit
       Edit.TabOrder = 0
       Edit.TextHint = 'Right click to open context menu'
+      Transparent = True
     end
   end
   object dialogSelectColor: TColorDialog
@@ -2297,8 +2310,11 @@ object formDemo: TformDemo
   end
   object popupEdit: TUPopupMenu
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 120
+    AniSet.Step = 20
     OnItemClick = popupEditItemClick
     Left = 640
     Top = 42

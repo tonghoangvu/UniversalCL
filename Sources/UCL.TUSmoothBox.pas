@@ -301,7 +301,10 @@ begin
       if FScrollCount = MaxScrollCount then exit;
 
       if FScrollCount = 0 then
-        DisableAlign;
+        begin
+          DisableAlign;
+          Mouse.Capture := Handle;
+        end;
 
       inc(FScrollCount);
       Sign := Msg.WheelDelta div Abs(Msg.WheelDelta);
@@ -330,7 +333,10 @@ begin
             SetOldSBVisible(false);
           dec(FScrollCount);
           if FScrollCount = 0 then
-            EnableAlign;
+            begin
+              EnableAlign;
+              Mouse.Capture := 0;
+            end;
         end;
       Ani.Start;
     end;
