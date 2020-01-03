@@ -298,7 +298,7 @@ begin
   //  Scroll by mouse
   else
     begin
-      if FScrollCount = MaxScrollCount then exit;
+      if FScrollCount >= MaxScrollCount then exit;
 
       if FScrollCount = 0 then
         begin

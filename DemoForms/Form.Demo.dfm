@@ -11,7 +11,6 @@ object formDemo: TformDemo
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  GlassFrame.Enabled = True
   OldCreateOrder = False
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -889,6 +888,7 @@ object formDemo: TformDemo
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
     Alignment = taLeftJustify
+    AllowFocus = False
     Caption = 'Button no focus'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1505,9 +1505,11 @@ object formDemo: TformDemo
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
-    AniSet.DelayStartTime = 10
+    AniSet.DelayStartTime = 0
     AniSet.Duration = 120
-    AniSet.Step = 6
+    AniSet.Step = 12
+    ScrollBarStyle = sbsFull
+    LengthPerStep = 4
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
