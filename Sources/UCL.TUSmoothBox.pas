@@ -37,7 +37,6 @@ type
       FScrollCount: Integer;
       FScrollOrientation: TUOrientation;      
       FScrollBarStyle: TUScrollBarStyle;
-      FTimePerStep: Integer;
       FLengthPerStep: Integer;
       FMaxScrollCount: Integer;
 
@@ -70,8 +69,7 @@ type
       property ScrollCount: Integer read FScrollCount;
       property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
       property ScrollBarStyle: TUScrollBarStyle read FScrollBarStyle write FScrollBarStyle default sbsMini;
-      property TimePerStep: Integer read FTimePerStep write FTimePerStep default 120;
-      property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 6;
+      property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 4;
       property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 8;
   end;
 
@@ -141,8 +139,7 @@ begin
   FScrollCount := 0;
   FScrollOrientation := oVertical;
   FScrollBarStyle := sbsMini;
-  FTimePerStep := 120;
-  FLengthPerStep := 6;
+  FLengthPerStep := 4;
   FMaxScrollCount := 8;
 
   //  Mini scrollbar
@@ -155,7 +152,7 @@ begin
 
   //  Custom AniSet
   FAniSet := TIntAniSet.Create;
-  FAniSet.QuickAssign(akOut, afkQuartic, 0, FTimePerStep, FLengthPerStep);
+  FAniSet.QuickAssign(akOut, afkCubic, 0, 120, 10);
 end;
 
 destructor TUSmoothBox.Destroy;

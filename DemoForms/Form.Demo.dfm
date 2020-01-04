@@ -1504,12 +1504,11 @@ object formDemo: TformDemo
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
-    AniSet.AniFunctionKind = afkQuartic
+    AniSet.AniFunctionKind = afkCubic
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
-    AniSet.Step = 12
+    AniSet.Step = 10
     ScrollBarStyle = sbsFull
-    LengthPerStep = 4
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
