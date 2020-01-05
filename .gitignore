@@ -1,6 +1,7 @@
 Bin/
 Win32/
 Win64/
+Project/
 Resources/
 *.local
 *.tvsconfig
