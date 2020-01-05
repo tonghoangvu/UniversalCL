@@ -1,5 +1,5 @@
 object formDemo: TformDemo
-  Left = 0
+  Left = 60
   Top = 0
   Caption = 'Delphi UWP app'
   ClientHeight = 590
@@ -12,6 +12,7 @@ object formDemo: TformDemo
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesigned
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
@@ -376,7 +377,7 @@ object formDemo: TformDemo
     Left = 660
     Top = 420
     Width = 5
-    Height = 71
+    Height = 70
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
@@ -391,7 +392,7 @@ object formDemo: TformDemo
   object progressCustomColor: TUProgressBar
     Left = 390
     Top = 420
-    Width = 251
+    Width = 250
     Height = 5
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
@@ -409,7 +410,7 @@ object formDemo: TformDemo
   object progressConnected: TUProgressBar
     Left = 390
     Top = 440
-    Width = 251
+    Width = 250
     Height = 5
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
@@ -422,7 +423,7 @@ object formDemo: TformDemo
     CustomFillColor = 2469894
     CustomBackColor = 15132390
   end
-  object captionbarNewStyle: TUCaptionBar
+  object captionBar: TUCaptionBar
     Left = 0
     Top = 0
     Width = 1000
@@ -1035,7 +1036,7 @@ object formDemo: TformDemo
     Font.Style = []
     ParentFont = False
   end
-  object buttonToggle: TUButton
+  object buttonToggled: TUButton
     Tag = 5
     Left = 220
     Top = 310
@@ -1204,13 +1205,12 @@ object formDemo: TformDemo
     SymbolChar = #57696
     Text = 'New'
     Detail = 'Ctrl+N'
-    IsToggleButton = True
   end
   object buttonRandomProgress: TUButton
     Tag = 5
     Left = 390
     Top = 460
-    Width = 251
+    Width = 250
     Height = 31
     Hint = 'This is tooltip'
     ThemeManager = dmMain.AppTheme
@@ -1245,16 +1245,16 @@ object formDemo: TformDemo
     Caption = 'Here we go'
     TabOrder = 5
   end
-  object buttonAniStart: TButton
+  object buttonAniToRight: TButton
     Left = 60
     Top = 140
     Width = 151
     Height = 31
     Caption = 'Start animation'
     TabOrder = 6
-    OnClick = buttonAniStartClick
+    OnClick = buttonAniToRightClick
   end
-  object buttonAniInverse: TButton
+  object buttonAniToLeft: TButton
     Left = 220
     Top = 140
     Width = 151
@@ -1262,7 +1262,7 @@ object formDemo: TformDemo
     Caption = 'Reserve animation'
     ImageIndex = 0
     TabOrder = 7
-    OnClick = buttonAniInverseClick
+    OnClick = buttonAniToLeftClick
   end
   object buttonWithImage: TUButton
     Tag = 6
@@ -1484,7 +1484,7 @@ object formDemo: TformDemo
       Align = alTop
     end
   end
-  object boxSmoothScrolling: TUSmoothBox
+  object boxSettings: TUSmoothBox
     Left = 750
     Top = 92
     Width = 250
