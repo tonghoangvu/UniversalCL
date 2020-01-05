@@ -25,6 +25,7 @@ type
       FCompList: TList<TComponent>;
 
       //  Events
+      FOnBeforeColorLoading: TNotifyEvent;
       FOnBeforeUpdate: TNotifyEvent;
       FOnAfterUpdate: TNotifyEvent;
 
@@ -72,21 +73,12 @@ type
       property ColorOnBorder: Boolean read FColorOnBorder stored false;
 
       //  Events
+      property OnBeforeColorLoading: TNotifyEvent read FOnBeforeColorLoading write FOnBeforeColorLoading;
       property OnBeforeUpdate: TNotifyEvent read FOnBeforeUpdate write FOnBeforeUpdate;
       property OnAfterUpdate: TNotifyEvent read FOnAfterUpdate write FOnAfterUpdate;
   end;
 
-function GetCommonThemeManager: TUThemeManager;
-
 implementation
-
-var
-  CommonThemeManager: TUThemeManager;
-
-function GetCommonThemeManager: TUThemeManager;
-begin
-  Result := CommonThemeManager;
-end;
 
 { TUThemeManager }
 
@@ -94,11 +86,7 @@ end;
 
 constructor TUThemeManager.Create(aOwner: TComponent);
 begin
-  if not (csLoading in ComponentState) and (CommonThemeManager <> Nil) then
-    raise Exception.Create('TUThemeManager allready used in application!');
   inherited;
-
-  CommonThemeManager := Self;
 
   //  Objects
   FCompList := TList<TComponent>.Create;
@@ -127,6 +115,8 @@ end;
 procedure TUThemeManager.Loaded;
 begin
   inherited;
+  if Assigned(OnBeforeColorLoading) then
+    FOnBeforeColorLoading(Self);
   Reload;
 end;
 
@@ -211,12 +201,5 @@ begin
   if Index <> -1 then
     FCompList.Delete(Index);
 end;
-
-initialization
-  CommonThemeManager := Nil;
-
-//finalization
-//  if CommonThemeManager <> Nil then
-//    CommonThemeManager.Free;
 
 end.

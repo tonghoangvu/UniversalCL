@@ -30,6 +30,11 @@ object formAppList: TformAppList
     ParentColor = False
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
+    AniSet.AniFunctionKind = afkCubic
+    AniSet.DelayStartTime = 0
+    AniSet.Duration = 120
+    AniSet.Step = 10
     ScrollOrientation = oHorizontal
     object USymbolButton1: TUSymbolButton
       Left = 555
@@ -140,7 +145,7 @@ object formAppList: TformAppList
       Align = alLeft
     end
     object USymbolButton2: TUSymbolButton
-      Left = 222
+      Left = 111
       Top = 0
       Width = 111
       Height = 73
@@ -167,33 +172,6 @@ object formAppList: TformAppList
       Align = alLeft
     end
     object USymbolButton4: TUSymbolButton
-      Left = 111
-      Top = 0
-      Width = 111
-      Height = 73
-      ThemeManager = dmMain.AppTheme
-      SymbolFont.Charset = DEFAULT_CHARSET
-      SymbolFont.Color = clWindowText
-      SymbolFont.Height = -16
-      SymbolFont.Name = 'Segoe MDL2 Assets'
-      SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
-      DetailFont.Charset = DEFAULT_CHARSET
-      DetailFont.Color = clWindowText
-      DetailFont.Height = -13
-      DetailFont.Name = 'Segoe UI'
-      DetailFont.Style = []
-      Orientation = oVertical
-      SymbolChar = #57350
-      Text = 'Favorite'
-      Detail = 'Favorite app'
-      Align = alLeft
-    end
-    object USymbolButton3: TUSymbolButton
       Left = 0
       Top = 0
       Width = 111
@@ -220,6 +198,33 @@ object formAppList: TformAppList
       Detail = 'Home page'
       IsToggleButton = True
       IsToggled = True
+      Align = alLeft
+    end
+    object USymbolButton3: TUSymbolButton
+      Left = 222
+      Top = 0
+      Width = 111
+      Height = 73
+      ThemeManager = dmMain.AppTheme
+      SymbolFont.Charset = DEFAULT_CHARSET
+      SymbolFont.Color = clWindowText
+      SymbolFont.Height = -16
+      SymbolFont.Name = 'Segoe MDL2 Assets'
+      SymbolFont.Style = []
+      TextFont.Charset = DEFAULT_CHARSET
+      TextFont.Color = clWindowText
+      TextFont.Height = -13
+      TextFont.Name = 'Segoe UI'
+      TextFont.Style = []
+      DetailFont.Charset = DEFAULT_CHARSET
+      DetailFont.Color = clWindowText
+      DetailFont.Height = -13
+      DetailFont.Name = 'Segoe UI'
+      DetailFont.Style = []
+      Orientation = oVertical
+      SymbolChar = #57350
+      Text = 'Like'
+      Detail = 'I like it'
       Align = alLeft
     end
   end
@@ -302,7 +307,11 @@ object formAppList: TformAppList
     ParentColor = False
     TabOrder = 2
     ThemeManager = dmMain.AppTheme
-    LengthPerStep = 4
+    AniSet.AniKind = akOut
+    AniSet.AniFunctionKind = afkCubic
+    AniSet.DelayStartTime = 0
+    AniSet.Duration = 120
+    AniSet.Step = 10
     object UItemButton1: TUItemButton
       Left = 0
       Top = 1160

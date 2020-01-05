@@ -1,4 +1,6 @@
-﻿unit UCL.TUCheckBox;
+﻿{$LEGACYIFEND ON}
+
+unit UCL.TUCheckBox;
 
 interface
 

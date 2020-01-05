@@ -103,6 +103,7 @@ begin
   Height := 32;
   Font.Name := 'Segoe UI';
   Font.Size := 9;
+  FullRepaint := true;
 
   UpdateTheme;
 end;

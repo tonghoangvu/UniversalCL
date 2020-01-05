@@ -1,4 +1,6 @@
-﻿unit UCL.TUQuickButton;
+﻿{$LEGACYIFEND ON}
+
+unit UCL.TUQuickButton;
 
 interface
 

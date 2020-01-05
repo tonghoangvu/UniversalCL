@@ -1,41 +1,58 @@
+{$LEGACYIFEND ON}
+
 unit UCL.IntAnimation;
 
 interface
 
 uses
   Classes
-{$IF CompilerVersion > 29}
+  {$IF CompilerVersion > 29}
   , Threading
-{$IFEND}
+  {$IFEND}
   ;
 
 type
   TAniSyncProc = reference to procedure (V: Integer);
-  TAniDoneProc = reference to procedure;  //  TProc
-
+  TAniDoneProc = reference to procedure;
   TAniFunction = reference to function (P: Single): Single;
 
   TAniKind = (akIn, akOut, akInOut);
-  TAniFunctionKind = (
+
+  TAniFunctionKind =
+  (
     afkLinear, afkQuadratic, afkCubic, afkQuartic, afkQuintic,
     afkBack, afkBounce, afkExpo, afkSine, afkCircle
-    );
+  );
+
+  TIntAniSet = class(TPersistent)
+    private
+      FAniKind: TAniKind;
+      FAniFunctionKind: TAniFunctionKind;
+      FDelayStartTime: Cardinal;
+      FDuration: Cardinal;
+      FStep: Cardinal;
+    public
+      constructor Create;
+      procedure Assign(Source: TPersistent); override;
+      procedure QuickAssign(AniKind: TAniKind; AniFunctionKind: TAniFunctionKind;
+        Delay, Duration, Step: Cardinal);
+    published
+      property AniKind: TAniKind read FAniKind write FAniKind;
+      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write FAniFunctionKind;
+      property DelayStartTime: Cardinal read FDelayStartTime write FDelayStartTime;
+      property Duration: Cardinal read FDuration write FDuration;
+      property Step: Cardinal read FStep write FStep;
+  end;
 
   TIntAni = class(TThread)
     var CurrentValue: Integer;
 
     private
-      var FStep: Byte;
       var AniFunction: TAniFunction;
 
       FOnSync: TAniSyncProc;
       FOnDone: TAniDoneProc;
-
-      FAniKind: TAniKind;
-      FAniFunctionKind: TAniFunctionKind;
-
-      FDelayStartTime: Cardinal;
-      FDuration: Cardinal;
+      FAniSet: TIntAniSet;
       FStartValue: Integer;
       FDeltaValue: Integer;
 
@@ -47,23 +64,16 @@ type
       procedure Execute; override;
 
     public
-      constructor Create(
-        FreeOnFinish: Boolean;
-        aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
-        aStartValue, aDeltaValue: Integer;
-        aSyncProc: TAniSyncProc);
+      constructor Create(aStartValue, aDeltaValue: Integer;
+        aSyncProc: TAniSyncProc; aDoneProc: TAniDoneProc);
+      destructor Destroy; override;
 
       //  Events
       property OnSync: TAniSyncProc read FOnSync write FOnSync;
       property OnDone: TAniDoneProc read FOnDone write FOnDone;
 
-      //  Props
-      property Step: Byte read FStep write FStep default 25;
-      property AniKind: TAniKind read FAniKind write FAniKind default akIn;
-      property AniFunctionKind: TAniFunctionKind read FAniFunctionKind write FAniFunctionKind default afkLinear;
-
-      property DelayStartTime: Cardinal read FDelayStartTime write FDelayStartTime default 0;
-      property Duration: Cardinal read FDuration write FDuration default 400;
+      //  Properties
+      property AniSet: TIntAniSet read FAniSet write FAniSet;
       property StartValue: Integer read FStartValue write FStartValue default 0;
       property DeltaValue: Integer read FDeltaValue write FDeltaValue default 0;
   end;
@@ -80,9 +90,9 @@ uses
 function TIntAni.UpdateFunction: Boolean;
 begin
   Result := true;
-  case AniKind of
+  case AniSet.AniKind of
     akIn:
-      case AniFunctionKind of
+      case AniSet.AniFunctionKind of
         afkLinear:
           AniFunction := TIntAniCollection.Linear;
         afkQuadratic:
@@ -108,7 +118,7 @@ begin
       end;
 
     akOut:
-      case AniFunctionKind of
+      case AniSet.AniFunctionKind of
         afkLinear:
           AniFunction := TIntAniCollection.Linear;
         afkQuadratic:
@@ -134,7 +144,7 @@ begin
       end;
 
     akInOut:
-      case AniFunctionKind of
+      case AniSet.AniFunctionKind of
         afkLinear:
           AniFunction := TIntAniCollection.Linear;
         afkQuadratic:
@@ -166,34 +176,27 @@ end;
 
 { MAIN CLASS }
 
-constructor TIntAni.Create(
-  FreeOnFinish: Boolean;
-  aAniKind: TAniKind; aAniFunctionKind: TAniFunctionKind;
-  aStartValue, aDeltaValue: Integer;
-  aSyncProc: TAniSyncProc);
+constructor TIntAni.Create(aStartValue: Integer; aDeltaValue: Integer;
+  aSyncProc: TAniSyncProc; aDoneProc: TAniDoneProc);
 begin
   inherited Create(True);
+  FreeOnTerminate := true;
 
   //  Internal
   CurrentValue := 0;
   AniFunction := nil;
 
-  //  New props
-  FStep := 25;
-  FAniKind := aAniKind;
-  FAniFunctionKind := aAniFunctionKind;
+  //  AniSet
+  FAniSet := TIntAniSet.Create;
+  FAniSet.QuickAssign(akOut, afkLinear, 0, 200, 20);
 
-  FDelayStartTime := 0;
-  FDuration := 400;
+  //  Fields
   FStartValue := aStartValue;
   FDeltaValue := aDeltaValue;
-
-  FOnDone := nil;
   FOnSync := aSyncProc;
+  FOnDone := aDoneProc;
 
-  //  Old props
-  FreeOnTerminate := FreeOnFinish;
-
+  //  Finish
   UpdateFunction;
 end;
 
@@ -208,18 +211,18 @@ begin
     ///  Depend on AniKind (In, Out,...) and AniFunctionKind (Linear,...)
     ///  If Result = false (error found), then exit
 
-  d := Duration;
+  d := AniSet.Duration;
   b := StartValue;
   c := DeltaValue;
 
   //  Delay start
-  Sleep(DelayStartTime);
+  Sleep(AniSet.DelayStartTime);
 
   //  Calc step by FPS
-  TimePerStep := Round(d / Step);
+  TimePerStep := Round(d / AniSet.Step);
 
   //  Run
-  for i := 1 to Step do
+  for i := 1 to AniSet.Step do
     begin
       t := i * TimePerStep;
       CurrentValue := b + Round(c * AniFunction(t / d));
@@ -232,7 +235,11 @@ begin
   Synchronize(DoneControl);
 end;
 
-{ PROCS }
+destructor TIntAni.Destroy;
+begin
+  FAniSet.Free;
+  inherited;
+end;
 
 procedure TIntAni.DoneControl;
 begin
@@ -244,6 +251,42 @@ procedure TIntAni.UpdateControl;
 begin
   if Assigned(FOnSync) then
     FOnSync(CurrentValue);
+end;
+
+{ TIntAniSet }
+
+constructor TIntAniSet.Create;
+begin
+  inherited Create;
+  FAniKind := akOut;
+  FAniFunctionKind := afkLinear;
+  FDelayStartTime := 0;
+  FDuration := 200;
+  FStep := 20;
+end;
+
+procedure TIntAniSet.Assign(Source: TPersistent);
+begin
+  if Source is TIntAniSet then
+    begin
+      FAniKind := (Source as TIntAniSet).AniKind;
+      FAniFunctionKind := (Source as TIntAniSet).AniFunctionKind;
+      FDelayStartTime := (Source as TIntAniSet).DelayStartTime;
+      FDuration := (Source as TIntAniSet).Duration;
+      FStep := (Source as TIntAniSet).Step;
+    end
+  else
+    inherited;
+end;
+
+procedure TIntAniSet.QuickAssign(AniKind: TAniKind; AniFunctionKind: TAniFunctionKind;
+  Delay, Duration, Step: Cardinal);
+begin
+  FAniKind := AniKind;
+  FAniFunctionKind := AniFunctionKind;
+  FDelayStartTime := Delay;
+  FDuration := Duration;
+  FStep := Step;
 end;
 
 end.

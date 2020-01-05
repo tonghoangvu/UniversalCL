@@ -41,15 +41,12 @@ procedure TWinControlHelper.Animation(
 var
   Ani: TIntAni;
 begin
-  Ani := TIntAni.Create(True, AniKind, AniFunctionKind, StartValue, DeltaValue,
+  Ani := TIntAni.Create(StartValue, DeltaValue,
     procedure (V: Integer)
     begin
       SetPropValue(AniProperty, V);
-    end);
-  Ani.Step := Step;
-  Ani.Duration := Duration;
-
-  Ani.OnDone := OnDone;
+    end, OnDone);
+  Ani.AniSet.QuickAssign(AniKind, AniFunctionKind, 0, Duration, Step);
   Ani.Start;
 end;
 

@@ -1,3 +1,5 @@
+{$LEGACYIFEND ON}
+
 unit UCL.TUProgressBar;
 
 interface
@@ -18,6 +20,7 @@ type
       var BackRect: TRect;
 
       FThemeManager: TUThemeManager;
+      FAniSet: TIntAniSet;
 
       FValue: Integer;
       FOrientation: TUOrientation;
@@ -41,12 +44,14 @@ type
 
     public
       constructor Create(aOnwer: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
       procedure GoToValue(Value: Integer);
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property AniSet: TIntAniSet read FAniSet write FAniSet;
 
       property Value: Integer read FValue write SetValue;
       property Orientation: TUOrientation read FOrientation write SetOrientation;
@@ -204,15 +209,27 @@ constructor TUCustomProgressBar.Create(aOnwer: TComponent);
 begin
   inherited Create(aOnwer);
 
+  //  Parent properties
+  Height := 5;
+  Width := 100;
+
+  //  Fields
   FValue := 0;
   FCustomFillColor := $25B006;
   FCustomBackColor := $E6E6E6;
 
-  Height := 5;
-  Width := 100;
+  //  Custom AniSet
+  FAniSet := TIntAniSet.Create;
+  FAniSet.QuickAssign(akOut, afkQuartic, 0, 250, 25);
 
   UpdateColors;
   UpdateRects;
+end;
+
+destructor TUCustomProgressBar.Destroy;
+begin
+  FAniSet.Free;
+  inherited;
 end;
 
 procedure TUCustomProgressBar.GoToValue(Value: Integer);
@@ -221,13 +238,12 @@ var
 begin
   if not Enabled then exit;
 
-  Ani := TIntAni.Create(true, akOut, afkQuartic, FValue, Value - FValue,
-    procedure (Value: Integer)
+  Ani := TIntAni.Create(FValue, Value - FValue,
+    procedure (V: Integer)
     begin
-      Self.Value := Value;
-    end);
-  Ani.Step := 25;
-  Ani.Duration := 250;
+      Self.Value := V;
+    end, nil);
+  Ani.AniSet.Assign(Self.AniSet);
   Ani.Start;
 end;
 

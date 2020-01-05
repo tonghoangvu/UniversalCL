@@ -1,10 +1,13 @@
-﻿unit Form.Demo;
+﻿{$LEGACYIFEND ON}
+
+unit Form.Demo;
 
 interface
 
 uses
   //  UCL units
   UCL.TUThemeManager,
+  UCL.TUBorderlessForm,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
@@ -26,7 +29,7 @@ uses
   Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
-  TformDemo = class(TUForm)
+  TformDemo = class(TUBorderlessForm)
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -175,70 +178,49 @@ end;
 
 procedure TformDemo.buttonAniStartClick(Sender: TObject);
 var
-  AniLength: Integer;
+  Delta: Integer;
 begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, +AniLength, 25, 250, akOut, afkQuartic,
-    procedure
-    begin
-      buttonRunning.SetFocus;
-    end
-  );
+  Delta := MulDiv(210, PPI, 96);
+  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonAniInverseClick(Sender: TObject);
 var
-  AniLength: Integer;
+  Delta: Integer;
 begin
-  AniLength := 210;
-  AniLength := Round(AniLength * PPI / 96); //  Scale animation length
-  buttonRunning.AnimationFromCurrent(apLeft, -AniLength, 25, 250, akOut, afkQuartic,
-    procedure
-    begin
-      buttonRunning.SetFocus;
-    end
-  );
+  Delta := -MulDiv(210, PPI, 96);
+  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
+    procedure begin buttonRunning.SetFocus end);
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
-  DPI: Single;
-  Ani: TIntAni;
-
-  AniWidth: Integer;
+  Opened: Boolean;
+  Delta: Integer;
 begin
-  DPI := PPI / 96;
-  AniWidth := Round((225 - 45 ) * DPI);
-  if drawerNavigation.Width <> Trunc(45 * DPI) then
-    AniWidth := - AniWidth;
+  Opened := drawerNavigation.Width <> buttonOpenMenu.Width;
 
-  Ani := TIntAni.Create(true, akOut, afkQuintic, drawerNavigation.Width, AniWidth,
-    procedure (V: Integer)
-    begin
-      drawerNavigation.Width := V;
-    end);
-  Ani.Step := 30;
-  Ani.Duration := 200;
-  Ani.Start;
+  if not Opened then
+    Delta := MulDiv(180, PPI, 96)   //  Open
+  else
+    Delta := -MulDiv(180, PPI, 96); //  Close
+
+  drawerNavigation.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic, nil);
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
 var
-  DPI: Single;
-  AniDelta: Integer;
+  Delta: Integer;
 begin
-  DPI := Self.PPI / 96;
-
-  boxSmoothScrolling.DisableAlign;
-  boxSmoothScrolling.SetOldSBVisible(false);
+  boxSmoothScrolling.DisableAlign;  //  Pause align items for better performance
 
   if boxSmoothScrolling.Width = 0 then
-    AniDelta := Round(DPI * 250)
+    Delta := MulDiv(250, PPI, 96)   //  Open
   else
-    AniDelta := - boxSmoothScrolling.Width;
+    Delta := -boxSmoothScrolling.Width; //  Close
 
-  boxSmoothScrolling.AnimationFromCurrent(apWidth, AniDelta, 30, 200, akOut, afkQuartic,
+  boxSmoothScrolling.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic,
     procedure begin boxSmoothScrolling.EnableAlign end);
 end;
 

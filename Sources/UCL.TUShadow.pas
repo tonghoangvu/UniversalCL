@@ -1,3 +1,5 @@
+{$LEGACYIFEND ON}
+
 unit UCL.TUShadow;
 
 interface

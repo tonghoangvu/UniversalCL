@@ -5,7 +5,7 @@ interface
 uses
   UCL.TUThemeManager, UCL.Classes, UCL.Utils,
   UCL.TUCheckBox,
-  SysUtils, Classes, Dialogs,
+  SysUtils, Classes, Dialogs, Graphics,
   Windows;
 
 type
@@ -13,6 +13,7 @@ type
     AppTheme: TUThemeManager;
     procedure AppThemeAfterUpdate(Sender: TObject);
     procedure AppThemeBeforeUpdate(Sender: TObject);
+    procedure AppThemeBeforeColorLoading(Sender: TObject);
   private
     { Private declarations }
   public
@@ -25,6 +26,7 @@ var
 implementation
 
 uses
+  UCL.Colors,
   Form.Demo, Form.LoginDialog, Form.ImageBackground;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
@@ -69,6 +71,11 @@ begin
     end;
 
   LockWindowUpdate(0);
+end;
+
+procedure TdmMain.AppThemeBeforeColorLoading(Sender: TObject);
+begin
+  //SCROLLBOX_BACK_LIGHT := clred;
 end;
 
 procedure TdmMain.AppThemeBeforeUpdate(Sender: TObject);
