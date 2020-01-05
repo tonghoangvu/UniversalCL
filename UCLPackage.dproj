@@ -114,6 +114,8 @@
         <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <DCCReference Include="Sources\UCL.TUSmoothBox.pas"/>
         <DCCReference Include="Sources\UCL.Types.pas"/>
+        <DCCReference Include="Sources\UCL.TUBorderlessForm.pas"/>
+        <DCCReference Include="Sources\UCL.Colors.pas"/>
         <RcItem Include="Resources\TUText.bmp">
             <ResourceType>Bitmap</ResourceType>
             <ResourceId>TUText</ResourceId>
@@ -242,6 +244,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>UCLPackage.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>UCLPackage.bpl</RemoteName>
@@ -250,12 +258,6 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx64\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\19.0\Bpl\UCLPackage.bpl" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>UCLPackage.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

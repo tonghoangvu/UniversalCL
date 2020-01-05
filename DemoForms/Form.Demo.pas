@@ -7,6 +7,7 @@ interface
 uses
   //  UCL units
   UCL.TUThemeManager,
+  UCL.TUBorderlessForm,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
@@ -28,7 +29,7 @@ uses
   Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
-  TformDemo = class(TUForm)
+  TformDemo = class(TUBorderlessForm)
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;

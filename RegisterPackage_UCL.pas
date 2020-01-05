@@ -13,6 +13,7 @@ uses
   UCL.IntAnimation,
   UCL.TUThemeManager,
   UCL.TUForm,
+  UCL.TUBorderlessForm,
   UCL.TUCaptionBar,
   UCL.TUSymbolButton,
   UCL.TUButton,
@@ -38,6 +39,7 @@ begin
   RegisterComponents('Universal CL', [
     TUThemeManager,
     //TUForm,
+    //TUBorderlessForm,
     TUCaptionBar,
     TUSymbolButton,
     TUButton,

@@ -76,6 +76,7 @@ type
 implementation
 
 uses
+  UCL.Colors,
   SysUtils;
 
 { TUSmoothBox }
@@ -103,12 +104,19 @@ end;
 procedure TUSmoothBox.UpdateTheme;
 begin
   //  Background color
+//  if ThemeManager = nil then
+//    Color := $E6E6E6
+//  else if ThemeManager.Theme = utLight then
+//    Color := $E6E6E6
+//  else
+//    Color := $1F1F1F;
+
   if ThemeManager = nil then
-    Color := $E6E6E6
+    Color := SCROLLBOX_BACK_NIL
   else if ThemeManager.Theme = utLight then
-    Color := $E6E6E6
+    Color := SCROLLBOX_BACK_LIGHT
   else
-    Color := $1F1F1F;
+    Color := SCROLLBOX_BACK_DARK;
 end;
 
 procedure TUSmoothBox.Notification(AComponent: TComponent; Operation: TOperation);

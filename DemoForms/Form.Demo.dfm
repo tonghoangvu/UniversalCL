@@ -1508,7 +1508,6 @@ object formDemo: TformDemo
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 10
-    ScrollBarStyle = sbsFull
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
