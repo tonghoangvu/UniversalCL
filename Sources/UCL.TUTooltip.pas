@@ -38,13 +38,16 @@ type
 
 implementation
 
+uses
+  UCL.Colors;
+
 { TULightTooltip }
 
 constructor TULightTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := $CCCCCC;
-  BackColor := $F2F2F2;
+  BorderColor := TOOLTIP_BORDER_LIGHT;
+  BackColor := TOOLTIP_BACK_LIGHT;
 end;
 
 { TUDarkTooltip }
@@ -52,8 +55,8 @@ end;
 constructor TUDarkTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := $767676;
-  BackColor := $2B2B2B;
+  BorderColor := TOOLTIP_BORDER_DARK;
+  BackColor := TOOLTIP_BACK_DARK;
 end;
 
 { TUCustomTooltip }

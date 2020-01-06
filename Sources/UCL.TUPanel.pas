@@ -41,6 +41,9 @@ type
 
 implementation
 
+uses
+  UCL.Colors;
+
 { TUPanel }
 
 //  THEME
@@ -72,12 +75,12 @@ begin
     end
   else if ThemeManager.Theme = utLight then
     begin
-      Color := $00E6E6E6;
+      Color := PANEL_BACK_LIGHT;
       Font.Color := GetTextColorFromBackground(Color);
     end
   else
     begin
-      Color := $001F1F1F;
+      Color := PANEL_BACK_DARK;
       Font.Color := GetTextColorFromBackground(Color);
     end;
 end;

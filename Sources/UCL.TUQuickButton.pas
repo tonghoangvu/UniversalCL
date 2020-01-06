@@ -238,8 +238,8 @@ begin
                 Caption := '';
               sbsMin:
                 Caption := '';
-              sbsSysButton:
-                Caption := '';
+//              sbsSysButton:
+//                Caption := '';
             end;
           end;
 

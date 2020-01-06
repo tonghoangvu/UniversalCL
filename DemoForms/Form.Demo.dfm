@@ -12,7 +12,6 @@ object formDemo: TformDemo
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesigned
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 15
@@ -423,7 +422,7 @@ object formDemo: TformDemo
     CustomFillColor = 2469894
     CustomBackColor = 15132390
   end
-  object captionBar: TUCaptionBar
+  object captionBarMain: TUCaptionBar
     Left = 0
     Top = 0
     Width = 1000
@@ -529,6 +528,28 @@ object formDemo: TformDemo
       ParentShowHint = False
       ShowHint = True
     end
+    object buttonBlurForm: TUQuickButton
+      Left = 544
+      Top = 0
+      Width = 45
+      Height = 32
+      ThemeManager = dmMain.AppTheme
+      ButtonStyle = sbsSysButton
+      LightColor = 13619151
+      DarkColor = 3947580
+      PressBrightnessDelta = -32
+      Align = alRight
+      Caption = #57615
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe MDL2 Assets'
+      Font.Style = []
+      ParentFont = False
+      OnClick = buttonBlurFormClick
+      ExplicitLeft = 540
+      ExplicitTop = 10
+    end
     object comboAppDPI: TComboBox
       AlignWithMargins = True
       Left = 741
@@ -563,7 +584,7 @@ object formDemo: TformDemo
       Top = 4
       Width = 120
       Height = 23
-      Margins.Left = 4
+      Margins.Left = 24
       Margins.Top = 4
       Margins.Right = 4
       Margins.Bottom = 4

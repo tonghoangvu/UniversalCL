@@ -36,6 +36,9 @@ type
 
 implementation
 
+uses
+  UCL.Colors;
+
 { TUText }
 
 //  THEME
@@ -62,7 +65,7 @@ procedure TUText.UpdateTheme;
 begin
   //  Font color
   if TextKind = tkDescription then
-    Font.Color := $666666
+    Font.Color := TEXT_DISABLED
   else if ThemeManager = nil then
     Font.Color := $000000
   else

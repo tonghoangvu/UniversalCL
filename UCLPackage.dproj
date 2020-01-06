@@ -116,6 +116,7 @@
         <DCCReference Include="Sources\UCL.Types.pas"/>
         <DCCReference Include="Sources\UCL.TUBorderlessForm.pas"/>
         <DCCReference Include="Sources\UCL.Colors.pas"/>
+        <DCCReference Include="Sources\UCL.TUFormOverlay.pas"/>
         <RcItem Include="Resources\TUText.bmp">
             <ResourceType>Bitmap</ResourceType>
             <ResourceId>TUText</ResourceId>

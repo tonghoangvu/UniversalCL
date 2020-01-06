@@ -4,8 +4,10 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
+  UCL.TUFormOverlay,
   Classes,
   Windows, Messages,
+  Dialogs,
   Forms, Controls, Graphics;
 
 type
@@ -20,13 +22,17 @@ type
       var BorderColor: TColor;
 
       FThemeManager: TUThemeManager;
+      FCaptionBar: TControl;
+      FOverlay: TUFormOverlay;
 
       FPPI: Integer;
       FIsActive: Boolean;
       FFitDesktopForPopup: Boolean;
+      FEnableBlur: Boolean;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
+      procedure SetEnableBlur(const Value: Boolean);
 
       //  Messages
       procedure WM_Activate(var Msg: TWMActivate); message WM_ACTIVATE;
@@ -56,9 +62,11 @@ type
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
+      procedure ActiveChanged; override;
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
     {$IF CompilerVersion < 30}
       procedure ScaleForPPI(NewPPI: Integer); virtual;
@@ -66,10 +74,12 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property CaptionBar: TControl read FCaptionBar write FCaptionBar;
 
       property PPI: Integer read FPPI write FPPI default 96;
       property IsActive: Boolean read FIsActive default true;
       property FitDesktopForPopup: Boolean read FFitDesktopForPopup write FFitDesktopForPopup default true;
+      property EnableBlur: Boolean read FEnableBlur write SetEnableBlur default false;
 
       property Padding stored false;
   end;
@@ -78,7 +88,7 @@ implementation
 
 uses
   SysUtils,
-  UCL.Types;
+  UCL.Types, UCL.Colors;
 
 { TUBorderlessForm }
 
@@ -141,6 +151,11 @@ begin
   end;
 end;
 
+procedure TUBorderlessForm.ActiveChanged;
+begin
+  inherited;
+end;
+
 function TUBorderlessForm.CanDrawBorder: Boolean;
 begin
   Result :=
@@ -183,6 +198,21 @@ begin
   Canvas.LineTo(Width, 0);  //  Paint top border
 end;
 
+//  SETTERS
+
+procedure TUBorderlessForm.SetEnableBlur(const Value: Boolean);
+begin
+  if Value <> FEnableBlur then
+    begin
+      FEnableBlur := Value;
+      FOverlay.Visible := FEnableBlur;
+      if CanDrawBorder then
+        FOverlay.Top := 1
+      else
+        FOverlay.Top := 0;
+    end;
+end;
+
 //  THEME
 
 procedure TUBorderlessForm.SetThemeManager(const Value: TUThemeManager);
@@ -208,17 +238,17 @@ begin
   //  Background color & tooltip style
   if ThemeManager = nil then
     begin
-      Color := $FFFFFF;
+      //  Color := Color;
       HintWindowClass := THintWindow;   //  Default
     end
   else if ThemeManager.Theme = utLight then
     begin
-      Color := $FFFFFF;
+      Color := FORM_BACK_LIGHT;
       HintWindowClass := TULightTooltip;
     end
   else
     begin
-      Color := $000000;
+      Color := FORM_BACK_DARK;
       HintWindowClass := TUDarkTooltip;
     end;
 
@@ -263,6 +293,15 @@ begin
         GetWindowLong(Handle, GWL_STYLE) and not WS_CAPTION or WS_MINIMIZEBOX);
       SetWindowPos(handle, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE or SWP_NOSIZE or SWP_DRAWFRAME);
     end;
+
+  FOverlay := TUFormOverlay.CreateNew(Self);
+  FOverlay.AssignToForm(Self);
+end;
+
+destructor TUBorderlessForm.Destroy;
+begin
+  FOverlay.Free;
+  inherited;
 end;
 
 //  CUSTOM METHODS
@@ -313,7 +352,8 @@ begin
     DoDrawBorder;
 
   //  Update cation bar
-
+  if CaptionBar <> nil then
+    CaptionBar.Repaint;
 end;
 
 procedure TUBorderlessForm.WM_DPIChanged(var Msg: TWMDpi);

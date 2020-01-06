@@ -43,6 +43,9 @@ type
 
 implementation
 
+uses
+  UCL.Colors;
+
 { TUCustomCaptionBar }
 
 //  THEME
@@ -71,9 +74,9 @@ begin
   if ThemeManager = nil then
     Color := CustomColor
   else if ThemeManager.Theme = utLight then
-    Color := $F2F2F2
+    Color := CAPTION_BACK_LIGHT
   else
-    Color := $2B2B2B;
+    Color := CAPTION_BACK_DARK;
 
   //  Font color
   Font.Color := GetTextColorFromBackground(Color);

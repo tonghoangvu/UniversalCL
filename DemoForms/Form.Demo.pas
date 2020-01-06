@@ -7,7 +7,7 @@ interface
 uses
   //  UCL units
   UCL.TUThemeManager,
-  UCL.TUBorderlessForm,
+  UCL.TUBorderlessForm, UCL.TUFormOverlay,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,
   UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
@@ -37,7 +37,7 @@ type
     buttonMenuSave: TUSymbolButton;
     buttonMenuOpen: TUSymbolButton;
     buttonMenuRate: TUSymbolButton;
-    captionBar: TUCaptionBar;
+    captionBarMain: TUCaptionBar;
     dialogSelectColor: TColorDialog;
     panelRibbon: TUSmoothBox;
     buttonGoBack: TUSymbolButton;
@@ -129,6 +129,7 @@ type
     CopyCtrlC1: TMenuItem;
     PasteCtrlV1: TMenuItem;
     buttonAppListForm: TUSymbolButton;
+    buttonBlurForm: TUQuickButton;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniToRightClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
@@ -149,6 +150,7 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
+    procedure buttonBlurFormClick(Sender: TObject);
 
   private
   public
@@ -172,6 +174,7 @@ begin
 //  EnableBlur(Handle, 3);
 
   ThemeManager := dmMain.AppTheme;
+  CaptionBar := captionBarMain;
 end;
 
 //  ANIMATION TESTING
@@ -296,6 +299,11 @@ procedure TformDemo.sliderHorzChange(Sender: TObject);
 begin
   //  Change progress bar value
   progressConnected.Value := sliderHorz.Value;
+end;
+
+procedure TformDemo.buttonBlurFormClick(Sender: TObject);
+begin
+  EnableBlur := not EnableBlur;
 end;
 
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
