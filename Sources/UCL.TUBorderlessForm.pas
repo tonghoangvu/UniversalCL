@@ -28,11 +28,11 @@ type
       FPPI: Integer;
       FIsActive: Boolean;
       FFitDesktopForPopup: Boolean;
-      FEnableBlur: Boolean;
+      FOverlayType: TUOverlayType;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
-      procedure SetEnableBlur(const Value: Boolean);
+      procedure SetOverlayType(const Value: TUOverlayType);
 
       //  Messages
       procedure WM_Activate(var Msg: TWMActivate); message WM_ACTIVATE;
@@ -59,6 +59,7 @@ type
       function GetParentCurrentDpi: Integer; virtual;
     {$IFEND}
 
+      procedure CreateParams(var Params: TCreateParams); override;
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
       procedure Resize; override;
@@ -79,7 +80,7 @@ type
       property PPI: Integer read FPPI write FPPI default 96;
       property IsActive: Boolean read FIsActive default true;
       property FitDesktopForPopup: Boolean read FFitDesktopForPopup write FFitDesktopForPopup default true;
-      property EnableBlur: Boolean read FEnableBlur write SetEnableBlur default false;
+      property OverlayType: TUOverlayType read FOverlayType write SetOverlayType default otNone;
 
       property Padding stored false;
   end;
@@ -151,11 +152,6 @@ begin
   end;
 end;
 
-procedure TUBorderlessForm.ActiveChanged;
-begin
-  inherited;
-end;
-
 function TUBorderlessForm.CanDrawBorder: Boolean;
 begin
   Result :=
@@ -196,21 +192,6 @@ begin
   Canvas.Pen.Color := BorderColor;
   Canvas.MoveTo(0, 0);
   Canvas.LineTo(Width, 0);  //  Paint top border
-end;
-
-//  SETTERS
-
-procedure TUBorderlessForm.SetEnableBlur(const Value: Boolean);
-begin
-  if Value <> FEnableBlur then
-    begin
-      FEnableBlur := Value;
-      FOverlay.Visible := FEnableBlur;
-      if CanDrawBorder then
-        FOverlay.Top := 1
-      else
-        FOverlay.Top := 0;
-    end;
 end;
 
 //  THEME
@@ -263,6 +244,21 @@ begin
     FThemeManager := nil;
 end;
 
+//  SETTERS
+
+procedure TUBorderlessForm.SetOverlayType(const Value: TUOverlayType);
+begin
+  if Value <> FOverlayType then
+    begin
+      FOverlayType := Value;
+      FOverlay.OverlayType := Value;
+      if CanDrawBorder then
+        FOverlay.Top := 1
+      else
+        FOverlay.Top := 0;
+    end;
+end;
+
 //  MAIN CLASS
 
 constructor TUBorderlessForm.Create(aOwner: TComponent);
@@ -282,6 +278,7 @@ begin
   FIsScaling := False;
   FCurrentPPI := FPPI;
 {$IFEND}
+  FOverlayType := otNone;
 
   //  Common props
   Font.Name := 'Segoe UI';
@@ -305,6 +302,12 @@ begin
 end;
 
 //  CUSTOM METHODS
+
+procedure TUBorderlessForm.CreateParams(var Params: TCreateParams);
+begin
+  inherited;
+  Params.style := Params.style or 200000;
+end;
 
 procedure TUBorderlessForm.Paint;
 begin
@@ -338,6 +341,11 @@ begin
       Width := CurrentScreen.WorkareaRect.Width + 2 * Space;
       Height := CurrentScreen.WorkAreaRect.Height + 2 * Space;
     end;
+end;
+
+procedure TUBorderlessForm.ActiveChanged;
+begin
+
 end;
 
 //  MESSAGES

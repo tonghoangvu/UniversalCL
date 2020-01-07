@@ -303,7 +303,10 @@ end;
 
 procedure TformDemo.buttonBlurFormClick(Sender: TObject);
 begin
-  EnableBlur := not EnableBlur;
+  if OverlayType = otNone then
+    OverlayType := otBlur
+  else
+    OverlayType := otNone;
 end;
 
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
