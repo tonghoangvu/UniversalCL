@@ -2324,6 +2324,15 @@ object formDemo: TformDemo
       Transparent = True
     end
   end
+  object USwitch1: TUSwitch
+    Left = 550
+    Top = 130
+    Width = 121
+    Height = 31
+    SwitchWidth = 0
+    SwitchHeight = 0
+    Caption = 'USwitch1'
+  end
   object dialogSelectColor: TColorDialog
     Color = 14120960
     Left = 720
@@ -2337,8 +2346,8 @@ object formDemo: TformDemo
     AniSet.Duration = 120
     AniSet.Step = 20
     OnItemClick = popupEditItemClick
-    Left = 640
-    Top = 42
+    Left = 790
+    Top = 52
     object CutCtrlX1: TMenuItem
       Caption = #57707'Cut|Ctrl+X'
       Hint = 'Remove the selected content and put it on the clipboard'

@@ -89,6 +89,7 @@
         <DCCReference Include="DemoForms\Form.AppList.pas">
             <Form>formAppList</Form>
         </DCCReference>
+        <None Include="Demo.todo"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -154,6 +155,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="Bin\Demo.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteName>Demo.rsm</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Release\Demo.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>Demo.exe</RemoteName>
@@ -162,6 +169,12 @@
                 </DeployFile>
                 <DeployFile LocalName="Bin\AppxManifest.xml" Configuration="Debug" Class="ProjectUWPManifest">
                     <Platform Name="Win32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Demo.todo" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

@@ -26,7 +26,7 @@ uses
 
   //  VCL units
   Graphics, Controls, Forms, Dialogs, StdCtrls, ExtCtrls,
-  Menus, Buttons, ImgList, pngimage, jpeg;
+  Menus, Buttons, ImgList, pngimage, jpeg, UCL.TUSwitch;
 
 type
   TformDemo = class(TUBorderlessForm)
@@ -130,6 +130,7 @@ type
     PasteCtrlV1: TMenuItem;
     buttonAppListForm: TUSymbolButton;
     buttonBlurForm: TUQuickButton;
+    USwitch1: TUSwitch;
     procedure buttonReloadSettingsClick(Sender: TObject);
     procedure buttonAniToRightClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
