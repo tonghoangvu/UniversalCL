@@ -1514,14 +1514,12 @@ object formDemo: TformDemo
     VertScrollBar.Tracking = True
     Align = alRight
     BorderStyle = bsNone
-    DoubleBuffered = True
     Color = 15132390
     Padding.Left = 15
     Padding.Top = 5
     Padding.Right = 15
     Padding.Bottom = 15
     ParentColor = False
-    ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
@@ -2295,10 +2293,6 @@ object formDemo: TformDemo
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Padding.Left = 5
-      Padding.Top = 5
-      Padding.Right = 4
-      Padding.Bottom = 4
       ParentColor = True
       ParentFont = False
       ShowCaption = False
@@ -2308,30 +2302,16 @@ object formDemo: TformDemo
       Edit.Top = 5
       Edit.Width = 194
       Edit.Height = 20
-      Edit.Align = alClient
-      Edit.AutoSize = False
-      Edit.BorderStyle = bsNone
-      Edit.Color = 15132390
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentFont = False
       Edit.PopupMenu = popupEdit
-      Edit.TabOrder = 0
+      Edit.Text = 'Edit'
       Edit.TextHint = 'Right click to open context menu'
       Transparent = True
     end
-  end
-  object USwitch1: TUSwitch
-    Left = 550
-    Top = 130
-    Width = 121
-    Height = 31
-    SwitchWidth = 0
-    SwitchHeight = 0
-    Caption = 'USwitch1'
   end
   object dialogSelectColor: TColorDialog
     Color = 14120960

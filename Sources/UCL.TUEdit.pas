@@ -15,10 +15,79 @@ const
   UM_SUBEDIT_KILLFOCUS = WM_USER + 2;
 
 type
-  TUSubEdit = class(TEdit)
+  TUSubEdit = class(TCustomEdit)
     private
       procedure WM_SetFocus(var Msg: TWMSetFocus); message WM_SETFOCUS;
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
+
+    published
+//      property Align;
+      property Alignment;
+//      property Anchors;
+//      property AutoSelect;
+//      property AutoSize;
+//      property BevelEdges;
+//      property BevelInner;
+//      property BevelKind default bkNone;
+//      property BevelOuter;
+//      property BevelWidth;
+//      property BiDiMode;
+//      property BorderStyle;
+      property CharCase;
+//      property Color;
+//      property Constraints;
+//      property Ctl3D;
+//      property DoubleBuffered;
+//      property DragCursor;
+//      property DragKind;
+//      property DragMode;
+      property Enabled;
+      property Font;
+//      property HideSelection;
+//      property ImeMode;
+//      property ImeName;
+      property MaxLength;
+      property NumbersOnly;
+//      property OEMConvert;
+//      property ParentBiDiMode;
+//      property ParentColor;
+//      property ParentCtl3D;
+//      property ParentDoubleBuffered;
+//      property ParentFont;
+//      property ParentShowHint;
+      property PasswordChar;
+      property PopupMenu;
+      property ReadOnly;
+//      property ShowHint;
+//      property TabOrder;
+//      property TabStop;
+      property Text;
+      property TextHint;
+//      property Touch;
+//      property Visible;
+//      property StyleElements;
+      property OnChange;
+      property OnClick;
+      property OnContextPopup;
+      property OnDblClick;
+//      property OnDragDrop;
+//      property OnDragOver;
+//      property OnEndDock;
+//      property OnEndDrag;
+      property OnEnter;
+      property OnExit;
+//      property OnGesture;
+      property OnKeyDown;
+      property OnKeyPress;
+      property OnKeyUp;
+//      property OnMouseActivate;
+//      property OnMouseDown;
+//      property OnMouseEnter;
+//      property OnMouseLeave;
+//      property OnMouseMove;
+//      property OnMouseUp;
+//      property OnStartDock;
+//      property OnStartDrag;
   end;
 
   TUEdit = class(TPanel, IUThemeComponent)
@@ -42,6 +111,7 @@ type
 
       //  Internal
       procedure UpdateColors;
+      procedure UpdateSize;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -64,11 +134,13 @@ type
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
+      procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
       procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
+      procedure Loaded; override;
       procedure UpdateTheme;
 
     published
@@ -78,6 +150,7 @@ type
 
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+      property Padding stored false;
   end;
 
 implementation
@@ -177,6 +250,11 @@ begin
     end;
 end;
 
+procedure TUEdit.UpdateSize;
+begin
+  ClientHeight := 29;
+end;
+
 //  SETTERS
 
 procedure TUEdit.SetControlState(const Value: TUControlState);
@@ -220,24 +298,39 @@ begin
 
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
-  FEdit.Name := 'SubEdit';
-  FEdit.Text := '';
+  FEdit.Text := 'Edit';
 
   FEdit.Font := Self.Font;
   FEdit.BorderStyle := bsNone;
   FEdit.AutoSize := true;
   FEdit.ParentColor := true;
 
-  Padding.Left := 5;
-  Padding.Right := 5;
-  Padding.Bottom := (Height - FEdit.Height) div 2 - 1;
-  Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
+  FEdit.Height := 20;
+
+  Padding.SetBounds(5, 5, 4, 4);
+
+//  Padding.Left := 5;
+//  Padding.Right := 5;
+//  Padding.Bottom := (Height - FEdit.Height) div 2 - 1;
+//  Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
 
   FEdit.Align := alClient;
   FEdit.SetSubComponent(true);
 end;
 
+procedure TUEdit.Loaded;
+begin
+  inherited;
+  UpdateSize;
+end;
+
 //  CUSTOM METHODS
+
+procedure TUEdit.Resize;
+begin
+  UpdateSize;
+  inherited;
+end;
 
 procedure TUEdit.Paint;
 var

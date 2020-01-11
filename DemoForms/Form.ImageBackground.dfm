@@ -14652,6 +14652,11 @@ object formImageBackground: TformImageBackground
     Width = 181
     Height = 11
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
+    AniSet.Duration = 250
+    AniSet.Step = 25
     Value = 45
     Orientation = oHorizontal
     CustomFillColor = 2469894
@@ -14782,10 +14787,6 @@ object formImageBackground: TformImageBackground
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Padding.Left = 5
-      Padding.Top = 5
-      Padding.Right = 4
-      Padding.Bottom = 4
       ParentFont = False
       ShowCaption = False
       TabOrder = 2
@@ -14794,16 +14795,12 @@ object formImageBackground: TformImageBackground
       Edit.Top = 5
       Edit.Width = 283
       Edit.Height = 21
-      Edit.Align = alClient
-      Edit.BorderStyle = bsNone
-      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentFont = False
-      Edit.TabOrder = 0
+      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your email'
     end
   end

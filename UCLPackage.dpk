@@ -69,8 +69,7 @@ contains
   UCL.Types in 'Sources\UCL.Types.pas',
   UCL.TUBorderlessForm in 'Sources\UCL.TUBorderlessForm.pas',
   UCL.Colors in 'Sources\UCL.Colors.pas',
-  UCL.TUFormOverlay in 'Sources\UCL.TUFormOverlay.pas',
-  UCL.TUSwitch in 'Sources\UCL.TUSwitch.pas';
+  UCL.TUFormOverlay in 'Sources\UCL.TUFormOverlay.pas';
 
 end.
 

@@ -34,6 +34,11 @@ object formLoginDialog: TformLoginDialog
     ParentDoubleBuffered = False
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
+    AniSet.Duration = 250
+    AniSet.Step = 25
     MaxScrollCount = 6
     object titleSignin: TUText
       AlignWithMargins = True
@@ -239,10 +244,6 @@ object formLoginDialog: TformLoginDialog
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Padding.Left = 5
-      Padding.Top = 5
-      Padding.Right = 4
-      Padding.Bottom = 4
       ParentFont = False
       ShowCaption = False
       TabOrder = 1
@@ -251,17 +252,13 @@ object formLoginDialog: TformLoginDialog
       Edit.Top = 5
       Edit.Width = 321
       Edit.Height = 20
-      Edit.Align = alClient
-      Edit.BorderStyle = bsNone
-      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentFont = False
       Edit.PopupMenu = popupEdit
-      Edit.TabOrder = 0
+      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your email here'
     end
     object editPassword: TUEdit
@@ -283,10 +280,6 @@ object formLoginDialog: TformLoginDialog
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Padding.Left = 5
-      Padding.Top = 5
-      Padding.Right = 4
-      Padding.Bottom = 4
       ParentFont = False
       ShowCaption = False
       TabOrder = 2
@@ -295,18 +288,14 @@ object formLoginDialog: TformLoginDialog
       Edit.Top = 5
       Edit.Width = 321
       Edit.Height = 20
-      Edit.Align = alClient
-      Edit.BorderStyle = bsNone
-      Edit.Color = clWhite
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentFont = False
       Edit.PasswordChar = '*'
       Edit.PopupMenu = popupEdit
-      Edit.TabOrder = 0
+      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your password here'
     end
     object editDescription: TUEdit
@@ -328,10 +317,6 @@ object formLoginDialog: TformLoginDialog
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Padding.Left = 5
-      Padding.Top = 5
-      Padding.Right = 4
-      Padding.Bottom = 4
       ParentColor = True
       ParentFont = False
       ShowCaption = False
@@ -341,17 +326,13 @@ object formLoginDialog: TformLoginDialog
       Edit.Top = 5
       Edit.Width = 321
       Edit.Height = 20
-      Edit.Align = alClient
-      Edit.BorderStyle = bsNone
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.ParentColor = True
-      Edit.ParentFont = False
       Edit.PopupMenu = popupEdit
-      Edit.TabOrder = 0
+      Edit.Text = 'Edit'
       Edit.TextHint = 'Talk about yourself'
       Transparent = True
     end
@@ -530,6 +511,11 @@ object formLoginDialog: TformLoginDialog
   end
   object popupEdit: TUPopupMenu
     ThemeManager = dmMain.AppTheme
+    AniSet.AniKind = akOut
+    AniSet.AniFunctionKind = afkQuartic
+    AniSet.DelayStartTime = 0
+    AniSet.Duration = 120
+    AniSet.Step = 20
     OnItemClick = popupEditItemClick
     Left = 40
     Top = 102

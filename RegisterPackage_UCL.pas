@@ -32,8 +32,7 @@ uses
   UCL.TUQuickButton,
   UCL.TUTitleBar,
   UCL.TUShadow,
-  UCL.TUSmoothBox,
-  UCL.TUSwitch;
+  UCL.TUSmoothBox;
 
 procedure Register;
 begin
@@ -59,8 +58,7 @@ begin
     TUTitleBar,
     TUQuickButton,
     TUShadow,
-    TUSmoothBox,
-    TUSwitch
+    TUSmoothBox
   ]);
 end;
 
