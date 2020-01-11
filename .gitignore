@@ -3,6 +3,7 @@ Win32/
 Win64/
 Project/
 Resources/
+__recovery/
 *.local
 *.tvsconfig
 *.identcache

@@ -2308,7 +2308,6 @@ object formDemo: TformDemo
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
       Edit.PopupMenu = popupEdit
-      Edit.Text = 'Edit'
       Edit.TextHint = 'Right click to open context menu'
       Transparent = True
     end

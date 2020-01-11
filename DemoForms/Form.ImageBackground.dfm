@@ -27,6 +27,7 @@ object formImageBackground: TformImageBackground
     Width = 200
     Height = 352
     ThemeManager = dmMain.AppTheme
+    AlphaA = 0
     Direction = dRight
     Align = alLeft
     ParentColor = False
@@ -14777,7 +14778,7 @@ object formImageBackground: TformImageBackground
       Left = 14
       Top = 14
       Width = 292
-      Height = 30
+      Height = 29
       Align = alClient
       Alignment = taLeftJustify
       BevelOuter = bvNone
@@ -14794,7 +14795,7 @@ object formImageBackground: TformImageBackground
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 283
-      Edit.Height = 21
+      Edit.Height = 20
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13

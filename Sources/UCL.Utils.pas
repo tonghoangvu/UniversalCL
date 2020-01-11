@@ -25,7 +25,7 @@ function MulColor(aColor: TColor; Base: Single): TColor;
 //  Blend support
 function CreateBlendFunc(Alpha: Byte; Gradient: Boolean): BLENDFUNCTION;
 procedure AssignBlendBitmap(const Bmp: TBitmap; Color: TColor);
-procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; A1, A2: Byte; Direction: TUDirection);
 procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect; const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
 
 // OS
@@ -160,9 +160,9 @@ begin
     end;
 end;
 
-procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; A1, A2: Byte; Direction: TUDirection);
 var
-  Alpha: Single;
+  Alpha, Percent: Single;
   R, G, B, A: Byte;
   X, Y: Integer;
   Pixel: PQuadColor;
@@ -181,18 +181,20 @@ begin
         begin
           case Direction of
             dTop:
-              Alpha := 1 - Y / Bmp.Height;
+              Percent := 1 - Y / Bmp.Height;
             dLeft:
-              Alpha := 1 - X / Bmp.Width;
+              Percent := 1 - X / Bmp.Width;
             dRight:
-              Alpha := X / Bmp.Width;
+              Percent := X / Bmp.Width;
             dBottom:
-              Alpha := Y / Bmp.Height;
+              Percent := Y / Bmp.Height;
             else
               continue;
           end;
 
-          A := Trunc(Alpha * 255);
+          A := A1 + Trunc(Percent * (A2 - A1));
+          Alpha := A / 255;
+
           Pixel.Alpha := A;
           Pixel.Red := Trunc(R * Alpha);
           Pixel.Green := Trunc(G * Alpha);

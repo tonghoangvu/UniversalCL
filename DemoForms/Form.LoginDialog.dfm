@@ -258,7 +258,6 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
       Edit.PopupMenu = popupEdit
-      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your email here'
     end
     object editPassword: TUEdit
@@ -295,7 +294,6 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Style = []
       Edit.PasswordChar = '*'
       Edit.PopupMenu = popupEdit
-      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your password here'
     end
     object editDescription: TUEdit
@@ -332,7 +330,6 @@ object formLoginDialog: TformLoginDialog
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
       Edit.PopupMenu = popupEdit
-      Edit.Text = 'Edit'
       Edit.TextHint = 'Talk about yourself'
       Transparent = True
     end

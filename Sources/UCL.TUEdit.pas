@@ -282,12 +282,15 @@ constructor TUEdit.Create(aOwner: TComponent);
 begin
   inherited Create(aOwner);
 
+  //  Internal
   BorderThickness := 2;
 
+  //  Fields
   FControlState := csNone;
   FHitTest := true;
   FTransparent := false;
 
+  //  Common properties
   Alignment := taLeftJustify;
   ShowCaption := false;
   Height := 29;
@@ -295,25 +298,16 @@ begin
   Caption := '';
   Font.Name := 'Segoe UI';
   Font.Size := 10;
+  Padding.SetBounds(5, 5, 4, 4);
 
+  //  Sub edit
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
-  FEdit.Text := 'Edit';
-
   FEdit.Font := Self.Font;
   FEdit.BorderStyle := bsNone;
   FEdit.AutoSize := true;
   FEdit.ParentColor := true;
-
   FEdit.Height := 20;
-
-  Padding.SetBounds(5, 5, 4, 4);
-
-//  Padding.Left := 5;
-//  Padding.Right := 5;
-//  Padding.Bottom := (Height - FEdit.Height) div 2 - 1;
-//  Padding.Top := (Height - FEdit.Height) - Padding.Bottom;
-
   FEdit.Align := alClient;
   FEdit.SetSubComponent(true);
 end;
