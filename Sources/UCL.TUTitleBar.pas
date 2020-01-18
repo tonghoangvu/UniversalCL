@@ -6,7 +6,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Windows, Messages,
+  Windows, Messages, Types,
   Classes,
   Controls, Graphics, Forms;
 

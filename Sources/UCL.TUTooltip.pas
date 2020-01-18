@@ -75,17 +75,48 @@ end;
 function TUCustomTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
 var
   TextW, TextH: Integer;
+  MaxTextW: Integer;
+  i, LineCount, Pos: Integer;
 begin
-  TextW := Canvas.TextWidth(AHint);
-  TextH := Canvas.TextHeight(AHint);
-  TextW := TextW + (DEF_HEIGHT - TextH);  //  Spacing
+  Canvas.Font.Name := 'Segoe UI';
+  Canvas.Font.Size := 8;
 
-  Result := Rect(0, 0, TextW, DEF_HEIGHT);
+  LineCount := 1;                            //   123456789
+  Pos := 0;                                  //   A_BCD_123
+  MaxTextW := 0;
+  for i := 1 to Length(AHint) do
+    if (AHint[i] = #13) or (i = Length(AHint)) then
+      begin
+        if AHint[i] = #13 then
+          TextW := Canvas.TextWidth(Copy(AHint, Pos, i - Pos - 1))
+        else 
+          TextW := Canvas.TextWidth(Copy(AHint, Pos, i - Pos));
+        
+        if TextW > MaxTextW then
+          MaxTextW := TextW;
+        Pos := i;
+        
+        if AHint[i] = #13 then
+          inc(LineCount);
+      end;
+
+  if LineCount = 1 then
+    begin
+      TextW := Canvas.TextWidth(AHint);
+      TextH := Canvas.TextHeight(AHint);
+    end
+  else 
+    begin
+      TextW := MaxTextW;
+      TextH := LineCount * Canvas.TextHeight(AHint);  
+    end;
+      
+  Result := Rect(0, 0, TextW + 16, TextH + 12);
 end;
 
 procedure TUCustomTooltip.Paint;
 var
-  TextW, TextH, TextX, TextY: Integer;
+  TextRect: TRect;
 begin
   //  Paint background
   Canvas.Brush.Style := bsSolid;
@@ -102,12 +133,8 @@ begin
   Canvas.Font.Size := 8;
   Canvas.Font.Color := GetTextColorFromBackground(BackColor);
 
-  TextW := Canvas.TextWidth(Caption);
-  TextH := Canvas.TextHeight(Caption);
-  TextX := (Width - TextW) div 2;
-  TextY := (Height - TextH) div 2 - 1;
-
-  Canvas.TextOut(TextX, TextY, Caption);
+  TextRect := Rect(8, 6, Width - 8, Height);
+  DrawText(Canvas.Handle, Caption, -1, TextRect, DT_WORDBREAK or DT_LEFT or DT_VCENTER or DT_END_ELLIPSIS);
 end;
 
 procedure TUCustomTooltip.NCPaint(DC: HDC);

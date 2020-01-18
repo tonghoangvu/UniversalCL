@@ -311,6 +311,8 @@ end;
 
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
 begin
+  buttonRandomProgress.Hint := 'This is line 1' + sLineBreak + 'This is' + sLineBreak + 'Nothing to do here, thanks';
+
   Randomize;
   progressCustomColor.GoToValue(Random(101));
   progressConnected.GoToValue(Random(101));
