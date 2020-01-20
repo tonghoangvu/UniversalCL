@@ -5,15 +5,13 @@ unit UCL.TUHyperLink;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
-  Classes,
-{$IF CompilerVersion <= 30}
-  Dialogs,
-{$ELSE}
-  UITypes,
-{$IFEND}
-  Windows, Messages, Shellapi,
-  Controls, StdCtrls, Graphics;
+  Classes, Windows, Messages, ShellAPI, Controls, StdCtrls, Graphics,
+  {$IF CompilerVersion <= 30}
+    Dialogs,
+  {$ELSE}
+    UITypes,
+  {$IFEND}
+  UCL.Classes, UCL.TUThemeManager;
 
 type
   TUHyperLink = class(TLabel, IUThemeComponent)
@@ -65,6 +63,8 @@ type
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
+
+      property Cursor default crHandPoint;
   end;
 
 implementation
@@ -156,12 +156,7 @@ begin
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
 
-  Caption := 'Embarcadero website';
-
   Cursor := crHandPoint;
-
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
 
   UpdateTheme;
 end;

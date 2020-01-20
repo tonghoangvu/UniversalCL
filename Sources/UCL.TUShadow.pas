@@ -5,10 +5,8 @@ unit UCL.TUShadow;
 interface
 
 uses
-  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager,
-  Classes, Types,
-  Windows,
-  Controls, Graphics, ExtCtrls;
+  Classes, Types, Windows, Controls, Graphics, ExtCtrls,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager;
 
 type
   TUCustomShadow = class(TGraphicControl, IUThemeComponent)

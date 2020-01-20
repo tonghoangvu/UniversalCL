@@ -5,10 +5,8 @@ unit UCL.TUEdit;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Classes,
-  Windows, Messages,
-  Controls, StdCtrls, ExtCtrls, Graphics, Forms;
+  Classes, Windows, Messages, Controls, StdCtrls, ExtCtrls, Graphics, Forms,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils;
 
 const
   UM_SUBEDIT_SETFOCUS = WM_USER + 1;
@@ -21,73 +19,32 @@ type
       procedure WM_KillFocus(var Msg: TWMKillFocus); message WM_KILLFOCUS;
 
     published
-//      property Align;
+      property Align default alClient;
+      property BorderStyle default bsNone;
+      property AutoSize default true;
+      property ParentColor default true;
+      property Height default 20;
+
       property Alignment;
-//      property Anchors;
-//      property AutoSelect;
-//      property AutoSize;
-//      property BevelEdges;
-//      property BevelInner;
-//      property BevelKind default bkNone;
-//      property BevelOuter;
-//      property BevelWidth;
-//      property BiDiMode;
-//      property BorderStyle;
       property CharCase;
-//      property Color;
-//      property Constraints;
-//      property Ctl3D;
-//      property DoubleBuffered;
-//      property DragCursor;
-//      property DragKind;
-//      property DragMode;
       property Enabled;
       property Font;
-//      property HideSelection;
-//      property ImeMode;
-//      property ImeName;
       property MaxLength;
       property NumbersOnly;
-//      property OEMConvert;
-//      property ParentBiDiMode;
-//      property ParentColor;
-//      property ParentCtl3D;
-//      property ParentDoubleBuffered;
-//      property ParentFont;
-//      property ParentShowHint;
       property PasswordChar;
       property PopupMenu;
       property ReadOnly;
-//      property ShowHint;
-//      property TabOrder;
-//      property TabStop;
       property Text;
       property TextHint;
-//      property Touch;
-//      property Visible;
-//      property StyleElements;
       property OnChange;
       property OnClick;
       property OnContextPopup;
       property OnDblClick;
-//      property OnDragDrop;
-//      property OnDragOver;
-//      property OnEndDock;
-//      property OnEndDrag;
       property OnEnter;
       property OnExit;
-//      property OnGesture;
       property OnKeyDown;
       property OnKeyPress;
       property OnKeyUp;
-//      property OnMouseActivate;
-//      property OnMouseDown;
-//      property OnMouseEnter;
-//      property OnMouseLeave;
-//      property OnMouseMove;
-//      property OnMouseUp;
-//      property OnStartDock;
-//      property OnStartDrag;
   end;
 
   TUEdit = class(TPanel, IUThemeComponent)
@@ -150,7 +107,12 @@ type
 
       property HitTest: Boolean read FHitTest write FHitTest default true;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+
       property Padding stored false;
+      property Alignment default taLeftJustify;
+      property ShowCaption default false;
+      property BevelOuter default bvNone;
+      property Height default 29;
   end;
 
 implementation
@@ -296,8 +258,6 @@ begin
   Height := 29;
   BevelOuter := bvNone;
   Caption := '';
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
   Padding.SetBounds(5, 5, 4, 4);
 
   //  Sub edit

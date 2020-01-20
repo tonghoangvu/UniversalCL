@@ -117,6 +117,8 @@
         <DCCReference Include="Sources\UCL.TUBorderlessForm.pas"/>
         <DCCReference Include="Sources\UCL.Colors.pas"/>
         <DCCReference Include="Sources\UCL.TUFormOverlay.pas"/>
+        <DCCReference Include="Sources\UCL.HighDpiApp.pas"/>
+        <DCCReference Include="Sources\UCL.ShellUIScaling.pas"/>
         <RcItem Include="Resources\TUText.bmp">
             <ResourceType>Bitmap</ResourceType>
             <ResourceId>TUText</ResourceId>

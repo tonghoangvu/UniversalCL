@@ -3,8 +3,8 @@ unit UCL.IntAnimation.Helpers;
 interface
 
 uses
-  UCL.IntAnimation,
-  Controls;
+  Controls,
+  UCL.IntAnimation;
 
 type
   TAnimationProp = (
@@ -14,9 +14,11 @@ type
     );
 
   TWinControlHelper = class helper for TWinControl
+    //  Property
     function GetPropValue(Prop: TAnimationProp): Integer;
     procedure SetPropValue(Prop: TAnimationProp; Value: Integer);
 
+    //  Helpers
     procedure Animation(
       AniProperty: TAnimationProp;
       StartValue, DeltaValue: Integer; Step, Duration: Cardinal;
@@ -32,6 +34,8 @@ type
 implementation
 
 { TWinControlHelper }
+
+//  HELPERS
 
 procedure TWinControlHelper.Animation(
   AniProperty: TAnimationProp;

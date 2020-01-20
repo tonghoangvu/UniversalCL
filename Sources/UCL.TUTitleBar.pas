@@ -5,10 +5,8 @@ unit UCL.TUTitleBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Windows, Messages, Types,
-  Classes,
-  Controls, Graphics, Forms;
+  Classes, Types, Windows, Messages, Controls, Graphics, Forms,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomTitleBar = class(TGraphicControl, IUThemeComponent)
@@ -44,6 +42,9 @@ type
       property Alignment: TAlignment read FAlignment write FAlignment default taLeftJustify;
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property EnableSystemMenu: Boolean read FEnableSystemMenu write FEnableSystemMenu default true;
+
+      property Height default 32;
+      property Width default 400;
   end;
 
   TUTitleBar = class(TUCustomTitleBar)
@@ -150,8 +151,6 @@ begin
   FDragMovement := true;
   FEnableSystemMenu := true;
 
-  Font.Name := 'Segoe UI';
-  Font.Size := 9;
   Height := 32;
   Width := 400;
 end;

@@ -5,10 +5,8 @@ unit UCL.TUSeparator;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Classes,
-  Messages,
-  Controls, Graphics;
+  Classes, Messages, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils;
 
 type
   TUCustomSeparator = class(TGraphicControl, IUThemeComponent)
@@ -50,6 +48,9 @@ type
       property AlignSpace: Integer read FAlignSpace write SetAlignSpace default 10;
       property LineBetween: Boolean read FLineBetween write SetLineBetween default true;
       property UseAccentColor: Boolean read FUseAccentColor write SetUseAccentColor default false;
+
+      property Height default 50;
+      property Width default 20;
   end;
 
   TUSeparator = class(TUCustomSeparator)

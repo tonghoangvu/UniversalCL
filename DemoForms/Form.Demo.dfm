@@ -20,7 +20,6 @@ object formDemo: TformDemo
     Top = 170
     Width = 125
     Height = 17
-    Cursor = crHandPoint
     Caption = 'TUHyperLink (default)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 14120960
@@ -41,7 +40,6 @@ object formDemo: TformDemo
     Top = 190
     Width = 161
     Height = 17
-    Cursor = crHandPoint
     Caption = 'TUHyperLink (custom color)'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 14120960
@@ -62,6 +60,7 @@ object formDemo: TformDemo
     Top = 210
     Width = 135
     Height = 17
+    Cursor = crDefault
     Caption = 'TUHyperLink (disabled)'
     Color = clWhite
     Enabled = False
@@ -164,7 +163,6 @@ object formDemo: TformDemo
     Left = 560
     Top = 370
     Width = 140
-    Height = 25
     ThemeManager = dmMain.AppTheme
     OnChange = sliderHorzChange
     ParentShowHint = False
@@ -174,7 +172,6 @@ object formDemo: TformDemo
     Left = 560
     Top = 340
     Width = 140
-    Height = 25
     ThemeManager = dmMain.AppTheme
     ControlState = csDisabled
     Value = 50
@@ -193,7 +190,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 340
     Width = 134
-    Height = 30
     ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -215,7 +211,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 368
     Width = 134
-    Height = 30
     ThemeManager = dmMain.AppTheme
     IconFont.Charset = DEFAULT_CHARSET
     IconFont.Color = clWindowText
@@ -238,7 +233,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 240
     Width = 89
-    Height = 30
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -265,7 +259,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 270
     Width = 89
-    Height = 30
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -293,7 +286,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 300
     Width = 89
-    Height = 30
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -321,7 +313,6 @@ object formDemo: TformDemo
     Left = 540
     Top = 240
     Width = 88
-    Height = 30
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -348,7 +339,6 @@ object formDemo: TformDemo
     Left = 540
     Top = 270
     Width = 88
-    Height = 30
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 0
@@ -392,7 +382,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 420
     Width = 250
-    Height = 5
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
@@ -410,7 +399,6 @@ object formDemo: TformDemo
     Left = 390
     Top = 440
     Width = 250
-    Height = 5
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
     AniSet.AniFunctionKind = afkQuartic
@@ -426,10 +414,6 @@ object formDemo: TformDemo
     Left = 0
     Top = 0
     Width = 1000
-    Height = 32
-    Align = alTop
-    Alignment = taLeftJustify
-    BevelOuter = bvNone
     Caption = '                  Delphi UWP app'
     Color = 15921906
     Font.Charset = DEFAULT_CHARSET
@@ -449,8 +433,6 @@ object formDemo: TformDemo
     object buttonAppBack: TUQuickButton
       Left = 0
       Top = 0
-      Width = 45
-      Height = 32
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsHighlight
       LightColor = 14120960
@@ -467,8 +449,6 @@ object formDemo: TformDemo
     object buttonWinClose: TUQuickButton
       Left = 955
       Top = 0
-      Width = 45
-      Height = 32
       Hint = 'Close'
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsQuit
@@ -489,8 +469,6 @@ object formDemo: TformDemo
     object buttonWinMax: TUQuickButton
       Left = 910
       Top = 0
-      Width = 45
-      Height = 32
       Hint = 'Maximize'
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsMax
@@ -511,8 +489,6 @@ object formDemo: TformDemo
     object buttonWinMin: TUQuickButton
       Left = 865
       Top = 0
-      Width = 45
-      Height = 32
       Hint = 'Minimize'
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsMin
@@ -533,8 +509,6 @@ object formDemo: TformDemo
     object buttonBlurForm: TUQuickButton
       Left = 544
       Top = 0
-      Width = 45
-      Height = 32
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsSysButton
       LightColor = 13619151
@@ -621,8 +595,6 @@ object formDemo: TformDemo
     HorzScrollBar.Tracking = True
     VertScrollBar.Tracking = True
     Align = alTop
-    BorderStyle = bsNone
-    DoubleBuffered = True
     Color = 14342874
     ParentColor = False
     ParentDoubleBuffered = False
@@ -641,7 +613,6 @@ object formDemo: TformDemo
     object separator1: TUSeparator
       Left = 120
       Top = 0
-      Width = 20
       Height = 60
       ThemeManager = dmMain.AppTheme
       CustomColor = clBlack
@@ -650,7 +621,6 @@ object formDemo: TformDemo
     object separator2: TUSeparator
       Left = 320
       Top = 0
-      Width = 20
       Height = 60
       ThemeManager = dmMain.AppTheme
       CustomColor = clBlack
@@ -905,7 +875,6 @@ object formDemo: TformDemo
     Left = 60
     Top = 190
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -933,7 +902,6 @@ object formDemo: TformDemo
     Left = 60
     Top = 230
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -959,7 +927,6 @@ object formDemo: TformDemo
     Left = 60
     Top = 270
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15132390
     CustomBorderColors.Hover = 14120960
@@ -1015,7 +982,6 @@ object formDemo: TformDemo
     Left = 220
     Top = 230
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -1043,7 +1009,6 @@ object formDemo: TformDemo
     Left = 220
     Top = 190
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -1071,7 +1036,6 @@ object formDemo: TformDemo
     Left = 220
     Top = 310
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -1299,7 +1263,6 @@ object formDemo: TformDemo
     Left = 60
     Top = 310
     Width = 150
-    Height = 30
     ThemeManager = dmMain.AppTheme
     CustomBorderColors.None = 15921906
     CustomBorderColors.Hover = 15132390
@@ -1326,7 +1289,6 @@ object formDemo: TformDemo
     Width = 45
     Height = 498
     Align = alLeft
-    BevelOuter = bvNone
     Color = 15132390
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
@@ -1334,7 +1296,6 @@ object formDemo: TformDemo
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ParentBackground = False
     ParentFont = False
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
@@ -1522,13 +1483,13 @@ object formDemo: TformDemo
     HorzScrollBar.Tracking = True
     VertScrollBar.Tracking = True
     Align = alRight
-    BorderStyle = bsNone
     Color = 15132390
     Padding.Left = 15
     Padding.Top = 5
     Padding.Right = 15
     Padding.Bottom = 15
     ParentColor = False
+    ParentDoubleBuffered = False
     TabOrder = 23
     ThemeManager = dmMain.AppTheme
     AniSet.AniKind = akOut
@@ -1883,7 +1844,6 @@ object formDemo: TformDemo
       Top = 965
       Width = 203
       Height = 17
-      Cursor = crHandPoint
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -1909,7 +1869,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 200
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1932,7 +1891,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 373
       Width = 203
-      Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
@@ -1957,7 +1915,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 433
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1978,7 +1935,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 403
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1999,7 +1955,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 65
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2023,7 +1978,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 95
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2046,7 +2000,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 125
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2069,7 +2022,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 500
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2093,7 +2045,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 530
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2116,7 +2067,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 560
       Width = 203
-      Height = 30
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -2159,7 +2109,6 @@ object formDemo: TformDemo
       Margins.Right = 0
       Margins.Bottom = 5
       Align = alTop
-      BevelOuter = bvNone
       Caption = 'Select custom accent color'
       Color = 14120960
       FullRepaint = False
@@ -2168,7 +2117,6 @@ object formDemo: TformDemo
       Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
-      ParentBackground = False
       ParentFont = False
       TabOrder = 1
       OnClick = panelSelectAccentColorClick
@@ -2183,7 +2131,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 595
       Width = 203
-      Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
@@ -2215,7 +2162,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 712
       Width = 203
-      Height = 30
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -2246,7 +2192,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 752
       Width = 203
-      Height = 5
       Margins.Left = 0
       Margins.Top = 0
       Margins.Right = 0
@@ -2269,7 +2214,6 @@ object formDemo: TformDemo
       Left = 15
       Top = 865
       Width = 203
-      Height = 30
       Margins.Left = 0
       Margins.Top = 5
       Margins.Right = 0
@@ -2299,10 +2243,7 @@ object formDemo: TformDemo
       Left = 15
       Top = 339
       Width = 203
-      Height = 29
       Align = alTop
-      Alignment = taLeftJustify
-      BevelOuter = bvNone
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -2310,13 +2251,11 @@ object formDemo: TformDemo
       Font.Style = []
       ParentColor = True
       ParentFont = False
-      ShowCaption = False
       TabOrder = 3
       ThemeManager = dmMain.AppTheme
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 194
-      Edit.Height = 20
       Edit.Font.Charset = DEFAULT_CHARSET
       Edit.Font.Color = clBlack
       Edit.Font.Height = -13

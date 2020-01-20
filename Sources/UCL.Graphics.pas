@@ -5,13 +5,11 @@ unit UCL.Graphics;
 interface
 
 uses
-  Classes,
-  Types,
-  Windows,
-  Graphics,
-  Themes;
+  Classes, Types, Windows, Graphics, Themes;
 
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
+
 type
   // Note: tfComposited only supported by ThemeServices.DrawText
   TTextFormats = (tfBottom, tfCalcRect, tfCenter, tfEditControl, tfEndEllipsis,
@@ -25,7 +23,9 @@ const
   DT_NOFULLWIDTHCHARBREAK = $0080000;
   // MASK for tfComposited
   MASK_TF_COMPOSITED      = $00800000;
-{$IFEND}  
+
+{$IFEND}
+{$ENDREGION}
 
 function PointInRect(const X, Y: Integer; const Rect: TRect): Boolean; overload;
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean; overload;
@@ -39,8 +39,9 @@ var
 
 implementation
 
-{$REGION 'Compatible code'}
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
+
 uses
   // delphi stuff first
   SysUtils,
@@ -65,20 +66,23 @@ type
 
 const
   COptions: Array[TStyleTextFlag] of Cardinal = (DTT_TEXTCOLOR, DTT_BORDERCOLOR, DTT_BORDERSIZE, DTT_SHADOWCOLOR, DTT_SHADOWOFFSET, DTT_GLOWSIZE);
+
 {$IFEND}
 {$ENDREGION}
 
 const
   HAlignments: Array[TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
   VAlignments: Array[TVerticalAlignment] of Longint = (DT_TOP, DT_BOTTOM, DT_VCENTER);
-{$IF CompilerVersion > 29}
-  CStates: Array[Boolean] of TThemedTextLabel = (ttlTextLabelDisabled, ttlTextLabelNormal);
-{$IFEND}
+
+  {$IF CompilerVersion > 29}
+    CStates: Array[Boolean] of TThemedTextLabel = (ttlTextLabelDisabled, ttlTextLabelNormal);
+  {$IFEND}
 
 function PointInRect(const X, Y: Integer; const Rect: TRect): Boolean;
 begin
-  Result := (X >= Rect.Left) and (X <= Rect.Right) and
-            (Y >= Rect.Top ) and (Y <= Rect.Bottom);
+  Result :=
+    (X >= Rect.Left) and (X <= Rect.Right) and
+    (Y >= Rect.Top ) and (Y <= Rect.Bottom);
 end;
 
 function PointInRect(const p: TPoint; const Rect: TRect): Boolean;

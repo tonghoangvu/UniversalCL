@@ -5,10 +5,8 @@ unit UCL.TURadioButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes,
-  Messages, Windows,
-  Controls, Graphics;
+  Classes, Messages, Windows, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomRadioButton = class(TGraphicControl, IUThemeComponent)
@@ -65,6 +63,10 @@ type
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
       property TextOnGlass: Boolean read FTextOnGlass write SetTextOnGlass default false;
+
+      property ParentColor default true;
+      property Height default 30;
+      property Width default 180;
   end;
 
   TURadioButton = class(TUCustomRadioButton)
@@ -248,9 +250,6 @@ begin
   FIconFont.Size := 15;
 
   ParentColor := true;
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
   Height := 30;
   Width := 180;
 

@@ -3,12 +3,8 @@ unit UCL.Utils;
 interface
 
 uses
-  UCL.Classes,
-  Types,
-  Windows,
-  Graphics, GraphUtil,
-  Themes,
-  UCL.Types;
+  SysUtils, Types, Windows, Graphics, GraphUtil, Themes,
+  UCL.Classes, UCL.Types;
 
 //  Form
 function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
@@ -32,9 +28,6 @@ procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect; const BlendBi
 function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 
 implementation
-
-uses
-  SysUtils;
 
 //  FORM
 
@@ -214,9 +207,9 @@ end;
 
 function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
-  Result := (Win32MajorVersion <= AMajor) or
-            ((Win32MajorVersion = AMajor) and
-             (Win32MinorVersion <= AMinor));
+  Result :=
+    (Win32MajorVersion <= AMajor) or
+    ((Win32MajorVersion = AMajor) and (Win32MinorVersion <= AMinor));
 end;
 
 end.

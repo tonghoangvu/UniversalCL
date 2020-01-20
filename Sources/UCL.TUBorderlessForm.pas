@@ -3,12 +3,9 @@ unit UCL.TUBorderlessForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
-  UCL.TUFormOverlay, UCL.Colors,
-  Classes,
-  Windows, Messages,
-  Dialogs,
-  Forms, Controls, Graphics;
+  Classes, Windows, Messages, Dialogs, Forms, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Colors, UCL.Utils, UCL.SystemSettings,
+  UCL.TUTooltip, UCL.TUFormOverlay;
 
 type
   TUBorderlessForm = class(TForm, IUThemeComponent)
@@ -284,10 +281,10 @@ begin
   //  Get PPI from current screen
   CurrentScreen := Screen.MonitorFromWindow(Handle);
   FPPI := CurrentScreen.PixelsPerInch;
-{$IF CompilerVersion < 30}
-  FIsScaling := False;
-  FCurrentPPI := FPPI;
-{$IFEND}
+  {$IF CompilerVersion < 30}
+    FIsScaling := False;
+    FCurrentPPI := FPPI;
+  {$IFEND}
   FOverlayType := otNone;
 
   //  Common props

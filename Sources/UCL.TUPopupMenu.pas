@@ -5,11 +5,9 @@ unit UCL.TUPopupMenu;
 interface
 
 uses
-  UCL.IntAnimation, UCL.IntAnimation.Helpers,
-  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton,
-  Classes, Types,
-  Windows,
-  Forms, Controls, Menus, Graphics, Dialogs;
+  Classes, Types, Windows, Forms, Controls, Menus, Graphics, Dialogs,
+  UCL.IntAnimation,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;

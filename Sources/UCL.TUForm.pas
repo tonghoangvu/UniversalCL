@@ -3,10 +3,8 @@ unit UCL.TUForm;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
-  Classes,
-  Windows, Messages,
-  Forms, Controls, Graphics;
+  Classes, Windows, Messages, Forms, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings;
 
 type
   TUForm = class(TForm, IUThemeComponent)

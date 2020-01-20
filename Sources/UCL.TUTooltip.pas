@@ -3,10 +3,8 @@ unit UCL.TUTooltip;
 interface
 
 uses
-  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.Colors,
-  Classes, Types,
-  Windows, Messages,
-  Controls, Graphics;
+  Classes, Types, Windows, Messages, Controls, Graphics,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.Colors;
 
 type
   TUCustomTooltip = class(THintWindow)
@@ -86,9 +84,10 @@ begin
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
 
-  Result := System.Types.Rect(0, 0, MaxWidth, 0);
-  DrawText(Canvas.Handle, AHint, -1, Result, DT_CALCRECT or DT_LEFT or
-    DT_WORDBREAK or DT_NOPREFIX or DrawTextBiDiModeFlagsReadingOnly);
+  Result := Rect(0, 0, MaxWidth, 0);
+  DrawText(Canvas.Handle, AHint, -1, Result,
+    DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX or DrawTextBiDiModeFlagsReadingOnly);
+
   Inc(Result.Right, 2 * (HORZ_SPACE + BorderThickness));
   Inc(Result.Bottom, 2 * (VERT_SPACE + BorderThickness));
 end;

@@ -5,10 +5,8 @@ unit UCL.TUCheckBox;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes,
-  Messages, Windows,
-  Controls, Graphics;
+  Classes, Messages, Windows, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
@@ -71,6 +69,10 @@ type
 
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor default $D77800;
+
+      property ParentColor default true;
+      property Height default 30;
+      property Width default 180;
   end;
 
   TUCheckBox = class(TUCustomCheckBox)
@@ -253,9 +255,6 @@ begin
   FCustomActiveColor := $D77800;  //  Default blue
 
   ParentColor := true;
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
   Height := 30;
   Width := 180;
 

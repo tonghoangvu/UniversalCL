@@ -5,10 +5,8 @@ unit UCL.TUSlider;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Classes,
-  Windows, Messages,
-  Controls, Graphics;
+  Classes, Windows, Messages, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils;
 
 type
   TUCustomSlider = class(TGraphicControl, IUThemeComponent)
@@ -88,6 +86,9 @@ type
 
       //  Events
       property OnChange: TNotifyEvent read FOnChange write FOnChange;
+
+      property Height default 25;
+      property Width default 100;
   end;
 
   TUSlider = class(TUCustomSlider)

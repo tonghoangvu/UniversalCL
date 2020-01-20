@@ -5,10 +5,8 @@ unit UCL.TUItemButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes, Types,
-  Windows, Messages,
-  Controls, Graphics, ImgList;
+  Classes, Types, Windows, Messages, Controls, Graphics, ImgList,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
@@ -152,6 +150,10 @@ type
       property RightIconKind: TUImageKind read FRightIconKind write SetRightIconKind default ikFontIcon;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write SetIsToggled default false;
+
+      property TabStop default true;
+      property Height default 40;
+      property Width default 250;
   end;
 
   TUItemButton = class(TUCustomItemButton)
@@ -515,12 +517,6 @@ begin
   FImageLeftIndex := -1;
   FImageRightIndex := -1;
 
-  //  Init text font
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-  Height := 40;
-  Width := 250;
-
   //  Init icon font
   FIconFont := TFont.Create;
   FIconFont.Name := 'Segoe MDL2 Assets';
@@ -528,8 +524,6 @@ begin
 
   //  Init detail font
   FDetailFont := TFont.Create;
-  FDetailFont.Name := 'Segoe UI';
-  FDetailFont.Size := 10;
 
   FObjectsVisible := [iokNone, iokLeftIcon, iokText, iokDetail];
 
@@ -553,6 +547,8 @@ begin
 
   //  Common properties
   TabStop := true;
+  Height := 40;
+  Width := 250;
 end;
 
 destructor TUCustomItemButton.Destroy;

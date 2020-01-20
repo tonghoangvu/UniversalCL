@@ -3,13 +3,13 @@ unit Form.AppList;
 interface
 
 uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls,
+
   UCL.TUBorderlessForm, UCL.TUThemeManager, UCL.Utils,
-  Windows, Messages, SysUtils, Variants, Classes, Graphics,
-  Controls, Forms, Dialogs, UCL.TUSmoothBox, StdCtrls,
   UCL.TUItemButton, UCL.TUHyperLink, UCL.TUProgressBar, UCL.TUButton,
   UCL.TUEdit, pngimage, ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
   UCL.TURadioButton, UCL.TUText, UCL.TUSymbolButton, UCL.TUSeparator,
-  UCL.TUCaptionBar, UCL.TUQuickButton;
+  UCL.TUCaptionBar, UCL.TUQuickButton, UCL.TUSmoothBox;
 
 type
   TformAppList = class(TUBorderlessForm)

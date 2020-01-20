@@ -5,10 +5,8 @@ unit UCL.TUSymbolButton;
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Messages, Windows,
-  Classes, Types,
-  Controls, Graphics, ImgList;
+  Classes, Types, Windows, Messages, Controls, Graphics, ImgList,
+  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
@@ -115,6 +113,10 @@ type
       property Transparent: Boolean read FTransparent write SetTransparent default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write SetIsToggled default false;
+
+      property TabStop default true;
+      property Height default 40;
+      property Width default 250;
   end;
 
   TUSymbolButton = class(TUCustomSymbolButton)
@@ -425,12 +427,7 @@ begin
   FSymbolFont.Size := 12;
 
   FTextFont := TFont.Create;
-  FTextFont.Name := 'Segoe UI';
-  FTextFont.Size := 10;
-
   FDetailFont := TFont.Create;
-  FDetailFont.Name := 'Segoe UI';
-  FDetailFont.Size := 10;
 
   FButtonState := csNone;
   FHitTest := true;
@@ -446,9 +443,9 @@ begin
   FIsToggleButton := false;
   FIsToggled := false;
 
-  Width := 250;
-  Height := 40;
   TabStop := true;
+  Height := 40;
+  Width := 250;
 end;
 
 destructor TUCustomSymbolButton.Destroy;

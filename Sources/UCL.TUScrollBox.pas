@@ -3,10 +3,9 @@ unit UCL.TUScrollBox;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils,
-  Classes, TypInfo,
-  Windows, Messages, FlatSB,
-  Controls, Forms, ExtCtrls, Graphics;
+  Classes, TypInfo, Windows, Messages, Controls, Forms, ExtCtrls, Graphics,
+  FlatSB,
+  UCL.Classes, UCL.TUThemeManager, UCL.IntAnimation, UCL.Utils;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -69,6 +68,9 @@ type
       property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 5;
       property LengthPerStep: Cardinal read FLengthPerStep write FLengthPerStep default 90;
       property TimePerStep: Cardinal read FTimePerStep write FTimePerStep default 120;
+
+      property BorderStyle default bsNone;
+      property DoubleBuffered default true;
   end;
 
 implementation

@@ -5,10 +5,8 @@ unit UCL.TUQuickButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes, Types,
-  Messages,
-  Controls, Graphics, Forms;
+  Classes, Types, Messages, Controls, Graphics, Forms,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUQuickButtonStyle = (sbsNone, sbsQuit, sbsMax, sbsMin, sbsSysButton, sbsHighlight);
@@ -61,6 +59,9 @@ type
       property CustomAccentColor: TColor read FCustomAccentColor write FCustomAccentColor default $D77800;
       property PressBrightnessDelta: Integer read FPressBrightnessDelta write FPressBrightnessDelta default 25;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+
+      property Height default 32;
+      property Width default 45;
   end;
 
   TUQuickButton = class(TUCustomQuickButton)

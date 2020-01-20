@@ -5,10 +5,8 @@ unit UCL.TUButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Windows, Messages,
-  Classes, Types,
-  Controls, Graphics, ImgList;
+  Classes, Types, Windows, Messages, Controls, Graphics, ImgList,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomButton = class(TCustomControl, IUThemeComponent)
@@ -104,6 +102,10 @@ type
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write FIsToggled default false;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
+
+      property Height default 30;
+      property Width default 135;
+      property TabStop default true;
   end;
 
   TUButton = class(TUCustomButton)
@@ -327,8 +329,6 @@ begin
   //  Property
   Height := 30;
   Width := 135;
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
   TabStop := true;
 end;
 

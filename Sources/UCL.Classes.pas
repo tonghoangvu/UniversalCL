@@ -5,12 +5,11 @@ unit UCL.Classes;
 interface
 
 uses
-  Classes,
-  Windows,
-  Graphics,
-  Forms;
+  Classes, Windows, Graphics, Forms;
 
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
+
 const
   {$EXTERNALSYM WM_DPICHANGED}
   WM_DPICHANGED       = $02E0;
@@ -40,7 +39,9 @@ type
   public
     property PixelsPerInch: Integer read GetPixelsPerInch;
   end;
+
 {$IFEND}
+{$ENDREGION}
 
 type
   TUTheme = (utLight, utDark);
@@ -70,8 +71,8 @@ type
 
   TQuadColor = packed record
     case Boolean of
-      True : (Blue, Green, Red, Alpha : Byte);
-      False : (Quad : Cardinal);
+      True: (Blue, Green, Red, Alpha: Byte);
+      False: (Quad: Cardinal);
   end;
 
   PQuadColor = ^TQuadColor;
@@ -108,6 +109,7 @@ type
 
 implementation
 
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
 uses
   SysUtils,
@@ -132,6 +134,7 @@ begin
   end;
 end;
 {$IFEND}
+{$ENDREGION}
 
 { TControlStateColors }
 
@@ -168,26 +171,36 @@ end;
 procedure TControlStateColors.SetStateColor(const Index: Integer; const Value: TColor);
 begin
   case Index of
-    0: if Value <> FNone then begin
-      FNone := Value;
-      Changed;
-    end;
-    1: if Value <> FHover then begin
-      FHover := Value;
-      Changed;
-    end;
-    2: if Value <> FPress then begin
-      FPress := Value;
-      Changed;
-    end;
-    3: if Value <> FDisabled then begin
-      FDisabled := Value;
-      Changed;
-    end;
-    4: if Value <> FFocused then begin
-      FFocused := Value;
-      Changed;
-    end;
+    0:
+      if Value <> FNone then
+        begin
+          FNone := Value;
+          Changed;
+        end;
+    1:
+      if Value <> FHover then
+        begin
+          FHover := Value;
+          Changed;
+        end;
+    2:
+      if Value <> FPress then
+        begin
+          FPress := Value;
+          Changed;
+        end;
+    3:
+      if Value <> FDisabled then
+        begin
+          FDisabled := Value;
+          Changed;
+        end;
+    4:
+      if Value <> FFocused then
+        begin
+          FFocused := Value;
+          Changed;
+        end;
   end;
 end;
 

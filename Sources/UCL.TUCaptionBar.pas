@@ -3,10 +3,8 @@ unit UCL.TUCaptionBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Colors,
-  Windows, Messages, Types,
-  Classes,
-  Controls, ExtCtrls, Forms, Graphics;
+  Classes, Types, Windows, Messages, Controls, ExtCtrls, Forms, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Colors;
 
 type
   TUCaptionBar = class(TPanel, IUThemeComponent)
@@ -45,6 +43,11 @@ type
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
       property CustomColor: TColor read FCustomColor write FCustomColor default $D77800;
+
+      property Align default alTop;
+      property Alignment default taLeftJustify;
+      property BevelOuter default bvNone;
+      property Height default 32;
   end;
 
 implementation
@@ -110,11 +113,7 @@ begin
   Alignment := taLeftJustify;
   Caption := '   TUCaptionBar';
   BevelOuter := bvNone;
-  TabStop := false;
   Height := 32;
-  Font.Name := 'Segoe UI';
-  Font.Size := 9;
-  FullRepaint := true;
 
   FBackColor := TUColorSet.Create;
   FBackColor.OnChange := BackColor_OnChange;

@@ -3,11 +3,11 @@ unit UCL.TUSmoothBox;
 interface
 
 uses
+  Classes, Types, SysUtils, Windows, Messages,
+  Controls, StdCtrls, Forms, Dialogs, ExtCtrls, Graphics,
+  FlatSB,
   UCL.IntAnimation,
-  UCL.Classes, UCL.Utils, UCL.TUThemeManager, UCL.Colors,
-  Classes, Types, SysUtils,
-  Windows, Messages, FlatSB,
-  Controls, StdCtrls, Forms, Dialogs, ExtCtrls, Graphics;
+  UCL.Classes, UCL.Utils, UCL.TUThemeManager, UCL.Colors;
 
 type
   TUScrollBarStyle = (sbsMini, sbsFull, sbsNo);
@@ -76,6 +76,9 @@ type
       property ScrollBarStyle: TUScrollBarStyle read FScrollBarStyle write FScrollBarStyle default sbsMini;
       property LengthPerStep: Integer read FLengthPerStep write FLengthPerStep default 4;
       property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 8;
+
+      property BorderStyle default bsNone;
+      property DoubleBuffered default true;
   end;
 
 implementation
@@ -142,6 +145,7 @@ begin
 
   //  Parent properties
   BorderStyle := bsNone;
+  DoubleBuffered := true;
   VertScrollBar.Tracking := true;
   HorzScrollBar.Tracking := true;
 

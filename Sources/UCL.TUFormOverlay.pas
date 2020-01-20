@@ -3,9 +3,8 @@ unit UCL.TUFormOverlay;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
-  Classes, SysUtils, Types, Messages, Windows, dialogs,
-  Graphics, Controls, Forms;
+  Classes, SysUtils, Types, Messages, Windows, Graphics, Controls, Forms,
+  UCL.Classes, UCL.TUThemeManager;
 
 type
   TUOverlayType = (otNone, otBlur, otSplash);

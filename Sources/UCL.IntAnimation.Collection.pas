@@ -58,14 +58,14 @@ implementation
 uses
   Math;
 
-{ LINEAR }
+//  LINEAR
 
 class function TIntAniCollection.Linear(P: Single): Single;
 begin
   Result := P;
 end;
 
-{ QUADRATIC }
+//  QUADRATIC
 
 class function TIntAniCollection.Quadratic_In(P: Single): Single;
 begin
@@ -85,8 +85,7 @@ begin
     Result := 1 - 2 * Quadratic_In(P - 1);
 end;
 
-{ CUBIC }
-
+//  CUBIC
 
 class function TIntAniCollection.Cubic_In(P: Single): Single;
 begin
@@ -106,7 +105,7 @@ begin
     Result := 1 + 4 * Cubic_In(P - 1);
 end;
 
-{ QUARTIC }
+//  QUARTIC
 
 class function TIntAniCollection.Quartic_In(P: Single): Single;
 begin
@@ -126,7 +125,7 @@ begin
     Result := 1 - 8 * Quartic_In(P - 1);
 end;
 
-{ QUINTIC }
+//  QUINTIC
 
 class function TIntAniCollection.Quintic_In(P: Single): Single;
 begin
@@ -146,7 +145,7 @@ begin
     Result := 1 + 16 * Quintic_In(P - 1);
 end;
 
-{ BACK }
+//  BACK
 
 class function TIntAniCollection.Back_In(P: Single): Single;
 var
@@ -182,7 +181,7 @@ begin
   end;
 end;
 
-{ BOUNCE }
+//  BOUNCE
 
 class function TIntAniCollection.Bounce_In(P: Single): Single;
 begin
@@ -216,7 +215,7 @@ begin
     Result := 0.5 * (1 + Bounce_Out(2 * P - 1));
 end;
 
-{ EXPO }
+//  EXPO
 
 class function TIntAniCollection.Expo_In(P: Single): Single;
 begin
@@ -237,7 +236,7 @@ begin
     Result := 0.5 * (2 - Power(2, (-10 * P)));
 end;
 
-{ SINE }
+//  SINE
 
 class function TIntAniCollection.Sine_In(P: Single): Single;
 begin
@@ -254,7 +253,7 @@ begin
   Result := 0.5 * (1 - Cos(P * Pi));
 end;
 
-{ CIRCLE }
+//  CIRCLE
 
 class function TIntAniCollection.Circle_In(P: Single): Single;
 begin

@@ -2,7 +2,9 @@ unit UCL.Types;
 
 interface
 
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
+
 uses
   Types;
 
@@ -48,10 +50,13 @@ type
     function Subtract(const Point: TPoint): TPoint;
     function IsZero : Boolean;
   end;
+
 {$IFEND}
+{$ENDREGION}
 
 implementation
 
+{$REGION 'Older Delphi version'}
 {$IF CompilerVersion <= 30}
 
 { TRectHelper }
@@ -220,5 +225,6 @@ begin
 end;
 
 {$IFEND}
+{$ENDREGION}
 
 end.

@@ -5,11 +5,8 @@ unit UCL.TUPanel;
 interface
 
 uses
-  UCL.Colors,
-  UCL.Classes, UCL.Utils, UCL.SystemSettings, UCL.TUThemeManager,
-  Windows, Messages,
-  Classes, SysUtils,
-  Controls, ExtCtrls, Graphics;
+  Windows, Messages, Classes, SysUtils, Controls, ExtCtrls, Graphics,
+  UCL.Classes, UCL.Colors, UCL.Utils, UCL.SystemSettings, UCL.TUThemeManager;
 
 type
   TUPanel = class(TPanel, IUThemeComponent)
@@ -34,6 +31,10 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property BackColor: TUColorSet read FBackColor write FBackColor;
+
+      property BevelOuter default bvNone;
+      property ParentColor default false;
+      property ParentBackground default false;
   end;
 
 implementation
@@ -101,8 +102,6 @@ begin
 
   //  Old properties
   BevelOuter := bvNone;
-  Font.Name := 'Segoe UI';
-  Font.Size := 9;
   ParentColor := false;
   ParentBackground := false;
 

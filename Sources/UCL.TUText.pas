@@ -3,10 +3,8 @@ unit UCL.TUText;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager,
-  Classes,
-  Windows, Messages,
-  Controls, StdCtrls;
+  Classes, Windows, Messages, Controls, StdCtrls,
+  UCL.Classes, UCL.TUThemeManager;
 
 type
   TUTextKind = (tkCustom, tkNormal, tkDescription, tkEntry, tkHeading, tkTitle);
