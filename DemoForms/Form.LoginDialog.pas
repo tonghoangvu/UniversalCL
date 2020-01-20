@@ -3,7 +3,7 @@ unit Form.LoginDialog;
 interface
 
 uses
-  UCL.TUThemeManager, UCL.TUForm, UCL.Classes, UCL.Utils,
+  UCL.TUThemeManager, UCL.TUBorderlessForm, UCL.Classes, UCL.Utils,
   UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
   UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox,
 
@@ -12,7 +12,7 @@ uses
   Forms, StdCtrls, pngimage, Menus, ExtCtrls, Controls;
 
 type
-  TformLoginDialog = class(TUForm)
+  TformLoginDialog = class(TUBorderlessForm)
     boxMain: TUScrollBox;
     captionbarMain: TUCaptionBar;
     buttonOk: TUButton;

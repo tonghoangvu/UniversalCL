@@ -4,7 +4,7 @@ interface
 
 uses
   UCL.Classes, UCL.TUThemeManager, UCL.TUTooltip, UCL.Utils, UCL.SystemSettings,
-  UCL.TUFormOverlay,
+  UCL.TUFormOverlay, UCL.Colors,
   Classes,
   Windows, Messages,
   Dialogs,
@@ -22,6 +22,7 @@ type
       var BorderColor: TColor;
 
       FThemeManager: TUThemeManager;
+      FBackColor: TUColorSet;
       FCaptionBar: TControl;
       FOverlay: TUFormOverlay;
 
@@ -33,6 +34,9 @@ type
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
       procedure SetOverlayType(const Value: TUOverlayType);
+
+      //  Child events
+      procedure BackColor_OnChange(Sender: TObject);
 
       //  Messages
       procedure WM_Activate(var Msg: TWMActivate); message WM_ACTIVATE;
@@ -75,6 +79,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property BackColor: TUColorSet read FBackColor write FBackColor;
       property CaptionBar: TControl read FCaptionBar write FCaptionBar;
 
       property PPI: Integer read FPPI write FPPI default 96;
@@ -89,7 +94,7 @@ implementation
 
 uses
   SysUtils,
-  UCL.Types, UCL.Colors;
+  UCL.Types;
 
 { TUBorderlessForm }
 
@@ -215,23 +220,28 @@ begin
 end;
 
 procedure TUBorderlessForm.UpdateTheme;
+var
+  Back: TUColorSet;
 begin
-  //  Background color & tooltip style
   if ThemeManager = nil then
-    begin
-      //  Color := Color;
-      HintWindowClass := THintWindow;   //  Default
-    end
-  else if ThemeManager.Theme = utLight then
-    begin
-      Color := FORM_BACK_LIGHT;
-      HintWindowClass := TULightTooltip;
-    end
+    //  Do nothing
   else
     begin
-      Color := FORM_BACK_DARK;
-      HintWindowClass := TUDarkTooltip;
+      //  Select default or custom style
+      if not BackColor.Enabled then
+        Back := FORM_BACK
+      else
+        Back := BackColor;
+
+      Color := Back.GetColor(ThemeManager);
     end;
+
+  if ThemeManager = nil then
+    HintWindowClass := THintWindow
+  else if ThemeManager.Theme = utLight then
+    HintWindowClass := TULightTooltip
+  else
+    HintWindowClass := TUDarkTooltip;
 
   UpdateBorderColor;
   Invalidate;
@@ -284,7 +294,7 @@ begin
   Font.Name := 'Segoe UI';
   Font.Size := 10;
 
-  if IsWin7 then
+  if IsWin7 and (BorderStyle = bsSizeable) then
     begin
       SetWindowLong(Handle, GWL_STYLE,
         GetWindowLong(Handle, GWL_STYLE) and not WS_CAPTION or WS_MINIMIZEBOX);
@@ -293,11 +303,16 @@ begin
 
   FOverlay := TUFormOverlay.CreateNew(Self);
   FOverlay.AssignToForm(Self);
+
+  FBackColor := TUColorSet.Create;
+  FBackColor.OnChange := BackColor_OnChange;
+  FBackColor.Assign(FORM_BACK);
 end;
 
 destructor TUBorderlessForm.Destroy;
 begin
   FOverlay.Free;
+  FBackColor.Free;
   inherited;
 end;
 
@@ -385,7 +400,7 @@ begin
   inherited;
   if BorderStyle = bsNone then exit;
 
-  if IsWin7 then
+  if IsWin7 and (BorderStyle = bsSizeable) then
     begin
       if WindowState = wsNormal then
         CaptionBarHeight := GetBorderSpaceWin7
@@ -423,6 +438,13 @@ begin
       else
         Msg.Result := HTTOP;
     end;
+end;
+
+//  CHILD EVENTS
+
+procedure TUBorderlessForm.BackColor_OnChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 //  DPI

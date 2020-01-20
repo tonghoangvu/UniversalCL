@@ -14497,7 +14497,7 @@ object formImageBackground: TformImageBackground
   object titlebarMain: TUTitleBar
     Left = 0
     Top = 0
-    Width = 475
+    Width = 520
     Height = 32
     ThemeManager = dmMain.AppTheme
     Anchors = [akLeft, akTop, akRight]
@@ -14508,7 +14508,6 @@ object formImageBackground: TformImageBackground
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
-    ExplicitWidth = 665
   end
   object sliderMain: TUSlider
     Left = 240
@@ -14591,47 +14590,6 @@ object formImageBackground: TformImageBackground
     ParentFont = False
     OnClick = radioDarkThemeClick
   end
-  object buttonWinClose: TUQuickButton
-    Left = 565
-    Top = 1
-    Width = 45
-    Height = 32
-    ThemeManager = dmMain.AppTheme
-    ButtonStyle = sbsQuit
-    LightColor = 2298344
-    DarkColor = 2298344
-    PressBrightnessDelta = 32
-    Transparent = True
-    Anchors = [akTop, akRight]
-    Caption = #57606
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe MDL2 Assets'
-    Font.Style = []
-    ParentFont = False
-    ExplicitLeft = 755
-  end
-  object buttonWinMin: TUQuickButton
-    Left = 515
-    Top = 1
-    Width = 45
-    Height = 32
-    ThemeManager = dmMain.AppTheme
-    ButtonStyle = sbsMin
-    LightColor = 13619151
-    DarkColor = 3947580
-    PressBrightnessDelta = -32
-    Transparent = True
-    Anchors = [akTop, akRight]
-    Caption = #59192
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe MDL2 Assets'
-    Font.Style = []
-    ParentFont = False
-  end
   object entryChooseTheme: TUText
     Left = 20
     Top = 40
@@ -14646,6 +14604,52 @@ object formImageBackground: TformImageBackground
     ParentFont = False
     ThemeManager = dmMain.AppTheme
     TextKind = tkEntry
+  end
+  object buttonAppQuit: TUQuickButton
+    Left = 565
+    Top = 0
+    Width = 45
+    Height = 32
+    Hint = 'Close'
+    ThemeManager = dmMain.AppTheme
+    ButtonStyle = sbsQuit
+    LightColor = 2298344
+    DarkColor = 2298344
+    PressBrightnessDelta = 32
+    Transparent = True
+    Anchors = [akTop, akRight]
+    Caption = #57606
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -12
+    Font.Name = 'Segoe MDL2 Assets'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+  end
+  object buttonAppMinimized: TUQuickButton
+    Left = 520
+    Top = 0
+    Width = 45
+    Height = 32
+    Hint = 'Minimize'
+    ThemeManager = dmMain.AppTheme
+    ButtonStyle = sbsMin
+    LightColor = 13619151
+    DarkColor = 3947580
+    PressBrightnessDelta = -32
+    Transparent = True
+    Anchors = [akTop, akRight]
+    Caption = #59192
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -15
+    Font.Name = 'Segoe MDL2 Assets'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object progressMain: TUProgressBar
     Left = 240
@@ -14714,8 +14718,10 @@ object formImageBackground: TformImageBackground
     ShowCaption = False
     TabOrder = 2
     ThemeManager = dmMain.AppTheme
-    CustomTextColor = clBlack
-    CustomBackColor = 15132390
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     object buttonOk: TUButton
       Left = 465
       Top = 14
@@ -14801,7 +14807,6 @@ object formImageBackground: TformImageBackground
       Edit.Font.Height = -13
       Edit.Font.Name = 'Segoe UI'
       Edit.Font.Style = []
-      Edit.Text = 'Edit'
       Edit.TextHint = 'Enter your email'
     end
   end

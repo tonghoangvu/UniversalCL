@@ -349,13 +349,12 @@ var
 begin
   inherited;
 
-  //  Paint border
-  Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BorderColor, 255);
-  Canvas.FillRect(Rect(0, 0, Width, Height));
-
   //  Paint background
   Canvas.Brush.Handle := CreateSolidBrushWithAlpha(BackColor, 255);
-  Canvas.FillRect(Rect(BorderThickness, BorderThickness, Width - BorderThickness, Height - BorderThickness));
+  Canvas.FillRect(Rect(0, 0, Width, Height));
+
+  //  Draw border
+  DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);
 
   //  Paint image
   if (Images <> nil) and (ImageIndex >= 0) then

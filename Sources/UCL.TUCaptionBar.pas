@@ -3,8 +3,8 @@ unit UCL.TUCaptionBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Windows, Messages,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Colors,
+  Windows, Messages, Types,
   Classes,
   Controls, ExtCtrls, Forms, Graphics;
 
@@ -12,6 +12,7 @@ type
   TUCaptionBar = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
+      FBackColor: TUColorSet;
 
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
@@ -19,6 +20,9 @@ type
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
+
+      //  Child events
+      procedure BackColor_OnChange(Sender: TObject);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -31,10 +35,12 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property BackColor: TUColorSet read FBackColor write FBackColor;
 
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
@@ -42,9 +48,6 @@ type
   end;
 
 implementation
-
-uses
-  UCL.Colors;
 
 { TUCustomCaptionBar }
 
@@ -69,17 +72,22 @@ begin
 end;
 
 procedure TUCaptionBar.UpdateTheme;
+var
+  Back: TUColorSet;
 begin
-  //  Background color
   if ThemeManager = nil then
-    Color := CustomColor
-  else if ThemeManager.Theme = utLight then
-    Color := CAPTION_BACK_LIGHT
+    //  Do nothing
   else
-    Color := CAPTION_BACK_DARK;
+    begin
+      //  Select default or custom style
+      if not BackColor.Enabled then
+        Back := CAPTIONBAR_BACK
+      else
+        Back := BackColor;
 
-  //  Font color
-  Font.Color := GetTextColorFromBackground(Color);
+      Color := Back.GetColor(ThemeManager);
+      Font.Color := GetTextColorFromBackground(Color);
+    end;
 end;
 
 procedure TUCaptionBar.Notification(AComponent: TComponent; Operation: TOperation);
@@ -108,7 +116,15 @@ begin
   Font.Size := 9;
   FullRepaint := true;
 
-  UpdateTheme;
+  FBackColor := TUColorSet.Create;
+  FBackColor.OnChange := BackColor_OnChange;
+  FBackColor.Assign(CAPTIONBAR_BACK);
+end;
+
+destructor TUCaptionBar.Destroy;
+begin
+  FBackColor.Free;
+  inherited;
 end;
 
 // MESSAGES
@@ -173,6 +189,13 @@ begin
       if P.Y < 5 then
         Msg.Result := HTTRANSPARENT;  //  Send event to parent
     end;
+end;
+
+//  CHILD EVENTS
+
+procedure TUCaptionBar.BackColor_OnChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 end.

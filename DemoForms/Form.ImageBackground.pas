@@ -3,7 +3,7 @@ unit Form.ImageBackground;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.TUForm, UCL.Utils,
+  UCL.Classes, UCL.TUThemeManager, UCL.TUBorderlessForm, UCL.Utils,
 
   UCL.TUQuickButton, UCL.TUCaptionBar, UCL.TUTitleBar, UCL.TUSlider,
   UCL.TUButton, UCL.TUCheckBox, UCL.TURadioButton, UCL.TUSeparator,
@@ -15,7 +15,7 @@ uses
   Graphics, Controls, Forms, Dialogs, ExtCtrls, jpeg;
 
 type
-  TformImageBackground = class(TUForm)
+  TformImageBackground = class(TUBorderlessForm)
     imgBackground: TImage;
     titlebarMain: TUTitleBar;
     sliderMain: TUSlider;
@@ -27,11 +27,11 @@ type
     buttonSide: TUSymbolButton;
     panelBottom: TUPanel;
     editEmail: TUEdit;
-    buttonWinClose: TUQuickButton;
-    buttonWinMin: TUQuickButton;
     buttonCancel: TUButton;
     shadowMenu: TUShadow;
     entryChooseTheme: TUText;
+    buttonAppQuit: TUQuickButton;
+    buttonAppMinimized: TUQuickButton;
     procedure FormCreate(Sender: TObject);
     procedure radioSystemThemeClick(Sender: TObject);
     procedure radioLightThemeClick(Sender: TObject);

@@ -65,7 +65,7 @@ procedure TUText.UpdateTheme;
 begin
   //  Font color
   if TextKind = tkDescription then
-    Font.Color := TEXT_DISABLED
+    Font.Color := $666666
   else if ThemeManager = nil then
     Font.Color := $000000
   else

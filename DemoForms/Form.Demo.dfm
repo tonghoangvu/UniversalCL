@@ -432,17 +432,19 @@ object formDemo: TformDemo
     BevelOuter = bvNone
     Caption = '                  Delphi UWP app'
     Color = 15921906
-    DoubleBuffered = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentBackground = False
-    ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 22
     ThemeManager = dmMain.AppTheme
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15921906
+    BackColor.DarkColor = 2829099
     CustomColor = clWhite
     object buttonAppBack: TUQuickButton
       Left = 0
@@ -584,6 +586,7 @@ object formDemo: TformDemo
       Top = 4
       Width = 120
       Height = 23
+      Hint = 'Do not change form style runtime in Windows 7'
       Margins.Left = 24
       Margins.Top = 4
       Margins.Right = 4
@@ -597,6 +600,8 @@ object formDemo: TformDemo
       Font.Style = []
       ItemIndex = 2
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 1
       Text = 'bsSizeable'
       OnChange = comboAppBorderStyleChange
@@ -618,7 +623,7 @@ object formDemo: TformDemo
     Align = alTop
     BorderStyle = bsNone
     DoubleBuffered = True
-    Color = 15132390
+    Color = 14342874
     ParentColor = False
     ParentDoubleBuffered = False
     TabOrder = 1
@@ -628,6 +633,10 @@ object formDemo: TformDemo
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 6
+    BackColor.Enabled = True
+    BackColor.Color = clBlack
+    BackColor.LightColor = 14342874
+    BackColor.DarkColor = 3355443
     ScrollOrientation = oHorizontal
     object separator1: TUSeparator
       Left = 120
@@ -1319,7 +1328,6 @@ object formDemo: TformDemo
     Align = alLeft
     BevelOuter = bvNone
     Color = 15132390
-    DoubleBuffered = True
     FullRepaint = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -1327,12 +1335,13 @@ object formDemo: TformDemo
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentBackground = False
-    ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
-    CustomTextColor = clBlack
-    CustomBackColor = 15132390
+    BackColor.Enabled = False
+    BackColor.Color = clWhite
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     object buttonOpenMenu: TUSymbolButton
       Left = 0
       Top = 0
@@ -1527,6 +1536,10 @@ object formDemo: TformDemo
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 10
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -2159,8 +2172,10 @@ object formDemo: TformDemo
       ParentFont = False
       TabOrder = 1
       OnClick = panelSelectAccentColorClick
-      CustomTextColor = clWhite
-      CustomBackColor = 14120960
+      BackColor.Enabled = False
+      BackColor.Color = -1
+      BackColor.LightColor = 15132390
+      BackColor.DarkColor = 2039583
     end
     object buttonDeleteAccount: TUButton
       Tag = 2

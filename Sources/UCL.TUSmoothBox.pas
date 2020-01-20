@@ -4,8 +4,8 @@ interface
 
 uses
   UCL.IntAnimation,
-  UCL.Classes, UCL.Utils, UCL.TUThemeManager,
-  Classes, Types,
+  UCL.Classes, UCL.Utils, UCL.TUThemeManager, UCL.Colors,
+  Classes, Types, SysUtils,
   Windows, Messages, FlatSB,
   Controls, StdCtrls, Forms, Dialogs, ExtCtrls, Graphics;
 
@@ -33,6 +33,7 @@ type
   
       FThemeManager: TUThemeManager;
       FAniSet: TIntAniSet;
+      FBackColor: TUColorSet;
 
       FScrollCount: Integer;
       FScrollOrientation: TUOrientation;      
@@ -42,6 +43,9 @@ type
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
+
+      //  Child events
+      procedure BackColor_OnChange(Sender: TObject);
 
       //  Messages
       procedure WM_Size(var Msg: TWMSize); message WM_SIZE;
@@ -65,6 +69,7 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property AniSet: TIntAniSet read FAniSet write FAniSet;
+      property BackColor: TUColorSet read FBackColor write FBackColor;
 
       property ScrollCount: Integer read FScrollCount;
       property ScrollOrientation: TUOrientation read FScrollOrientation write FScrollOrientation default oVertical;
@@ -74,10 +79,6 @@ type
   end;
 
 implementation
-
-uses
-  UCL.Colors,
-  SysUtils;
 
 { TUSmoothBox }
 
@@ -102,21 +103,22 @@ begin
 end;
 
 procedure TUSmoothBox.UpdateTheme;
+var
+  Back: TUColorSet;
 begin
   //  Background color
-//  if ThemeManager = nil then
-//    Color := $E6E6E6
-//  else if ThemeManager.Theme = utLight then
-//    Color := $E6E6E6
-//  else
-//    Color := $1F1F1F;
-
   if ThemeManager = nil then
-    Color := SCROLLBOX_BACK_NIL
-  else if ThemeManager.Theme = utLight then
-    Color := SCROLLBOX_BACK_LIGHT
+    //  Do nothing
   else
-    Color := SCROLLBOX_BACK_DARK;
+    begin
+      //  Select default or custom style
+      if not BackColor.Enabled then
+        Back := SCROLLBOX_BACK
+      else
+        Back := BackColor;
+
+      Color := Back.GetColor(ThemeManager);
+    end;
 end;
 
 procedure TUSmoothBox.Notification(AComponent: TComponent; Operation: TOperation);
@@ -161,12 +163,17 @@ begin
   //  Custom AniSet
   FAniSet := TIntAniSet.Create;
   FAniSet.QuickAssign(akOut, afkCubic, 0, 120, 10);
+
+  FBackColor := TUColorSet.Create;
+  FBackColor.OnChange := BackColor_OnChange;
+  FBackColor.Assign(SCROLLBOX_BACK);
 end;
 
 destructor TUSmoothBox.Destroy;
 begin
   MiniSB.Free;
   FAniSet.Free;
+  FBackColor.Free;
   inherited;
 end;
 
@@ -345,6 +352,13 @@ begin
         end;
       Ani.Start;
     end;
+end;
+
+//  CHILD EVENTS
+
+procedure TUSmoothBox.BackColor_OnChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 { TUMiniScrollBar }

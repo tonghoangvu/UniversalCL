@@ -3,19 +3,21 @@ unit UCL.TUTooltip;
 interface
 
 uses
-  UCL.Classes, UCL.Utils,
-  Classes,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.Colors,
+  Classes, Types,
   Windows, Messages,
   Controls, Graphics;
 
 type
   TUCustomTooltip = class(THintWindow)
     const
-      DEF_HEIGHT = 26;
+      VERT_SPACE: Byte = 5;
+      HORZ_SPACE: Byte = 7;
 
     private
-      var BorderColor: TColor;
-      var BackColor: TColor;
+      var ShowShadow: Boolean;
+      var BorderThickness: Byte;
+      var BorderColor, BackColor: TColor;
 
     protected
       procedure CreateParams(var Params: TCreateParams); override;
@@ -23,6 +25,7 @@ type
       procedure NCPaint(DC: HDC); override;
 
     public
+      constructor Create(aOwner: TComponent); override;
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
   end;
 
@@ -38,16 +41,13 @@ type
 
 implementation
 
-uses
-  UCL.Colors;
-
 { TULightTooltip }
 
 constructor TULightTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := TOOLTIP_BORDER_LIGHT;
-  BackColor := TOOLTIP_BACK_LIGHT;
+  BackColor := TOOLTIP_BACK.LightColor;
+  BorderColor := TOOLTIP_BORDER.LightColor;
 end;
 
 { TUDarkTooltip }
@@ -55,63 +55,42 @@ end;
 constructor TUDarkTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := TOOLTIP_BORDER_DARK;
-  BackColor := TOOLTIP_BACK_DARK;
+  BackColor := TOOLTIP_BACK.DarkColor;
+  BorderColor := TOOLTIP_BORDER.DarkColor;
 end;
 
 { TUCustomTooltip }
 
 //  MAIN CLASS
 
+constructor TUCustomTooltip.Create(aOwner: TComponent);
+begin
+  inherited;
+  ShowShadow := TOOLTIP_SHADOW;
+  BorderThickness := TOOLTIP_BORDER_THICKNESS;
+end;
+
 procedure TUCustomTooltip.CreateParams(var Params: TCreateParams);
 begin
   inherited;
   Params.Style := Params.Style and not WS_BORDER;
-  Params.WindowClass.style := Params.WindowClass.style and not CS_DROPSHADOW;
+
+  if not ShowShadow then
+    Params.WindowClass.style := Params.WindowClass.style and not CS_DROPSHADOW;
 end;
 
 //  CUSTOM METHODS
 
 function TUCustomTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
-var
-  TextW, TextH: Integer;
-  MaxTextW: Integer;
-  i, LineCount, Pos: Integer;
 begin
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
 
-  LineCount := 1;                            //   123456789
-  Pos := 0;                                  //   A_BCD_123
-  MaxTextW := 0;
-  for i := 1 to Length(AHint) do
-    if (AHint[i] = #13) or (i = Length(AHint)) then
-      begin
-        if AHint[i] = #13 then
-          TextW := Canvas.TextWidth(Copy(AHint, Pos, i - Pos - 1))
-        else 
-          TextW := Canvas.TextWidth(Copy(AHint, Pos, i - Pos));
-        
-        if TextW > MaxTextW then
-          MaxTextW := TextW;
-        Pos := i;
-        
-        if AHint[i] = #13 then
-          inc(LineCount);
-      end;
-
-  if LineCount = 1 then
-    begin
-      TextW := Canvas.TextWidth(AHint);
-      TextH := Canvas.TextHeight(AHint);
-    end
-  else 
-    begin
-      TextW := MaxTextW;
-      TextH := LineCount * Canvas.TextHeight(AHint);  
-    end;
-      
-  Result := Rect(0, 0, TextW + 16, TextH + 12);
+  Result := System.Types.Rect(0, 0, MaxWidth, 0);
+  DrawText(Canvas.Handle, AHint, -1, Result, DT_CALCRECT or DT_LEFT or
+    DT_WORDBREAK or DT_NOPREFIX or DrawTextBiDiModeFlagsReadingOnly);
+  Inc(Result.Right, 2 * (HORZ_SPACE + BorderThickness));
+  Inc(Result.Bottom, 2 * (VERT_SPACE + BorderThickness));
 end;
 
 procedure TUCustomTooltip.Paint;
@@ -125,15 +104,16 @@ begin
 
   //  Draw border
   Canvas.Brush.Style := bsClear;
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Rectangle(0, 0, Width, Height);
+  DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);
 
   //  Draw text
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
   Canvas.Font.Color := GetTextColorFromBackground(BackColor);
 
-  TextRect := Rect(8, 6, Width - 8, Height);
+  TextRect := Rect(
+    HORZ_SPACE + BorderThickness, VERT_SPACE + BorderThickness,
+    Width - HORZ_SPACE - BorderThickness, Height - VERT_SPACE - BorderThickness);
   DrawText(Canvas.Handle, Caption, -1, TextRect, DT_WORDBREAK or DT_LEFT or DT_VCENTER or DT_END_ELLIPSIS);
 end;
 

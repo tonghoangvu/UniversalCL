@@ -35,6 +35,10 @@ object formAppList: TformAppList
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 10
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     ScrollOrientation = oHorizontal
     object USymbolButton1: TUSymbolButton
       Left = 555
@@ -247,6 +251,10 @@ object formAppList: TformAppList
     ParentFont = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15921906
+    BackColor.DarkColor = 2829099
     object buttonWinClose: TUQuickButton
       Left = 395
       Top = 0
@@ -312,6 +320,10 @@ object formAppList: TformAppList
     AniSet.DelayStartTime = 0
     AniSet.Duration = 120
     AniSet.Step = 10
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     object UItemButton1: TUItemButton
       Left = 0
       Top = 1160

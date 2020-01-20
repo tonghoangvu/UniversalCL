@@ -3,7 +3,7 @@ unit Form.AppList;
 interface
 
 uses
-  UCL.TUForm, UCL.TUThemeManager, UCL.Utils,
+  UCL.TUBorderlessForm, UCL.TUThemeManager, UCL.Utils,
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, Dialogs, UCL.TUSmoothBox, StdCtrls,
   UCL.TUItemButton, UCL.TUHyperLink, UCL.TUProgressBar, UCL.TUButton,
@@ -12,7 +12,7 @@ uses
   UCL.TUCaptionBar, UCL.TUQuickButton;
 
 type
-  TformAppList = class(TUForm)
+  TformAppList = class(TUBorderlessForm)
     boxHorizontal: TUSmoothBox;
     captionBar: TUCaptionBar;
     buttonWinClose: TUQuickButton;

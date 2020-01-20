@@ -181,8 +181,10 @@ object formLoginDialog: TformLoginDialog
       TabOrder = 0
       Visible = False
       ThemeManager = dmMain.AppTheme
-      CustomTextColor = clBlack
-      CustomBackColor = 15132390
+      BackColor.Enabled = False
+      BackColor.Color = clBlack
+      BackColor.LightColor = 15132390
+      BackColor.DarkColor = 2039583
       object checkSendMeNews: TUCheckBox
         Left = 0
         Top = 30
@@ -353,6 +355,10 @@ object formLoginDialog: TformLoginDialog
     ParentFont = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15921906
+    BackColor.DarkColor = 2829099
     object buttonAppQuit: TUQuickButton
       Left = 365
       Top = 0
@@ -443,8 +449,10 @@ object formLoginDialog: TformLoginDialog
     ShowCaption = False
     TabOrder = 2
     ThemeManager = dmMain.AppTheme
-    CustomTextColor = clBlack
-    CustomBackColor = 15132390
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     object buttonOk: TUButton
       Left = 270
       Top = 10

@@ -37,28 +37,28 @@ uses
 procedure Register;
 begin
   RegisterComponents('Universal CL', [
-    TUThemeManager,
     //TUForm,
     //TUBorderlessForm,
-    TUCaptionBar,
+    TUThemeManager,
+    TUBUtton,
+    TUQuickButton,
     TUSymbolButton,
-    TUButton,
+    TUItemButton,
+    TUEdit,
+    TUCheckBox,
+    TURadioButton,
     TUText,
     TUHyperLink,
-    TUPanel,
-    TUCheckBox,
-    TUProgressBar,
-    TUScrollBox,
-    TURadioButton,
-    TUItemButton,
-    TUSeparator,
-    TUEdit,
-    TUSlider,
     TUPopupMenu,
+    TUPanel,
+    TUScrollBox,
+    TUSmoothBox,
+    TUCaptionBar,
     TUTitleBar,
-    TUQuickButton,
+    TUProgressBar,
+    TUSlider,
     TUShadow,
-    TUSmoothBox
+    TUSeparator
   ]);
 end;
 

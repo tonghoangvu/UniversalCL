@@ -6,7 +6,7 @@ interface
 
 uses
   //  UCL units
-  UCL.TUThemeManager,
+  UCL.TUThemeManager, UCL.Colors,
   UCL.TUBorderlessForm, UCL.TUFormOverlay,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,

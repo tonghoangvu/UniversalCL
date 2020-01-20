@@ -32,12 +32,14 @@ function PointInRect(const p: TPoint; const Rect: TRect): Boolean; overload;
 function PointInRect(const p: TSmallPoint; const Rect: TRect): Boolean; overload;
 procedure GetCenterPos(Width, Height: Integer; Rect: TRect; out X, Y: Integer);
 procedure DrawTextRect(const Canvas: TCanvas; HAlign: TAlignment; VAlign: TVerticalAlignment; Rect: TRect; Text: string; TextOnGlass: Boolean);
+procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte);
 
 var
   DEFAULT_GLASSTEXT_GLOWSIZE: Byte;
 
 implementation
 
+{$REGION 'Compatible code'}
 {$IF CompilerVersion <= 30}
 uses
   // delphi stuff first
@@ -64,6 +66,7 @@ type
 const
   COptions: Array[TStyleTextFlag] of Cardinal = (DTT_TEXTCOLOR, DTT_BORDERCOLOR, DTT_BORDERSIZE, DTT_SHADOWCOLOR, DTT_SHADOWOFFSET, DTT_GLOWSIZE);
 {$IFEND}
+{$ENDREGION}
 
 const
   HAlignments: Array[TAlignment] of Longint = (DT_LEFT, DT_RIGHT, DT_CENTER);
@@ -94,6 +97,7 @@ begin
   Y := Rect.Top + (Rect.Height - Height) div 2;
 end;
 
+{$REGION 'Compatible code'}
 {$IF CompilerVersion <= 30}
 function TextFlagsToTextFormat(Value: Cardinal): TTextFormat;
 begin
@@ -202,6 +206,7 @@ begin
   DrawGlassText(Canvas, GlowSize, Rect, Text, Format, Options);
 end;
 {$IFEND}
+{$ENDREGION}
 
 procedure DrawTextRect(const Canvas: TCanvas; HAlign: TAlignment; VAlign: TVerticalAlignment; Rect: TRect; Text: string; TextOnGlass: Boolean);
 var
@@ -232,6 +237,24 @@ begin
       Include(LFormat, tfComposited);
       StyleServices.DrawText(Canvas.Handle, StyleServices.GetElementDetails(ttlTextLabelNormal), Text, Rect, LFormat, LOptions);
     {$IFEND}
+    end;
+end;
+
+procedure DrawBorder(const Canvas: TCanvas; R: TRect; Color: TColor; Thickness: Byte);
+var
+  TL, BR: Byte;
+begin
+  if Thickness <> 0 then
+    begin
+      TL := Thickness div 2;
+      if Thickness mod 2 = 0 then
+        BR := TL - 1
+      else
+        BR := TL;
+
+      Canvas.Pen.Color := Color;
+      Canvas.Pen.Width := Thickness;
+      Canvas.Rectangle(Rect(TL, TL, R.Width - BR, R.Height - BR));
     end;
 end;
 
