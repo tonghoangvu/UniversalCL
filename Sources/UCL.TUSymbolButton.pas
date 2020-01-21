@@ -25,7 +25,6 @@ type
       FThemeManager: TUThemeManager;
 
       FSymbolFont: TFont;
-      FTextFont: TFont;
       FDetailFont: TFont;
 
       FImageIndex: Integer;
@@ -93,7 +92,6 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property SymbolFont: TFont read FSymbolFont write FSymbolFont;
-      property TextFont: TFont read FTextFont write FTextFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
 
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
@@ -426,8 +424,8 @@ begin
   FSymbolFont.Name := 'Segoe MDL2 Assets';
   FSymbolFont.Size := 12;
 
-  FTextFont := TFont.Create;
   FDetailFont := TFont.Create;
+  FDetailFont.Name := Font.Name;
 
   FButtonState := csNone;
   FHitTest := true;
@@ -451,7 +449,6 @@ end;
 destructor TUCustomSymbolButton.Destroy;
 begin
   FSymbolFont.Free;
-  FTextFont.Free;
   FDetailFont.Free;
   inherited;
 end;
@@ -500,7 +497,7 @@ begin
     end;
 
   //  Paint text
-  Canvas.Font := TextFont;
+  Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
   if Orientation = oHorizontal then
     DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false)
@@ -529,7 +526,7 @@ begin
   DetailRightOffset := MulDiv(DetailRightOffset, M, D);
 
   SymbolFont.Height := MulDiv(SymbolFont.Height, M, D);
-  TextFont.Height := MulDiv(TextFont.Height, M, D);
+//  Font.Height := MulDiv(Font.Height, M, D);
   DetailFont.Height := MulDiv(DetailFont.Height, M, D);
 
   UpdateRects;

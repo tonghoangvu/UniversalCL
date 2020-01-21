@@ -9,14 +9,14 @@ object formAppList: TformAppList
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
+  Font.Height = -13
   Font.Name = 'Segoe UI'
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 15
+  TextHeight = 17
   object boxHorizontal: TUSmoothBox
     Left = 0
     Top = 32
@@ -25,7 +25,6 @@ object formAppList: TformAppList
     HorzScrollBar.Tracking = True
     VertScrollBar.Tracking = True
     Align = alTop
-    BorderStyle = bsNone
     Color = 15132390
     ParentColor = False
     TabOrder = 0
@@ -51,11 +50,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -78,11 +72,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -105,11 +94,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -132,11 +116,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -159,11 +138,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -186,11 +160,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -215,11 +184,6 @@ object formAppList: TformAppList
       SymbolFont.Height = -16
       SymbolFont.Name = 'Segoe MDL2 Assets'
       SymbolFont.Style = []
-      TextFont.Charset = DEFAULT_CHARSET
-      TextFont.Color = clWindowText
-      TextFont.Height = -13
-      TextFont.Name = 'Segoe UI'
-      TextFont.Style = []
       DetailFont.Charset = DEFAULT_CHARSET
       DetailFont.Color = clWindowText
       DetailFont.Height = -13
@@ -236,19 +200,9 @@ object formAppList: TformAppList
     Left = 0
     Top = 0
     Width = 440
-    Height = 32
-    Align = alTop
-    Alignment = taLeftJustify
-    BevelOuter = bvNone
     Caption = '   App list'
     Color = 15921906
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
     ParentBackground = False
-    ParentFont = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
@@ -258,8 +212,6 @@ object formAppList: TformAppList
     object buttonWinClose: TUQuickButton
       Left = 395
       Top = 0
-      Width = 45
-      Height = 32
       Hint = 'Close'
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsQuit
@@ -281,8 +233,6 @@ object formAppList: TformAppList
     object buttonWinMin: TUQuickButton
       Left = 350
       Top = 0
-      Width = 45
-      Height = 32
       Hint = 'Minimize'
       ThemeManager = dmMain.AppTheme
       ButtonStyle = sbsMin
@@ -310,7 +260,6 @@ object formAppList: TformAppList
     HorzScrollBar.Tracking = True
     VertScrollBar.Tracking = True
     Align = alClient
-    BorderStyle = bsNone
     Color = 15132390
     ParentColor = False
     TabOrder = 2
@@ -328,7 +277,6 @@ object formAppList: TformAppList
       Left = 0
       Top = 1160
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -347,18 +295,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton2: TUItemButton
       Left = 0
       Top = 1080
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -377,18 +318,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton3: TUItemButton
       Left = 0
       Top = 1040
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -407,18 +341,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton4: TUItemButton
       Left = 0
       Top = 1000
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -437,18 +364,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton5: TUItemButton
       Left = 0
       Top = 960
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -467,18 +387,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton6: TUItemButton
       Left = 0
       Top = 920
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -497,18 +410,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton7: TUItemButton
       Left = 0
       Top = 1120
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -527,18 +433,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton8: TUItemButton
       Left = 0
       Top = 680
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -557,18 +456,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton9: TUItemButton
       Left = 0
       Top = 720
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -587,18 +479,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton10: TUItemButton
       Left = 0
       Top = 760
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -617,18 +502,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton11: TUItemButton
       Left = 0
       Top = 800
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -647,18 +525,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton12: TUItemButton
       Left = 0
       Top = 840
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -677,18 +548,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton13: TUItemButton
       Left = 0
       Top = 880
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -707,18 +571,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton14: TUItemButton
       Left = 0
       Top = 440
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -737,18 +594,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton15: TUItemButton
       Left = 0
       Top = 480
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -767,18 +617,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton16: TUItemButton
       Left = 0
       Top = 520
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -797,18 +640,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton17: TUItemButton
       Left = 0
       Top = 560
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -827,18 +663,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton18: TUItemButton
       Left = 0
       Top = 600
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -857,18 +686,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton19: TUItemButton
       Left = 0
       Top = 640
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -887,18 +709,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton20: TUItemButton
       Left = 0
       Top = 200
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -917,18 +732,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton21: TUItemButton
       Left = 0
       Top = 240
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -947,18 +755,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton22: TUItemButton
       Left = 0
       Top = 280
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -977,18 +778,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton23: TUItemButton
       Left = 0
       Top = 320
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1007,18 +801,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton24: TUItemButton
       Left = 0
       Top = 360
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1037,18 +824,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton25: TUItemButton
       Left = 0
       Top = 400
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1067,18 +847,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton26: TUItemButton
       Left = 0
       Top = 0
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1097,18 +870,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton27: TUItemButton
       Left = 0
       Top = 40
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1127,18 +893,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton28: TUItemButton
       Left = 0
       Top = 80
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1157,18 +916,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton29: TUItemButton
       Left = 0
       Top = 120
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1187,18 +939,11 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
     object UItemButton30: TUItemButton
       Left = 0
       Top = 160
       Width = 423
-      Height = 40
       ThemeManager = dmMain.AppTheme
       IconFont.Charset = DEFAULT_CHARSET
       IconFont.Color = clWindowText
@@ -1217,12 +962,6 @@ object formAppList: TformAppList
       RightIcon = #57345
       CustomActiveColor = 14120960
       Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
-      ParentFont = False
     end
   end
 end

@@ -78,7 +78,6 @@ type
       property MaxScrollCount: Integer read FMaxScrollCount write FMaxScrollCount default 8;
 
       property BorderStyle default bsNone;
-      property DoubleBuffered default true;
   end;
 
 implementation
@@ -145,7 +144,6 @@ begin
 
   //  Parent properties
   BorderStyle := bsNone;
-  DoubleBuffered := true;
   VertScrollBar.Tracking := true;
   HorzScrollBar.Tracking := true;
 

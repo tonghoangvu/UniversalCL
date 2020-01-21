@@ -70,7 +70,6 @@ type
       property TimePerStep: Cardinal read FTimePerStep write FTimePerStep default 120;
 
       property BorderStyle default bsNone;
-      property DoubleBuffered default true;
   end;
 
 implementation
@@ -268,7 +267,6 @@ begin
   FTimePerStep := 120;
 
   BorderStyle := bsNone;
-  DoubleBuffered := true;
 
   FTimer := TTimer.Create(Self);
   FTimer.Enabled := false;

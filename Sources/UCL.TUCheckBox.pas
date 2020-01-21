@@ -324,7 +324,7 @@ begin
       Canvas.Font := IconFont;
       Height := 2 * Space + Canvas.TextHeight(ICON_UNCHECKED);
       Canvas.Font := Font;
-      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
+      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2 + Space;
     end
   else
     inherited;

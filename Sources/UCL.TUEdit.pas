@@ -23,12 +23,13 @@ type
       property BorderStyle default bsNone;
       property AutoSize default true;
       property ParentColor default true;
+      property ParentFont default true;
       property Height default 20;
 
       property Alignment;
       property CharCase;
       property Enabled;
-      property Font;
+      property Font stored false;
       property MaxLength;
       property NumbersOnly;
       property PasswordChar;
@@ -263,7 +264,7 @@ begin
   //  Sub edit
   FEdit := TUSubEdit.Create(Self);
   FEdit.Parent := Self;
-  FEdit.Font := Self.Font;
+  FEdit.ParentFont := true;
   FEdit.BorderStyle := bsNone;
   FEdit.AutoSize := true;
   FEdit.ParentColor := true;

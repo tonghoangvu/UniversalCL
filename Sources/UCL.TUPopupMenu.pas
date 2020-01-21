@@ -223,6 +223,7 @@ begin
       UItem := TUSymbolButton.Create(Form);
       UItem.Tag := i;
       UItem.Parent := Form;
+      UItem.ParentFont := true;
       UItem.Enabled := MenuItem.Enabled;
       UItem.ThemeManager := Self.ThemeManager;
       UItem.OnClick := PopupItem_OnClick;
