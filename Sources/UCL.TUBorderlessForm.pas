@@ -369,7 +369,10 @@ begin
 
   //  Redraw border
   if CanDrawBorder then
-    DoDrawBorder;
+    begin
+      UpdateBorderColor;
+      DoDrawBorder;
+    end;
 
   //  Update cation bar
   if CaptionBar <> nil then

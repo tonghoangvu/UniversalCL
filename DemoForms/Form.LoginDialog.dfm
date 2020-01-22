@@ -82,7 +82,6 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ThemeManager = dmMain.AppTheme
       TextKind = tkHeading
-      ExplicitTop = 67
       ExplicitWidth = 197
     end
     object entryPassword: TUText
@@ -100,7 +99,6 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
-      ExplicitTop = 175
       ExplicitWidth = 58
     end
     object entryEmail: TUText
@@ -118,7 +116,6 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
-      ExplicitTop = 104
       ExplicitWidth = 32
     end
     object textShowMoreOptions: TUText
@@ -143,7 +140,6 @@ object formLoginDialog: TformLoginDialog
       OnClick = textShowMoreOptionsClick
       ThemeManager = dmMain.AppTheme
       TextKind = tkDescription
-      ExplicitTop = 317
       ExplicitWidth = 103
     end
     object entryDescription: TUText
@@ -161,7 +157,6 @@ object formLoginDialog: TformLoginDialog
       ParentFont = False
       ThemeManager = dmMain.AppTheme
       TextKind = tkEntry
-      ExplicitTop = 246
       ExplicitWidth = 130
     end
     object panelMoreOptions: TUPanel
@@ -171,6 +166,12 @@ object formLoginDialog: TformLoginDialog
       Height = 80
       Align = alTop
       Color = 15132390
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
       ShowCaption = False
       TabOrder = 0
       Visible = False
@@ -279,7 +280,13 @@ object formLoginDialog: TformLoginDialog
     Width = 410
     Caption = '   Login'
     Color = 15921906
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     ParentBackground = False
+    ParentFont = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
@@ -355,10 +362,16 @@ object formLoginDialog: TformLoginDialog
     Height = 52
     Align = alBottom
     Color = 15132390
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     Padding.Left = 10
     Padding.Top = 10
     Padding.Right = 10
     Padding.Bottom = 10
+    ParentFont = False
     ShowCaption = False
     TabOrder = 2
     ThemeManager = dmMain.AppTheme

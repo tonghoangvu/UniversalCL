@@ -3,7 +3,7 @@ object formImageBackground: TformImageBackground
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'Test UWP app'
+  Caption = 'Transparent caption bar form'
   ClientHeight = 410
   ClientWidth = 610
   Color = clWhite
@@ -14494,14 +14494,6 @@ object formImageBackground: TformImageBackground
     ExplicitWidth = 600
     ExplicitHeight = 340
   end
-  object titlebarMain: TUTitleBar
-    Left = 0
-    Top = 0
-    Width = 520
-    ThemeManager = dmMain.AppTheme
-    Anchors = [akLeft, akTop, akRight]
-    Caption = 'Transparent caption bar form'
-  end
   object sliderMain: TUSlider
     Left = 240
     Top = 60
@@ -14619,6 +14611,21 @@ object formImageBackground: TformImageBackground
     ParentShowHint = False
     ShowHint = True
   end
+  object titlebarMain: TUTitleBar
+    Left = 0
+    Top = 0
+    ThemeManager = dmMain.AppTheme
+    Anchors = [akLeft, akTop, akRight]
+    Caption = 'Transparent caption bar form'
+    Color = clBtnFace
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentColor = False
+    ParentFont = False
+  end
   object progressMain: TUProgressBar
     Left = 240
     Top = 110
@@ -14666,10 +14673,16 @@ object formImageBackground: TformImageBackground
     Align = alBottom
     Caption = 'panelBottom'
     Color = 15132390
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     Padding.Left = 14
     Padding.Top = 14
     Padding.Right = 14
     Padding.Bottom = 14
+    ParentFont = False
     ShowCaption = False
     TabOrder = 2
     ThemeManager = dmMain.AppTheme

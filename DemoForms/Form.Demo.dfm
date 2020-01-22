@@ -1129,6 +1129,12 @@ object formDemo: TformDemo
     Align = alLeft
     Color = 15132390
     FullRepaint = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
