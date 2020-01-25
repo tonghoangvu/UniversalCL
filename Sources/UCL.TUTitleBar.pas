@@ -44,7 +44,6 @@ type
       property EnableSystemMenu: Boolean read FEnableSystemMenu write FEnableSystemMenu default true;
 
       property Height default 32;
-      property Width default 400;
   end;
 
   TUTitleBar = class(TUCustomTitleBar)
@@ -152,7 +151,6 @@ begin
   FEnableSystemMenu := true;
 
   Height := 32;
-  Width := 400;
 end;
 
 //  CUSTOM METHODS

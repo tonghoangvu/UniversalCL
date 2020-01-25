@@ -5,9 +5,10 @@ unit UCL.TUPopupMenu;
 interface
 
 uses
-  Classes, Types, Windows, Forms, Controls, Menus, Graphics, Dialogs,
+  Classes, Types, Windows, Forms, Controls, Menus, Graphics, Messages, Dialogs,
   UCL.IntAnimation,
-  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUForm, UCL.TUSymbolButton;
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager, UCL.TUSymbolButton,
+  UCL.TUForm;
 
 type
   TIndexNotifyEvent = procedure (Sender: TObject; Index: Integer) of object;
@@ -197,26 +198,43 @@ var
   UItem: TUSymbolButton;
   Icon, Text, Detail: string;
   Ani: TIntAni;
+
+  DPI: Integer;
+  Ratio: Single;
+  TotalItemsHeight: Integer;
+  Spacing: Integer;
+  ItemW: Integer;
+
 begin
+  //  High DPI
+  if Owner is TUForm then
+    DPI := (Owner as TUForm).PPI
+  else
+    DPI := 96;
+  Ratio := DPI / 96;
+
   //  Getting something
   ItemCount := Self.Items.Count;
-
   if ItemCount = 0 then exit;
+
+  Spacing := Round(TopSpace * Ratio);
+  ItemW := Round(ItemWidth * Ratio);
 
   //  Create popup form
   Form := TUForm.CreateNew(Self);
-
   Form.OnDeactivate := PopupForm_OnDeactivate;
 
   Form.DoubleBuffered := true;
   Form.BorderStyle := bsToolWindow;
-  Form.Position := poDefaultPosOnly;
   Form.Color := BackColor;
-  Form.ClientWidth := ItemWidth;
+
+  Form.Padding.Bottom := Spacing;
+  Form.ClientWidth := ItemW;
   Form.ClientHeight := 0;
 
-    //  Build items
-  for i := ItemCount - 1 downto 0 do
+  //  Build items
+  TotalItemsHeight := 0;
+  for i := 0 to ItemCount - 1 do
     begin
       MenuItem := Self.Items[i];
 
@@ -228,12 +246,6 @@ begin
       UItem.ThemeManager := Self.ThemeManager;
       UItem.OnClick := PopupItem_OnClick;
 
-      if i = 0 then
-        begin
-          UItem.Margins.SetBounds(0, TopSpace, 0, 0);
-          UItem.AlignWithMargins := true;
-        end;
-
       UItem.Hint := MenuItem.Hint;
       UItem.Images := Self.Images;
       UItem.ImageIndex := MenuItem.ImageIndex;
@@ -244,20 +256,27 @@ begin
       UItem.Detail := Detail;
       UItem.ImageKind := Self.ImageKind;
 
-      UItem.Align := alTop;
+      UItem.Align := alBottom;
       UItem.Width := ItemWidth;
       UItem.Height := ItemHeight;
       UItem.ShowHint := true;
+
+      //  Scale item
+      UItem.ScaleForPPI(DPI);
+      UItem.Font.Height := MulDiv(UItem.Font.Height, DPI, 96);  //  Scaling for text font
+
+      //  Increase total items height
+      Inc(TotalItemsHeight, UItem.Height);
     end;
 
-  Form.Show;
-
-  //  Position & size
+  //  Set popup position (after show)
+//  ShowWindow(Form.Handle, SW_SHOWNOACTIVATE);
   Form.Left := X;
   Form.Top := Y;
+  Form.Visible := true;
 
   //  Animation
-  Ani := TIntAni.Create(0, 2 * TopSpace + ItemCount * ItemHeight,
+  Ani := TIntAni.Create(0, TotalItemsHeight + 2 * Spacing,
     procedure (Value: Integer)
     begin
       Form.ClientHeight := Value;

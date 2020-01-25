@@ -69,7 +69,6 @@ type
 
       //  Internal
       procedure UpdateColors;
-      procedure UpdateSize;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
@@ -92,13 +91,11 @@ type
     protected
       procedure Notification(AComponent: TComponent; Operation: TOperation); override;
       procedure Paint; override;
-      procedure Resize; override;
       procedure CreateWindowHandle(const Params: TCreateParams); override;
       procedure ChangeScale(M, D: Integer{$IF CompilerVersion > 29}; isDpiChange: Boolean{$IFEND}); override;
 
     public
       constructor Create(aOwner: TComponent); override;
-      procedure Loaded; override;
       procedure UpdateTheme;
 
     published
@@ -213,11 +210,6 @@ begin
     end;
 end;
 
-procedure TUEdit.UpdateSize;
-begin
-  ClientHeight := 29;
-end;
-
 //  SETTERS
 
 procedure TUEdit.SetControlState(const Value: TUControlState);
@@ -273,19 +265,7 @@ begin
   FEdit.SetSubComponent(true);
 end;
 
-procedure TUEdit.Loaded;
-begin
-  inherited;
-  UpdateSize;
-end;
-
 //  CUSTOM METHODS
-
-procedure TUEdit.Resize;
-begin
-  UpdateSize;
-  inherited;
-end;
 
 procedure TUEdit.Paint;
 var

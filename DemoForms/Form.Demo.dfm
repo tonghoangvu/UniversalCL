@@ -376,7 +376,7 @@ object formDemo: TformDemo
     Left = 0
     Top = 0
     Width = 1000
-    Caption = '             Delphi UWP app'
+    Caption = '                Delphi UWP app'
     Color = 15921906
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
@@ -549,7 +549,7 @@ object formDemo: TformDemo
         'bsSizeToolWin')
     end
   end
-  object panelRibbon: TUSmoothBox
+  object panelRibbon: TUScrollBox
     Left = 0
     Top = 32
     Width = 1000
@@ -1283,7 +1283,7 @@ object formDemo: TformDemo
       Align = alTop
     end
   end
-  object boxSettings: TUSmoothBox
+  object boxSettings: TUScrollBox
     Left = 750
     Top = 92
     Width = 250
@@ -1308,6 +1308,7 @@ object formDemo: TformDemo
     BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
+    MaxScrollCount = 6
     object headingSettings: TUText
       AlignWithMargins = True
       Left = 15
@@ -1986,8 +1987,8 @@ object formDemo: TformDemo
   end
   object dialogSelectColor: TColorDialog
     Color = 14120960
-    Left = 720
-    Top = 40
+    Left = 440
+    Top = 510
   end
   object popupEdit: TUPopupMenu
     ThemeManager = dmMain.AppTheme
@@ -1997,8 +1998,8 @@ object formDemo: TformDemo
     AniSet.Duration = 120
     AniSet.Step = 20
     OnItemClick = popupEditItemClick
-    Left = 790
-    Top = 52
+    Left = 570
+    Top = 512
     object CutCtrlX1: TMenuItem
       Caption = #57707'Cut|Ctrl+X'
       Hint = 'Remove the selected content and put it on the clipboard'

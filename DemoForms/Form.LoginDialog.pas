@@ -5,12 +5,12 @@ interface
 uses
   Classes, SysUtils, Windows, Messages, Forms, StdCtrls, PNGImage, Menus, ExtCtrls, Controls,
 
-  UCL.TUThemeManager, UCL.TUBorderlessForm, UCL.Classes, UCL.Utils,
+  UCL.TUThemeManager, UCL.TUForm, UCL.Classes, UCL.Utils,
   UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
   UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox;
 
 type
-  TformLoginDialog = class(TUBorderlessForm)
+  TformLoginDialog = class(TUForm)
     boxMain: TUScrollBox;
     captionbarMain: TUCaptionBar;
     buttonOk: TUButton;

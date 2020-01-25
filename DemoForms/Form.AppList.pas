@@ -5,19 +5,19 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls,
 
-  UCL.TUBorderlessForm, UCL.TUThemeManager, UCL.Utils,
+  UCL.TUForm, UCL.TUThemeManager, UCL.Utils,
   UCL.TUItemButton, UCL.TUHyperLink, UCL.TUProgressBar, UCL.TUButton,
   UCL.TUEdit, pngimage, ExtCtrls, UCL.TUCheckBox, UCL.TUPanel,
   UCL.TURadioButton, UCL.TUText, UCL.TUSymbolButton, UCL.TUSeparator,
-  UCL.TUCaptionBar, UCL.TUQuickButton, UCL.TUSmoothBox;
+  UCL.TUCaptionBar, UCL.TUQuickButton, UCL.TUScrollBox;
 
 type
-  TformAppList = class(TUBorderlessForm)
-    boxHorizontal: TUSmoothBox;
+  TformAppList = class(TUForm)
+    boxHorizontal: TUScrollBox;
     captionBar: TUCaptionBar;
     buttonWinClose: TUQuickButton;
     buttonWinMin: TUQuickButton;
-    boxVertical: TUSmoothBox;
+    boxVertical: TUScrollBox;
     UItemButton1: TUItemButton;
     UItemButton2: TUItemButton;
     UItemButton3: TUItemButton;

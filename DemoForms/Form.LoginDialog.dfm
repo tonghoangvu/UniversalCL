@@ -23,6 +23,8 @@ object formLoginDialog: TformLoginDialog
     Top = 32
     Width = 410
     Height = 476
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Tracking = True
     Align = alClient
     Color = 15132390
     Padding.Left = 40
@@ -36,6 +38,10 @@ object formLoginDialog: TformLoginDialog
     AniSet.DelayStartTime = 0
     AniSet.Duration = 250
     AniSet.Step = 25
+    BackColor.Enabled = False
+    BackColor.Color = clBlack
+    BackColor.LightColor = 15132390
+    BackColor.DarkColor = 2039583
     MaxScrollCount = 6
     object titleSignin: TUText
       AlignWithMargins = True

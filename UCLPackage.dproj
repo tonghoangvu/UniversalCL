@@ -84,105 +84,39 @@
         <DCCReference Include="vclimg.dcp"/>
         <DCCReference Include="vclwinx.dcp"/>
         <DCCReference Include="RegisterPackage_UCL.pas"/>
-        <DCCReference Include="Sources\UCL.Classes.pas"/>
+        <DCCReference Include="Sources\UCL.IntAnimation.pas"/>
         <DCCReference Include="Sources\UCL.IntAnimation.Collection.pas"/>
         <DCCReference Include="Sources\UCL.IntAnimation.Helpers.pas"/>
-        <DCCReference Include="Sources\UCL.IntAnimation.pas"/>
-        <DCCReference Include="Sources\UCL.SystemSettings.pas"/>
-        <DCCReference Include="Sources\UCL.TUButton.pas"/>
-        <DCCReference Include="Sources\UCL.TUCaptionBar.pas"/>
-        <DCCReference Include="Sources\UCL.TUCheckBox.pas"/>
-        <DCCReference Include="Sources\UCL.TUEdit.pas"/>
-        <DCCReference Include="Sources\UCL.TUForm.pas"/>
-        <DCCReference Include="Sources\UCL.TUHyperLink.pas"/>
-        <DCCReference Include="Sources\UCL.TUItemButton.pas"/>
-        <DCCReference Include="Sources\UCL.TUPanel.pas"/>
-        <DCCReference Include="Sources\UCL.TUProgressBar.pas"/>
-        <DCCReference Include="Sources\UCL.TURadioButton.pas"/>
-        <DCCReference Include="Sources\UCL.TUScrollBox.pas"/>
-        <DCCReference Include="Sources\UCL.TUSeparator.pas"/>
-        <DCCReference Include="Sources\UCL.TUSlider.pas"/>
-        <DCCReference Include="Sources\UCL.TUSymbolButton.pas"/>
-        <DCCReference Include="Sources\UCL.TUText.pas"/>
-        <DCCReference Include="Sources\UCL.TUThemeManager.pas"/>
-        <DCCReference Include="Sources\UCL.Utils.pas"/>
-        <DCCReference Include="Sources\UCL.Graphics.pas"/>
-        <DCCReference Include="Sources\UCL.TUPopupMenu.pas"/>
-        <DCCReference Include="Sources\UCL.TUQuickButton.pas"/>
-        <DCCReference Include="Sources\UCL.TUTitleBar.pas"/>
-        <DCCReference Include="Sources\UCL.TUShadow.pas"/>
-        <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
-        <DCCReference Include="Sources\UCL.TUSmoothBox.pas"/>
-        <DCCReference Include="Sources\UCL.Types.pas"/>
-        <DCCReference Include="Sources\UCL.TUBorderlessForm.pas"/>
+        <DCCReference Include="Sources\UCL.Classes.pas"/>
         <DCCReference Include="Sources\UCL.Colors.pas"/>
-        <DCCReference Include="Sources\UCL.TUFormOverlay.pas"/>
-        <DCCReference Include="Sources\UCL.HighDpiApp.pas"/>
+        <DCCReference Include="Sources\UCL.Graphics.pas"/>
+        <DCCReference Include="Sources\UCL.Types.pas"/>
+        <DCCReference Include="Sources\UCL.Utils.pas"/>
+        <DCCReference Include="Sources\UCL.SystemSettings.pas"/>
         <DCCReference Include="Sources\UCL.ShellUIScaling.pas"/>
-        <RcItem Include="Resources\TUText.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUText</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUButton.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUButton</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUCaptionBar.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUCaptionBar</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUCheckBox.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUCheckBox</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUEdit.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUEdit</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUHyperLink.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUHyperLink</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUPanel.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUPanel</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUQuickButton.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUQuickButton</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TURadioButton.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TURadioButton</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUSeparator.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUSeparator</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUSlider.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUSlider</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUThemeManager.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUThemeManager</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUTitleBar.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUTitleBar</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUItemButton.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUItemButton</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUProgressBar.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUProgressBar</ResourceId>
-        </RcItem>
-        <RcItem Include="Resources\TUShadow.bmp">
-            <ResourceType>Bitmap</ResourceType>
-            <ResourceId>TUShadow</ResourceId>
-        </RcItem>
+        <DCCReference Include="Sources\UCL.HighDpiApp.pas"/>
+        <DCCReference Include="Sources\UCL.TUForm.pas"/>
+        <DCCReference Include="Sources\UCL.TUThemeManager.pas"/>
+        <DCCReference Include="Sources\UCL.TUButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUQuickButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUSymbolButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUItemButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUEdit.pas"/>
+        <DCCReference Include="Sources\UCL.TUCheckBox.pas"/>
+        <DCCReference Include="Sources\UCL.TURadioButton.pas"/>
+        <DCCReference Include="Sources\UCL.TUText.pas"/>
+        <DCCReference Include="Sources\UCL.TUHyperLink.pas"/>
+        <DCCReference Include="Sources\UCL.TUPopupMenu.pas"/>
+        <DCCReference Include="Sources\UCL.TUPanel.pas"/>
+        <DCCReference Include="Sources\UCL.TUScrollBox.pas"/>
+        <DCCReference Include="Sources\UCL.TUCaptionBar.pas"/>
+        <DCCReference Include="Sources\UCL.TUTitleBar.pas"/>
+        <DCCReference Include="Sources\UCL.TUProgressBar.pas"/>
+        <DCCReference Include="Sources\UCL.TUSlider.pas"/>
+        <DCCReference Include="Sources\UCL.TUShadow.pas"/>
+        <DCCReference Include="Sources\UCL.TUSeparator.pas"/>
+        <DCCReference Include="Sources\UCL.TUFormOverlay.pas"/>
+        <DCCReference Include="Sources\UCL.TUTooltip.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -256,6 +190,12 @@
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>UCLPackage.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\20.0\Bpl\UCLPackage.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteName>UCLPackage.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

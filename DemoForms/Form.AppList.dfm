@@ -17,7 +17,7 @@ object formAppList: TformAppList
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 17
-  object boxHorizontal: TUSmoothBox
+  object boxHorizontal: TUScrollBox
     Left = 0
     Top = 32
     Width = 440
@@ -202,7 +202,13 @@ object formAppList: TformAppList
     Width = 440
     Caption = '   App list'
     Color = 15921906
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     ParentBackground = False
+    ParentFont = False
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
@@ -252,7 +258,7 @@ object formAppList: TformAppList
       ExplicitLeft = 710
     end
   end
-  object boxVertical: TUSmoothBox
+  object boxVertical: TUScrollBox
     Left = 0
     Top = 122
     Width = 440

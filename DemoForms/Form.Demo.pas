@@ -7,13 +7,13 @@ interface
 uses
   //  UCL units
   UCL.TUThemeManager, UCL.Colors,
-  UCL.TUBorderlessForm, UCL.TUFormOverlay,
+  UCL.TUForm, UCL.TUFormOverlay,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,
-  UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
+  UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUSmoothBox,
+  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUScrollBox,
 
   //  Winapi units
   Windows, Messages,
@@ -29,7 +29,7 @@ uses
   Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
-  TformDemo = class(TUBorderlessForm)
+  TformDemo = class(TUForm)
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -39,7 +39,7 @@ type
     buttonMenuRate: TUSymbolButton;
     captionBarMain: TUCaptionBar;
     dialogSelectColor: TColorDialog;
-    panelRibbon: TUSmoothBox;
+    panelRibbon: TUScrollBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
     buttonGoHome: TUSymbolButton;
@@ -91,7 +91,7 @@ type
     buttonWinMax: TUQuickButton;
     buttonWinMin: TUQuickButton;
     comboAppDPI: TComboBox;
-    boxSettings: TUSmoothBox;
+    boxSettings: TUScrollBox;
     headingSettings: TUText;
     entryAppTheme: TUText;
     radioSystemTheme: TURadioButton;

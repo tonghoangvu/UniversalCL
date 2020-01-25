@@ -14614,6 +14614,7 @@ object formImageBackground: TformImageBackground
   object titlebarMain: TUTitleBar
     Left = 0
     Top = 0
+    Width = 520
     ThemeManager = dmMain.AppTheme
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Transparent caption bar form'
@@ -14738,6 +14739,7 @@ object formImageBackground: TformImageBackground
       Left = 14
       Top = 14
       Width = 292
+      Height = 30
       Align = alClient
       Caption = 'editEmail'
       TabOrder = 2
@@ -14745,6 +14747,7 @@ object formImageBackground: TformImageBackground
       Edit.Left = 5
       Edit.Top = 5
       Edit.Width = 283
+      Edit.Height = 21
       Edit.ParentColor = False
       Edit.ParentFont = False
       Edit.TextHint = 'Enter your email'
