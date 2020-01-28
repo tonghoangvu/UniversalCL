@@ -12,7 +12,7 @@ type
   TUPanel = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
-      FBackColor: TUColorSet;
+      FBackColor: TUThemeColorSet;
 
       //  Child events
       procedure BackColor_OnChange(Sender: TObject);
@@ -30,7 +30,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property BackColor: TUColorSet read FBackColor write FBackColor;
+      property BackColor: TUThemeColorSet read FBackColor write FBackColor;
 
       property BevelOuter default bvNone;
       property ParentColor default false;
@@ -63,7 +63,7 @@ end;
 
 procedure TUPanel.UpdateTheme;
 var
-  Back: TUColorSet;
+  Back: TUThemeColorSet;
 begin
   if ThemeManager = nil then
     //  Do nothing
@@ -106,7 +106,7 @@ begin
   ParentBackground := false;
 
   //  Objects
-  FBackColor := TUColorSet.Create;
+  FBackColor := TUThemeColorSet.Create;
   FBackColor.OnChange := BackColor_OnChange;
   FBackColor.Assign(PANEL_BACK);
 end;

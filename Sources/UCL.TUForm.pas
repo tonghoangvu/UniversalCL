@@ -19,7 +19,7 @@ type
       var BorderColor: TColor;
 
       FThemeManager: TUThemeManager;
-      FBackColor: TUColorSet;
+      FBackColor: TUThemeColorSet;
       FCaptionBar: TControl;
       FOverlay: TUFormOverlay;
 
@@ -76,7 +76,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property BackColor: TUColorSet read FBackColor write FBackColor;
+      property BackColor: TUThemeColorSet read FBackColor write FBackColor;
       property CaptionBar: TControl read FCaptionBar write FCaptionBar;
 
       property PPI: Integer read FPPI write FPPI default 96;
@@ -218,7 +218,7 @@ end;
 
 procedure TUForm.UpdateTheme;
 var
-  Back: TUColorSet;
+  Back: TUThemeColorSet;
 begin
   if ThemeManager = nil then
     //  Do nothing
@@ -301,7 +301,7 @@ begin
   FOverlay := TUFormOverlay.CreateNew(Self);
   FOverlay.AssignToForm(Self);
 
-  FBackColor := TUColorSet.Create;
+  FBackColor := TUThemeColorSet.Create;
   FBackColor.OnChange := BackColor_OnChange;
   FBackColor.Assign(FORM_BACK);
 end;

@@ -52,6 +52,9 @@ type
 
   TUControlState = (csNone, csHover, csPress, csDisabled, csFocused);
 
+  //  NEW
+  TUButtonState = (ubsNone, ubsHover, ubsPress, ubsSelectedNone, ubsSelectedHover, ubsSelectedPress);
+
   TUImageKind = (ikFontIcon, ikImage);
 
   TDefColor = array [TUTheme, TUControlState] of TColor;

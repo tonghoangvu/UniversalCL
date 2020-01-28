@@ -10,7 +10,7 @@ type
   TUCaptionBar = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
-      FBackColor: TUColorSet;
+      FBackColor: TUThemeColorSet;
 
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
@@ -38,7 +38,7 @@ type
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
-      property BackColor: TUColorSet read FBackColor write FBackColor;
+      property BackColor: TUThemeColorSet read FBackColor write FBackColor;
 
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
@@ -76,7 +76,7 @@ end;
 
 procedure TUCaptionBar.UpdateTheme;
 var
-  Back: TUColorSet;
+  Back: TUThemeColorSet;
 begin
   if ThemeManager = nil then
     //  Do nothing
@@ -115,7 +115,7 @@ begin
   BevelOuter := bvNone;
   Height := 32;
 
-  FBackColor := TUColorSet.Create;
+  FBackColor := TUThemeColorSet.Create;
   FBackColor.OnChange := BackColor_OnChange;
   FBackColor.Assign(CAPTIONBAR_BACK);
 end;
