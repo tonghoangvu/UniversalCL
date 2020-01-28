@@ -64,7 +64,6 @@ type
       FControlState: TUControlState;
       FEdit: TUSubEdit;
 
-      FHitTest: Boolean;
       FTransparent: Boolean;
 
       //  Internal
@@ -103,7 +102,6 @@ type
       property Edit: TUSubEdit read FEdit write FEdit;
       property ControlState: TUControlState read FControlState write SetControlState default csNone;
 
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Transparent: Boolean read FTransparent write SetTransparent default false;
 
       property Padding stored false;
@@ -242,7 +240,6 @@ begin
 
   //  Fields
   FControlState := csNone;
-  FHitTest := true;
   FTransparent := false;
 
   //  Common properties
@@ -309,7 +306,7 @@ end;
 
 procedure TUEdit.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       FEdit.SetFocus;
       ControlState := csPress;
@@ -319,7 +316,7 @@ end;
 
 procedure TUEdit.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if (Focused) or (FEdit.Focused) then
         ControlState := csFocused
@@ -331,7 +328,7 @@ end;
 
 procedure TUEdit.WM_SetFocus(var Msg: TWMSetFocus);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ControlState := csFocused;
       inherited;
@@ -340,7 +337,7 @@ end;
 
 procedure TUEdit.WM_KillFocus(var Msg: TWMKillFocus);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ControlState := csNone;
       inherited;
@@ -349,19 +346,19 @@ end;
 
 procedure TUEdit.UM_SubEditSetFocus(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     ControlState := csFocused;
 end;
 
 procedure TUEdit.UM_SubEditKillFocus(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     ControlState := csNone;
 end;
 
 procedure TUEdit.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if (Focused) or (FEdit.Focused) then
         ControlState := csFocused
@@ -373,7 +370,7 @@ end;
 
 procedure TUEdit.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if (Focused) or (FEdit.Focused) then
         ControlState := csFocused

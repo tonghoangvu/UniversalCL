@@ -33,7 +33,6 @@ type
 
       FObjectSelected: TUItemObjectKind;
       FButtonState: TUControlState;
-      FHitTest: Boolean;
       FLeftIconKind: TUImageKind;
       FRightIconKind: TUImageKind;
 
@@ -115,7 +114,6 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
 
       //  Image
       property Images: TCustomImageList read FImages write FImages;
@@ -513,7 +511,6 @@ begin
 
   FObjectSelected := iokNone;
   FButtonState := csNone;
-  FHitTest := true;
   FImageLeftIndex := -1;
   FImageRightIndex := -1;
 
@@ -656,7 +653,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -665,7 +662,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -674,7 +671,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
 //      if Msg.XPos < CheckBoxWidth then
 //        FObjectSelected := iokCheckBox
@@ -721,7 +718,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -730,7 +727,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;

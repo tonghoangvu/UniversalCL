@@ -26,7 +26,6 @@ type
       FCustomTextColors: TControlStateColors;
 
       FEnabled: Boolean;  //  Must override Enabled, if not disabled style wrong on Dark theme
-      FHitTest: Boolean;
       FOpenLink: Boolean;
       FURL: string;
 
@@ -60,7 +59,6 @@ type
       property CustomTextColors: TControlStateColors read FCustomTextColors write FCustomTextColors;
 
       property Enabled: Boolean read FEnabled write SetEnabled default true;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property OpenLink: Boolean read FOpenLink write FOpenLink default true;
       property URL: string read FURL write FURL;
 
@@ -152,7 +150,6 @@ begin
   FCustomTextColors.OnChange := DoCustomTextColorsChange;
 
   FEnabled := true;
-  FHitTest := true;
   FOpenLink := true;
   FURL := 'https://embarcadero.com/';
 
@@ -172,7 +169,7 @@ end;
 
 procedure TUHyperLink.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -181,7 +178,7 @@ end;
 
 procedure TUHyperLink.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -190,7 +187,7 @@ end;
 
 procedure TUHyperLink.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if OpenLink then
         ShellExecute(0, '', PWideChar(URL), '', '', SW_SHOWNORMAL);
@@ -201,7 +198,7 @@ end;
 
 procedure TUHyperLink.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -210,7 +207,7 @@ end;
 
 procedure TUHyperLink.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;

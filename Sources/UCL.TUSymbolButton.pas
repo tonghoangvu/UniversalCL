@@ -32,7 +32,6 @@ type
       FImages: TCustomImageList;
 
       FButtonState: TUControlState;
-      FHitTest: Boolean;
       FOrientation: TUOrientation;
       FSymbolChar: string;
       FText: string;
@@ -99,7 +98,6 @@ type
       property Images: TCustomImageList read FImages write FImages;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property SymbolChar: string read FSymbolChar write SetSymbolChar;
       property Text: string read FText write SetText;
@@ -428,7 +426,6 @@ begin
   FDetailFont.Name := Font.Name;
 
   FButtonState := csNone;
-  FHitTest := true;
   FOrientation := oHorizontal;
   FSymbolChar := '';
   FText := 'Some text';
@@ -536,7 +533,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -545,7 +542,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -554,7 +551,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if IsToggleButton then
         FIsToggled := not FIsToggled;
@@ -565,7 +562,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -574,7 +571,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;

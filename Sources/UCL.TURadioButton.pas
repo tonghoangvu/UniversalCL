@@ -22,7 +22,6 @@ type
       FIconFont: TFont;
 
       FAutoSize: Boolean;
-      FHitTest: Boolean;
       FIsChecked: Boolean;
       FGroup: string;
       FCustomActiveColor: TColor;
@@ -58,7 +57,6 @@ type
       property IconFont: TFont read FIconFont write FIconFont;
 
       property AutoSize: Boolean read FAutoSize write SetAutoSize default false;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
@@ -240,7 +238,6 @@ begin
 
   //  New props
   FAutoSize := false;
-  FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
   FTextOnGlass := false;
@@ -329,7 +326,7 @@ end;
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     IsChecked := true;
 
   inherited;

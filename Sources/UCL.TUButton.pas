@@ -37,7 +37,6 @@ type
       FAlignment: TAlignment;
       FImageIndex: Integer;
       FImages: TCustomImageList;
-      FHitTest: Boolean;
       FAllowFocus: Boolean;
       FHighlight: Boolean;
       FIsToggleButton: Boolean;
@@ -96,7 +95,6 @@ type
       property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
       property Images: TCustomImageList read FImages write FImages;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property AllowFocus: Boolean read FAllowFocus write FAllowFocus default true;
       property Highlight: Boolean read FHighlight write SetHighlight default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
@@ -319,7 +317,6 @@ begin
   FButtonState := csNone;
   FAlignment := taCenter;
   FImageIndex := -1;
-  FHitTest := true;
   FAllowFocus := true;
   FHighlight := false;
   FIsToggleButton := false;
@@ -393,7 +390,7 @@ end;
 
 procedure TUCustomButton.WM_SetFocus(var Msg: TWMSetFocus);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     if AllowFocus then
       begin
         ButtonState := csFocused;
@@ -403,7 +400,7 @@ end;
 
 procedure TUCustomButton.WM_KillFocus(var Msg: TWMKillFocus);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;
@@ -412,7 +409,7 @@ end;
 
 procedure TUCustomButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -421,7 +418,7 @@ end;
 
 procedure TUCustomButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if AllowFocus then
         SetFocus;
@@ -432,7 +429,7 @@ end;
 
 procedure TUCustomButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if IsToggleButton then
         FIsToggled := not FIsToggled;
@@ -443,7 +440,7 @@ end;
 
 procedure TUCustomButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -452,7 +449,7 @@ end;
 
 procedure TUCustomButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       //  Dont allow focus
       if not AllowFocus then
