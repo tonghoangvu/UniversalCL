@@ -86,6 +86,9 @@ var
   SCROLLBOX_BACK: TUThemeColorSet;
   CAPTIONBAR_BACK: TUThemeColorSet;
 
+  DETAIL_COLOR: TColor;
+  DETAIL_COLOR_HIGHLIGHED: TColor;
+
 implementation
 
 { TUThemeSet }
@@ -317,6 +320,9 @@ initialization
   PANEL_BACK := TUThemeColorSet.Create(0, $E6E6E6, $1F1F1F);
   SCROLLBOX_BACK := TUThemeColorSet.Create(0, $E6E6E6, $1F1F1F);
   CAPTIONBAR_BACK := TUThemeColorSet.Create(0, $F2F2F2, $2B2B2B);
+
+  DETAIL_COLOR := $808080;  //  Both light & dark
+  DETAIL_COLOR_HIGHLIGHED := $C0C0C0;   //  Using when background is solid color
 
 finalization
   TOOLTIP_BACK.Free;

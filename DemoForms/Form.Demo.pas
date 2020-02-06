@@ -325,21 +325,21 @@ procedure TformDemo.buttonLoginFormClick(Sender: TObject);
 begin
   if formLoginDialog = nil then
     Application.CreateForm(TformLoginDialog, formLoginDialog);
-  formLoginDialog.Show;
+  formLoginDialog.Visible := true;
 end;
 
 procedure TformDemo.buttonImageFormClick(Sender: TObject);
 begin
   if formImageBackground = nil then
     Application.CreateForm(TformImageBackground, formImageBackground);
-  formImageBackground.Show;
+  formImageBackground.Visible := true;
 end;
 
 procedure TformDemo.buttonAppListFormClick(Sender: TObject);
 begin
   if formAppList = nil then
     Application.CreateForm(TformAppList, formAppList);
-  formAppList.Show;
+  formAppList.Visible := true;
 end;
 
 //  THEME

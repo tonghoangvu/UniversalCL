@@ -109,10 +109,23 @@ begin
   R := GetRValue(C);
   G := GetGValue(C);
   B := GetBValue(C);
-  if 0.299 * R + 0.587 * G + 0.114 * B > 156 then
-    Result := $000000
+
+  if (R = G) and (G = B) then
+    //  Black white colors
+    begin
+      if C < $808080 then
+        Result := $FFFFFF
+      else
+        Result := $000000;
+    end
   else
-    Result := $FFFFFF;
+    //  Other colors
+    begin
+      if 0.299 * R + 0.587 * G + 0.114 * B > 156 then
+        Result := $000000
+      else
+        Result := $FFFFFF;
+    end;
 end;
 
 function MulColor(aColor: TColor; Base: Single): TColor;
