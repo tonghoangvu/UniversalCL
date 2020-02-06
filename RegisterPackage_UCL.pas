@@ -10,56 +10,51 @@ procedure Register;
 implementation
 
 uses
-  UCL.IntAnimation,
-  UCL.TUThemeManager,
   UCL.TUForm,
-  UCL.TUBorderlessForm,
-  UCL.TUCaptionBar,
-  UCL.TUSymbolButton,
+  UCL.TUThemeManager,
   UCL.TUButton,
+  UCL.TUQuickButton,
+  UCL.TUSymbolButton,
+  UCL.TUItemButton,
+  UCL.TUEdit,
+  UCL.TUCheckBox,
+  UCL.TURadioButton,
   UCL.TUText,
   UCL.TUHyperLink,
-  UCL.TUPanel,
-  UCL.TUCheckBox,
-  UCL.TUProgressBar,
-  UCL.TUScrollBox,
-  UCL.TURadioButton,
-  UCL.TUItemButton,
-  UCL.TUSeparator,
-  UCL.TUEdit,
-  UCL.TUSlider,
   UCL.TUPopupMenu,
-  UCL.TUQuickButton,
+  UCL.TUPanel,
+  UCL.TUScrollBox,
+  UCL.TUCaptionBar,
   UCL.TUTitleBar,
+  UCL.TUProgressBar,
+  UCL.TUSlider,
   UCL.TUShadow,
-  UCL.TUSmoothBox;
+  UCL.TUSeparator;
 
 procedure Register;
 begin
   RegisterComponents('Universal CL', [
-    TUThemeManager,
-    //TUForm,
     //TUBorderlessForm,
-    TUCaptionBar,
-    TUSymbolButton,
+    TUThemeManager,
     TUButton,
+    TUQuickButton,
+    TUSymbolButton,
+    TUItemButton,
+    TUEdit,
+    TUCheckBox,
+    TURadioButton,
     TUText,
     TUHyperLink,
-    TUPanel,
-    TUCheckBox,
-    TUProgressBar,
-    TUScrollBox,
-    TURadioButton,
-    TUItemButton,
-    TUSeparator,
-    TUEdit,
-    TUSlider,
     TUPopupMenu,
+    TUPanel,
+    TUScrollBox,
+    TUCaptionBar,
     TUTitleBar,
-    TUQuickButton,
+    TUProgressBar,
+    TUSlider,
     TUShadow,
-    TUSmoothBox
-  ]);
+    TUSeparator
+    ]);
 end;
 
 end.

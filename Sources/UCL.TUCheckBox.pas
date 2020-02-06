@@ -5,10 +5,8 @@ unit UCL.TUCheckBox;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes,
-  Messages, Windows,
-  Controls, Graphics;
+  Classes, Messages, Windows, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCheckBoxState = (cbsChecked, cbsUnchecked, cbsGrayed);
@@ -28,7 +26,6 @@ type
 
       FAutoSize: Boolean;
       FAllowGrayed: Boolean;
-      FHitTest: Boolean;
       FTextOnGlass: Boolean;
 
       FState: TUCheckBoxState;
@@ -66,11 +63,14 @@ type
 
       property AutoSize: Boolean read FAutoSize write SetAutoSize default false;
       property AllowGrayed: Boolean read FAllowGrayed write SetAllowGrayed default false;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property TextOnGlass: Boolean read FTextOnGlass write SetTextOnGlass default false;
 
       property State: TUCheckBoxState read FState write SetState default cbsUnchecked;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor default $D77800;
+
+      property ParentColor default true;
+      property Height default 30;
+      property Width default 180;
   end;
 
   TUCheckBox = class(TUCustomCheckBox)
@@ -247,15 +247,11 @@ begin
 
   FAutoSize := false;
   FAllowGrayed := false;
-  FHitTest := true;
   FTextOnGlass := false;
   FState := cbsUnchecked;
   FCustomActiveColor := $D77800;  //  Default blue
 
   ParentColor := true;
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
   Height := 30;
   Width := 180;
 
@@ -325,7 +321,7 @@ begin
       Canvas.Font := IconFont;
       Height := 2 * Space + Canvas.TextHeight(ICON_UNCHECKED);
       Canvas.Font := Font;
-      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
+      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2 + Space;
     end
   else
     inherited;
@@ -344,7 +340,7 @@ end;
 
 procedure TUCustomCheckBox.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     if AllowGrayed then   //  Unchecked > Checked > Grayed > ...
       case State of
         cbsUnchecked:

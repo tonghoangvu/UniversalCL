@@ -5,10 +5,8 @@ unit UCL.TUItemButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes, Types,
-  Windows, Messages,
-  Controls, Graphics, ImgList;
+  Classes, Types, Windows, Messages, Controls, Graphics, ImgList,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUItemObjectKind = (iokNone, iokCheckBox, iokLeftIcon, iokText, iokDetail, iokRightIcon);
@@ -35,7 +33,6 @@ type
 
       FObjectSelected: TUItemObjectKind;
       FButtonState: TUControlState;
-      FHitTest: Boolean;
       FLeftIconKind: TUImageKind;
       FRightIconKind: TUImageKind;
 
@@ -117,7 +114,6 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
 
       //  Image
       property Images: TCustomImageList read FImages write FImages;
@@ -152,6 +148,10 @@ type
       property RightIconKind: TUImageKind read FRightIconKind write SetRightIconKind default ikFontIcon;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write SetIsToggled default false;
+
+      property TabStop default true;
+      property Height default 40;
+      property Width default 250;
   end;
 
   TUItemButton = class(TUCustomItemButton)
@@ -511,15 +511,8 @@ begin
 
   FObjectSelected := iokNone;
   FButtonState := csNone;
-  FHitTest := true;
   FImageLeftIndex := -1;
   FImageRightIndex := -1;
-
-  //  Init text font
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-  Height := 40;
-  Width := 250;
 
   //  Init icon font
   FIconFont := TFont.Create;
@@ -528,8 +521,6 @@ begin
 
   //  Init detail font
   FDetailFont := TFont.Create;
-  FDetailFont.Name := 'Segoe UI';
-  FDetailFont.Size := 10;
 
   FObjectsVisible := [iokNone, iokLeftIcon, iokText, iokDetail];
 
@@ -553,6 +544,8 @@ begin
 
   //  Common properties
   TabStop := true;
+  Height := 40;
+  Width := 250;
 end;
 
 destructor TUCustomItemButton.Destroy;
@@ -660,7 +653,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -669,7 +662,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -678,7 +671,7 @@ end;
 
 procedure TUCustomItemButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
 //      if Msg.XPos < CheckBoxWidth then
 //        FObjectSelected := iokCheckBox
@@ -725,7 +718,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -734,7 +727,7 @@ end;
 
 procedure TUCustomItemButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;

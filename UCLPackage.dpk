@@ -1,7 +1,6 @@
 package UCLPackage;
 
 {$R *.res}
-{$R *.dres}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -37,38 +36,39 @@ requires
 
 contains
   RegisterPackage_UCL in 'RegisterPackage_UCL.pas',
-  UCL.Classes in 'Sources\UCL.Classes.pas',
+  UCL.IntAnimation in 'Sources\UCL.IntAnimation.pas',
   UCL.IntAnimation.Collection in 'Sources\UCL.IntAnimation.Collection.pas',
   UCL.IntAnimation.Helpers in 'Sources\UCL.IntAnimation.Helpers.pas',
-  UCL.IntAnimation in 'Sources\UCL.IntAnimation.pas',
-  UCL.SystemSettings in 'Sources\UCL.SystemSettings.pas',
-  UCL.TUButton in 'Sources\UCL.TUButton.pas',
-  UCL.TUCaptionBar in 'Sources\UCL.TUCaptionBar.pas',
-  UCL.TUCheckBox in 'Sources\UCL.TUCheckBox.pas',
-  UCL.TUEdit in 'Sources\UCL.TUEdit.pas',
-  UCL.TUForm in 'Sources\UCL.TUForm.pas',
-  UCL.TUHyperLink in 'Sources\UCL.TUHyperLink.pas',
-  UCL.TUItemButton in 'Sources\UCL.TUItemButton.pas',
-  UCL.TUPanel in 'Sources\UCL.TUPanel.pas',
-  UCL.TUProgressBar in 'Sources\UCL.TUProgressBar.pas',
-  UCL.TURadioButton in 'Sources\UCL.TURadioButton.pas',
-  UCL.TUScrollBox in 'Sources\UCL.TUScrollBox.pas',
-  UCL.TUSeparator in 'Sources\UCL.TUSeparator.pas',
-  UCL.TUSlider in 'Sources\UCL.TUSlider.pas',
-  UCL.TUSymbolButton in 'Sources\UCL.TUSymbolButton.pas',
-  UCL.TUText in 'Sources\UCL.TUText.pas',
-  UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
-  UCL.Utils in 'Sources\UCL.Utils.pas',
+  UCL.Classes in 'Sources\UCL.Classes.pas',
+  UCL.Colors in 'Sources\UCL.Colors.pas',
   UCL.Graphics in 'Sources\UCL.Graphics.pas',
-  UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
-  UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
-  UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
-  UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
-  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas',
-  UCL.TUSmoothBox in 'Sources\UCL.TUSmoothBox.pas',
   UCL.Types in 'Sources\UCL.Types.pas',
-  UCL.TUBorderlessForm in 'Sources\UCL.TUBorderlessForm.pas',
-  UCL.Colors in 'Sources\UCL.Colors.pas';
+  UCL.Utils in 'Sources\UCL.Utils.pas',
+  UCL.SystemSettings in 'Sources\UCL.SystemSettings.pas',
+  UCL.ShellUIScaling in 'Sources\UCL.ShellUIScaling.pas',
+  UCL.HighDpiApp in 'Sources\UCL.HighDpiApp.pas',
+  UCL.TUForm in 'Sources\UCL.TUForm.pas',
+  UCL.TUThemeManager in 'Sources\UCL.TUThemeManager.pas',
+  UCL.TUButton in 'Sources\UCL.TUButton.pas',
+  UCL.TUQuickButton in 'Sources\UCL.TUQuickButton.pas',
+  UCL.TUSymbolButton in 'Sources\UCL.TUSymbolButton.pas',
+  UCL.TUItemButton in 'Sources\UCL.TUItemButton.pas',
+  UCL.TUEdit in 'Sources\UCL.TUEdit.pas',
+  UCL.TUCheckBox in 'Sources\UCL.TUCheckBox.pas',
+  UCL.TURadioButton in 'Sources\UCL.TURadioButton.pas',
+  UCL.TUText in 'Sources\UCL.TUText.pas',
+  UCL.TUHyperLink in 'Sources\UCL.TUHyperLink.pas',
+  UCL.TUPopupMenu in 'Sources\UCL.TUPopupMenu.pas',
+  UCL.TUPanel in 'Sources\UCL.TUPanel.pas',
+  UCL.TUScrollBox in 'Sources\UCL.TUScrollBox.pas',
+  UCL.TUCaptionBar in 'Sources\UCL.TUCaptionBar.pas',
+  UCL.TUTitleBar in 'Sources\UCL.TUTitleBar.pas',
+  UCL.TUProgressBar in 'Sources\UCL.TUProgressBar.pas',
+  UCL.TUSlider in 'Sources\UCL.TUSlider.pas',
+  UCL.TUShadow in 'Sources\UCL.TUShadow.pas',
+  UCL.TUSeparator in 'Sources\UCL.TUSeparator.pas',
+  UCL.TUFormOverlay in 'Sources\UCL.TUFormOverlay.pas',
+  UCL.TUTooltip in 'Sources\UCL.TUTooltip.pas';
 
 end.
 

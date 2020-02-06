@@ -3,13 +3,11 @@ unit Form.LoginDialog;
 interface
 
 uses
+  Classes, SysUtils, Windows, Messages, Forms, StdCtrls, PNGImage, Menus, ExtCtrls, Controls,
+
   UCL.TUThemeManager, UCL.TUForm, UCL.Classes, UCL.Utils,
   UCL.TUText, UCL.TUEdit, UCL.TUQuickButton, UCL.TUPanel, UCL.TUPopupMenu,
-  UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox,
-
-  SysUtils, Classes,
-  Windows, Messages,
-  Forms, StdCtrls, pngimage, Menus, ExtCtrls, Controls;
+  UCL.TUCheckBox, UCL.TUCaptionBar, UCL.TUButton, UCL.TUScrollBox;
 
 type
   TformLoginDialog = class(TUForm)

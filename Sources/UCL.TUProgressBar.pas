@@ -5,11 +5,9 @@ unit UCL.TUProgressBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
+  Classes, Types, Messages, Controls, Graphics,
   UCL.IntAnimation,
-  Classes, Types,
-  Messages,
-  Controls, Graphics;
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils;
 
 type
   TUCustomProgressBar = class(TCustomControl, IUThemeComponent)
@@ -57,6 +55,9 @@ type
       property Orientation: TUOrientation read FOrientation write SetOrientation;
       property CustomFillColor: TColor read FCustomFillColor write FCustomFillColor;
       property CustomBackColor: TColor read FCustomBackColor write FCustomBackColor;
+
+      property Height default 5;
+      property Width default 100;
   end;
 
   TUProgressBar = class(TUCustomProgressBar)

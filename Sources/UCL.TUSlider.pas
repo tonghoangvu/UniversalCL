@@ -5,10 +5,8 @@ unit UCL.TUSlider;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Classes,
-  Windows, Messages,
-  Controls, Graphics;
+  Classes, Windows, Messages, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils;
 
 type
   TUCustomSlider = class(TGraphicControl, IUThemeComponent)
@@ -36,7 +34,6 @@ type
       FThemeManager: TUThemeManager;
       FControlState: TUControlState;
       FOrientation: TUOrientation;
-      FHitTest: Boolean;
       FMin: Integer;
       FMax: Integer;
       FValue: Integer;
@@ -81,13 +78,15 @@ type
 
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property IsSliding: Boolean read FIsSliding;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Min: Integer read FMin write SetMin default 0;
       property Max: Integer read FMax write SetMax default 100;
       property Value: Integer read FValue write SetValue default 0;
 
       //  Events
       property OnChange: TNotifyEvent read FOnChange write FOnChange;
+
+      property Height default 25;
+      property Width default 100;
   end;
 
   TUSlider = class(TUCustomSlider)
@@ -319,7 +318,6 @@ begin
   FControlState := csNone;
   FOrientation := oHorizontal;
 
-  FHitTest := true;
   FMin := 0;
   FMax := 100;
   FValue := 0;
@@ -380,7 +378,7 @@ end;
 
 procedure TUCustomSlider.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ControlState := csHover;
       inherited;
@@ -389,7 +387,7 @@ end;
 
 procedure TUCustomSlider.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ControlState := csNone;
       inherited;
@@ -400,7 +398,7 @@ procedure TUCustomSlider.WM_LButtonDown(var Msg: TWMLButtonDown);
 var
   TempValue: Integer;
 begin
-  if not (Enabled and HitTest) then exit;
+  if not Enabled then exit;
 
   FControlState := csPress;
   UpdateColors;
@@ -438,7 +436,7 @@ procedure TUCustomSlider.WM_MouseMove(var Msg: TWMMouseMove);
 var
   TempValue: Integer;
 begin
-  if not (Enabled and HitTest) then exit;
+  if not Enabled then exit;
 
   if FIsSliding then
     begin
@@ -461,7 +459,7 @@ end;
 
 procedure TUCustomSlider.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ControlState := csNone;
       FIsSliding := false;

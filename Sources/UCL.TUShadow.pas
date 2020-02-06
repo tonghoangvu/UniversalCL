@@ -5,10 +5,8 @@ unit UCL.TUShadow;
 interface
 
 uses
-  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager,
-  Classes, Types,
-  Windows,
-  Controls, Graphics, ExtCtrls;
+  Classes, Types, Windows, Controls, Graphics, ExtCtrls,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.TUThemeManager;
 
 type
   TUCustomShadow = class(TGraphicControl, IUThemeComponent)
@@ -21,10 +19,14 @@ type
 
       FLightColor: TColor;
       FDarkColor: TColor;
+      FAlphaA: Byte;
+      FAlphaB: Byte;
       FDirection: TUDirection;
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
+      procedure SetAlpha(Index: Integer; const Value: Byte);      
+      procedure SetColor(Index: Integer; const Value: TColor);
       procedure SetDirection(const Value: TUDirection);
 
     protected
@@ -39,9 +41,11 @@ type
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
-      property LightColor: TColor read FLightColor write FLightColor default $F2F2F2;
-      property DarkColor: TColor read FDarkColor write FDarkColor default $2B2B2B;
-      property Direction: TUDirection read FDirection write SetDirection default dLeft;
+      property AlphaA: Byte index 0 read FAlphaA write SetAlpha default 255;
+      property AlphaB: Byte index 1 read FAlphaB write SetAlpha default 255;
+      property LightColor: TColor index 0 read FLightColor write SetColor default $F2F2F2;
+      property DarkColor: TColor index 1 read FDarkColor write SetColor default $2B2B2B;
+      property Direction: TUDirection read FDirection write SetDirection default dLeft;      
   end;
 
   TUShadow = class(TUCustomShadow)
@@ -50,8 +54,6 @@ type
       property Anchors;
       property AutoSize;
       property BiDiMode;
-      //property Caption;
-      //property Color;
       property Constraints;
       property DragCursor;
       property DragKind;
@@ -141,6 +143,42 @@ end;
 
 //  SETTERS
 
+procedure TUCustomShadow.SetAlpha(Index: Integer; const Value: Byte);
+begin
+  case Index of
+    0:
+      if Value <> FAlphaA then
+        begin
+          FAlphaA := Value;
+          Repaint;
+        end;  
+    1:
+      if Value <> FAlphaB then
+        begin
+          FAlphaB := Value;
+          Repaint;
+        end;
+  end;
+end;
+
+procedure TUCustomShadow.SetColor(Index: Integer; const Value: TColor);
+begin
+  case Index of
+    0:  
+      if Value <> FLightColor then
+        begin
+          FLightColor := Value;
+          UpdateTheme;
+        end;
+    1:
+      if Value <> FDarkColor then
+        begin
+          FDarkColor := Value;
+          UpdateTheme;
+        end;
+  end;
+end;
+
 procedure TUCustomShadow.SetDirection(const Value: TUDirection);
 begin
   if Value <> FDirection then
@@ -156,11 +194,13 @@ constructor TUCustomShadow.Create(aOwner: TComponent);
 begin
   inherited;
 
+  FAlphaA := 255;
+  FAlphaB := 255;
   FLightColor := $F2F2F2;
   FDarkColor := $2B2B2B;
   FDirection := dLeft;
 
-  Color := $D77800;
+  Color := $F2F2F2;
   BlendFunc := CreateBlendFunc(255, true);
   BlendBmp := TBitmap.Create;
 end;
@@ -178,7 +218,7 @@ begin
   BlendBmp.Width := Width;
   BlendBmp.Height := Height;
 
-  AssignGradientBlendBitmap(BlendBmp, Color, Direction);
+  AssignGradientBlendBitmap(BlendBmp, Color, AlphaA, AlphaB, Direction);
   PaintBlendBitmap(Canvas, Rect(0, 0, Width, Height), BlendBmp, BlendFunc);
 end;
 

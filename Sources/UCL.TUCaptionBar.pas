@@ -3,15 +3,14 @@ unit UCL.TUCaptionBar;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils,
-  Windows, Messages,
-  Classes,
-  Controls, ExtCtrls, Forms, Graphics;
+  Classes, Types, Windows, Messages, Controls, ExtCtrls, Forms, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Colors;
 
 type
   TUCaptionBar = class(TPanel, IUThemeComponent)
     private
       FThemeManager: TUThemeManager;
+      FBackColor: TUThemeColorSet;
 
       FDragMovement: Boolean;
       FSystemMenuEnabled: Boolean;
@@ -19,6 +18,9 @@ type
 
       //  Setters
       procedure SetThemeManager(const Value: TUThemeManager);
+
+      //  Child events
+      procedure BackColor_OnChange(Sender: TObject);
 
       //  Messages
       procedure WM_LButtonDblClk(var Msg: TWMLButtonDblClk); message WM_LBUTTONDBLCLK;
@@ -31,14 +33,21 @@ type
 
     public
       constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
       procedure UpdateTheme;
 
     published
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
+      property BackColor: TUThemeColorSet read FBackColor write FBackColor;
 
       property DragMovement: Boolean read FDragMovement write FDragMovement default true;
       property SystemMenuEnabled: Boolean read FSystemMenuEnabled write FSystemMenuEnabled default true;
       property CustomColor: TColor read FCustomColor write FCustomColor default $D77800;
+
+      property Align default alTop;
+      property Alignment default taLeftJustify;
+      property BevelOuter default bvNone;
+      property Height default 32;
   end;
 
 implementation
@@ -66,17 +75,22 @@ begin
 end;
 
 procedure TUCaptionBar.UpdateTheme;
+var
+  Back: TUThemeColorSet;
 begin
-  //  Background color
   if ThemeManager = nil then
-    Color := CustomColor
-  else if ThemeManager.Theme = utLight then
-    Color := $F2F2F2
+    //  Do nothing
   else
-    Color := $2B2B2B;
+    begin
+      //  Select default or custom style
+      if not BackColor.Enabled then
+        Back := CAPTIONBAR_BACK
+      else
+        Back := BackColor;
 
-  //  Font color
-  Font.Color := GetTextColorFromBackground(Color);
+      Color := Back.GetColor(ThemeManager);
+      Font.Color := GetTextColorFromBackground(Color);
+    end;
 end;
 
 procedure TUCaptionBar.Notification(AComponent: TComponent; Operation: TOperation);
@@ -99,13 +113,17 @@ begin
   Alignment := taLeftJustify;
   Caption := '   TUCaptionBar';
   BevelOuter := bvNone;
-  TabStop := false;
   Height := 32;
-  Font.Name := 'Segoe UI';
-  Font.Size := 9;
-  FullRepaint := true;
 
-  UpdateTheme;
+  FBackColor := TUThemeColorSet.Create;
+  FBackColor.OnChange := BackColor_OnChange;
+  FBackColor.Assign(CAPTIONBAR_BACK);
+end;
+
+destructor TUCaptionBar.Destroy;
+begin
+  FBackColor.Free;
+  inherited;
 end;
 
 // MESSAGES
@@ -170,6 +188,13 @@ begin
       if P.Y < 5 then
         Msg.Result := HTTRANSPARENT;  //  Send event to parent
     end;
+end;
+
+//  CHILD EVENTS
+
+procedure TUCaptionBar.BackColor_OnChange(Sender: TObject);
+begin
+  UpdateTheme;
 end;
 
 end.

@@ -3,12 +3,8 @@ unit UCL.Utils;
 interface
 
 uses
-  UCL.Classes,
-  Types,
-  Windows,
-  Graphics, GraphUtil,
-  Themes,
-  UCL.Types;
+  SysUtils, Types, Windows, Graphics, GraphUtil, Themes,
+  UCL.Classes, UCL.Types;
 
 //  Form
 function EnableBlur(FormHandle: HWND; AccentState: Integer): Integer;
@@ -25,16 +21,13 @@ function MulColor(aColor: TColor; Base: Single): TColor;
 //  Blend support
 function CreateBlendFunc(Alpha: Byte; Gradient: Boolean): BLENDFUNCTION;
 procedure AssignBlendBitmap(const Bmp: TBitmap; Color: TColor);
-procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; A1, A2: Byte; Direction: TUDirection);
 procedure PaintBlendBitmap(const Canvas: TCanvas; DestRect: TRect; const BlendBitmap: TBitmap; BlendFunc: BLENDFUNCTION);
 
 // OS
 function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 
 implementation
-
-uses
-  SysUtils;
 
 //  FORM
 
@@ -160,9 +153,9 @@ begin
     end;
 end;
 
-procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; Direction: TUDirection);
+procedure AssignGradientBlendBitmap(const Bmp: TBitmap; Color: TColor; A1, A2: Byte; Direction: TUDirection);
 var
-  Alpha: Single;
+  Alpha, Percent: Single;
   R, G, B, A: Byte;
   X, Y: Integer;
   Pixel: PQuadColor;
@@ -181,18 +174,20 @@ begin
         begin
           case Direction of
             dTop:
-              Alpha := 1 - Y / Bmp.Height;
+              Percent := 1 - Y / Bmp.Height;
             dLeft:
-              Alpha := 1 - X / Bmp.Width;
+              Percent := 1 - X / Bmp.Width;
             dRight:
-              Alpha := X / Bmp.Width;
+              Percent := X / Bmp.Width;
             dBottom:
-              Alpha := Y / Bmp.Height;
+              Percent := Y / Bmp.Height;
             else
               continue;
           end;
 
-          A := Trunc(Alpha * 255);
+          A := A1 + Trunc(Percent * (A2 - A1));
+          Alpha := A / 255;
+
           Pixel.Alpha := A;
           Pixel.Red := Trunc(R * Alpha);
           Pixel.Green := Trunc(G * Alpha);
@@ -212,9 +207,9 @@ end;
 
 function CheckMaxWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
-  Result := (Win32MajorVersion <= AMajor) or
-            ((Win32MajorVersion = AMajor) and
-             (Win32MinorVersion <= AMinor));
+  Result :=
+    (Win32MajorVersion <= AMajor) or
+    ((Win32MajorVersion = AMajor) and (Win32MinorVersion <= AMinor));
 end;
 
 end.

@@ -3,19 +3,19 @@ unit UCL.TUTooltip;
 interface
 
 uses
-  UCL.Classes, UCL.Utils,
-  Classes,
-  Windows, Messages,
-  Controls, Graphics;
+  Classes, Types, Windows, Messages, Controls, Graphics,
+  UCL.Classes, UCL.Utils, UCL.Graphics, UCL.Colors;
 
 type
   TUCustomTooltip = class(THintWindow)
     const
-      DEF_HEIGHT = 26;
+      VERT_SPACE: Byte = 5;
+      HORZ_SPACE: Byte = 7;
 
     private
-      var BorderColor: TColor;
-      var BackColor: TColor;
+      var ShowShadow: Boolean;
+      var BorderThickness: Byte;
+      var BorderColor, BackColor: TColor;
 
     protected
       procedure CreateParams(var Params: TCreateParams); override;
@@ -23,6 +23,7 @@ type
       procedure NCPaint(DC: HDC); override;
 
     public
+      constructor Create(aOwner: TComponent); override;
       function CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect; override;
   end;
 
@@ -43,8 +44,8 @@ implementation
 constructor TULightTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := $CCCCCC;
-  BackColor := $F2F2F2;
+  BackColor := TOOLTIP_BACK.LightColor;
+  BorderColor := TOOLTIP_BORDER.LightColor;
 end;
 
 { TUDarkTooltip }
@@ -52,37 +53,48 @@ end;
 constructor TUDarkTooltip.Create(aOwner: TComponent);
 begin
   inherited;
-  BorderColor := $767676;
-  BackColor := $2B2B2B;
+  BackColor := TOOLTIP_BACK.DarkColor;
+  BorderColor := TOOLTIP_BORDER.DarkColor;
 end;
 
 { TUCustomTooltip }
 
 //  MAIN CLASS
 
+constructor TUCustomTooltip.Create(aOwner: TComponent);
+begin
+  inherited;
+  ShowShadow := TOOLTIP_SHADOW;
+  BorderThickness := TOOLTIP_BORDER_THICKNESS;
+end;
+
 procedure TUCustomTooltip.CreateParams(var Params: TCreateParams);
 begin
   inherited;
   Params.Style := Params.Style and not WS_BORDER;
-  Params.WindowClass.style := Params.WindowClass.style and not CS_DROPSHADOW;
+
+  if not ShowShadow then
+    Params.WindowClass.style := Params.WindowClass.style and not CS_DROPSHADOW;
 end;
 
 //  CUSTOM METHODS
 
 function TUCustomTooltip.CalcHintRect(MaxWidth: Integer; const AHint: string; AData: Pointer): TRect;
-var
-  TextW, TextH: Integer;
 begin
-  TextW := Canvas.TextWidth(AHint);
-  TextH := Canvas.TextHeight(AHint);
-  TextW := TextW + (DEF_HEIGHT - TextH);  //  Spacing
+  Canvas.Font.Name := 'Segoe UI';
+  Canvas.Font.Size := 8;
 
-  Result := Rect(0, 0, TextW, DEF_HEIGHT);
+  Result := Rect(0, 0, MaxWidth, 0);
+  DrawText(Canvas.Handle, AHint, -1, Result,
+    DT_CALCRECT or DT_LEFT or DT_WORDBREAK or DT_NOPREFIX or DrawTextBiDiModeFlagsReadingOnly);
+
+  Inc(Result.Right, 2 * (HORZ_SPACE + BorderThickness));
+  Inc(Result.Bottom, 2 * (VERT_SPACE + BorderThickness));
 end;
 
 procedure TUCustomTooltip.Paint;
 var
-  TextW, TextH, TextX, TextY: Integer;
+  TextRect: TRect;
 begin
   //  Paint background
   Canvas.Brush.Style := bsSolid;
@@ -91,20 +103,17 @@ begin
 
   //  Draw border
   Canvas.Brush.Style := bsClear;
-  Canvas.Pen.Color := BorderColor;
-  Canvas.Rectangle(0, 0, Width, Height);
+  DrawBorder(Canvas, Rect(0, 0, Width, Height), BorderColor, BorderThickness);
 
   //  Draw text
   Canvas.Font.Name := 'Segoe UI';
   Canvas.Font.Size := 8;
   Canvas.Font.Color := GetTextColorFromBackground(BackColor);
 
-  TextW := Canvas.TextWidth(Caption);
-  TextH := Canvas.TextHeight(Caption);
-  TextX := (Width - TextW) div 2;
-  TextY := (Height - TextH) div 2 - 1;
-
-  Canvas.TextOut(TextX, TextY, Caption);
+  TextRect := Rect(
+    HORZ_SPACE + BorderThickness, VERT_SPACE + BorderThickness,
+    Width - HORZ_SPACE - BorderThickness, Height - VERT_SPACE - BorderThickness);
+  DrawText(Canvas.Handle, Caption, -1, TextRect, DT_WORDBREAK or DT_LEFT or DT_VCENTER or DT_END_ELLIPSIS);
 end;
 
 procedure TUCustomTooltip.NCPaint(DC: HDC);

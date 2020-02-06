@@ -3,6 +3,7 @@ Win32/
 Win64/
 Project/
 Resources/
+__recovery/
 *.local
 *.tvsconfig
 *.identcache
@@ -12,3 +13,4 @@ Bin/Demo.exe
 *.stat
 *.mes
 *.dsk
+*.todo

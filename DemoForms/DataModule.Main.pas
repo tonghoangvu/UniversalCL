@@ -5,15 +5,13 @@ interface
 uses
   UCL.TUThemeManager, UCL.Classes, UCL.Utils,
   UCL.TUCheckBox,
-  SysUtils, Classes, Dialogs, Graphics,
-  Windows;
+  Classes, SysUtils, Windows, Graphics;
 
 type
   TdmMain = class(TDataModule)
     AppTheme: TUThemeManager;
     procedure AppThemeAfterUpdate(Sender: TObject);
     procedure AppThemeBeforeUpdate(Sender: TObject);
-    procedure AppThemeBeforeColorLoading(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,8 +45,8 @@ begin
         formDemo.radioDarkTheme.IsChecked := true;
 
       //  Accent color changed
-      formDemo.panelSelectAccentColor.CustomBackColor := AppTheme.AccentColor;
-      formDemo.panelSelectAccentColor.CustomTextColor :=
+      formDemo.panelSelectAccentColor.Color := AppTheme.AccentColor;
+      formDemo.panelSelectAccentColor.Font.Color :=
         GetTextColorFromBackground(AppTheme.AccentColor);
 
       //  Color on border changed
@@ -71,11 +69,6 @@ begin
     end;
 
   LockWindowUpdate(0);
-end;
-
-procedure TdmMain.AppThemeBeforeColorLoading(Sender: TObject);
-begin
-  //SCROLLBOX_BACK_LIGHT := clred;
 end;
 
 procedure TdmMain.AppThemeBeforeUpdate(Sender: TObject);

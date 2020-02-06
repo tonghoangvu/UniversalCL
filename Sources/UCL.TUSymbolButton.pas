@@ -5,10 +5,8 @@ unit UCL.TUSymbolButton;
 interface
 
 uses
-  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Messages, Windows,
-  Classes, Types,
-  Controls, Graphics, ImgList;
+  Classes, Types, Windows, Messages, Controls, Graphics, ImgList,
+  UCL.Classes, UCL.SystemSettings, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomSymbolButton = class(TCustomControl, IUThemeComponent)
@@ -27,7 +25,6 @@ type
       FThemeManager: TUThemeManager;
 
       FSymbolFont: TFont;
-      FTextFont: TFont;
       FDetailFont: TFont;
 
       FImageIndex: Integer;
@@ -35,7 +32,6 @@ type
       FImages: TCustomImageList;
 
       FButtonState: TUControlState;
-      FHitTest: Boolean;
       FOrientation: TUOrientation;
       FSymbolChar: string;
       FText: string;
@@ -95,7 +91,6 @@ type
       property ThemeManager: TUThemeManager read FThemeManager write SetThemeManager;
 
       property SymbolFont: TFont read FSymbolFont write FSymbolFont;
-      property TextFont: TFont read FTextFont write FTextFont;
       property DetailFont: TFont read FDetailFont write FDetailFont;
 
       property ImageIndex: Integer read FImageIndex write SetImageIndex default -1;
@@ -103,7 +98,6 @@ type
       property Images: TCustomImageList read FImages write FImages;
 
       property ButtonState: TUControlState read FButtonState write SetButtonState default csNone;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property Orientation: TUOrientation read FOrientation write SetOrientation default oHorizontal;
       property SymbolChar: string read FSymbolChar write SetSymbolChar;
       property Text: string read FText write SetText;
@@ -115,6 +109,10 @@ type
       property Transparent: Boolean read FTransparent write SetTransparent default false;
       property IsToggleButton: Boolean read FIsToggleButton write FIsToggleButton default false;
       property IsToggled: Boolean read FIsToggled write SetIsToggled default false;
+
+      property TabStop default true;
+      property Height default 40;
+      property Width default 250;
   end;
 
   TUSymbolButton = class(TUCustomSymbolButton)
@@ -424,16 +422,10 @@ begin
   FSymbolFont.Name := 'Segoe MDL2 Assets';
   FSymbolFont.Size := 12;
 
-  FTextFont := TFont.Create;
-  FTextFont.Name := 'Segoe UI';
-  FTextFont.Size := 10;
-
   FDetailFont := TFont.Create;
-  FDetailFont.Name := 'Segoe UI';
-  FDetailFont.Size := 10;
+  FDetailFont.Name := Font.Name;
 
   FButtonState := csNone;
-  FHitTest := true;
   FOrientation := oHorizontal;
   FSymbolChar := '';
   FText := 'Some text';
@@ -446,15 +438,14 @@ begin
   FIsToggleButton := false;
   FIsToggled := false;
 
-  Width := 250;
-  Height := 40;
   TabStop := true;
+  Height := 40;
+  Width := 250;
 end;
 
 destructor TUCustomSymbolButton.Destroy;
 begin
   FSymbolFont.Free;
-  FTextFont.Free;
   FDetailFont.Free;
   inherited;
 end;
@@ -503,7 +494,7 @@ begin
     end;
 
   //  Paint text
-  Canvas.Font := TextFont;
+  Canvas.Font := Font;
   Canvas.Font.Color := TextColor;
   if Orientation = oHorizontal then
     DrawTextRect(Canvas, taLeftJustify, taVerticalCenter, TextRect, Text, false)
@@ -532,7 +523,7 @@ begin
   DetailRightOffset := MulDiv(DetailRightOffset, M, D);
 
   SymbolFont.Height := MulDiv(SymbolFont.Height, M, D);
-  TextFont.Height := MulDiv(TextFont.Height, M, D);
+//  Font.Height := MulDiv(Font.Height, M, D);
   DetailFont.Height := MulDiv(DetailFont.Height, M, D);
 
   UpdateRects;
@@ -542,7 +533,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonDblClk(var Msg: TWMLButtonDblClk);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -551,7 +542,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonDown(var Msg: TWMLButtonDown);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csPress;
       inherited;
@@ -560,7 +551,7 @@ end;
 
 procedure TUCustomSymbolButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       if IsToggleButton then
         FIsToggled := not FIsToggled;
@@ -571,7 +562,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseEnter(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csHover;
       inherited;
@@ -580,7 +571,7 @@ end;
 
 procedure TUCustomSymbolButton.CM_MouseLeave(var Msg: TMessage);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     begin
       ButtonState := csNone;
       inherited;

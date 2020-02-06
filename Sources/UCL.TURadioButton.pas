@@ -5,10 +5,8 @@ unit UCL.TURadioButton;
 interface
 
 uses
-  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics,
-  Classes,
-  Messages, Windows,
-  Controls, Graphics;
+  Classes, Messages, Windows, Controls, Graphics,
+  UCL.Classes, UCL.TUThemeManager, UCL.Utils, UCL.Graphics;
 
 type
   TUCustomRadioButton = class(TGraphicControl, IUThemeComponent)
@@ -24,7 +22,6 @@ type
       FIconFont: TFont;
 
       FAutoSize: Boolean;
-      FHitTest: Boolean;
       FIsChecked: Boolean;
       FGroup: string;
       FCustomActiveColor: TColor;
@@ -60,11 +57,14 @@ type
       property IconFont: TFont read FIconFont write FIconFont;
 
       property AutoSize: Boolean read FAutoSize write SetAutoSize default false;
-      property HitTest: Boolean read FHitTest write FHitTest default true;
       property IsChecked: Boolean read FIsChecked write SetIsChecked default false;
       property Group: string read FGroup write FGroup;
       property CustomActiveColor: TColor read FCustomActiveColor write FCustomActiveColor;
       property TextOnGlass: Boolean read FTextOnGlass write SetTextOnGlass default false;
+
+      property ParentColor default true;
+      property Height default 30;
+      property Width default 180;
   end;
 
   TURadioButton = class(TUCustomRadioButton)
@@ -238,7 +238,6 @@ begin
 
   //  New props
   FAutoSize := false;
-  FHitTest := true;
   FIsChecked := false;
   FCustomActiveColor := $D77800;
   FTextOnGlass := false;
@@ -248,9 +247,6 @@ begin
   FIconFont.Size := 15;
 
   ParentColor := true;
-  Font.Name := 'Segoe UI';
-  Font.Size := 10;
-
   Height := 30;
   Width := 180;
 
@@ -319,7 +315,7 @@ begin
       Canvas.Font := IconFont;
       Height := 2 * Space + Canvas.TextHeight(ICON_CIRCLE_BORDER);
       Canvas.Font := Font;
-      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2;
+      Width := Height + Canvas.TextWidth(Text) + (Height - Canvas.TextHeight(Text)) div 2 + Space;
     end
   else
     inherited;
@@ -330,7 +326,7 @@ end;
 
 procedure TUCustomRadioButton.WM_LButtonUp(var Msg: TWMLButtonUp);
 begin
-  if Enabled and HitTest then
+  if Enabled then
     IsChecked := true;
 
   inherited;

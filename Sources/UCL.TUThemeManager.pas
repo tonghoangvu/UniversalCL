@@ -3,16 +3,9 @@ unit UCL.TUThemeManager;
 interface
 
 uses
-  // delphi stuff first
-  SysUtils,
-  Classes,
-  TypInfo,
-  Controls,
-  Graphics,
+  Classes, SysUtils, TypInfo, Controls, Graphics,
   Generics.Collections,
-  // library stuff last
-  UCL.Classes,
-  UCL.SystemSettings;
+  UCL.Classes, UCL.SystemSettings;
 
 type
   IUThemeComponent = interface ['{C9D5D479-2F52-4BB9-8023-6EA00B5084F0}']

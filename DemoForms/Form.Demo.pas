@@ -6,14 +6,14 @@ interface
 
 uses
   //  UCL units
-  UCL.TUThemeManager,
-  UCL.TUBorderlessForm,
+  UCL.TUThemeManager, UCL.Colors,
+  UCL.TUForm, UCL.TUFormOverlay,
   UCL.IntAnimation, UCL.IntAnimation.Helpers,
   UCL.Utils, UCL.Classes, UCL.SystemSettings,
-  UCL.TUForm, UCL.TUScrollBox, UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
+  UCL.TUCheckBox, UCL.TUProgressBar, UCL.TUHyperLink,
   UCL.TUPanel, UCL.TUSymbolButton, UCL.TUButton, UCL.TUText, UCL.TUCaptionBar,
   UCL.TUSlider, UCL.TUSeparator, UCL.TUEdit, UCL.TUItemButton, UCL.TUQuickButton,
-  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUSmoothBox,
+  UCL.TUPopupMenu, UCL.TURadioButton, UCL.TUShadow, UCL.TUScrollBox,
 
   //  Winapi units
   Windows, Messages,
@@ -29,7 +29,7 @@ uses
   Menus, Buttons, ImgList, pngimage, jpeg;
 
 type
-  TformDemo = class(TUBorderlessForm)
+  TformDemo = class(TUForm)
     drawerNavigation: TUPanel;
     buttonOpenMenu: TUSymbolButton;
     buttonMenuSettings: TUSymbolButton;
@@ -37,9 +37,9 @@ type
     buttonMenuSave: TUSymbolButton;
     buttonMenuOpen: TUSymbolButton;
     buttonMenuRate: TUSymbolButton;
-    captionbarNewStyle: TUCaptionBar;
+    captionBarMain: TUCaptionBar;
     dialogSelectColor: TColorDialog;
-    panelRibbon: TUSmoothBox;
+    panelRibbon: TUScrollBox;
     buttonGoBack: TUSymbolButton;
     separator1: TUSeparator;
     buttonGoHome: TUSymbolButton;
@@ -57,7 +57,7 @@ type
     buttonReloadSettings: TUSymbolButton;
     buttonHighlight: TUButton;
     buttonDisabled: TUButton;
-    buttonToggle: TUButton;
+    buttonToggled: TUButton;
     radioA1: TURadioButton;
     radioA2: TURadioButton;
     radioA3: TURadioButton;
@@ -80,8 +80,8 @@ type
     textHeading: TUText;
     textTitle: TUText;
     buttonRunning: TButton;
-    buttonAniStart: TButton;
-    buttonAniInverse: TButton;
+    buttonAniToRight: TButton;
+    buttonAniToLeft: TButton;
     buttonWithImage: TUButton;
     sliderHorz: TUSlider;
     sliderDisabled: TUSlider;
@@ -91,7 +91,7 @@ type
     buttonWinMax: TUQuickButton;
     buttonWinMin: TUQuickButton;
     comboAppDPI: TComboBox;
-    boxSmoothScrolling: TUSmoothBox;
+    boxSettings: TUScrollBox;
     headingSettings: TUText;
     entryAppTheme: TUText;
     radioSystemTheme: TURadioButton;
@@ -129,10 +129,11 @@ type
     CopyCtrlC1: TMenuItem;
     PasteCtrlV1: TMenuItem;
     buttonAppListForm: TUSymbolButton;
+    buttonBlurForm: TUQuickButton;
     procedure buttonReloadSettingsClick(Sender: TObject);
-    procedure buttonAniStartClick(Sender: TObject);
+    procedure buttonAniToRightClick(Sender: TObject);
     procedure buttonRandomProgressClick(Sender: TObject);
-    procedure buttonAniInverseClick(Sender: TObject);
+    procedure buttonAniToLeftClick(Sender: TObject);
     procedure buttonOpenMenuClick(Sender: TObject);
     procedure radioSystemThemeClick(Sender: TObject);
     procedure radioLightThemeClick(Sender: TObject);
@@ -149,6 +150,7 @@ type
     procedure buttonImageFormClick(Sender: TObject);
     procedure buttonHighlightClick(Sender: TObject);
     procedure buttonAppListFormClick(Sender: TObject);
+    procedure buttonBlurFormClick(Sender: TObject);
 
   private
   public
@@ -172,32 +174,56 @@ begin
 //  EnableBlur(Handle, 3);
 
   ThemeManager := dmMain.AppTheme;
+  CaptionBar := captionBarMain;
 end;
 
 //  ANIMATION TESTING
 
-procedure TformDemo.buttonAniStartClick(Sender: TObject);
+procedure TformDemo.buttonAniToRightClick(Sender: TObject);
 var
   Delta: Integer;
+  Ani: TIntAni;
 begin
   Delta := MulDiv(210, PPI, 96);
-  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+
+  Ani := TIntAni.Create(buttonRunning.Left, Delta,
+    procedure (V: Integer)
+    begin
+      buttonRunning.Left := V;
+    end,
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end);
+  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 250, 25);
+  Ani.Start;
 end;
 
-procedure TformDemo.buttonAniInverseClick(Sender: TObject);
+procedure TformDemo.buttonAniToLeftClick(Sender: TObject);
 var
   Delta: Integer;
+  Ani: TIntAni;
 begin
   Delta := -MulDiv(210, PPI, 96);
-  buttonRunning.AnimationFromCurrent(apLeft, Delta, 25, 250, akOut, afkQuartic,
-    procedure begin buttonRunning.SetFocus end);
+
+  Ani := TIntAni.Create(buttonRunning.Left, Delta,
+    procedure (V: Integer)
+    begin
+      buttonRunning.Left := V;
+    end,
+    procedure
+    begin
+      buttonRunning.SetFocus;
+    end);
+  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 250, 25);
+  Ani.Start;
 end;
 
 procedure TformDemo.buttonOpenMenuClick(Sender: TObject);
 var
   Opened: Boolean;
   Delta: Integer;
+  Ani: TIntAni;
 begin
   Opened := drawerNavigation.Width <> buttonOpenMenu.Width;
 
@@ -206,22 +232,38 @@ begin
   else
     Delta := -MulDiv(180, PPI, 96); //  Close
 
-  drawerNavigation.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic, nil);
+  Ani := TIntAni.Create(drawerNavigation.Width, Delta,
+    procedure (V: Integer)
+    begin
+      drawerNavigation.Width := V;
+    end, nil);
+  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 200, 30);
+  Ani.Start;
 end;
 
 procedure TformDemo.buttonMenuSettingsClick(Sender: TObject);
 var
   Delta: Integer;
+  Ani: TIntAni;
 begin
-  boxSmoothScrolling.DisableAlign;  //  Pause align items for better performance
+  boxSettings.DisableAlign;  //  Pause align items for better performance
 
-  if boxSmoothScrolling.Width = 0 then
+  if boxSettings.Width = 0 then
     Delta := MulDiv(250, PPI, 96)   //  Open
   else
-    Delta := -boxSmoothScrolling.Width; //  Close
+    Delta := -boxSettings.Width; //  Close
 
-  boxSmoothScrolling.AnimationFromCurrent(apWidth, Delta, 30, 200, akOut, afkQuartic,
-    procedure begin boxSmoothScrolling.EnableAlign end);
+  Ani := TIntAni.Create(boxSettings.Width, Delta,
+    procedure (V: Integer)
+    begin
+      boxSettings.Width := V;
+    end,
+    procedure
+    begin
+      boxSettings.EnableAlign;
+    end);
+  Ani.AniSet.QuickAssign(akOut, afkQuartic, 0, 250, 25);
+  Ani.Start;
 end;
 
 //  CONTROLS EVENTS
@@ -259,8 +301,18 @@ begin
   progressConnected.Value := sliderHorz.Value;
 end;
 
+procedure TformDemo.buttonBlurFormClick(Sender: TObject);
+begin
+  if OverlayType = otNone then
+    OverlayType := otBlur
+  else
+    OverlayType := otNone;
+end;
+
 procedure TformDemo.buttonRandomProgressClick(Sender: TObject);
 begin
+  buttonRandomProgress.Hint := 'This is line 1' + sLineBreak + 'This is' + sLineBreak + 'Nothing to do here, thanks';
+
   Randomize;
   progressCustomColor.GoToValue(Random(101));
   progressConnected.GoToValue(Random(101));
