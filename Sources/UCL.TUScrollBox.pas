@@ -106,21 +106,19 @@ end;
 
 procedure TUScrollBox.UpdateTheme;
 var
-  Back: TUThemeColorSet;
+  setBack: TUThemeColorSet;
 begin
-  //  Background color
-  if ThemeManager = nil then
-    //  Do nothing
+  //  Select active style
+  if (ThemeManager = nil) or (BackColor.Enabled) then
+    setBack := BackColor  //  Custom style
   else
-    begin
-      //  Select default or custom style
-      if not BackColor.Enabled then
-        Back := SCROLLBOX_BACK
-      else
-        Back := BackColor;
+    setBack := SCROLLBOX_BACK;  //  Default style
 
-      Color := Back.GetColor(ThemeManager);
-    end;
+  //  Background color
+  Color := setBack.GetColor(ThemeManager);
+
+  //  Repaint
+  //  Do not repaint, not necessary
 end;
 
 procedure TUScrollBox.Notification(AComponent: TComponent; Operation: TOperation);

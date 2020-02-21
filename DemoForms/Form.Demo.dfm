@@ -1119,7 +1119,8 @@ object formDemo: TformDemo
     CustomBackColors.Disabled = 15921906
     CustomBackColors.Focused = 15921906
     CustomTextColors.Disabled = clGray
-    Caption = 'Button with image'
+    Transparent = True
+    Caption = 'Transparent button'
   end
   object drawerNavigation: TUPanel
     Left = 0
@@ -1138,7 +1139,7 @@ object formDemo: TformDemo
     TabOrder = 0
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
-    BackColor.Color = clWhite
+    BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
     object buttonOpenMenu: TUSymbolButton
@@ -1308,6 +1309,7 @@ object formDemo: TformDemo
     BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
+    ScrollBarStyle = sbsFull
     MaxScrollCount = 6
     object headingSettings: TUText
       AlignWithMargins = True
@@ -1868,7 +1870,7 @@ object formDemo: TformDemo
       TabOrder = 1
       OnClick = panelSelectAccentColorClick
       BackColor.Enabled = False
-      BackColor.Color = -1
+      BackColor.Color = clBlack
       BackColor.LightColor = 15132390
       BackColor.DarkColor = 2039583
     end

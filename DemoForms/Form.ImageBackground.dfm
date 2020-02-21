@@ -14688,7 +14688,6 @@ object formImageBackground: TformImageBackground
     TabOrder = 2
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
-    BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
     object buttonOk: TUButton

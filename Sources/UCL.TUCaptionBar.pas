@@ -76,21 +76,20 @@ end;
 
 procedure TUCaptionBar.UpdateTheme;
 var
-  Back: TUThemeColorSet;
+  setBack: TUThemeColorSet;
 begin
-  if ThemeManager = nil then
-    //  Do nothing
+  //  Select active style
+  if (ThemeManager = nil) or (BackColor.Enabled) then
+    setBack := BackColor  //  Custom style
   else
-    begin
-      //  Select default or custom style
-      if not BackColor.Enabled then
-        Back := CAPTIONBAR_BACK
-      else
-        Back := BackColor;
+    setBack := CAPTIONBAR_BACK;   //  Default style
 
-      Color := Back.GetColor(ThemeManager);
-      Font.Color := GetTextColorFromBackground(Color);
-    end;
+  //  Background & text color
+  Color := setBack.GetColor(ThemeManager);
+  Font.Color := GetTextColorFromBackground(Color);
+
+  //  Repaint
+  //  Do not repaint, not necessary
 end;
 
 procedure TUCaptionBar.Notification(AComponent: TComponent; Operation: TOperation);

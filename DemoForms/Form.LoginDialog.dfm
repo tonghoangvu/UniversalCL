@@ -39,7 +39,6 @@ object formLoginDialog: TformLoginDialog
     AniSet.Duration = 250
     AniSet.Step = 25
     BackColor.Enabled = False
-    BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
     MaxScrollCount = 6
@@ -183,7 +182,6 @@ object formLoginDialog: TformLoginDialog
       Visible = False
       ThemeManager = dmMain.AppTheme
       BackColor.Enabled = False
-      BackColor.Color = clBlack
       BackColor.LightColor = 15132390
       BackColor.DarkColor = 2039583
       object checkSendMeNews: TUCheckBox
@@ -296,7 +294,6 @@ object formLoginDialog: TformLoginDialog
     TabOrder = 1
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
-    BackColor.Color = clBlack
     BackColor.LightColor = 15921906
     BackColor.DarkColor = 2829099
     object buttonAppQuit: TUQuickButton
@@ -382,7 +379,6 @@ object formLoginDialog: TformLoginDialog
     TabOrder = 2
     ThemeManager = dmMain.AppTheme
     BackColor.Enabled = False
-    BackColor.Color = clBlack
     BackColor.LightColor = 15132390
     BackColor.DarkColor = 2039583
     object buttonOk: TUButton

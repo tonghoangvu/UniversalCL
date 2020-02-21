@@ -218,21 +218,18 @@ end;
 
 procedure TUForm.UpdateTheme;
 var
-  Back: TUThemeColorSet;
+  setBack: TUThemeColorSet;
 begin
-  if ThemeManager = nil then
-    //  Do nothing
+  //  Select active style
+  if (ThemeManager = nil) or (BackColor.Enabled) then
+    setBack := BackColor  //  Custom style
   else
-    begin
-      //  Select default or custom style
-      if not BackColor.Enabled then
-        Back := FORM_BACK
-      else
-        Back := BackColor;
+    setBack := FORM_BACK;   //  Default style
 
-      Color := Back.GetColor(ThemeManager);
-    end;
+  //  Background color
+  Color := setBack.GetColor(ThemeManager);
 
+  //  Tooltip style
   if ThemeManager = nil then
     HintWindowClass := THintWindow
   else if ThemeManager.Theme = utLight then
@@ -240,6 +237,7 @@ begin
   else
     HintWindowClass := TUDarkTooltip;
 
+  //  Repaint
   UpdateBorderColor;
   Invalidate;
 end;

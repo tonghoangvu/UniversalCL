@@ -63,28 +63,20 @@ end;
 
 procedure TUPanel.UpdateTheme;
 var
-  Back: TUThemeColorSet;
+  setBack: TUThemeColorSet;
 begin
-  if ThemeManager = nil then
-    //  Do nothing
-    begin
-      //  Color := Color;
-      //  Font.Color := Font.Color;
-    end
+  //  Select active style
+  if (ThemeManager = nil) or (BackColor.Enabled) then
+    setBack := BackColor   //  Custom style
   else
-    begin
-      //  Select default or custom style
-      if not BackColor.Enabled then
-        Back := PANEL_BACK
-      else
-        Back := BackColor;
+    setBack := PANEL_BACK;  //  Default style
 
-      Color := Back.GetColor(ThemeManager);
-      Font.Color := GetTextColorFromBackground(Color);
-    end;
+  //  Background & text color
+  Color := setBack.GetColor(ThemeManager);
+  Font.Color := GetTextColorFromBackground(Color);
   
   //  Repaint
-  //  Do not repaint, because it does not override Paint method
+  //  Do not repaint, not necessary
 end;
 
 procedure TUPanel.Notification(AComponent: TComponent; Operation: TOperation);

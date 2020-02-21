@@ -293,6 +293,7 @@ begin
   if Value <> FTransparent then
     begin
       FTransparent := Value;
+      UpdateColors;
       Repaint;
     end;
 end;
