@@ -1,6 +1,8 @@
 # UniversalCL
 UWP controls for Delphi VCL.
 
+**This project will be removed soon. Check out the newer version at https://github.com/VuioVuio/DelphiUCL**
+
 Compatible with Delphi 2010 and Delphi 10.3 and Windows 7+. Some controls require Segoe MDL2 Assets font, such as TUCheckBox or TURadioButton for correctly drawing.
 
 ### Install package
